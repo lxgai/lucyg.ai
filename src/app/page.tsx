@@ -82,7 +82,7 @@ export default function Home() {
             Current software engineer, travel enthusiast, and overthinker.
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary", fontFamily: 'var(--font-ibm-plex-mono), monospace', fontSize: { xs: '1rem', sm: '1.1rem' } }}>
-            Something something!
+            More to come soon!
           </Typography>
         </Box>
       </Box>
