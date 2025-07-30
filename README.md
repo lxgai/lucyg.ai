@@ -1,1 +1,1 @@
-lucy.place
+[lucy.place](lucy.place)
