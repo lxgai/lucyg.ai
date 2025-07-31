@@ -11,6 +11,7 @@ const TravelMap = dynamic(() => import('@/components/TravelMap'), {
 
 import PhotoGallery from '@/components/PhotoGallery';
 import { Photo } from '@/types/photo';
+import Header from '@/components/Header';
 
 // Mock data for development/fallback
 const mockPhotos: Photo[] = [
@@ -71,28 +72,7 @@ export default function TravelsPage() {
         background: 'radial-gradient(circle at center, #FFFFFF 0%, rgba(226, 208, 193, 0.4) 100%)',
       }}
     >
-      {/* Header */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 48,
-          left: 88,
-          zIndex: 10,
-        }}
-      >
-        <Typography 
-          variant="h4" 
-          sx={{ 
-            fontWeight: 500, 
-            color: "#252525", 
-            fontFamily: 'var(--font-ibm-plex-mono), monospace',
-            cursor: 'pointer'
-          }}
-          onClick={() => window.location.href = '/'}
-        >
-          Lucy Gai
-        </Typography>
-      </Box>
+      <Header />
 
       {/* Main Content */}
       <Container 
@@ -138,17 +118,27 @@ export default function TravelsPage() {
         <Box 
           sx={{ 
             flex: 1, 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             height: 'calc(100vh - 180px)',
-            borderRadius: 2,
-            overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
           }}
         >
-          <TravelMap 
-            photos={photos}
-            onLocationSelect={setSelectedLocation}
-            selectedLocation={selectedLocation}
-          />
+          <Box
+            sx={{
+              width: '75%',
+              height: '60%',
+              borderRadius: 2,
+              overflow: 'hidden',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+            }}
+          >
+            <TravelMap 
+              photos={photos}
+              onLocationSelect={setSelectedLocation}
+              selectedLocation={selectedLocation}
+            />
+          </Box>
         </Box>
       </Container>
     </Box>

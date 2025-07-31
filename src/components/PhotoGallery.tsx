@@ -1,4 +1,4 @@
-import { Box, ImageList, ImageListItem, ImageListItemBar, Chip } from '@mui/material';
+import { Box, ImageList, ImageListItem, Chip, Typography } from '@mui/material';
 import { Photo } from '@/types/photo';
 import Image from 'next/image';
 
@@ -20,9 +20,9 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
           color={selectedLocation === null ? 'primary' : 'default'}
           sx={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}
         />
-        {Array.from(new Set(photos.map(p => p.location.name))).map(location => (
+        {Array.from(new Set(photos.map(p => p.location.name))).map((location, index) => (
           <Chip
-            key={location}
+            key={`location-${index}-${location}`}
             label={location}
             onClick={() => onLocationClick(location)}
             color={selectedLocation === location ? 'primary' : 'default'}
@@ -34,21 +34,21 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
       {/* Photo grid */}
       <ImageList 
         cols={3} 
-        gap={16}
+        gap={20}
         sx={{
           overflow: 'auto',
           height: 'calc(100vh - 300px)',
-          pr: 1,
+          pr: 2,
           '&::-webkit-scrollbar': {
-            width: '8px',
+            width: '10px',
           },
           '&::-webkit-scrollbar-track': {
             background: '#f1f1f1',
-            borderRadius: '4px',
+            borderRadius: '5px',
           },
           '&::-webkit-scrollbar-thumb': {
             background: '#888',
-            borderRadius: '4px',
+            borderRadius: '5px',
             '&:hover': {
               background: '#555',
             },
@@ -58,42 +58,72 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
         {photos.map((photo) => (
           <ImageListItem 
             key={photo.id}
-            sx={{
-              cursor: 'pointer',
-              transition: 'transform 0.2s',
-              '&:hover': {
-                transform: 'scale(1.05)',
-              },
-            }}
+            sx={{ padding: 0 }}
           >
-            <Box sx={{ position: 'relative', height: '200px', width: '100%' }}>
-              <Image
-                src={photo.thumbnail}
-                alt={photo.caption || photo.location.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                style={{ 
-                  objectFit: 'cover',
-                  borderRadius: '8px',
-                }}
-              />
-            </Box>
-            <ImageListItemBar
-              title={photo.location.name}
-              subtitle={photo.date}
+            {/* Polaroid Frame */}
+            <Box
               sx={{
-                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)',
-                borderRadius: '0 0 8px 8px',
-                '& .MuiImageListItemBar-title': {
-                  fontFamily: 'var(--font-ibm-plex-mono), monospace',
-                  fontSize: '0.9rem',
-                },
-                '& .MuiImageListItemBar-subtitle': {
-                  fontFamily: 'var(--font-ibm-plex-mono), monospace',
-                  fontSize: '0.8rem',
+                backgroundColor: '#fff',
+                padding: '10px 10px 50px 10px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                transition: 'transform 0.3s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                  transform: 'translateY(-5px) rotate(-1deg)',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.2)',
                 },
               }}
-            />
+            >
+              {/* Square Photo Container */}
+              <Box 
+                sx={{ 
+                  position: 'relative', 
+                  width: '100%',
+                  paddingBottom: '100%', // Creates square aspect ratio
+                  overflow: 'hidden',
+                  backgroundColor: '#f5f5f5',
+                }}
+              >
+                <Image
+                  src={photo.thumbnail}
+                  alt={photo.caption || photo.location.name}
+                  fill
+                  sizes="(max-width: 768px) 33vw, 16vw"
+                  style={{ 
+                    objectFit: 'cover',
+                  }}
+                />
+              </Box>
+              {/* Polaroid Caption Area */}
+              <Box
+                sx={{
+                  pt: 1.5,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontFamily: 'var(--font-ibm-plex-mono), monospace',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    color: '#333',
+                  }}
+                >
+                  {photo.location.name}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontFamily: 'var(--font-ibm-plex-mono), monospace',
+                    fontSize: '0.75rem',
+                    color: '#666',
+                  }}
+                >
+                  {photo.date}
+                </Typography>
+              </Box>
+            </Box>
           </ImageListItem>
         ))}
       </ImageList>

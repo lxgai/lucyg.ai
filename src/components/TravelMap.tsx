@@ -1,6 +1,7 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Icon } from 'leaflet';
+import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 
 // Fix for default markers in React Leaflet
@@ -20,6 +21,22 @@ interface TravelMapProps {
   photos: Photo[];
   onLocationSelect: (location: string | null) => void;
   selectedLocation: string | null;
+}
+
+// Component to fix map sizing issues
+function MapSizeFixer() {
+  const map = useMap();
+  
+  useEffect(() => {
+    // Small delay to ensure container has rendered
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [map]);
+  
+  return null;
 }
 
 export default function TravelMap({ photos, onLocationSelect }: TravelMapProps) {
@@ -45,14 +62,15 @@ export default function TravelMap({ photos, onLocationSelect }: TravelMapProps) 
       zoom={2}
       style={{ height: '100%', width: '100%' }}
     >
+      <MapSizeFixer />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       
-      {locations.map((location) => (
+      {locations.map((location, index) => (
         <Marker
-          key={location.name}
+          key={`marker-${index}`}
           position={location.coordinates}
           eventHandlers={{
             click: () => {
