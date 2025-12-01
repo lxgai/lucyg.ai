@@ -79,7 +79,7 @@ export default function TravelMap({ photos, onLocationSelect }: TravelMapProps) 
           }}
         >
           <Popup>
-            <div style={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+            <div style={{ fontFamily: 'var(--font-vt323), monospace' }}>
               <strong>{location.name}</strong>
               <br />
               {location.photos.length} photo{location.photos.length !== 1 ? 's' : ''}

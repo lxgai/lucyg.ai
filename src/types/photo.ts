@@ -9,21 +9,3 @@ export interface Photo {
   caption?: string;
   date?: string;
 }
-
-export interface SanityPhoto {
-  _id: string;
-  title: string;
-  image: {
-    asset: {
-      _ref: string;
-      _type: string;
-    };
-  };
-  location: {
-    lat: number;
-    lng: number;
-  };
-  locationName: string;
-  caption?: string;
-  date?: string;
-}

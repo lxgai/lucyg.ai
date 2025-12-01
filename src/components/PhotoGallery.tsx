@@ -18,7 +18,7 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
           label="All"
           onClick={() => onLocationClick(null)}
           color={selectedLocation === null ? 'primary' : 'default'}
-          sx={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}
+          sx={{ fontFamily: 'var(--font-vt323), monospace' }}
         />
         {Array.from(new Set(photos.map(p => p.location.name))).map((location, index) => (
           <Chip
@@ -26,7 +26,7 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
             label={location}
             onClick={() => onLocationClick(location)}
             color={selectedLocation === location ? 'primary' : 'default'}
-            sx={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}
+            sx={{ fontFamily: 'var(--font-vt323), monospace' }}
           />
         ))}
       </Box>
@@ -104,7 +104,7 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
                 <Typography
                   variant="subtitle2"
                   sx={{
-                    fontFamily: 'var(--font-ibm-plex-mono), monospace',
+                    fontFamily: 'var(--font-vt323), monospace',
                     fontSize: '0.85rem',
                     fontWeight: 600,
                     color: '#333',
@@ -115,7 +115,7 @@ export default function PhotoGallery({ photos, onLocationClick, selectedLocation
                 <Typography
                   variant="caption"
                   sx={{
-                    fontFamily: 'var(--font-ibm-plex-mono), monospace',
+                    fontFamily: 'var(--font-vt323), monospace',
                     fontSize: '0.75rem',
                     color: '#666',
                   }}

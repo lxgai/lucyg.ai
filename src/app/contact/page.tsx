@@ -8,7 +8,7 @@ export default function ContactPage() {
         minHeight: '100vh',
         width: '100vw',
         position: 'relative',
-        background: 'radial-gradient(circle at center, #FFFFFF 0%, rgba(226, 208, 193, 0.4) 100%)',
+        backgroundColor: '#f5ede6',
       }}
     >
       <Header />

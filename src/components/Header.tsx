@@ -15,7 +15,7 @@ export default function Header() {
           zIndex: 10,
         }}
       >
-        <Typography variant="h4" sx={{fontWeight: 500, color: "#252525", fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', letterSpacing: 0.2 }}>
           Lucy Gai
         </Typography>
       </MuiLink>
@@ -31,14 +31,17 @@ export default function Header() {
           zIndex: 10,
         }}
       >
-        <MuiLink href="/blog" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+        <MuiLink href="/blog" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
           Blog
         </MuiLink>
-        <MuiLink href="/travels" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+        <MuiLink href="/travels" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
           Travels
         </MuiLink>
-        <MuiLink href="/links" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
-          Links
+        <MuiLink href="/projects" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
+          Projects
+        </MuiLink>
+        <MuiLink href="/favorites" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
+          Favorites
         </MuiLink>
       </Stack>
     </>

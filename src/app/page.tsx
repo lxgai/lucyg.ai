@@ -1,7 +1,14 @@
 "use client";
 import { Box, Typography, Link as MuiLink } from "@mui/material";
+import Image from "next/image";
 import Header from "@/components/Header";
 
+const decorations = {
+  star: { src: "/images/home/chrome_star.png", alt: "star", width: 130, height: 130, top: "16%", left: "10%" },
+  miffy: { src: "/images/home/miffy.png", alt: "miffy", width: 200, height: 200, top: "20%", right: "28%", rotate: "8deg" },
+  cursor: { src: "/images/home/95_mouse.png", alt: "cursor", width: 32, height: 32, top: "16%", right: "12%" },
+  start: { src: "/images/home/95_start.png", alt: "start button", width: 120, height: 40, top: "67%", right: "28%", href: "/travels", zIndex: 20 },
+};
 
 export default function Home() {
   return (
@@ -10,132 +17,166 @@ export default function Home() {
         minHeight: "100vh",
         width: "100vw",
         position: "relative",
-        background: "radial-gradient(circle at center, #FFFFFF 0%, rgba(226, 208, 193, 0.4) 100%)",
+        backgroundColor: "#f5ede6",
         overflow: "hidden",
       }}
     >
       <Header />
 
-      {/* Center: Polaroid Photo and Intro */}
+      {/* Decorative assets */}
+      <Box sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <DecorativeImage {...decorations.star} />
+        <DecorativeImage {...decorations.miffy} />
+        <DecorativeImage {...decorations.cursor} />
+      </Box>
+
+      {/* Scrapbook hero stage */}
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
           minHeight: "100vh",
+          width: "100%",
+          maxWidth: { md: 1280 },
+          mx: "auto",
+          px: { xs: 3, md: 6 },
         }}
       >
-        {/* Polaroid Photo */}
-        <PolaroidPhoto />
+        <Typography
+          component="div"
+          sx={{
+            position: "absolute",
+            top: { xs: "30%", md: "42%" },
+            left: { xs: "0%", md: "0%" },
+            fontFamily: "var(--font-cooper-light), serif",
+            fontSize: { xs: "3.5rem", md: "9rem" },
+            fontWeight: 400,
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+          }}
+        >
+          Hi,
+        </Typography>
 
-        {/* Spacer */}
-
-        {/* Intro Text */}
-        <Box sx={{ maxWidth: 550, ml: { xs: 6, sm: 16 } }}>
-          <Typography variant="h5" sx={{ 
-            fontWeight: 700, 
-            mb: 2, 
-            fontFamily: 'var(--font-lato), sans-serif', 
-            fontSize: { xs: '2.5rem', sm: '3.5rem' },
-            color: 'transparent',
-            WebkitTextStroke: '1px #252525',
-            textStroke: '1px #252525'
-          }}>
-            Hi, I&apos;m Lucy.
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 1, fontFamily: 'var(--font-ibm-plex-mono), monospace', fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
-            Current software engineer, travel enthusiast, and overthinker.
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary", fontFamily: 'var(--font-ibm-plex-mono), monospace', fontSize: { xs: '1rem', sm: '1.1rem' } }}>
-            More to come soon!
-          </Typography>
+        <Box
+          sx={{
+            position: "absolute",
+            top: { xs: "34%", md: "37%" },
+            left: { xs: "32%", md: "10%" },
+            transform: "rotate(4deg)",
+          }}
+        >
+          <SelfieImage />
         </Box>
+
+        <Typography
+          component="div"
+          sx={{
+            position: "absolute",
+            top: { xs: "40%", md: "42%" },
+            left: { xs: "60%", md: "50%" },
+            fontFamily: "var(--font-cooper-light), serif",
+            fontSize: { xs: "3.5rem", md: "10rem" },
+            fontWeight: 400,
+            lineHeight: 1,
+            /*transform: "rotate(1deg)",*/
+            whiteSpace: "nowrap",
+          }}
+        >
+          I&apos;m Lucy
+        </Typography>
+
+        <Typography
+          component="div"
+          sx={{
+            position: "absolute",
+            top: { xs: "58%", md: "58%" },
+            left: { xs: "58%", md: "54%" },
+            fontFamily: "var(--font-vt323), monospace",
+            fontSize: { xs: "1.05rem", md: "1.15rem" },
+            letterSpacing: "0.5px",
+            lineHeight: 1.6,
+            maxWidth: 800,
+            /*transform: "rotate(-1deg)",*/
+          }}
+        >
+          Currently a software engineer, travel enthusiast, and [something else]. <br />
+          Read about my thoughts, travels, and projects here.
+        </Typography>
+
       </Box>
+
+      {/* Clickable start button overlay */}
+      <DecorativeImage {...decorations.start} />
     </Box>
   );
 }
 
-
-// PolaroidPhoto component
-function PolaroidPhoto() {
+function SelfieImage() {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        bgcolor: "#fff",
-        borderRadius: 0,
-        boxShadow: "0 8px 32px 0 rgba(30,30,60,0.15), 0 2px 8px #0001",
-        width: { xs: 220, sm: 320 },
-        pt: 2, pr: 2, pl: 2, pb: 6,
         position: "relative",
-        transform: "rotate(7deg)",
-        transition: "transform 0.2s",
-        "&:hover": { transform: "rotate(4deg) scale(1.04)" },
-        mr: { xs: 6, sm: 16 },
+        width: { xs: 260, md: 460 },
+        height: { xs: 320, md: 500 },
+        overflow: "visible",
+        borderRadius: 12,
       }}
     >
-      {/* Photo - taller than wide */}
-      <Box
-        sx={{
-          width: "100%",
-          aspectRatio: "4/5",
-          borderRadius: 0,
-          backgroundImage: "url('/countryside.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          boxShadow: "0 2px 8px #0002",
-        }}
+      <Image
+        src="/images/home/selfie1.png"
+        alt="Lucy selfie"
+        fill
+        sizes="(max-width: 768px) 70vw, 30vw"
+        style={{ objectFit: "contain", }} /* backgroundColor: "#f8f8f8" */
+        priority
       />
+    </Box>
+  );
+}
 
-      {/* Polaroid caption */}
-      <Box
-        sx={{
-          width: "100%",
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          px: 3,
-          py: 2,
-          bgcolor: "#fff",
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
-        }}
-      >
-        <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, mb: 0.5, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
-          BANFF
-        </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
-          Jasper National Park
-        </Typography>
-        <MuiLink
-          href="/travels"
-          underline="hover"
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            fontSize: 14,
-            fontWeight: 500,
-            color: "primary.main",
-            fontFamily: 'var(--font-ibm-plex-mono), monospace',
-            "&:hover": { textDecoration: "underline" },
-          }}
-        >
-          more
-          <Box
-            component="span"
-            sx={{
-              ml: 0.5,
-              fontSize: 18,
-              display: "inline-block",
-              transform: "translateY(1px)", // arrow is "thrown" too!
-            }}
-          >
-            &rarr;
-          </Box>
+function DecorativeImage({
+  src,
+  alt,
+  width,
+  height,
+  top,
+  left,
+  right,
+  rotate,
+  href,
+  zIndex,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  top?: string;
+  left?: string;
+  right?: string;
+  rotate?: string;
+  href?: string;
+  zIndex?: number;
+}) {
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top,
+        left,
+        right,
+        transform: rotate ? `rotate(${rotate})` : undefined,
+        pointerEvents: href ? "auto" : "none",
+        cursor: href ? "pointer" : "default",
+        zIndex,
+      }}
+    >
+      {href ? (
+        <MuiLink href={href} underline="none" sx={{ display: "inline-block" }}>
+          <Image src={src} alt={alt} width={width} height={height} priority />
         </MuiLink>
-      </Box>
+      ) : (
+        <Image src={src} alt={alt} width={width} height={height} priority />
+      )}
     </Box>
   );
 }
