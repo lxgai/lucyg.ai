@@ -1,7 +1,17 @@
 "use client";
-import { Box, Typography, Stack, Link as MuiLink } from '@mui/material';
+import { Typography, Stack, Link as MuiLink } from "@mui/material";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+  const links = [
+    { href: "/blog", label: "Blog" },
+    { href: "/travels", label: "Travels" },
+    { href: "/projects", label: "Projects" },
+    { href: "/favorites", label: "Favorites" },
+    { href: "/about", label: "About" },
+  ];
+
   return (
     <>
       {/* Top Left: Lucy Logo */}
@@ -31,18 +41,29 @@ export default function Header() {
           zIndex: 10,
         }}
       >
-        <MuiLink href="/blog" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
-          Blog
-        </MuiLink>
-        <MuiLink href="/travels" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
-          Travels
-        </MuiLink>
-        <MuiLink href="/projects" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
-          Projects
-        </MuiLink>
-        <MuiLink href="/favorites" color="inherit" underline="none" sx={{ fontSize: 18, fontWeight: 500, fontFamily: 'Arial, sans-serif' }}>
-          Favorites
-        </MuiLink>
+        {links.map((link) => {
+          const isActive =
+            link.href === "/"
+              ? pathname === "/"
+              : pathname?.startsWith(link.href);
+          return (
+            <MuiLink
+              key={link.href}
+              href={link.href}
+              color="inherit"
+              underline="none"
+              sx={{
+                fontSize: 18,
+                fontWeight: 500,
+                fontFamily: "Arial, sans-serif",
+                color: isActive ? "#ec7db1" : "inherit",
+                fontStyle: isActive ? "italic" : "normal",
+              }}
+            >
+              {link.label}
+            </MuiLink>
+          );
+        })}
       </Stack>
     </>
   );
