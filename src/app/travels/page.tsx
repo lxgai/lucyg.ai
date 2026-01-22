@@ -32,21 +32,21 @@ export default function TravelsPage() {
 
       <Box
         sx={{
-          pt: { xs: 18, md: 20 },
-          px: { xs: 3, md: 10 },
+          pt: { xs: 18, sm: 18, md: 20, lg: 20, xl: 20 },
+          px: { xs: 3, sm: 3, md: 10, lg: 10, xl: 10 },
           display: 'flex',
           justifyContent: 'center',
         }}
       >
         <Box
           sx={{
-            width: { xs: '90%', sm: 420, md: 500 },
+            width: { xs: '90%', sm: 420, md: 500, lg: 500, xl: 500 },
             minHeight: 560,
             backgroundImage: "url('/images/travels/travel_paper.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center top',
             backgroundRepeat: 'no-repeat',
-            p: { xs: 5, md: 6 },
+            p: { xs: 5, sm: 5, md: 6, lg: 6, xl: 6 },
             fontFamily: 'var(--font-vt323), monospace',
             color: '#111',
             display: 'flex',

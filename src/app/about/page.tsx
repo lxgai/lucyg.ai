@@ -45,8 +45,8 @@ export default function AboutPage() {
 
       <Box
         sx={{
-          pt: { xs: 18, md: 20 },
-          pb: { xs: 10, md: 12 },
+          pt: { xs: 18, sm: 18, md: 20, lg: 20, xl: 20 },
+          pb: { xs: 10, sm: 10, md: 12, lg: 12, xl: 12 },
           px: { xs: 3, sm: 4, md: 6, lg: 8, xl: 10 },
           width: "min(92vw, 1920px)",
           maxWidth: "100%",
@@ -62,12 +62,12 @@ export default function AboutPage() {
           gap: { xs: 8, sm: 7, md: 4, lg: 3, xl: 2 },
         }}
       >
-        <Box sx={{ position: "relative", pr: { xs: 0, md: 2 } }}>
+        <Box sx={{ position: "relative", pr: { xs: 0, sm: 0, md: 2, lg: 2, xl: 2 } }}>
           <Box
             sx={{
               position: "absolute",
-              top: { xs: -70, md: -40 },
-              left: { xs: -10, md: -20 },
+              top: { xs: -70, sm: -70, md: -40, lg: -40, xl: -40 },
+              left: { xs: -10, sm: -10, md: -20, lg: -20, xl: -20 },
               display: "flex",
               alignItems: "center",
               gap: 2,
@@ -94,7 +94,7 @@ export default function AboutPage() {
 
           <Typography
             sx={{
-              mt: { xs: 10, md: 14 },
+              mt: { xs: 10, sm: 10, md: 14, lg: 14, xl: 14 },
               fontFamily: "var(--font-cooper-light), serif",
               fontSize: {
                 xs: "1.5rem",
@@ -104,7 +104,7 @@ export default function AboutPage() {
                 xl: "2.6rem",
               },
               lineHeight: 1.5,
-              maxWidth: { xs: 520, md: 600, lg: 720, xl: 820 },
+              maxWidth: { xs: 520, sm: 520, md: 600, lg: 720, xl: 820 },
               color: "#2a2521",
             }}
           >
@@ -115,7 +115,7 @@ export default function AboutPage() {
 
           <Box
             sx={{
-              mt: { xs: 6, md: 8 },
+              mt: { xs: 6, sm: 6, md: 8, lg: 8, xl: 8 },
               width: "clamp(180px, 28vw, 260px)",
               aspectRatio: "1 / 1",
               position: "relative",
@@ -136,8 +136,8 @@ export default function AboutPage() {
           sx={{
             position: "relative",
             display: "flex",
-            justifyContent: { xs: "flex-start", md: "flex-end" },
-            pl: { xs: 0, md: 2 },
+            justifyContent: { xs: "flex-start", sm: "flex-start", md: "flex-end", lg: "flex-end", xl: "flex-end" },
+            pl: { xs: 0, sm: 0, md: 2, lg: 2, xl: 2 },
           }}
         >
           <Box
@@ -166,13 +166,13 @@ export default function AboutPage() {
             <Box
               sx={{
                 position: "absolute",
-                top: { xs: "29%", md: "31%" },
-                left: { xs: "23%", md: "25%" },
-                right: { xs: "0%", md: "0%" },
+                top: { xs: "29%", sm: "29%", md: "31%", lg: "31%", xl: "31%" },
+                left: { xs: "23%", sm: "23%", md: "25%", lg: "25%", xl: "25%" },
+                right: { xs: "0%", sm: "0%", md: "0%", lg: "0%", xl: "0%" },
                 textAlign: "left",
               }}
             >
-              <Stack spacing={4.5} alignItems="flex-start">
+              <Stack spacing={{ xs: 3, sm: 4.5 }} alignItems="flex-start">
                 {socials.map((social) => (
                   <Stack
                     key={social.label}
@@ -208,10 +208,10 @@ export default function AboutPage() {
                     <Typography
                       sx={{
                         fontFamily: "var(--font-vt323), monospace",
-                        fontSize: { xs: "1.3rem", md: "1.6rem" },
+                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
                         letterSpacing: "0.6px",
                         color: "#2a2521",
-                        minWidth: { xs: 150, md: 180 },
+                        minWidth: { xs: 150, sm: 150, md: 180, lg: 180, xl: 180 },
                         textAlign: "left",
                       }}
                     >

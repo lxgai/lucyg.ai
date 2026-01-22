@@ -17,7 +17,7 @@ export default function FavoritesPage() {
 
       <Box
         sx={{
-          pt: { xs: 16, md: 20 },
+          pt: { xs: 16, sm: 16, md: 20, lg: 20, xl: 20 },
           display: "flex",
           justifyContent: "left",
           alignItems: "flex-start",
@@ -27,7 +27,7 @@ export default function FavoritesPage() {
         <Typography
           sx={{
             fontFamily: "var(--font-vt323), monospace",
-            fontSize: { xs: ".5rem", md: "1.2rem" },
+            fontSize: { xs: ".5rem", sm: ".5rem", md: "1.2rem", lg: "1.2rem", xl: "1.2rem" },
           }}
         >
           Coming soon

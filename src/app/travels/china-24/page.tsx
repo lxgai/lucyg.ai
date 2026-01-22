@@ -19,16 +19,16 @@ const chongqingHighlights = [
 
 const vtFont = {
   fontFamily: "var(--font-vt323), monospace",
-  fontSize: { xs: "1.05rem", md: "1.25rem" },
+  fontSize: { xs: "1.05rem", sm: "1.05rem", md: "1.25rem", lg: "1.25rem", xl: "1.25rem" },
 };
 
 const vtFontLarge = {
   ...vtFont,
-  fontSize: { xs: "1.35rem", md: "1.6rem" },
+  fontSize: { xs: "1.35rem", sm: "1.35rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
 };
 
 const chongqingContentOffset = {
-  pl: { xs: 0, lg: 6 },
+  pl: { xs: 0, sm: 0, md: 0, lg: 6, xl: 6 },
 };
 
 export default function China24Page() {
@@ -46,16 +46,16 @@ export default function China24Page() {
 
       <Box
         sx={{
-          pt: { xs: 16, md: 20 },
+          pt: { xs: 16, sm: 16, md: 20, lg: 20, xl: 20 },
           pb: 12,
-          px: { xs: 3, md: 8 },
+          px: { xs: 3, sm: 3, md: 8, lg: 8, xl: 8 },
         }}
       >
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", lg: "row" },
-            gap: { xs: 8, lg: 6 },
+            flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
+            gap: { xs: 8, sm: 8, md: 8, lg: 6, xl: 6 },
             fontFamily: "var(--font-vt323), monospace",
           }}
         >
@@ -64,11 +64,11 @@ export default function China24Page() {
             sx={{
               flex: 1,
               position: "relative",
-              mt: { xs: 4, lg: 6 },
-              ml: { xs: 0, lg: 36 },
+              mt: { xs: 4, sm: 4, md: 4, lg: 6, xl: 6 },
+              ml: { xs: 0, sm: 0, md: 0, lg: 36, xl: 36 },
               display: "flex",
               flexDirection: "column",
-              alignItems: { xs: "flex-start", lg: "flex-start" },
+              alignItems: { xs: "flex-start", sm: "flex-start", md: "flex-start", lg: "flex-start", xl: "flex-start" },
             }}
           >
             <Typography sx={{ ...vtFontLarge, mb: 2 }}>07/2024</Typography>
@@ -108,20 +108,20 @@ export default function China24Page() {
             sx={{
               flex: 1.1,
               position: "relative",
-              mt: { xs: 6, lg: 10 },
-              mr: { xs: 0, lg: 36 },
+              mt: { xs: 6, sm: 6, md: 6, lg: 10, xl: 10 },
+              mr: { xs: 0, sm: 0, md: 0, lg: 36, xl: 36 },
               display: "flex",
               flexDirection: "column",
-              alignItems: { xs: "flex-end", lg: "flex-end" },
+              alignItems: { xs: "flex-end", sm: "flex-end", md: "flex-end", lg: "flex-end", xl: "flex-end" },
               gap: 2,
             }}
           >
             <Typography
               sx={{
                 ...vtFontLarge,
-                textAlign: { xs: "left", lg: "right" },
+                textAlign: { xs: "left", sm: "left", md: "left", lg: "right", xl: "right" },
                 display: "flex",
-                justifyContent: { xs: "flex-start", lg: "flex-end" },
+                justifyContent: { xs: "flex-start", sm: "flex-start", md: "flex-start", lg: "flex-end", xl: "flex-end" },
               }}
             >
               Chongqing 重庆, China
@@ -130,8 +130,8 @@ export default function China24Page() {
               sx={{
                 ...vtFont,
                 maxWidth: 780,
-                textAlign: { xs: "left", lg: "right" },
-                ml: { xs: 0, lg: "auto" },
+                textAlign: { xs: "left", sm: "left", md: "left", lg: "right", xl: "right" },
+                ml: { xs: 0, sm: 0, md: 0, lg: "auto", xl: "auto" },
                 lineHeight: 1.6,
               }}
             >
@@ -142,18 +142,18 @@ export default function China24Page() {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", lg: "row" },
+                flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
                 alignItems: "flex-start",
-                gap: { xs: 3, lg: 6 },
+                gap: { xs: 3, sm: 3, md: 3, lg: 6, xl: 6 },
                 width: "100%",
               }}
             >
               <Box
                 sx={{
                   position: "relative",
-                  width: { xs: "100%", lg: "60%" },
+                  width: { xs: "100%", sm: "100%", md: "100%", lg: "60%", xl: "60%" },
                   transform: "rotate(1deg)",
-                  mr: { xs: 0, lg: -12 }
+                  mr: { xs: 0, sm: 0, md: 0, lg: -12, xl: -12 }
                 }}
               >
                 <Image
@@ -168,13 +168,13 @@ export default function China24Page() {
 
               <Box
                 sx={{
-                  width: { xs: "100%", lg: "35%" },
+                  width: { xs: "100%", sm: "100%", md: "100%", lg: "35%", xl: "35%" },
                   display: "flex",
                   justifyContent: "flex-end",
                   alignItems: "flex-end",
                   transform: "rotate(-6deg)",
-                  mt: { xs: 2, lg: 10 },
-                  mr: { xs: 0, lg: 6 },
+                  mt: { xs: 2, sm: 2, md: 2, lg: 10, xl: 10 },
+                  mr: { xs: 0, sm: 0, md: 0, lg: 6, xl: 6 },
                 }}
               >
                 <Image
@@ -190,14 +190,14 @@ export default function China24Page() {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", lg: "row" },
+                flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
                 alignItems: "flex-start",
-                gap: { xs: 3, lg: 6 },
+                gap: { xs: 3, sm: 3, md: 3, lg: 6, xl: 6 },
                 width: "100%",
-                mt: { xs: 2, lg: 4 },
+                mt: { xs: 2, sm: 2, md: 2, lg: 4, xl: 4 },
               }}
             >
-              <Box sx={{ flex: 1, mt: { xs: 1, lg: 4 }, ml: { xs: 0, lg: 4 } }}>
+              <Box sx={{ flex: 1, mt: { xs: 1, sm: 1, md: 1, lg: 4, xl: 4 }, ml: { xs: 0, sm: 0, md: 0, lg: 4, xl: 4 } }}>
                 <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 1 }}>Loved:</Typography>
                 <Box component="ul" sx={{ listStyle: "none", mb: 3, ...chongqingContentOffset }}>
                   {chongqingHighlights.slice(0, 3).map(item => (
@@ -219,9 +219,9 @@ export default function China24Page() {
 
               <Box
                 sx={{
-                  alignSelf: { xs: "center", lg: "flex-start" },
-                  mt: { xs: 1, lg: -6 },
-                  mr: { xs: 0, lg: 8 },
+                  alignSelf: { xs: "center", sm: "center", md: "center", lg: "flex-start", xl: "flex-start" },
+                  mt: { xs: 1, sm: 1, md: 1, lg: -6, xl: -6 },
+                  mr: { xs: 0, sm: 0, md: 0, lg: 8, xl: 8 },
                 }}
               >
                 <Image
