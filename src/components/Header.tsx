@@ -6,12 +6,12 @@ import {
   Stack,
   Link as MuiLink,
   IconButton,
+  Portal,
   Drawer,
   List,
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import { usePathname } from "next/navigation";
 
@@ -28,20 +28,22 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
 
   return (
     <>
-      <IconButton
-        aria-label="Open menu"
-        onClick={() => setMobileOpen(true)}
-        sx={{
-          position: "absolute",
-          top: { xs: 20, md: 48 },
-          left: { xs: 20, md: 88 },
-          zIndex: 12,
-          display: { xs: "inline-flex", md: "none" },
-          color: "#d877ab",
-        }}
-      >
-        <MenuIcon sx={{ fontSize: 28 }} />
-      </IconButton>
+      <Portal>
+        <IconButton
+          aria-label="Open menu"
+          onClick={() => setMobileOpen(true)}
+          sx={{
+            position: "fixed",
+            top: 8,
+            left: 8,
+            zIndex: 12,
+            display: { xs: "inline-flex", md: "none" },
+            color: "#d877ab",
+          }}
+        >
+          <MenuIcon sx={{ fontSize: 28 }} />
+        </IconButton>
+      </Portal>
 
       {/* Top Left: Lucy Logo */}
       <MuiLink
@@ -50,12 +52,12 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
         sx={{
           position: "absolute",
           top: 48,
-          left: 88,
+          left: 58,
           zIndex: 10,
           display: { xs: "none", md: "inline-flex" },
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', letterSpacing: 0.2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', fontSize: 24, letterSpacing: 0.2 }}>
           Lucy Gai
         </Typography>
       </MuiLink>
@@ -84,7 +86,7 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
               color="inherit"
               underline="none"
               sx={{
-                fontSize: 18,
+                fontSize: 24,
                 fontWeight: 500,
                 fontFamily: "Arial, sans-serif",
                 color: isActive ? "#d877ab" : "inherit",
@@ -111,28 +113,26 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
           sx: {
             width: "70vw",
             maxWidth: 320,
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(252, 217, 231, 0.45)",
+            backdropFilter: "blur(18px) saturate(140%)",
+            WebkitBackdropFilter: "blur(18px) saturate(140%)",
+            border: "1px solid rgba(255, 255, 255, 0.5)",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.12)",
             pt: 3,
-            position: "relative",
+            position: "fixed",
+            top: 0,
+            bottom: 0,
+            height: "100svh",
             overflow: "hidden",
-            boxShadow: "none",
+            left: 0,
+            marginLeft: 0,
+            borderRadius: 0,
           },
         }}
       >
-        <Box sx={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-          <Image
-            src="/images/home/sidebar-background.png"
-            alt=""
-            fill
-            sizes="70vw"
-            style={{ objectFit: "cover", objectPosition: "center" }}
-            quality={100}
-            priority
-          />
-        </Box>
         <Box sx={{ px: 4, pb: 2, position: "relative", zIndex: 1 }}>
           <MuiLink href="/" underline="none" onClick={() => setMobileOpen(false)}>
-            <Typography sx={{ fontFamily: "var(--font-cooper-light), serif", fontSize: "1.5rem", color: "#252525" }}>
+            <Typography sx={{ fontFamily: "Arial, sans-serif", fontSize: "1.5rem", color: "#252525" }}>
               Lucy Gai
             </Typography>
           </MuiLink>

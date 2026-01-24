@@ -172,7 +172,7 @@ export default function AboutPage() {
                 textAlign: "left",
               }}
             >
-              <Stack spacing={{ xs: 3, sm: 4.5 }} alignItems="flex-start">
+              <Stack spacing={{ xs: 3}} alignItems="flex-start">
                 {socials.map((social) => (
                   <Stack
                     key={social.label}
@@ -208,10 +208,10 @@ export default function AboutPage() {
                     <Typography
                       sx={{
                         fontFamily: "var(--font-vt323), monospace",
-                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
+                        fontSize: { xs: "1.1rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
                         letterSpacing: "0.6px",
                         color: "#2a2521",
-                        minWidth: { xs: 150, sm: 150, md: 180, lg: 180, xl: 180 },
+                        minWidth: { xs: 150, md: 180, lg: 180, xl: 180 },
                         textAlign: "left",
                       }}
                     >
