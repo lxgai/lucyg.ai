@@ -147,7 +147,7 @@ export default function China24Page() {
                 lineHeight: 1.6,
               }}
             >
-              The urban "8-D" layout of this city is especially lovely at night and feeds into my
+              The urban &quot;8-D&quot; layout of this city is especially lovely at night and feeds into my
               cyberpunk dreams -- although we were definitely dropped off at the wrong elevation more than once.
             </Typography>
 
@@ -380,8 +380,8 @@ export default function China24Page() {
                     lineHeight: 1.6,
                   }}
                 >
-                  The urban "8-D" layout of this city is especially lovely at night and feeds into my
-                  cyberpunk dreams -- although we were definitely dropped off at the wrong elevation more than once.
+                  The urban &quot;8-D&quot; layout of this city is especially lovely at night and feeds into my
+                  cyberpunk dreams - although we were definitely dropped off at the wrong elevation more than once.
                 </Typography>
 
                 <Box
