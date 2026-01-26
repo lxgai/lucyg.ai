@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?: boolean }) {
   const pathname = usePathname();
@@ -57,7 +58,16 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
           display: { xs: "none", md: "inline-flex" },
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', fontSize: 26, letterSpacing: 0.2 }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 500,
+            color: "#252525",
+            fontFamily: "var(--font-roboto-mono), monospace",
+            fontSize: 26,
+            letterSpacing: 0.2,
+          }}
+        >
           Lucy Gai
         </Typography>
       </MuiLink>
@@ -113,11 +123,13 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
           sx: {
             width: "70vw",
             maxWidth: 320,
-            backgroundColor: "rgba(252, 217, 231, 0.45)",
-            backdropFilter: "blur(18px) saturate(140%)",
-            WebkitBackdropFilter: "blur(18px) saturate(140%)",
-            border: "1px solid rgba(255, 255, 255, 0.5)",
-            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.12)",
+            backgroundColor: "transparent",
+            backgroundImage: "url(/images/home/sidebar-background.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center -12px",
+            backgroundRepeat: "no-repeat",
+            border: "1px solid rgba(255, 255, 255, 0.35)",
+            boxShadow: "none",
             pt: 3,
             position: "fixed",
             top: 0,
@@ -132,7 +144,13 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
       >
         <Box sx={{ px: 4, pb: 2, position: "relative", zIndex: 1 }}>
           <MuiLink href="/" underline="none" onClick={() => setMobileOpen(false)}>
-            <Typography sx={{ fontFamily: "Arial, sans-serif", fontSize: "1.5rem", color: "#252525" }}>
+            <Typography
+              sx={{
+                fontFamily: "var(--font-roboto-mono), monospace",
+                fontSize: "1.5rem",
+                color: "#252525",
+              }}
+            >
               Lucy Gai
             </Typography>
           </MuiLink>
@@ -150,15 +168,31 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.2,
                   px: 1.25,
                   py: 1.3,
                   borderRadius: 1,
                 }}
               >
+                {isActive ? (
+                  <Box sx={{ position: "relative", width: 18, height: 18, flex: "0 0 auto" }}>
+                    <Image
+                      src="/images/home/sidebar-star-marker.png"
+                      alt=""
+                      fill
+                      sizes="18px"
+                      style={{ objectFit: "contain" }}
+                    />
+                  </Box>
+                ) : (
+                  <Box sx={{ width: 18, height: 18, flex: "0 0 auto" }} />
+                )}
                 <ListItemText
                   primary={link.label}
                   primaryTypographyProps={{
-                    fontFamily: "Arial, sans-serif",
+                    fontFamily: "var(--font-roboto-mono), monospace",
                     fontSize: "1.1rem",
                     color: isActive ? "#d877ab" : "#252525",
                   }}

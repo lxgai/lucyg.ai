@@ -17,18 +17,27 @@ const chongqingHighlights = [
   "Three Natural Bridges",
 ];
 
-const vtFont = {
+const CANVAS_WIDTH = 2000;
+const CANVAS_HEIGHT = 1200;
+
+const vtFontMobile = {
   fontFamily: "var(--font-vt323), monospace",
-  fontSize: { xs: "1.05rem", sm: "1.05rem", md: "1.25rem", lg: "1.25rem", xl: "1.25rem" },
+  fontSize: { xs: "1.05rem", sm: "1.05rem" },
 };
 
-const vtFontLarge = {
-  ...vtFont,
-  fontSize: { xs: "1.35rem", sm: "1.35rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
+const vtFontLargeMobile = {
+  ...vtFontMobile,
+  fontSize: { xs: "1.35rem", sm: "1.35rem" },
 };
 
-const chongqingContentOffset = {
-  pl: { xs: 0, sm: 0, md: 0, lg: 6, xl: 6 },
+const vtFontDesktop = {
+  fontFamily: "var(--font-vt323), monospace",
+  fontSize: "1.25rem",
+};
+
+const vtFontLargeDesktop = {
+  ...vtFontDesktop,
+  fontSize: "1.6rem",
 };
 
 export default function China24Page() {
@@ -39,23 +48,26 @@ export default function China24Page() {
         width: "100vw",
         position: "relative",
         backgroundColor: "#f5ede6",
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
       }}
     >
       <Header />
 
+
       <Box
         sx={{
-          pt: { xs: 16, sm: 16, md: 20, lg: 20, xl: 20 },
+          pt: { xs: 16},
           pb: 12,
-          px: { xs: 3, sm: 3, md: 8, lg: 8, xl: 8 },
+          px: { xs: 3 },
+          display: { xs: "block", sm: "block", md: "none" },
         }}
       >
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
-            gap: { xs: 8, sm: 8, md: 8, lg: 6, xl: 6 },
+            flexDirection: "column",
+            gap: 8,
             fontFamily: "var(--font-vt323), monospace",
           }}
         >
@@ -64,20 +76,20 @@ export default function China24Page() {
             sx={{
               flex: 1,
               position: "relative",
-              mt: { xs: 4, sm: 4, md: 4, lg: 6, xl: 6 },
-              ml: { xs: 0, sm: 0, md: 0, lg: 36, xl: 36 },
+              mt: 4,
+              ml: 0,
               display: "flex",
               flexDirection: "column",
-              alignItems: { xs: "flex-start", sm: "flex-start", md: "flex-start", lg: "flex-start", xl: "flex-start" },
+              alignItems: "flex-start",
             }}
           >
-            <Typography sx={{ ...vtFontLarge, mb: 2 }}>07/2024</Typography>
-            <Typography sx={{ ...vtFontLarge, mb: 2 }}>Hangzhou 杭州, China</Typography>
+            <Typography sx={{ ...vtFontLargeMobile, mb: 2 }}>07/2024</Typography>
+            <Typography sx={{ ...vtFontLargeMobile, mb: 2 }}>Hangzhou 杭州, China</Typography>
 
-            <Typography sx={{ ...vtFont, mb: 1 }}>Highlights:</Typography>
+            <Typography sx={{ ...vtFontMobile, mb: 1 }}>Highlights:</Typography>
             <Box component="ul" sx={{ listStyle: "none", pl: 0, mb: 4 }}>
-              {hangzhouHighlights.map(item => (
-                <Typography component="li" key={item} sx={{ ...vtFont, mb: 1.2, display: "flex", gap: 1 }}>
+              {hangzhouHighlights.map((item) => (
+                <Typography component="li" key={item} sx={{ ...vtFontMobile, mb: 1.2, display: "flex", gap: 1 }}>
                   <span>+</span>
                   <span>{item}</span>
                 </Typography>
@@ -108,52 +120,52 @@ export default function China24Page() {
             sx={{
               flex: 1.1,
               position: "relative",
-              mt: { xs: 6, sm: 6, md: 6, lg: 10, xl: 10 },
-              mr: { xs: 0, sm: 0, md: 0, lg: 36, xl: 36 },
+              mt: 6,
+              mr: 0,
               display: "flex",
               flexDirection: "column",
-              alignItems: { xs: "flex-end", sm: "flex-end", md: "flex-end", lg: "flex-end", xl: "flex-end" },
+              alignItems: "flex-end",
               gap: 2,
             }}
           >
             <Typography
               sx={{
-                ...vtFontLarge,
-                textAlign: { xs: "left", sm: "left", md: "left", lg: "right", xl: "right" },
+                ...vtFontLargeMobile,
+                textAlign: "left",
                 display: "flex",
-                justifyContent: { xs: "flex-start", sm: "flex-start", md: "flex-start", lg: "flex-end", xl: "flex-end" },
+                justifyContent: "flex-start",
               }}
             >
               Chongqing 重庆, China
             </Typography>
             <Typography
               sx={{
-                ...vtFont,
+                ...vtFontMobile,
                 maxWidth: 780,
-                textAlign: { xs: "left", sm: "left", md: "left", lg: "right", xl: "right" },
-                ml: { xs: 0, sm: 0, md: 0, lg: "auto", xl: "auto" },
+                textAlign: "left",
+                ml: 0,
                 lineHeight: 1.6,
               }}
             >
-              The urban “8-D” layout of this city is especially lovely at night and feeds into my
-              cyberpunk dreams—although we were definitely dropped off at the wrong elevation more than once.
+              The urban "8-D" layout of this city is especially lovely at night and feeds into my
+              cyberpunk dreams -- although we were definitely dropped off at the wrong elevation more than once.
             </Typography>
 
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
+                flexDirection: "column",
                 alignItems: "flex-start",
-                gap: { xs: 3, sm: 3, md: 3, lg: 6, xl: 6 },
+                gap: 3,
                 width: "100%",
               }}
             >
               <Box
                 sx={{
                   position: "relative",
-                  width: { xs: "100%", sm: "100%", md: "100%", lg: "60%", xl: "60%" },
+                  width: "100%",
                   transform: "rotate(1deg)",
-                  mr: { xs: 0, sm: 0, md: 0, lg: -12, xl: -12 }
+                  mr: 0,
                 }}
               >
                 <Image
@@ -168,13 +180,13 @@ export default function China24Page() {
 
               <Box
                 sx={{
-                  width: { xs: "100%", sm: "100%", md: "100%", lg: "35%", xl: "35%" },
+                  width: "100%",
                   display: "flex",
                   justifyContent: "flex-end",
                   alignItems: "flex-end",
                   transform: "rotate(-6deg)",
-                  mt: { xs: 2, sm: 2, md: 2, lg: 10, xl: 10 },
-                  mr: { xs: 0, sm: 0, md: 0, lg: 6, xl: 6 },
+                  mt: 2,
+                  mr: 0,
                 }}
               >
                 <Image
@@ -190,38 +202,38 @@ export default function China24Page() {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", sm: "column", md: "column", lg: "row", xl: "row" },
+                flexDirection: "column",
                 alignItems: "flex-start",
-                gap: { xs: 3, sm: 3, md: 3, lg: 6, xl: 6 },
+                gap: 3,
                 width: "100%",
-                mt: { xs: 2, sm: 2, md: 2, lg: 4, xl: 4 },
+                mt: 2,
               }}
             >
-              <Box sx={{ flex: 1, mt: { xs: 1, sm: 1, md: 1, lg: 4, xl: 4 }, ml: { xs: 0, sm: 0, md: 0, lg: 4, xl: 4 } }}>
-                <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 1 }}>Loved:</Typography>
-                <Box component="ul" sx={{ listStyle: "none", mb: 3, ...chongqingContentOffset }}>
-                  {chongqingHighlights.slice(0, 3).map(item => (
-                    <Typography component="li" key={item} sx={{ ...vtFont, mb: 1, display: "flex", gap: 1 }}>
+              <Box sx={{ flex: 1, mt: 1, ml: 0 }}>
+                <Typography sx={{ ...vtFontMobile, mb: 1 }}>Loved:</Typography>
+                <Box component="ul" sx={{ listStyle: "none", mb: 3 }}>
+                  {chongqingHighlights.slice(0, 3).map((item) => (
+                    <Typography component="li" key={item} sx={{ ...vtFontMobile, mb: 1, display: "flex", gap: 1 }}>
                       <span>+</span>
                       <span>{item}</span>
                     </Typography>
                   ))}
                 </Box>
 
-                <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 1 }}>
+                <Typography sx={{ ...vtFontMobile, mb: 1 }}>
                   We also ventured outside the main city area:
                 </Typography>
-                <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 3 }}>+ {chongqingHighlights[3]}</Typography>
+                <Typography sx={{ ...vtFontMobile, mb: 3 }}>+ {chongqingHighlights[3]}</Typography>
 
-                <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 1 }}>And my favorite:</Typography>
-                <Typography sx={{ ...vtFont, ...chongqingContentOffset, mb: 3 }}>+ {chongqingHighlights[4]}</Typography>
+                <Typography sx={{ ...vtFontMobile, mb: 1 }}>And my favorite:</Typography>
+                <Typography sx={{ ...vtFontMobile, mb: 3 }}>+ {chongqingHighlights[4]}</Typography>
               </Box>
 
               <Box
                 sx={{
-                  alignSelf: { xs: "center", sm: "center", md: "center", lg: "flex-start", xl: "flex-start" },
-                  mt: { xs: 1, sm: 1, md: 1, lg: -6, xl: -6 },
-                  mr: { xs: 0, sm: 0, md: 0, lg: 8, xl: 8 },
+                  alignSelf: "center",
+                  mt: 1,
+                  mr: 0,
                 }}
               >
                 <Image
@@ -231,6 +243,241 @@ export default function China24Page() {
                   height={450}
                   style={{ width: 340, height: "auto", display: "block" }}
                 />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          "--gutter": {
+            md: "0px",
+            lg: "0px",
+            xl: "0px",
+          },
+          "--canvas-scale": {
+            md: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
+            lg: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
+            xl: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
+          },
+          "--canvas-width": {
+            md: `${CANVAS_WIDTH}px`,
+            lg: `${CANVAS_WIDTH}px`,
+            xl: `${CANVAS_WIDTH}px`,
+          },
+          "--canvas-height": {
+            md: `${CANVAS_HEIGHT}px`,
+            lg: `${CANVAS_HEIGHT}px`,
+            xl: `${CANVAS_HEIGHT}px`,
+          },
+          position: "relative",
+          width: "100vw",
+          height: "calc(var(--canvas-height) * var(--canvas-scale))",
+          minHeight: "100svh",
+          mx: 0,
+          px: 0,
+          display: { xs: "none", sm: "none", md: "block" },
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "var(--canvas-width)",
+            height: "var(--canvas-height)",
+            transform: "scale(var(--canvas-scale))",
+            transformOrigin: "top left",
+          }}
+        >
+          <Box
+            sx={{
+              pt: 20,
+              pb: 12,
+              px: 0,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 6,
+                fontFamily: "var(--font-vt323), monospace",
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  position: "relative",
+                  mt: 18,
+                  ml: 16,
+                  mr: -8,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Typography sx={{ ...vtFontLargeDesktop, mb: 2 }}>07/2024</Typography>
+                <Typography sx={{ ...vtFontLargeDesktop, mb: 2 }}>Hangzhou 杭州, China</Typography>
+
+                <Typography sx={{ ...vtFontDesktop, mb: 1 }}>Highlights:</Typography>
+                <Box component="ul" sx={{ listStyle: "none", pl: 0, mb: 4 }}>
+                  {hangzhouHighlights.map((item) => (
+                    <Typography component="li" key={item} sx={{ ...vtFontDesktop, mb: 1.2, display: "flex", gap: 1 }}>
+                      <span>+</span>
+                      <span>{item}</span>
+                    </Typography>
+                  ))}
+                </Box>
+
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: 680,
+                    transform: "rotate(-3deg)",
+                  }}
+                >
+                  <Image
+                    src="/images/travels/china-24/hangzhou24.png"
+                    alt="Hangzhou West Lake"
+                    width={960}
+                    height={720}
+                    style={{ width: "100%", height: "auto", display: "block", borderRadius: 4 }}
+                    priority
+                  />
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  flex: 1.1,
+                  position: "relative",
+                  mt: 26,
+                  mr: 18,
+                  ml: -2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  sx={{
+                    ...vtFontLargeDesktop,
+                    textAlign: "right",
+                  }}
+                >
+                  Chongqing 重庆, China
+                </Typography>
+                <Typography
+                  sx={{
+                    ...vtFontDesktop,
+                    maxWidth: 780,
+                    textAlign: "right",
+                    ml: "auto",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  The urban "8-D" layout of this city is especially lovely at night and feeds into my
+                  cyberpunk dreams -- although we were definitely dropped off at the wrong elevation more than once.
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    gap: 6,
+                    width: "100%",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: "60%",
+                      transform: "rotate(1deg)",
+                      mr: -12,
+                    }}
+                  >
+                    <Image
+                      src="/images/travels/china-24/yangtzeriver.png"
+                      alt="Yangtze River cruise"
+                      width={900}
+                      height={600}
+                      style={{ width: "100%", height: "auto", borderRadius: 10, display: "block" }}
+                      priority
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      width: "35%",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "flex-end",
+                      transform: "rotate(-6deg)",
+                      mt: 10,
+                      mr: 6,
+                    }}
+                  >
+                    <Image
+                      src="/images/travels/china-24/xiaomian.png"
+                      alt="Xiao Mian noodles"
+                      width={260}
+                      height={180}
+                      style={{ width: "100%", maxWidth: 220, height: "auto", display: "block" }}
+                    />
+                  </Box>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    gap: 6,
+                    width: "100%",
+                    mt: 4,
+                  }}
+                >
+                  <Box sx={{ flex: 1, mt: 4, ml: 0 }}>
+                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>Loved:</Typography>
+                    <Box component="ul" sx={{ listStyle: "none", mb: 3, pl: 0 }}>
+                      {chongqingHighlights.slice(0, 3).map((item) => (
+                        <Typography component="li" key={item} sx={{ ...vtFontDesktop, mb: 1, display: "flex", gap: 1 }}>
+                          <span>+</span>
+                          <span>{item}</span>
+                        </Typography>
+                      ))}
+                    </Box>
+
+                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>
+                      We also ventured outside the main city area:
+                    </Typography>
+                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 3 }}>+ {chongqingHighlights[3]}</Typography>
+
+                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>And my favorite:</Typography>
+                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 3 }}>+ {chongqingHighlights[4]}</Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      alignSelf: "flex-start",
+                      mt: -6,
+                      mr: 8,
+                    }}
+                  >
+                    <Image
+                      src="/images/travels/china-24/threenaturalbridges.png"
+                      alt="Three Natural Bridges"
+                      width={360}
+                      height={450}
+                      style={{ width: 340, height: "auto", display: "block" }}
+                    />
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>

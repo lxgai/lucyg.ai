@@ -66,8 +66,8 @@ export default function AboutPage() {
           <Box
             sx={{
               position: "absolute",
-              top: { xs: -70, sm: -70, md: -40, lg: -40, xl: -40 },
-              left: { xs: -10, sm: -10, md: -20, lg: -20, xl: -20 },
+              top: { xs: -40, md: 0 },
+              left: { xs: 0,  md: -20},
               display: "flex",
               alignItems: "center",
               gap: 2,
@@ -85,7 +85,7 @@ export default function AboutPage() {
                 alt="Cherries and heart"
                 fill
                 sizes="(max-width: 900px) 45vw, (max-width: 1200px) 240px, 260px"
-                quality={90}
+                quality={100}
                 style={{ objectFit: "contain" }}
                 priority
               />
@@ -94,7 +94,7 @@ export default function AboutPage() {
 
           <Typography
             sx={{
-              mt: { xs: 10, sm: 10, md: 14, lg: 14, xl: 14 },
+              mt: { xs: 10, md: 22 },
               fontFamily: "var(--font-cooper-light), serif",
               fontSize: {
                 xs: "1.5rem",
@@ -126,7 +126,7 @@ export default function AboutPage() {
               alt="Napkin note"
               fill
               sizes="(max-width: 900px) 45vw, (max-width: 1200px) 260px, 280px"
-              quality={90}
+              quality={100}
               style={{ objectFit: "contain" }}
             />
           </Box>
@@ -157,9 +157,8 @@ export default function AboutPage() {
               src="/images/about/about-paper-background.png"
               alt="Contact paper background"
               fill
-              sizes="(max-width: 900px) 78vw, (max-width: 1200px) 50vw, 42vw"
+              sizes="(max-width: 1200px) 78vw, (max-width: 1800px) 50vw, 42vw"
               quality={100}
-              unoptimized
               style={{ objectFit: "contain" }}
               priority
             />
@@ -173,7 +172,7 @@ export default function AboutPage() {
                 textAlign: "left",
               }}
             >
-              <Stack spacing={{ xs: 3}} alignItems="flex-start">
+              <Stack spacing={{ xs: 2 }} alignItems="flex-start">
                 {socials.map((social) => (
                   <Stack
                     key={social.label}
@@ -201,7 +200,7 @@ export default function AboutPage() {
                           alt={`${social.label} logo`}
                           fill
                           sizes="(max-width: 900px) 5vw, 28px"
-                          quality={90}
+                          quality={100}
                           style={{ objectFit: "contain" }}
                         />
                       </Box>
@@ -209,7 +208,7 @@ export default function AboutPage() {
                     <Typography
                       sx={{
                         fontFamily: "var(--font-vt323), monospace",
-                        fontSize: { xs: "1.1rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
+                        fontSize: { xs: "1.0rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
                         letterSpacing: "0.6px",
                         color: "#2a2521",
                         minWidth: { xs: 150, md: 180, lg: 180, xl: 180 },
