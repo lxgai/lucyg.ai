@@ -57,7 +57,7 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
           display: { xs: "none", md: "inline-flex" },
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', fontSize: 24, letterSpacing: 0.2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 500, color: "#252525", fontFamily: 'Arial, sans-serif', fontSize: 26, letterSpacing: 0.2 }}>
           Lucy Gai
         </Typography>
       </MuiLink>

@@ -26,6 +26,23 @@ const cooperLight = localFont({
   display: "swap",
 });
 
+const robotoMono = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Roboto/RobotoMono-VariableFont_wght.ttf",
+      weight: "100 700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Roboto/RobotoMono-Italic-VariableFont_wght.ttf",
+      weight: "100 700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-roboto-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Lucy Gai",
   description: "Lucy Gai 2025",
@@ -39,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${vt323.variable} ${cooperLight.variable} antialiased`}
+        className={`${vt323.variable} ${cooperLight.variable} ${robotoMono.variable} antialiased`}
       >
         {children}
       </body>

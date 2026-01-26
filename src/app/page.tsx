@@ -22,8 +22,8 @@ const decorations = {
     alt: "star",
     width: 130,
     height: 130,
-    top: { xs: "8%", md: "16%" },
-    left: { xs: "20%", md: "10%" },
+    top: { xs: "8%", md: "18%" },
+    left: { xs: "20%", md: "3%" },
     transform: { xs: "translateX(-50%)", md: "none" },
     display: { xs: "block", md: "block" },
   },
@@ -51,6 +51,7 @@ const decorations = {
     alt: "start button",
     width: 120,
     height: 40,
+    paddingY: 8,
     top: { xs: "115%", md: "90%" },
     left: { xs: "70%", md: "auto" },
     right: { md: "10%" },
@@ -76,45 +77,52 @@ export default function Home() {
 
       <Box
         sx={{
-          "--canvas-scale": {
-            xs: `min(calc(100vw / ${MOBILE_CANVAS_WIDTH}px), 1)`,
-            sm: `min(calc(100vw / ${MOBILE_CANVAS_WIDTH}px), 1)`,
-            md: `min(calc(100vw / ${CANVAS_WIDTH}px), 1)`,
-            lg: `min(calc(100vw / ${CANVAS_WIDTH}px), 1)`,
-            xl: `min(calc(100vw / ${CANVAS_WIDTH}px), 1)`,
-          },
-          "--canvas-width": {
-            xs: `${MOBILE_CANVAS_WIDTH}px`,
-            sm: `${MOBILE_CANVAS_WIDTH}px`,
-            md: `${CANVAS_WIDTH}px`,
-            lg: `${CANVAS_WIDTH}px`,
-            xl: `${CANVAS_WIDTH}px`,
-          },
-          "--canvas-height": {
-            xs: `${MOBILE_CANVAS_HEIGHT}px`,
-            sm: `${MOBILE_CANVAS_HEIGHT}px`,
-            md: `${CANVAS_HEIGHT}px`,
-            lg: `${CANVAS_HEIGHT}px`,
-            xl: `${CANVAS_HEIGHT}px`,
-          },
-          position: "relative",
-          width: "calc(var(--canvas-width) * var(--canvas-scale))",
-          height: "calc(var(--canvas-height) * var(--canvas-scale))",
-          minHeight: "100svh",
-          mx: "auto",
+          "--page-gutter": { xs: "16px", md: "32px" },
+          px: "var(--page-gutter)",
+          boxSizing: "border-box",
         }}
       >
         <Box
           sx={{
-            position: { xs: "relative", sm: "relative", md: "absolute" },
-            inset: { md: 0 },
-            width: "var(--canvas-width)",
-            minHeight: "var(--canvas-height)",
-            height: "var(--canvas-height)",
-            transform: "scale(var(--canvas-scale))",
-            transformOrigin: "top left",
+            "--canvas-scale": {
+              xs: `min(calc((100vw - (var(--page-gutter) * 2)) / ${MOBILE_CANVAS_WIDTH}px), 1)`,
+              sm: `min(calc((100vw - (var(--page-gutter) * 2)) / ${MOBILE_CANVAS_WIDTH}px), 1)`,
+              md: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
+              lg: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
+              xl: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
+            },
+            "--canvas-width": {
+              xs: `${MOBILE_CANVAS_WIDTH}px`,
+              sm: `${MOBILE_CANVAS_WIDTH}px`,
+              md: `${CANVAS_WIDTH}px`,
+              lg: `${CANVAS_WIDTH}px`,
+              xl: `${CANVAS_WIDTH}px`,
+            },
+            "--canvas-height": {
+              xs: `${MOBILE_CANVAS_HEIGHT}px`,
+              sm: `${MOBILE_CANVAS_HEIGHT}px`,
+              md: `${CANVAS_HEIGHT}px`,
+              lg: `${CANVAS_HEIGHT}px`,
+              xl: `${CANVAS_HEIGHT}px`,
+            },
+            position: "relative",
+            width: "calc(var(--canvas-width) * var(--canvas-scale))",
+            height: "calc(var(--canvas-height) * var(--canvas-scale))",
+            minHeight: "100svh",
+            mx: "auto",
           }}
         >
+          <Box
+            sx={{
+              position: { xs: "relative", sm: "relative", md: "absolute" },
+              inset: { md: 0 },
+              width: "var(--canvas-width)",
+              minHeight: "var(--canvas-height)",
+              height: "var(--canvas-height)",
+              transform: "scale(var(--canvas-scale))",
+              transformOrigin: "top left",
+            }}
+          >
           {/* Decorative assets */}
           <Box sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
             <DecorativeImage {...decorations.star} />
@@ -136,7 +144,7 @@ export default function Home() {
               sx={{
                 position: "absolute",
                 top: { xs: "34%", md: "52%" },
-                left: { xs: "8%",  md: "0%", lg: "0%", xl: "0%" },
+                left: { xs: "16%",  md: "0%", lg: "0%", xl: "0%" },
                 transform: { xs: "translateX(-50%)", md: "none" },
                 fontFamily: "var(--font-cooper-light), serif",
                 fontSize: { xs: "3.5rem", md: "9rem", lg: "9rem", xl: "9rem" },
@@ -152,7 +160,7 @@ export default function Home() {
               sx={{
                 position: "absolute",
                 top: { xs: "21%", sm: "21%", md: "38%"},
-                left: { xs: "50%", md: "0%", lg: "0%", xl: "0%" },
+                left: { xs: "52%", md: "0%", lg: "0%", xl: "0%" },
                 transform: { xs: "translateX(-50%) rotate(2deg)", md: "rotate(4deg)" },
               }}
             >
@@ -163,7 +171,7 @@ export default function Home() {
               component="div"
               sx={{
                 position: "absolute",
-                top: { xs: "88%", md: "52%" },
+                top: { xs: "89%", md: "52%" },
                 left: { xs: "58%", md: "50%", lg: "50%", xl: "50%" },
                 transform: { xs: "translateX(-50%)", md: "none" },
                 fontFamily: "var(--font-cooper-light), serif",
@@ -181,14 +189,14 @@ export default function Home() {
               component="div"
               sx={{
                 position: "absolute",
-                top: { xs: "100%", md: "78%" },
+                top: { xs: "103%", md: "78%" },
                 left: { xs: "50%",  md: "54%", lg: "54%", xl: "54%" },
                 transform: { xs: "translateX(-50%)", md: "none" },
                 fontFamily: "var(--font-vt323), monospace",
                 fontSize: { xs: "1rem",  md: "1.15rem", lg: "1.15rem", xl: "1.15rem" },
                 letterSpacing: "0.5px",
                 lineHeight: 1.6,
-                width: { xs: "75vw", md: "auto" },
+                width: { xs: "85vw", md: "auto" },
                 maxWidth: { xs: 440, sm: 520, md: 800 },
                 /*transform: "rotate(-1deg)",*/
               }}
@@ -202,6 +210,7 @@ export default function Home() {
           <DecorativeImage {...decorations.start} />
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 }
@@ -242,6 +251,7 @@ function DecorativeImage({
   display,
   href,
   zIndex,
+  paddingY,
 }: {
   src: string;
   alt: string;
@@ -255,6 +265,7 @@ function DecorativeImage({
   display?: string | ResponsivePosition;
   href?: string;
   zIndex?: number;
+  paddingY?: number | string;
 }) {
   const imageTransform = transform ?? (rotate ? `rotate(${rotate})` : undefined);
   return (
@@ -272,7 +283,11 @@ function DecorativeImage({
       }}
     >
       {href ? (
-        <MuiLink href={href} underline="none" sx={{ display: "inline-block" }}>
+        <MuiLink
+          href={href}
+          underline="none"
+          sx={{ display: "inline-flex", py: paddingY }}
+        >
           <Image src={src} alt={alt} width={width} height={height} priority />
         </MuiLink>
       ) : (

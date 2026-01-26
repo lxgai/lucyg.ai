@@ -158,7 +158,8 @@ export default function AboutPage() {
               alt="Contact paper background"
               fill
               sizes="(max-width: 900px) 78vw, (max-width: 1200px) 50vw, 42vw"
-              quality={92}
+              quality={100}
+              unoptimized
               style={{ objectFit: "contain" }}
               priority
             />
