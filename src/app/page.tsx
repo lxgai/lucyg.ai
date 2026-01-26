@@ -150,6 +150,8 @@ export default function Home() {
                 fontSize: { xs: "3.5rem", md: "9rem", lg: "9rem", xl: "9rem" },
                 fontWeight: 400,
                 lineHeight: 1,
+                color: "#2a2521",
+                zIndex: 2,
                 whiteSpace: "nowrap",
               }}
             >
@@ -162,6 +164,7 @@ export default function Home() {
                 top: { xs: "21%", sm: "21%", md: "38%"},
                 left: { xs: "52%", md: "0%", lg: "0%", xl: "0%" },
                 transform: { xs: "translateX(-50%) rotate(2deg)", md: "rotate(4deg)" },
+                zIndex: 1,
               }}
             >
               <SelfieImage />
@@ -178,6 +181,8 @@ export default function Home() {
                 fontSize: { xs: "3.5rem", md: "10rem", lg: "10rem", xl: "10rem" },
                 fontWeight: 400,
                 lineHeight: 1,
+                color: "#2a2521",
+                zIndex: 2,
                 /*transform: "rotate(1deg)",*/
                 whiteSpace: "nowrap",
               }}
@@ -198,6 +203,8 @@ export default function Home() {
                 lineHeight: 1.6,
                 width: { xs: "85vw", md: "auto" },
                 maxWidth: { xs: 440, sm: 520, md: 800 },
+                color: "#2a2521",
+                zIndex: 2,
                 /*transform: "rotate(-1deg)",*/
               }}
             >
