@@ -415,10 +415,24 @@ export default function FavoritesPage() {
                 </Box>
               </Box>
             ) : (
-              <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  "&::-webkit-scrollbar": {
+                    display: "none",
+                  },
+                }}
+              >
                 <Box
                   sx={{
                     height: "64svh",
+                    minHeight: 360,
                     overflowY: "auto",
                     overflowX: "hidden",
                     pr: 0,
@@ -462,7 +476,7 @@ export default function FavoritesPage() {
                   </Box>
                 </Box>
 
-                <Box sx={{ mt: 4, mb: 4, px: 4, textAlign: "left" }}>
+                <Box sx={{ mt: 4, mb: 4, px: 2, textAlign: "left" }}>
                   {movieList.map((movie) => (
                     <Typography
                       key={movie}
@@ -472,6 +486,7 @@ export default function FavoritesPage() {
                         color: "#2a2521",
                         letterSpacing: "0.3px",
                         lineHeight: 2.1,
+                        maxWidth: 460,
                       }}
                     >
                       - {movie}

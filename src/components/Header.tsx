@@ -128,7 +128,6 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
             backgroundSize: "cover",
             backgroundPosition: "center -12px",
             backgroundRepeat: "no-repeat",
-            border: "1px solid rgba(255, 255, 255, 0.35)",
             boxShadow: "none",
             pt: 3,
             position: "fixed",
@@ -137,8 +136,9 @@ export default function Header({ blurOnMobileOpen = false }: { blurOnMobileOpen?
             height: "100svh",
             overflow: "hidden",
             left: 0,
+            right: "auto",
             marginLeft: 0,
-            borderRadius: 0,
+            transform: "translateX(0)",
           },
         }}
       >
