@@ -3,48 +3,112 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import Header from "@/components/Header";
 
-const hangzhouHighlights = [
-  "West Lake",
-  "Seeing how much the city has developed since I first went 15+ years ago",
-  "The wonton soup my mom makes",
+const CANVAS_WIDTH = 1920;
+const CANVAS_HEIGHT = 1080;
+const MAX_CANVAS_SCALE = 1.6;
+
+const collageItems = [
+  {
+    key: "westlake-dumplings",
+    src: "/images/travels/china-24/westlake-dumplings.png",
+    alt: "Hangzhou West Lake",
+    width: 480,
+    height: 120,
+    top: 290,
+    left: 40,
+  },
+    {
+    key: "hangzhou",
+    src: "/images/travels/china-24/hangzhou.jpg",
+    alt: "Hangzhou City",
+    width: 250,
+    height: 210,
+    top: 620,
+    left: 470,
+    rotate: "4deg",
+  },
+  {
+    key: "coconut-drink",
+    src: "/images/travels/china-24/coconut-drink.png",
+    alt: "Coconut drink",
+    width: 50,
+    height: 70,
+    top: 720,
+    left: 80,
+    rotate: "-18deg",
+  },
+  {
+    key: "stars",
+    src: "/images/travels/china-24/stars-purple.png",
+    alt: "Purple stars doodle",
+    width: 200,
+    height: 70,
+    top: 370,
+    left: 530,
+  },
+  {
+    key: "family",
+    src: "/images/travels/china-24/family-stickered.png",
+    alt: "Family sticker",
+    width: 280,
+    height: 280,
+    top: 180,
+    left: 820,
+    rotate: "2deg",
+  },
+  {
+    key: "three-bridges",
+    src: "/images/travels/china-24/three-natural-bridges-arrow.png",
+    alt: "Three Natural Bridges",
+    width: 230,
+    height: 330,
+    top: 430,
+    left: 820,
+  },
+  {
+    key: "jiuli",
+    src: "/images/travels/china-24/jiuli-city.jpg",
+    alt: "Jiuli City",
+    width: 255,
+    height: 170,
+    top: 610,
+    left: 1107,
+  },
+    {
+    key: "yangtze",
+    src: "/images/travels/china-24/yangtze-river.png",
+    alt: "Yangtze River cruise",
+    width: 450,
+    height: 210,
+    top: 210,
+    left: 1390,
+  },
+  {
+    key: "hongyadong",
+    src: "/images/travels/china-24/hongyadong-heart.png",
+    alt: "Hongyadong at night",
+    width: 300,
+    height: 210,
+    top: 210,
+    left: 1100,
+  },
+  {
+    key: "xiaomian",
+    src: "/images/travels/china-24/xiaomian.png",
+    alt: "Xiaomian noodles",
+    width: 120,
+    height: 100,
+    top: 500,
+    left: 1700,
+    rotate: "18deg",
+  },
 ];
-
-const chongqingHighlights = [
-  "City skyline & Hongya Dong at night",
-  "Yangtze River cruise",
-  "Xiao Mian noodles (did not get to try the hotpot sadly)",
-  "Chiyou Jiuli City",
-  "Three Natural Bridges",
-];
-
-const CANVAS_WIDTH = 2000;
-const CANVAS_HEIGHT = 1200;
-
-const vtFontMobile = {
-  fontFamily: "var(--font-vt323), monospace",
-  fontSize: { xs: "1.05rem", sm: "1.05rem" },
-};
-
-const vtFontLargeMobile = {
-  ...vtFontMobile,
-  fontSize: { xs: "1.35rem", sm: "1.35rem" },
-};
-
-const vtFontDesktop = {
-  fontFamily: "var(--font-vt323), monospace",
-  fontSize: "1.25rem",
-};
-
-const vtFontLargeDesktop = {
-  ...vtFontDesktop,
-  fontSize: "1.6rem",
-};
 
 export default function China24Page() {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         width: "100vw",
         position: "relative",
         backgroundColor: "#f5ede6",
@@ -54,432 +118,176 @@ export default function China24Page() {
     >
       <Header />
 
-
       <Box
         sx={{
-          pt: { xs: 16},
-          pb: 12,
-          px: { xs: 3 },
-          display: { xs: "block", sm: "block", md: "none" },
+          "--page-gutter": { xs: "24px", md: "72px" },
+          px: "var(--page-gutter)",
+          pt: { xs: 4, md: 12 },
+          boxSizing: "border-box",
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-            fontFamily: "var(--font-vt323), monospace",
+            "--canvas-scale": {
+              xs: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), ${MAX_CANVAS_SCALE})`,
+              sm: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), ${MAX_CANVAS_SCALE})`,
+              md: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), ${MAX_CANVAS_SCALE})`,
+              lg: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), ${MAX_CANVAS_SCALE})`,
+              xl: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), ${MAX_CANVAS_SCALE})`,
+            },
+            "--canvas-offset-x": { xs: "0px", md: "-48px" },
+            "--canvas-width": `${CANVAS_WIDTH}px`,
+            "--canvas-height": `${CANVAS_HEIGHT}px`,
+            position: "relative",
+            width: "calc(var(--canvas-width) * var(--canvas-scale))",
+            height: "calc(var(--canvas-height) * var(--canvas-scale))",
+            minHeight: "100svh",
+            mx: "auto",
           }}
         >
-          {/* Hangzhou column */}
           <Box
             sx={{
-              flex: 1,
-              position: "relative",
-              mt: 4,
-              ml: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
+              position: { xs: "relative", md: "absolute" },
+              inset: { md: 0 },
+              width: "var(--canvas-width)",
+              minHeight: "var(--canvas-height)",
+              height: "var(--canvas-height)",
+              transform: "scale(var(--canvas-scale))",
+              transformOrigin: "top left",
             }}
           >
-            <Typography sx={{ ...vtFontLargeMobile, mb: 2 }}>07/2024</Typography>
-            <Typography sx={{ ...vtFontLargeMobile, mb: 2 }}>Hangzhou 杭州, China</Typography>
+            <Box
+              sx={{
+                position: "absolute",
+                top: 80,
+                left: 80,
+                maxWidth: 380,
+                fontFamily: "var(--font-vt323), monospace",
+                color: "#1f1b17",
+              }}
+            >
+              <Typography component="div" sx={{ fontFamily: "inherit", mb: 1, fontSize: "1.5rem" }}>
+                07/2024 
+              </Typography>
+            </Box>
 
-            <Typography sx={{ ...vtFontMobile, mb: 1 }}>Highlights:</Typography>
-            <Box component="ul" sx={{ listStyle: "none", pl: 0, mb: 4 }}>
-              {hangzhouHighlights.map((item) => (
-                <Typography component="li" key={item} sx={{ ...vtFontMobile, mb: 1.2, display: "flex", gap: 1 }}>
-                  <span>+</span>
-                  <span>{item}</span>
-                </Typography>
-              ))}
+           <Box
+              sx={{
+                position: "absolute",
+                top: 140,
+                left: 80,
+                maxWidth: 380,
+                fontFamily: "var(--font-vt323), monospace",
+                color: "#1f1b17",
+              }}
+            >
+              <Typography component="div" sx={{ fontFamily: "inherit", mb: 1, fontSize: "1.5rem" }}>
+                Hangzhou 杭州, China
+              </Typography>
+         
             </Box>
 
             <Box
               sx={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 680,
-                transform: "rotate(-3deg)",
+                position: "absolute",
+                top: 195,
+                left: 80,
+                maxWidth: 600,
+                fontFamily: "var(--font-vt323), monospace",
+                color: "#1f1b17",
               }}
             >
-              <Image
-                src="/images/travels/china-24/hangzhou24.png"
-                alt="Hangzhou West Lake"
-                width={960}
-                height={720}
-                style={{ width: "100%", height: "auto", display: "block", borderRadius: 4 }}
-                priority
-              />
+              <Typography component="div" sx={{ fontFamily: "inherit", lineHeight: 1.3, fontSize: "1.2rem" }}>
+                Highlights:
+                <br />
+                &nbsp;+ West Lake
+                <br />
+                &nbsp;+ The wonton soup my mom makes
+                <br />
+                &nbsp;+ Seeing how much the city has developed since I first went 15+ years ago
+              </Typography>
             </Box>
-          </Box>
-
-          {/* Chongqing column */}
-          <Box
-            sx={{
-              flex: 1.1,
-              position: "relative",
-              mt: 6,
-              mr: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              gap: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                ...vtFontLargeMobile,
-                textAlign: "left",
-                display: "flex",
-                justifyContent: "flex-start",
-              }}
-            >
-              Chongqing 重庆, China
-            </Typography>
-            <Typography
-              sx={{
-                ...vtFontMobile,
-                maxWidth: 780,
-                textAlign: "left",
-                ml: 0,
-                lineHeight: 1.6,
-              }}
-            >
-              The urban &quot;8-D&quot; layout of this city is especially lovely at night and feeds into my
-              cyberpunk dreams -- although we were definitely dropped off at the wrong elevation more than once.
-            </Typography>
 
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: 3,
-                width: "100%",
+                position: "absolute",
+                top: 120,
+                left: 960,
+                width: 850,
+                maxWidth: "none",
+                fontFamily: "var(--font-vt323), monospace",
+                fontSize: "0.95rem",
+                color: "#1f1b17",
+                textAlign: "right",
               }}
             >
+              <Typography
+                component="div"
+                sx={{ fontFamily: "inherit", mb: 1, fontSize: "1.2rem" }}
+              >
+                Chongqing 重庆, China
+                <br />
+              </Typography>
+              <Typography
+                component="div"
+                sx={{ fontFamily: "inherit", lineHeight: 1.2, width: "100%", fontSize: "1.2rem" }}
+              >
+                The urban, "8-D" topography of this city is especially lovely at night and feeds
+                into my cyberpunk dreams - although we were definitely dropped off at the wrong
+                elevation more than once.
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                position: "absolute",
+                top: 560,
+                left: 1430,
+                maxWidth: 380,
+                fontFamily: "var(--font-vt323), monospace",
+                color: "#1f1b17",
+              }}
+            >
+              <Typography component="div" sx={{ fontFamily: "inherit", lineHeight: 1.6, fontSize: "1.1rem" }}>
+                Loved:
+                <br />
+                &nbsp;+ City skyline &amp; Hongya Dong at night
+                <br />
+                &nbsp;+ Yangtze River cruise
+                <br />
+                &nbsp;+ Xiao Mian noodles (did not get to try the hotpot sadly)
+                <br />
+                <br />
+                We also ventured outside the main city area:
+                <br />
+                &nbsp;+ Chiyou Jiuli City
+                <br />
+                &nbsp;+ Three Natural Bridges
+              </Typography>
+            </Box>
+
+            {collageItems.map(item => (
               <Box
+                key={item.key}
                 sx={{
-                  position: "relative",
-                  width: "100%",
-                  transform: "rotate(1deg)",
-                  mr: 0,
+                  position: "absolute",
+                  top: item.top,
+                  left: item.left,
+                  transform: `rotate(${item.rotate})`,
                 }}
               >
                 <Image
-                  src="/images/travels/china-24/yangtzeriver.png"
-                  alt="Yangtze River cruise"
-                  width={900}
-                  height={600}
-                  style={{ width: "100%", height: "auto", borderRadius: 10, display: "block" }}
+                  src={item.src}
+                  alt={item.alt}
+                  width={item.width}
+                  height={item.height}
+                  sizes={`${Math.round(item.width * MAX_CANVAS_SCALE)}px`}
+                  style={{ display: "block" }}
+                  quality={100}
                   priority
                 />
               </Box>
-
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "flex-end",
-                  transform: "rotate(-6deg)",
-                  mt: 2,
-                  mr: 0,
-                }}
-              >
-                <Image
-                  src="/images/travels/china-24/xiaomian.png"
-                  alt="Xiao Mian noodles"
-                  width={260}
-                  height={180}
-                  style={{ width: "100%", maxWidth: 220, height: "auto", display: "block" }}
-                />
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: 3,
-                width: "100%",
-                mt: 2,
-              }}
-            >
-              <Box sx={{ flex: 1, mt: 1, ml: 0 }}>
-                <Typography sx={{ ...vtFontMobile, mb: 1 }}>Loved:</Typography>
-                <Box component="ul" sx={{ listStyle: "none", mb: 3 }}>
-                  {chongqingHighlights.slice(0, 3).map((item) => (
-                    <Typography component="li" key={item} sx={{ ...vtFontMobile, mb: 1, display: "flex", gap: 1 }}>
-                      <span>+</span>
-                      <span>{item}</span>
-                    </Typography>
-                  ))}
-                </Box>
-
-                <Typography sx={{ ...vtFontMobile, mb: 1 }}>
-                  We also ventured outside the main city area:
-                </Typography>
-                <Typography sx={{ ...vtFontMobile, mb: 3 }}>+ {chongqingHighlights[3]}</Typography>
-
-                <Typography sx={{ ...vtFontMobile, mb: 1 }}>And my favorite:</Typography>
-                <Typography sx={{ ...vtFontMobile, mb: 3 }}>+ {chongqingHighlights[4]}</Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  alignSelf: "center",
-                  mt: 1,
-                  mr: 0,
-                }}
-              >
-                <Image
-                  src="/images/travels/china-24/threenaturalbridges.png"
-                  alt="Three Natural Bridges"
-                  width={360}
-                  height={450}
-                  style={{ width: 340, height: "auto", display: "block" }}
-                />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          "--gutter": {
-            md: "0px",
-            lg: "0px",
-            xl: "0px",
-          },
-          "--canvas-scale": {
-            md: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-            lg: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-            xl: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-          },
-          "--canvas-width": {
-            md: `${CANVAS_WIDTH}px`,
-            lg: `${CANVAS_WIDTH}px`,
-            xl: `${CANVAS_WIDTH}px`,
-          },
-          "--canvas-height": {
-            md: `${CANVAS_HEIGHT}px`,
-            lg: `${CANVAS_HEIGHT}px`,
-            xl: `${CANVAS_HEIGHT}px`,
-          },
-          position: "relative",
-          width: "100vw",
-          height: "calc(var(--canvas-height) * var(--canvas-scale))",
-          minHeight: "100svh",
-          mx: 0,
-          px: 0,
-          display: { xs: "none", sm: "none", md: "block" },
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "var(--canvas-width)",
-            height: "var(--canvas-height)",
-            transform: "scale(var(--canvas-scale))",
-            transformOrigin: "top left",
-          }}
-        >
-          <Box
-            sx={{
-              pt: 20,
-              pb: 12,
-              px: 0,
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 6,
-                fontFamily: "var(--font-vt323), monospace",
-              }}
-            >
-              <Box
-                sx={{
-                  flex: 1,
-                  position: "relative",
-                  mt: 18,
-                  ml: 16,
-                  mr: -8,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Typography sx={{ ...vtFontLargeDesktop, mb: 2 }}>07/2024</Typography>
-                <Typography sx={{ ...vtFontLargeDesktop, mb: 2 }}>Hangzhou 杭州, China</Typography>
-
-                <Typography sx={{ ...vtFontDesktop, mb: 1 }}>Highlights:</Typography>
-                <Box component="ul" sx={{ listStyle: "none", pl: 0, mb: 4 }}>
-                  {hangzhouHighlights.map((item) => (
-                    <Typography component="li" key={item} sx={{ ...vtFontDesktop, mb: 1.2, display: "flex", gap: 1 }}>
-                      <span>+</span>
-                      <span>{item}</span>
-                    </Typography>
-                  ))}
-                </Box>
-
-                <Box
-                  sx={{
-                    position: "relative",
-                    width: "100%",
-                    maxWidth: 680,
-                    transform: "rotate(-3deg)",
-                  }}
-                >
-                  <Image
-                    src="/images/travels/china-24/hangzhou24.png"
-                    alt="Hangzhou West Lake"
-                    width={960}
-                    height={720}
-                    style={{ width: "100%", height: "auto", display: "block", borderRadius: 4 }}
-                    priority
-                  />
-                </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  flex: 1.1,
-                  position: "relative",
-                  mt: 26,
-                  mr: 18,
-                  ml: -2,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  gap: 2,
-                }}
-              >
-                <Typography
-                  sx={{
-                    ...vtFontLargeDesktop,
-                    textAlign: "right",
-                  }}
-                >
-                  Chongqing 重庆, China
-                </Typography>
-                <Typography
-                  sx={{
-                    ...vtFontDesktop,
-                    maxWidth: 780,
-                    textAlign: "right",
-                    ml: "auto",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  The urban &quot;8-D&quot; layout of this city is especially lovely at night and feeds into my
-                  cyberpunk dreams - although we were definitely dropped off at the wrong elevation more than once.
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "flex-start",
-                    gap: 6,
-                    width: "100%",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: "relative",
-                      width: "60%",
-                      transform: "rotate(1deg)",
-                      mr: -12,
-                    }}
-                  >
-                    <Image
-                      src="/images/travels/china-24/yangtzeriver.png"
-                      alt="Yangtze River cruise"
-                      width={900}
-                      height={600}
-                      style={{ width: "100%", height: "auto", borderRadius: 10, display: "block" }}
-                      priority
-                    />
-                  </Box>
-
-                  <Box
-                    sx={{
-                      width: "35%",
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-end",
-                      transform: "rotate(-6deg)",
-                      mt: 10,
-                      mr: 6,
-                    }}
-                  >
-                    <Image
-                      src="/images/travels/china-24/xiaomian.png"
-                      alt="Xiao Mian noodles"
-                      width={260}
-                      height={180}
-                      style={{ width: "100%", maxWidth: 220, height: "auto", display: "block" }}
-                    />
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "flex-start",
-                    gap: 6,
-                    width: "100%",
-                    mt: 4,
-                  }}
-                >
-                  <Box sx={{ flex: 1, mt: 4, ml: 0 }}>
-                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>Loved:</Typography>
-                    <Box component="ul" sx={{ listStyle: "none", mb: 3, pl: 0 }}>
-                      {chongqingHighlights.slice(0, 3).map((item) => (
-                        <Typography component="li" key={item} sx={{ ...vtFontDesktop, mb: 1, display: "flex", gap: 1 }}>
-                          <span>+</span>
-                          <span>{item}</span>
-                        </Typography>
-                      ))}
-                    </Box>
-
-                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>
-                      We also ventured outside the main city area:
-                    </Typography>
-                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 3 }}>+ {chongqingHighlights[3]}</Typography>
-
-                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 1 }}>And my favorite:</Typography>
-                    <Typography sx={{ ...vtFontDesktop, pl: 0, mb: 3 }}>+ {chongqingHighlights[4]}</Typography>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      alignSelf: "flex-start",
-                      mt: -6,
-                      mr: 8,
-                    }}
-                  >
-                    <Image
-                      src="/images/travels/china-24/threenaturalbridges.png"
-                      alt="Three Natural Bridges"
-                      width={360}
-                      height={450}
-                      style={{ width: 340, height: "auto", display: "block" }}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
+            ))}
           </Box>
         </Box>
       </Box>
