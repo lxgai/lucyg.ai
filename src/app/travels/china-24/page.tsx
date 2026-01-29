@@ -232,7 +232,7 @@ export default function China24Page() {
                 component="div"
                 sx={{ fontFamily: "inherit", lineHeight: 1.2, width: "100%", fontSize: "1.2rem" }}
               >
-                The urban, "8-D" topography of this city is especially lovely at night and feeds
+                The urban, &quot;8-D&quot; topography of this city is especially lovely at night and feeds
                 into my cyberpunk dreams - although we were definitely dropped off at the wrong
                 elevation more than once.
               </Typography>
