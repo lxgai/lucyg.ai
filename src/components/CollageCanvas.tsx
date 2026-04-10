@@ -1,0 +1,85 @@
+"use client";
+
+import Image from "next/image";
+import { CollageItem } from "@/types/collage";
+
+const REFERENCE_WIDTH = 1920;
+
+function scaleFontSize(fontSize: string): string {
+  const value = parseFloat(fontSize);
+  if (fontSize.endsWith("rem")) {
+    return `${((value * 16) / REFERENCE_WIDTH) * 100}cqw`;
+  }
+  if (fontSize.endsWith("px")) {
+    return `${(value / REFERENCE_WIDTH) * 100}cqw`;
+  }
+  return fontSize;
+}
+
+interface CollageCanvasProps {
+  items: CollageItem[];
+  aspectRatio?: number;
+  className?: string;
+}
+
+export default function CollageCanvas({
+  items,
+  aspectRatio = 56.25,
+  className,
+}: CollageCanvasProps) {
+  return (
+    <div
+      className={className}
+      style={{
+        position: "relative",
+        width: "100%",
+        paddingBottom: `${aspectRatio}%`,
+        containerType: "inline-size",
+      }}
+    >
+      {items.map((item) => (
+        <div
+          key={item.id}
+          className={item.className}
+          style={{
+            position: "absolute",
+            left: `${item.x}%`,
+            top: `${item.y}%`,
+            width: item.w ? `${item.w}%` : undefined,
+            transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
+            zIndex: item.z,
+          }}
+        >
+          {item.type === "image" && item.src && (
+            <Image
+              src={item.src}
+              alt={item.alt || ""}
+              width={item.imageW || 100}
+              height={item.imageH || 100}
+              sizes={`${Math.round(item.w)}vw`}
+              style={{ width: "100%", height: "auto", display: "block" }}
+              quality={100}
+              priority
+            />
+          )}
+          {item.type === "text" && (
+            <div
+              style={{
+                fontFamily: item.fontFamily,
+                fontSize: item.fontSize
+                  ? scaleFontSize(item.fontSize)
+                  : undefined,
+                color: item.color,
+                textAlign: item.textAlign,
+                lineHeight: item.lineHeight,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {item.text}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
