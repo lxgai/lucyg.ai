@@ -9,9 +9,22 @@ type Breakpoint = "large" | "medium" | "small";
 
 const ASPECT_RATIOS: Record<Breakpoint, number> = {
   large: 56.25,
-  medium: 75,
-  small: 150,
+  medium: 100,
+  small: 200,
 };
+
+const REFERENCE_WIDTH = 1920;
+
+function scaleFontSize(fontSize: string): string {
+  const value = parseFloat(fontSize);
+  if (fontSize.endsWith("rem")) {
+    return `${((value * 16) / REFERENCE_WIDTH) * 100}cqw`;
+  }
+  if (fontSize.endsWith("px")) {
+    return `${(value / REFERENCE_WIDTH) * 100}cqw`;
+  }
+  return fontSize;
+}
 
 interface PageInfo {
   slug: string;
@@ -54,7 +67,7 @@ export default function CollageEditorPage() {
   const [selectedFilePath, setSelectedFilePath] = useState<string>("");
   const [layoutData, setLayoutData] = useState<CollageLayoutData | null>(null);
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("large");
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
 
   // History for undo/redo
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -79,11 +92,13 @@ export default function CollageEditorPage() {
     origRotate: number;
     centerX: number;
     centerY: number;
+    origPositions: Record<string, { x: number; y: number }>;
   } | null>(null);
 
   // Current items for active breakpoint
   const items: CollageItem[] = layoutData ? layoutData[breakpoint] : [];
-  const selectedItem = items.find((i) => i.id === selectedItemId) ?? null;
+  // Single selected item (only when exactly one is selected)
+  const selectedItem = selectedItemIds.length === 1 ? (items.find((i) => i.id === selectedItemIds[0]) ?? null) : null;
 
   // ─── Push history ──────────────────────────────────────────────────────
   const pushHistory = useCallback(
@@ -139,7 +154,7 @@ export default function CollageEditorPage() {
       .then((r) => r.json())
       .then((data: CollageLayoutData) => {
         setLayoutData(data);
-        setSelectedItemId(null);
+        setSelectedItemIds([]);
         setHistory([{ data: structuredClone(data), description: "Initial load" }]);
         setHistoryIndex(0);
       })
@@ -174,18 +189,18 @@ export default function CollageEditorPage() {
         e.preventDefault();
         redo();
       }
-      if (e.key === "Delete" && selectedItemId) {
+      if (e.key === "Delete" && selectedItemIds.length > 0) {
         e.preventDefault();
         updateItems(
-          items.filter((i) => i.id !== selectedItemId),
-          `Delete ${selectedItemId}`
+          items.filter((i) => !selectedItemIds.includes(i.id)),
+          `Delete ${selectedItemIds.length} item(s)`
         );
-        setSelectedItemId(null);
+        setSelectedItemIds([]);
       }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undo, redo, selectedItemId, items, updateItems]);
+  }, [undo, redo, selectedItemIds, items, updateItems]);
 
   // ─── Save ──────────────────────────────────────────────────────────────
   const handleSave = async () => {
@@ -238,7 +253,19 @@ export default function CollageEditorPage() {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    setSelectedItemId(item.id);
+
+    // Compute the new selection synchronously so drag state is consistent
+    let newSelection: string[];
+    if (mode === "move" && e.shiftKey) {
+      // Shift+click: toggle this item in/out of the multi-selection
+      newSelection = selectedItemIds.includes(item.id)
+        ? selectedItemIds.filter((id) => id !== item.id)
+        : [...selectedItemIds, item.id];
+    } else {
+      // Regular click: if item is already in the selection keep the group, otherwise select only this one
+      newSelection = selectedItemIds.includes(item.id) ? selectedItemIds : [item.id];
+    }
+    setSelectedItemIds(newSelection);
 
     const rect = getCanvasRect();
     if (!rect) return;
@@ -246,9 +273,18 @@ export default function CollageEditorPage() {
     let centerX = 0;
     let centerY = 0;
     if (mode === "rotate") {
-      // Center of the item in screen pixels
       centerX = rect.left + (item.x / 100) * rect.width + ((item.w / 100) * rect.width) / 2;
       centerY = rect.top + (item.y / 100) * rect.height;
+    }
+
+    // Capture original positions for all items in the selection (used for group move)
+    const origPositions: Record<string, { x: number; y: number }> = {};
+    if (mode === "move") {
+      items.forEach((i) => {
+        if (newSelection.includes(i.id)) {
+          origPositions[i.id] = { x: i.x, y: i.y };
+        }
+      });
     }
 
     setDragState({
@@ -262,6 +298,7 @@ export default function CollageEditorPage() {
       origRotate: item.rotate,
       centerX,
       centerY,
+      origPositions,
     });
 
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -278,12 +315,19 @@ export default function CollageEditorPage() {
       const dx = e.clientX - dragState.startX;
       const dy = e.clientY - dragState.startY;
       const dPercent = pxToPercent(dx, dy);
-      updateItem(
-        dragState.itemId,
-        {
-          x: Math.round((dragState.origX + dPercent.x) * 100) / 100,
-          y: Math.round((dragState.origY + dPercent.y) * 100) / 100,
-        },
+      // Apply delta to every item in origPositions (handles both single and group move)
+      updateItems(
+        items.map((item) => {
+          const orig = dragState.origPositions[item.id];
+          if (orig) {
+            return {
+              ...item,
+              x: Math.round((orig.x + dPercent.x) * 100) / 100,
+              y: Math.round((orig.y + dPercent.y) * 100) / 100,
+            };
+          }
+          return item;
+        }),
         "Move",
         false
       );
@@ -306,19 +350,19 @@ export default function CollageEditorPage() {
 
   const handlePointerUp = () => {
     if (dragState && layoutData) {
-      pushHistory(layoutData, `${dragState.mode} ${dragState.itemId}`);
+      pushHistory(layoutData, `${dragState.mode} item(s)`);
     }
     setDragState(null);
   };
 
   // ─── Delete selected ──────────────────────────────────────────────────
   const deleteSelected = () => {
-    if (!selectedItemId) return;
+    if (!selectedItemIds.length) return;
     updateItems(
-      items.filter((i) => i.id !== selectedItemId),
-      `Delete ${selectedItemId}`
+      items.filter((i) => !selectedItemIds.includes(i.id)),
+      `Delete ${selectedItemIds.length} item(s)`
     );
-    setSelectedItemId(null);
+    setSelectedItemIds([]);
   };
 
   // ─── Property change handler ──────────────────────────────────────────
@@ -359,7 +403,7 @@ export default function CollageEditorPage() {
             key={bp}
             onClick={() => {
               setBreakpoint(bp);
-              setSelectedItemId(null);
+              setSelectedItemIds([]);
             }}
             className={`text-xs px-3 py-1 rounded ${
               breakpoint === bp
@@ -392,7 +436,7 @@ export default function CollageEditorPage() {
         </button>
         <button
           onClick={deleteSelected}
-          disabled={!selectedItemId}
+          disabled={!selectedItemIds.length}
           className="text-xs px-2 py-1 rounded bg-red-700 text-white hover:bg-red-600 disabled:opacity-40"
         >
           Delete
@@ -422,13 +466,13 @@ export default function CollageEditorPage() {
               <div
                 ref={canvasRef}
                 className="relative w-full bg-[#f5ede6] rounded shadow-lg"
-                style={{ paddingBottom: `${ASPECT_RATIOS[breakpoint]}%` }}
+                style={{ paddingBottom: `${ASPECT_RATIOS[breakpoint]}%`, containerType: "inline-size" }}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
-                onClick={() => setSelectedItemId(null)}
+                onClick={() => setSelectedItemIds([])}
               >
                 {items.map((item) => {
-                  const isSelected = item.id === selectedItemId;
+                  const isSelected = selectedItemIds.includes(item.id);
                   return (
                     <div
                       key={item.id}
@@ -443,10 +487,7 @@ export default function CollageEditorPage() {
                         outline: isSelected ? "2px solid #3b82f6" : "none",
                         outlineOffset: "2px",
                       }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedItemId(item.id);
-                      }}
+                      onClick={(e) => e.stopPropagation()}
                       onPointerDown={(e) => handleItemPointerDown(e, item, "move")}
                     >
                       {/* Render item content */}
@@ -464,7 +505,7 @@ export default function CollageEditorPage() {
                         <div
                           style={{
                             fontFamily: item.fontFamily,
-                            fontSize: item.fontSize,
+                            fontSize: item.fontSize ? scaleFontSize(item.fontSize) : undefined,
                             color: item.color,
                             textAlign: item.textAlign,
                             lineHeight: item.lineHeight,
@@ -477,7 +518,7 @@ export default function CollageEditorPage() {
                       )}
 
                       {/* Resize handle */}
-                      {isSelected && (
+                      {isSelected && selectedItemIds.length === 1 && (
                         <div
                           className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-blue-500 rounded-sm cursor-ew-resize"
                           onPointerDown={(e) => handleItemPointerDown(e, item, "resize")}
@@ -485,7 +526,7 @@ export default function CollageEditorPage() {
                       )}
 
                       {/* Rotate handle */}
-                      {isSelected && (
+                      {isSelected && selectedItemIds.length === 1 && (
                         <div
                           className="absolute left-1/2 -translate-x-1/2 -top-7 flex flex-col items-center cursor-crosshair"
                           onPointerDown={(e) => handleItemPointerDown(e, item, "rotate")}
@@ -509,7 +550,13 @@ export default function CollageEditorPage() {
           <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">
             Properties
           </h2>
-          {selectedItem ? (
+          {selectedItemIds.length === 0 ? (
+            <p className="text-gray-500 text-xs">No item selected</p>
+          ) : selectedItemIds.length > 1 ? (
+            <p className="text-gray-400 text-xs">
+              {selectedItemIds.length} items selected — drag any one to move the group
+            </p>
+          ) : selectedItem ? (
             <div className="space-y-3">
               <PropField label="ID" value={selectedItem.id} disabled />
               <PropField label="Type" value={selectedItem.type} disabled />
@@ -597,9 +644,7 @@ export default function CollageEditorPage() {
                 onChange={(v) => handlePropChange("className", v)}
               />
             </div>
-          ) : (
-            <p className="text-gray-500 text-xs">No item selected</p>
-          )}
+          ) : null}
         </div>
       </div>
 

@@ -19,14 +19,14 @@ interface CollageLayoutProps {
 const DEFAULT_ASPECT_RATIOS: AspectRatios = {
   large: 56.25,
   medium: 100,
-  small: 150,
+  small: 200,
 };
 
 type Breakpoint = "large" | "medium" | "small";
 
 function getBreakpoint(width: number): Breakpoint {
-  if (width >= 1024) return "large";
-  if (width >= 640) return "medium";
+  if (width >= 1624) return "large";
+  if (width >= 900) return "medium";
   return "small";
 }
 

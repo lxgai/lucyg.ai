@@ -30,7 +30,7 @@ export default function China24Page() {
         <Box sx={{ maxWidth: `${1920 * 1.6}px`, mx: "auto" }}>
           <CollageLayout
             layout={layoutData as CollageLayoutData}
-            aspectRatios={{ large: 56.25, medium: 100, small: 150 }}
+            aspectRatios={{ large: 56.25, medium: 100, small: 200 }}
           />
         </Box>
       </Box>
