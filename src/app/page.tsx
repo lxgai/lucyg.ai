@@ -66,10 +66,10 @@ export default function Home() {
     <Box
       sx={{
         minHeight: "100svh",
-        width: "100vw",
+        width: "100%",
         position: "relative",
         backgroundColor: "#f5ede6",
-        overflowX: "hidden",
+        overflow: "clip",
       }}
     >
       <Header blurOnMobileOpen />

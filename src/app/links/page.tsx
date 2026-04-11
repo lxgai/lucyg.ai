@@ -6,7 +6,7 @@ export default function LinksPage() {
     <Box
       sx={{
         minHeight: '100vh',
-        width: '100vw',
+        width: '100%',
         position: 'relative',
         backgroundColor: '#f5ede6',
       }}

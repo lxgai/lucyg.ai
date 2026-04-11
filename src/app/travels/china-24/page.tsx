@@ -11,10 +11,10 @@ export default function China24Page() {
     <Box
       sx={{
         minHeight: "100svh",
-        width: "100vw",
+        width: "100%",
         position: "relative",
         backgroundColor: "#f5ede6",
-        overflowX: "hidden",
+        overflow: "clip",
       }}
     >
       <Header />

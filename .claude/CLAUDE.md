@@ -42,7 +42,7 @@ public/
 - **All page components** use `"use client"` (interactivity required throughout)
 - **Styling**: Use MUI `sx` prop with responsive object notation — `{ xs: ..., md: ..., lg: ... }`. Do not use CSS modules or styled-components.
 - **Responsive breakpoints**: `xs` (mobile-first), `sm`, `md` (768+), `lg` (1024+), `xl` (1280+)
-- **Page layout pattern**: Wrap in `<Box>` with `minHeight: "100svh"`, `width: "100vw"`, `backgroundColor: "#f5ede6"`, `position: "relative"`, `overflow: "hidden"`, and include `<Header />`
+- **Page layout pattern**: Wrap in `<Box>` with `minHeight: "100svh"`, `width: "100%"`, `backgroundColor: "#f5ede6"`, `position: "relative"`, `overflow: "clip"`, and include `<Header />`. **Do not** use `width: "100vw"` or `overflowX: "hidden"` on root Boxes — see Scroll Gotchas below.
 - **Images**: Always use `next/image` with explicit `width`/`height` or `fill`+`sizes`. Use `priority` for above-the-fold images.
 - **Fonts via CSS vars**: `var(--font-cooper-light)` for headings, `var(--font-vt323)` for retro/mono, `var(--font-roboto-mono)` for header logo
 - **Path alias**: `@/*` maps to `./src/*`
@@ -54,6 +54,16 @@ public/
 - **Color palette**: Beige background (`#f5ede6`), dark brown text (`#2a2521`), pink accents (`#d877ab`)
 - **Navigation**: `Header.tsx` — desktop horizontal nav + mobile hamburger drawer. Active route styled with pink + italic.
 - **No state management library** — local React state only
+
+## Scroll Gotchas
+
+`<html>` must be the only vertical scroll container on the page. Two subtle rules cause extra/stuck scrollbars if violated:
+
+1. **Never use `width: "100vw"` on root Boxes.** On Windows/Linux, `100vw` includes the vertical scrollbar width, so the Box ends up ~17px wider than the usable viewport. That creates a tiny horizontal overflow; on wheel events the browser hit-tests a nonexistent x-axis scroll and the rubber-band negotiation briefly stalls vertical scrolling. Use `width: "100%"` (sizes to the parent's content box, which already excludes the scrollbar).
+
+2. **Never use `overflowX: "hidden"` on root Boxes — use `overflow: "clip"` instead.** Per the CSS spec, when one overflow axis is `hidden`/`scroll`/`auto` and the other is `visible`, the `visible` axis is computed to `auto`. So `overflowX: "hidden"` silently turns the Box into a vertical scroll container, and if its content is taller than the Box (common on the `small` collage breakpoint, where aspect ratio is 400%), you get a second scrollbar that eats wheel events before the page scrolls. `overflow: "clip"` clips both axes without establishing a scroll container.
+
+3. **Keep `overscroll-behavior-y: none` on `<html>`** in [globals.css](../src/styles/globals.css) to kill native bounce at scroll extremities. Do not add `touch-action: pan-y` — it adds latency to wheel/touch scroll and is unnecessary once (1) and (2) are correct.
 
 ## Admin / Dev Tools
 

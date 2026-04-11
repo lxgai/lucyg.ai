@@ -35,7 +35,7 @@ export default function AboutPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        width: "100vw",
+        width: "100%",
         position: "relative",
         backgroundColor: "#f5ede6",
         overflow: "hidden",
