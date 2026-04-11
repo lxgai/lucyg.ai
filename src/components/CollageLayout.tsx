@@ -43,7 +43,7 @@ export default function CollageLayout({
   const [breakpoint, setBreakpoint] = useState<Breakpoint>(() =>
     typeof window !== "undefined"
       ? getBreakpoint(window.innerWidth)
-      : "large"
+      : "small"
   );
 
   useEffect(() => {
