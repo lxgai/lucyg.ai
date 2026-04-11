@@ -35,7 +35,11 @@ export default function CollageLayout({
   aspectRatios,
   className,
 }: CollageLayoutProps) {
-  const ratios: AspectRatios = { ...DEFAULT_ASPECT_RATIOS, ...aspectRatios };
+  const ratios: AspectRatios = {
+    ...DEFAULT_ASPECT_RATIOS,
+    ...layout.aspectRatios,
+    ...aspectRatios,
+  };
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("large");
 
   useEffect(() => {

@@ -31,4 +31,9 @@ export interface CollageLayoutData {
   large: CollageItem[];
   medium: CollageItem[];
   small: CollageItem[];
+  aspectRatios?: {
+    large?: number;
+    medium?: number;
+    small?: number;
+  };
 }

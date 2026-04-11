@@ -7,7 +7,7 @@ import { CollageItem, CollageLayoutData } from "@/types/collage";
 
 type Breakpoint = "large" | "medium" | "small";
 
-const ASPECT_RATIOS: Record<Breakpoint, number> = {
+const DEFAULT_ASPECT_RATIOS: Record<Breakpoint, number> = {
   large: 56.25,
   medium: 100,
   small: 200,
@@ -97,6 +97,9 @@ export default function CollageEditorPage() {
 
   // Current items for active breakpoint
   const items: CollageItem[] = layoutData ? layoutData[breakpoint] : [];
+  // Current aspect ratio for active breakpoint (from layout JSON, or default)
+  const currentAspectRatio: number =
+    layoutData?.aspectRatios?.[breakpoint] ?? DEFAULT_ASPECT_RATIOS[breakpoint];
   // Single selected item (only when exactly one is selected)
   const selectedItem = selectedItemIds.length === 1 ? (items.find((i) => i.id === selectedItemIds[0]) ?? null) : null;
 
@@ -137,6 +140,23 @@ export default function CollageEditorPage() {
       );
     },
     [items, updateItems]
+  );
+
+  // ─── Update aspect ratio for current breakpoint ───────────────────────
+  const updateAspectRatio = useCallback(
+    (value: number) => {
+      if (!layoutData) return;
+      const newData: CollageLayoutData = {
+        ...layoutData,
+        aspectRatios: {
+          ...layoutData.aspectRatios,
+          [breakpoint]: value,
+        },
+      };
+      setLayoutData(newData);
+      pushHistory(newData, `Edit ${breakpoint} aspect ratio`);
+    },
+    [layoutData, breakpoint, pushHistory]
   );
 
   // ─── Fetch pages ──────────────────────────────────────────────────────
@@ -415,6 +435,26 @@ export default function CollageEditorPage() {
           </button>
         ))}
 
+        {/* Aspect ratio (height as % of width) for current breakpoint */}
+        {layoutData && (
+          <div className="flex items-center gap-1 ml-2">
+            <label
+              className="text-xs text-gray-400"
+              title="Canvas height as a percentage of width for this breakpoint. 100 = square, 200 = twice as tall as wide."
+            >
+              height %
+            </label>
+            <input
+              type="number"
+              className="w-16 bg-gray-700 text-gray-100 text-xs rounded px-2 py-1 border border-gray-600"
+              value={currentAspectRatio}
+              step={5}
+              min={10}
+              onChange={(e) => updateAspectRatio(parseFloat(e.target.value) || 0)}
+            />
+          </div>
+        )}
+
         <div className="flex-1" />
 
         {/* Actions */}
@@ -466,7 +506,7 @@ export default function CollageEditorPage() {
               <div
                 ref={canvasRef}
                 className="relative w-full bg-[#f5ede6] rounded shadow-lg"
-                style={{ paddingBottom: `${ASPECT_RATIOS[breakpoint]}%`, containerType: "inline-size" }}
+                style={{ paddingBottom: `${currentAspectRatio}%`, containerType: "inline-size" }}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 onClick={() => setSelectedItemIds([])}
