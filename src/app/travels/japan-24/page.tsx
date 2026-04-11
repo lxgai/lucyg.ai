@@ -15,7 +15,6 @@ export default function Japan24Page() {
         position: "relative",
         backgroundColor: "#f5ede6",
         overflowX: "hidden",
-        overflowY: "auto",
       }}
     >
       <Header />

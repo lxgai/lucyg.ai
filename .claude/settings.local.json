@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(python -c \"import os; from PIL import Image; d='public/images/travels/japan-24'; [print\\(f, Image.open\\(os.path.join\\(d,f\\)\\).size\\) for f in sorted\\(os.listdir\\(d\\)\\)]\")",
+      "Bash(node -e \"const fs=require\\('fs'\\),p='public/images/travels/japan-24';for\\(const f of fs.readdirSync\\(p\\)\\){const b=fs.readFileSync\\(p+'/'+f\\);let w,h;if\\(f.endsWith\\('.png'\\)\\){w=b.readUInt32BE\\(16\\);h=b.readUInt32BE\\(20\\);}else if\\(f.endsWith\\('.jpg'\\)||f.endsWith\\('.jpeg'\\)\\){let i=2;while\\(i<b.length\\){if\\(b[i]!==0xff\\)break;const m=b[i+1];const len=b.readUInt16BE\\(i+2\\);if\\(m>=0xc0&&m<=0xcf&&m!==0xc4&&m!==0xc8\\){h=b.readUInt16BE\\(i+5\\);w=b.readUInt16BE\\(i+7\\);break;}i+=2+len;}}console.log\\(f,w+'x'+h\\);}\")",
+      "Bash(node -e \"const d=require\\('./src/data/travels/japan-24.json'\\);for\\(const v of ['large','medium','small']\\){console.log\\('---',v\\);for\\(const i of d[v]\\){if\\(i.type==='image'\\)console.log\\(i.src.split\\('/'\\).pop\\(\\),'w='+i.w+'%'\\);}}\")"
     ]
   }
 }

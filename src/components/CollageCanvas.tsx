@@ -61,7 +61,7 @@ export default function CollageCanvas({
                 height={item.imageH || 100}
                 sizes={`${Math.round(item.w)}vw`}
                 style={{ width: "100%", height: "auto", display: "block" }}
-                quality={100}
+                quality={85}
                 priority={isPriorityImage}
                 loading={isPriorityImage ? undefined : "lazy"}
               />
