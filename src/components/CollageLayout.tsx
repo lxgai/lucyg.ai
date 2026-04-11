@@ -40,7 +40,11 @@ export default function CollageLayout({
     ...layout.aspectRatios,
     ...aspectRatios,
   };
-  const [breakpoint, setBreakpoint] = useState<Breakpoint>("large");
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>(() =>
+    typeof window !== "undefined"
+      ? getBreakpoint(window.innerWidth)
+      : "large"
+  );
 
   useEffect(() => {
     function update() {
