@@ -26,6 +26,18 @@ const cooperLight = localFont({
   display: "swap",
 });
 
+const chunkFive = localFont({
+  src: [
+    {
+      path: "../../public/fonts/ChunkFive/chunkfive-regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-chunk-five",
+  display: "swap",
+});
+
 const robotoMono = localFont({
   src: [
     {
@@ -56,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${vt323.variable} ${cooperLight.variable} ${robotoMono.variable} antialiased`}
+        className={`${vt323.variable} ${cooperLight.variable} ${robotoMono.variable} ${chunkFive.variable} antialiased`}
       >
         {children}
       </body>
