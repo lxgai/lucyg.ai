@@ -613,10 +613,10 @@
       "type": "text",
       "text": "07/2024",
       "fontFamily": "var(--font-vt323), monospace",
-      "fontSize": "2em",
+      "fontSize": "2.6rem",
       "color": "#1f1b17",
-      "x": 23.44,
-      "y": 3.69,
+      "x": 23.71,
+      "y": 4.36,
       "w": 19.7917,
       "rotate": 0,
       "z": 2
