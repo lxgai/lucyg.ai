@@ -27,6 +27,7 @@ export default function CollageCanvas({
   aspectRatio = 56.25,
   className,
 }: CollageCanvasProps) {
+  let imageCount = 0;
   return (
     <div
       className={className}
@@ -37,49 +38,53 @@ export default function CollageCanvas({
         containerType: "inline-size",
       }}
     >
-      {items.map((item) => (
+      {items.map((item) => {
+        const isPriorityImage = item.type === "image" && imageCount++ < 2;
+        return (
         <div
-          key={item.id}
-          className={item.className}
-          style={{
-            position: "absolute",
-            left: `${item.x}%`,
-            top: `${item.y}%`,
-            width: item.w ? `${item.w}%` : undefined,
-            transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
-            zIndex: item.z,
-          }}
-        >
-          {item.type === "image" && item.src && (
-            <Image
-              src={item.src}
-              alt={item.alt || ""}
-              width={item.imageW || 100}
-              height={item.imageH || 100}
-              sizes={`${Math.round(item.w)}vw`}
-              style={{ width: "100%", height: "auto", display: "block" }}
-              quality={100}
-              priority
-            />
-          )}
-          {item.type === "text" && (
-            <div
-              style={{
-                fontFamily: item.fontFamily,
-                fontSize: item.fontSize
-                  ? scaleFontSize(item.fontSize)
-                  : undefined,
-                color: item.color,
-                textAlign: item.textAlign,
-                lineHeight: item.lineHeight,
-                whiteSpace: "pre-line",
-              }}
-            >
-              {item.text}
-            </div>
-          )}
-        </div>
-      ))}
+            key={item.id}
+            className={item.className}
+            style={{
+              position: "absolute",
+              left: `${item.x}%`,
+              top: `${item.y}%`,
+              width: item.w ? `${item.w}%` : undefined,
+              transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
+              zIndex: item.z,
+            }}
+          >
+            {item.type === "image" && item.src && (
+              <Image
+                src={item.src}
+                alt={item.alt || ""}
+                width={item.imageW || 100}
+                height={item.imageH || 100}
+                sizes={`${Math.round(item.w)}vw`}
+                style={{ width: "100%", height: "auto", display: "block" }}
+                quality={100}
+                priority={isPriorityImage}
+                loading={isPriorityImage ? undefined : "lazy"}
+              />
+            )}
+            {item.type === "text" && (
+              <div
+                style={{
+                  fontFamily: item.fontFamily,
+                  fontSize: item.fontSize
+                    ? scaleFontSize(item.fontSize)
+                    : undefined,
+                  color: item.color,
+                  textAlign: item.textAlign,
+                  lineHeight: item.lineHeight,
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {item.text}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
