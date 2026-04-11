@@ -63,7 +63,7 @@ public/
 
 2. **Never use `overflowX: "hidden"` on root Boxes — use `overflow: "clip"` instead.** Per the CSS spec, when one overflow axis is `hidden`/`scroll`/`auto` and the other is `visible`, the `visible` axis is computed to `auto`. So `overflowX: "hidden"` silently turns the Box into a vertical scroll container, and if its content is taller than the Box (common on the `small` collage breakpoint, where aspect ratio is 400%), you get a second scrollbar that eats wheel events before the page scrolls. `overflow: "clip"` clips both axes without establishing a scroll container.
 
-3. **Keep `overscroll-behavior-y: none` on `<html>`** in [globals.css](../src/styles/globals.css) to kill native bounce at scroll extremities. Do not add `touch-action: pan-y` — it adds latency to wheel/touch scroll and is unnecessary once (1) and (2) are correct.
+3. **Do not set `overscroll-behavior` or `touch-action` on `<html>`/`<body>`.** The native bounce at scroll extremities is desired. Earlier `overscroll-behavior-y: none` + `touch-action: pan-y` were added as workarounds for the `100vw`/`overflowX: hidden` stall described above; once rules (1) and (2) are in place the stall is gone and the browser defaults should be left alone.
 
 ## Admin / Dev Tools
 
