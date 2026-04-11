@@ -21,7 +21,6 @@
 
 html {
   overscroll-behavior-y: none;
-  touch-action: pan-y;
 }
 
 body {
@@ -29,6 +28,4 @@ body {
   color: var(--foreground);
   font-family: var(--font-vt323), monospace;
   margin: 0;
-  overscroll-behavior-y: none;
-  touch-action: pan-y;
 }

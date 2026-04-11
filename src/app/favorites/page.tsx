@@ -198,7 +198,6 @@ export default function FavoritesPage() {
         position: "relative",
         backgroundColor: "#f5ede6",
         overflowX: "hidden",
-        overflowY: "auto",
       }}
     >
       <Header />

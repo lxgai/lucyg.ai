@@ -70,7 +70,6 @@ export default function Home() {
         position: "relative",
         backgroundColor: "#f5ede6",
         overflowX: "hidden",
-        overflowY: "auto",
       }}
     >
       <Header blurOnMobileOpen />
