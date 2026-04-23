@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { VT323 } from "next/font/google";
+import { VT323, Newsreader, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "../styles/globals.css";
 
@@ -7,6 +7,22 @@ const vt323 = VT323({
   weight: ["400"],
   variable: "--font-vt323",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const cooperLight = localFont({
@@ -57,7 +73,7 @@ const robotoMono = localFont({
 
 export const metadata: Metadata = {
   title: "Lucy Gai",
-  description: "Lucy Gai 2025",
+  description: "Lucy Gai — a personal archive.",
 };
 
 export default function RootLayout({
@@ -68,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${vt323.variable} ${cooperLight.variable} ${robotoMono.variable} ${chunkFive.variable} antialiased`}
+        className={`${vt323.variable} ${newsreader.variable} ${jetbrains.variable} ${cooperLight.variable} ${robotoMono.variable} antialiased`}
       >
         {children}
       </body>

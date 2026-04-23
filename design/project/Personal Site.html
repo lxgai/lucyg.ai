@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Personal Site — Design Exploration</title>
+<link rel="stylesheet" href="styles/canvas-reset.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { background: #f0eee9; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="direction-data.jsx"></script>
+<script type="text/babel" src="direction-a.jsx"></script>
+<script type="text/babel" src="direction-b.jsx"></script>
+<script type="text/babel" src="direction-c.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// ==== Tweakable defaults ====
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "musicPlayer": "vinyl",
+  "moviesLayout": "cards"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [musicPlayer, setMusicPlayer] = useState(TWEAKS.musicPlayer);
+  const [moviesLayout, setMoviesLayout] = useState(TWEAKS.moviesLayout);
+  const [editMode, setEditMode] = useState(false);
+
+  // Edit-mode bridge
+  useEffect(() => {
+    function onMsg(e) {
+      const d = e.data || {};
+      if (d.type === '__activate_edit_mode') setEditMode(true);
+      if (d.type === '__deactivate_edit_mode') setEditMode(false);
+    }
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  function persist(key, val) {
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  }
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="a" title="Direction A — Memory Archive" subtitle="Library card catalog · Newsreader + JetBrains Mono · rust accent">
+          <DCArtboard id="a-home"      label="Home"      width={1280} height={820}><HomeA /></DCArtboard>
+          <DCArtboard id="a-travels"   label="Travels"   width={1280} height={820}><TravelsA /></DCArtboard>
+          <DCArtboard id="a-favorites" label="Favorites" width={1280} height={820}><FavoritesA playerVariant={musicPlayer} moviesVariant={moviesLayout} /></DCArtboard>
+          <DCArtboard id="a-about"     label="About"     width={1280} height={820}><AboutA /></DCArtboard>
+          <DCArtboard id="a-blog"      label="Blog"      width={1280} height={820}><BlogA /></DCArtboard>
+          <DCArtboard id="a-projects"  label="Projects"  width={1280} height={820}><ProjectsA /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="b" title="Direction B — Japanese Stationery" subtitle="Grid paper · Fraunces + IBM Plex · single tomato accent">
+          <DCArtboard id="b-home"      label="Home"      width={1280} height={820}><HomeB /></DCArtboard>
+          <DCArtboard id="b-travels"   label="Travels"   width={1280} height={820}><TravelsB /></DCArtboard>
+          <DCArtboard id="b-favorites" label="Favorites" width={1280} height={820}><FavoritesB playerVariant={musicPlayer} moviesVariant={moviesLayout} /></DCArtboard>
+          <DCArtboard id="b-about"     label="About"     width={1280} height={820}><AboutB /></DCArtboard>
+          <DCArtboard id="b-blog"      label="Blog"      width={1280} height={820}><BlogB /></DCArtboard>
+          <DCArtboard id="b-projects"  label="Projects"  width={1280} height={820}><ProjectsB /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="c" title="Direction C — Zine / Risograph" subtitle="Cut-and-paste · Instrument Serif + Caveat + Space Mono · riso red + blue">
+          <DCArtboard id="c-home"      label="Home"      width={1280} height={820}><HomeC /></DCArtboard>
+          <DCArtboard id="c-travels"   label="Travels"   width={1280} height={820}><TravelsC /></DCArtboard>
+          <DCArtboard id="c-favorites" label="Favorites" width={1280} height={820}><FavoritesC playerVariant={musicPlayer} moviesVariant={moviesLayout} /></DCArtboard>
+          <DCArtboard id="c-about"     label="About"     width={1280} height={820}><AboutC /></DCArtboard>
+          <DCArtboard id="c-blog"      label="Blog"      width={1280} height={820}><BlogC /></DCArtboard>
+          <DCArtboard id="c-projects"  label="Projects"  width={1280} height={820}><ProjectsC /></DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      {editMode && (
+        <div style={{
+          position: "fixed", bottom: 20, right: 20, zIndex: 9999,
+          background: "#1a1715", color: "#f1e9df",
+          border: "1px solid #c96442",
+          padding: 18, borderRadius: 8,
+          fontFamily: "-apple-system, sans-serif", fontSize: 12,
+          minWidth: 260,
+          boxShadow: "0 12px 32px rgba(0,0,0,0.3)",
+        }}>
+          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.6, textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Tweaks</div>
+
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ marginBottom: 8, fontSize: 11, opacity: 0.8 }}>Music player</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {["vinyl", "ipod", "cassette"].map(v => (
+                <div key={v} onClick={() => { setMusicPlayer(v); persist("musicPlayer", v); }}
+                  style={{
+                    padding: "6px 10px", fontSize: 11,
+                    border: `1px solid ${musicPlayer === v ? "#c96442" : "rgba(255,255,255,0.2)"}`,
+                    background: musicPlayer === v ? "#c96442" : "transparent",
+                    cursor: "pointer", textTransform: "capitalize",
+                    flex: 1, textAlign: "center",
+                  }}>{v}</div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ marginBottom: 8, fontSize: 11, opacity: 0.8 }}>Movies layout</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {["tickets", "cards", "reel"].map(v => (
+                <div key={v} onClick={() => { setMoviesLayout(v); persist("moviesLayout", v); }}
+                  style={{
+                    padding: "6px 10px", fontSize: 11,
+                    border: `1px solid ${moviesLayout === v ? "#c96442" : "rgba(255,255,255,0.2)"}`,
+                    background: moviesLayout === v ? "#c96442" : "transparent",
+                    cursor: "pointer", textTransform: "capitalize",
+                    flex: 1, textAlign: "center",
+                  }}>{v}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

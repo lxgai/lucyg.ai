@@ -1,862 +1,456 @@
 "use client";
-import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
-import Header from "@/components/Header";
+import PageShell from "@/components/design/PageShell";
+import VinylPlayer from "@/components/design/VinylPlayer";
+import { CardLabel, Hair } from "@/components/design/primitives";
+import { tokens } from "@/components/design/tokens";
+import {
+  ALBUMS,
+  DEFAULT_TRACKLIST,
+  MOVIES,
+  TRACKLISTS,
+} from "@/data/content";
 
-const CANVAS_WIDTH = 1240;
-const CANVAS_HEIGHT = 760;
-const CONTENT_SHIFT = -100;
-const CONTENT_SHIFT_Y = 0;
-const HEADER_GAP = 40;
-const GUTTER_MIN = CANVAS_HEIGHT / 3;
-const GUTTER_MAX = CANVAS_HEIGHT * 1.2;
-const LINE_TOP = -60;
-const LINE_HEIGHT = 900;
-const LINE_BLEED = 470;
-const LINE_SHIFT_X = 220;
-const PAGE_BOTTOM_PADDING = 180;
-const MOVIES_BG_WIDTH = 1200;
-const MOVIES_BG_HEIGHT = 610;
-const MOVIE_POSTER_SIZE = 120;
-const MOBILE_SHIFT_X = 18;
-
-type AlbumItem = {
-  src: string;
-  title: string;
-  artist: string;
-  top: number;
-  left: number;
-  size: number;
-};
-
-type MovieItem = {
-  src: string;
-  title: string;
-  top: number;
-  left: number;
-  size: number;
-};
-
-const albums: AlbumItem[] = [
-  {
-    src: "/images/favorites/albums/album-no-limit-knock2.png",
-    title: "nolimit,",
-    artist: "Knock2",
-    top: 260,
-    left: 90,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-smile-porter.png",
-    title: "SMILE! :D,",
-    artist: "Porter Robinson",
-    top: 260,
-    left: 300,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-killswitch-melodies-flawed.jpg",
-    title: "Killswitch Melodies,",
-    artist: "Flawed Mangoes",
-    top: 500,
-    left: 90,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-meta-ego-lexi.jpg",
-    title: "无限意识 Meta Ego,",
-    artist: "Lexie Liu",
-    top: 500,
-    left: 300,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-comfort-in-chaos-john.jpg",
-    title: "Comfort in Chaos,",
-    artist: "John Summit",
-    top: 390,
-    left: 530,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-130mood-dean.jpg",
-    title: "130 Mood: TRBL,",
-    artist: "Dean",
-    top: 190,
-    left: 1090,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-demidevil-ashnikko.jpg",
-    title: "Demidevil,",
-    artist: "Ashnikko",
-    top: 390,
-    left: 1090,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-alone-at-prom-tory.png",
-    title: "Alone At Prom,",
-    artist: "Tory Lanez",
-    top: 620,
-    left: 530,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-come-over-sober-lilpeep.jpg",
-    title: "Come Over When You're Sober, Pt. 1,",
-    artist: "Lil Peep",
-    top: 620,
-    left: 715,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-carrie-lowell-sufjan.jpg",
-    title: "Carrie & Lowell,",
-    artist: "Sufjan Stevens",
-    top: 620,
-    left: 900,
-    size: 140,
-  },
-  {
-    src: "/images/favorites/albums/album-wiped-out-neighbourhood.jpg",
-    title: "Wiped Out!,",
-    artist: "The Neighbourhood",
-    top: 620,
-    left: 1090,
-    size: 140,
-  },
-];
-
-const movies: MovieItem[] = [
-  {
-    src: "/images/favorites/movies/movie-marty-supreme.jpg",
-    title: "Marty Supreme (2025)",
-    top: 290,
-    left: 150,
-    size: MOVIE_POSTER_SIZE,
-  },
-  {
-    src: "/images/favorites/movies/movie-anora.jpg",
-    title: "Anora (2024)",
-    top: 290,
-    left: 310,
-    size: MOVIE_POSTER_SIZE,
-  },
-  {
-    src: "/images/favorites/movies/movie-blade_runner.jpg",
-    title: "Blade Runner (1982)",
-    top: 290,
-    left: 470,
-    size: MOVIE_POSTER_SIZE,
-  },
-  {
-    src: "/images/favorites/movies/movie-train-dragon.jpg",
-    title: "How to Train Your Dragon (2010)",
-    top: 520,
-    left: 150,
-    size: MOVIE_POSTER_SIZE,
-  },
-  {
-    src: "/images/favorites/movies/movie-eternal-sunshine.jpg",
-    title: "Eternal Sunshine of the Spotless Mind (2004)",
-    top: 520,
-    left: 310,
-    size: MOVIE_POSTER_SIZE,
-  },
-  {
-    src: "/images/favorites/movies/movie-perks-wallflower.jpg",
-    title: "The Perks of Being a Wallflower (2010)",
-    top: 520,
-    left: 470,
-    size: MOVIE_POSTER_SIZE,
-  },
-];
-
-const movieList = [
-  "Marty Supreme (2025)",
-  "Anora (2024)",
-  "Blade Runner (1982)",
-  "How to Train Your Dragon (2010)",
-  "Eternal Sunshine of the Spotless Mind (2004)",
-  "The Perks of Being a Wallflower (2010)",
-];
+type Tab = "music" | "films";
 
 export default function FavoritesPage() {
-  const [isAlbumsHovered, setIsAlbumsHovered] = useState(false);
-  const [isAlbumsPinned, setIsAlbumsPinned] = useState(true);
-  const isAlbumsView = isAlbumsHovered ? !isAlbumsPinned : isAlbumsPinned;
-  const isMoviesView = !isAlbumsView;
-  const [mobileView, setMobileView] = useState<"albums" | "movies">("albums");
+  const [tab, setTab] = useState<Tab>("music");
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [trackIdx, setTrackIdx] = useState(0);
+
+  const selectedAlbum = ALBUMS[selectedIdx];
+  const tracks = TRACKLISTS[selectedAlbum.title] ?? DEFAULT_TRACKLIST;
+
+  useEffect(() => {
+    setTrackIdx(0);
+  }, [selectedIdx]);
 
   return (
-    <Box
-      sx={{
-        minHeight: "100svh",
-        width: "100%",
-        position: "relative",
-        backgroundColor: "#f5ede6",
-        overflow: "clip",
-      }}
+    <PageShell
+      section="SECTION D · FAVORITES"
+      catNo="file: favorites.idx"
+      title={
+        <>
+          A <Box component="span" sx={{ fontStyle: "italic" }}>listening</Box>
+          {" "}&{" "}
+          <Box component="span" sx={{ fontStyle: "italic" }}>watching</Box> log.
+        </>
+      }
     >
-      <Header />
+      <Box sx={{ display: "flex", gap: 0.5, mb: 5 }}>
+        {(["music", "films"] as Tab[]).map((t) => {
+          const active = tab === t;
+          return (
+            <Box
+              key={t}
+              onClick={() => setTab(t)}
+              sx={{
+                p: "10px 22px",
+                border: `1px solid ${active ? tokens.ink : tokens.hair}`,
+                background: active ? tokens.ink : "transparent",
+                color: active ? tokens.paper : tokens.ink,
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.6px",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                transition: "all 180ms",
+              }}
+            >
+              {t}
+            </Box>
+          );
+        })}
+      </Box>
 
-      <Box
-        sx={{
-          pt: { xs: 12, md: 0 },
-          px: { xs: 3, md: 0 },
-          display: { xs: "block", sm: "block", md: "none" },
-          minHeight: "100svh",
-        }}
-      >
-        <Box sx={{ ml: `${MOBILE_SHIFT_X}px` }}>
-          <Typography
-            sx={{
-              fontFamily: "var(--font-cooper-light), serif",
-              fontSize: "1.8rem",
-              fontWeight: 400,
-              color: "#2a2521",
-              mb: 2,
-            }}
-          >
-            Some of my favorite
-          </Typography>
+      {tab === "music" ? (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            columnGap: { xs: 5, md: 20, lg: 35 },
+            rowGap: { xs: 5, md: 0 },
+          }}
+        >
+          <Box sx={{ width: "100%", maxWidth: 580, ml: { md: "auto" } }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: { xs: 340, md: 440 },
+                pb: 3.75,
+              }}
+            >
+              <VinylPlayer
+                album={selectedAlbum}
+                playing={playing}
+                onToggle={() => setPlaying((p) => !p)}
+              />
+            </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 6 }}>
-            {(["albums", "movies"] as const).map((label) => {
-              const isActive = mobileView === label;
-              return (
-                <Box
-                  key={label}
-                  component="button"
-                  onClick={() => setMobileView(label)}
-                  sx={{
-                    border: "none",
-                    background: "transparent",
-                    p: 0,
-                    m: 0,
-                    cursor: "pointer",
-                    fontFamily: "var(--font-cooper-light), serif",
-                    fontSize: "1.6rem",
-                    color: isActive ? "#d26aa7" : "#2a2521",
-                    textShadow: isActive ? "0 0 10px rgba(210, 106, 167, 0.5)" : "none",
-                    px: isActive ? 1.6 : 0,
-                    py: isActive ? 0.6 : 0,
-                    borderRadius: isActive ? "999px" : 0,
-                    backgroundColor: isActive ? "rgba(210, 106, 167, 0.2)" : "transparent",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {label}
+            <Box
+              sx={{
+                background: tokens.paperCard,
+                border: `1px solid ${tokens.hairStrong}`,
+                p: 2.25,
+                maxWidth: 580,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  gap: 2,
+                  mb: 1.25,
+                }}
+              >
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: tokens.serif,
+                      fontStyle: "italic",
+                      fontSize: 22,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {selectedAlbum.title}
+                  </Typography>
+                  <Box
+                    sx={{
+                      fontFamily: tokens.mono,
+                      fontSize: 10,
+                      color: tokens.ink60,
+                      textTransform: "uppercase",
+                      letterSpacing: "1px",
+                      mt: 0.5,
+                    }}
+                  >
+                    {selectedAlbum.artist} · {selectedAlbum.year}
+                  </Box>
                 </Box>
-              );
-            })}
+                <CardLabel
+                  cat="D.M"
+                  no={String(selectedIdx + 1).padStart(3, "0")}
+                />
+              </Box>
+              <Hair />
+              <Box sx={{ mt: 1.25 }}>
+                {tracks.map((tr, i) => {
+                  const isActive = i === trackIdx;
+                  return (
+                    <Box
+                      key={tr.n}
+                      onClick={() => {
+                        setTrackIdx(i);
+                        setPlaying(true);
+                      }}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "26px 1fr auto",
+                        gap: 1.75,
+                        alignItems: "baseline",
+                        cursor: "pointer",
+                        p: "6px 0",
+                        pl: "10px",
+                        ml: "-12px",
+                        borderLeft: `2px solid ${isActive ? tokens.accent : "transparent"}`,
+                        color: isActive ? tokens.accent : tokens.ink,
+                        fontFamily: tokens.mono,
+                        fontSize: 11,
+                        transition: "all 180ms",
+                      }}
+                    >
+                      <Box
+                        component="span"
+                        sx={{ color: tokens.ink40, fontSize: 9 }}
+                      >
+                        {String(tr.n).padStart(2, "0")}
+                      </Box>
+                      <Box
+                        component="span"
+                        sx={{
+                          fontFamily: tokens.serif,
+                          fontSize: 15,
+                          fontStyle: isActive ? "italic" : "normal",
+                        }}
+                      >
+                        {isActive && playing && (
+                          <Box
+                            component="span"
+                            sx={{ mr: 0.75, color: tokens.accent }}
+                          >
+                            ♪
+                          </Box>
+                        )}
+                        {tr.name}
+                      </Box>
+                      <Box
+                        component="span"
+                        sx={{ color: tokens.ink60, fontSize: 10 }}
+                      >
+                        {tr.time}
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
+          </Box>
+
+          <Box sx={{ width: "100%", maxWidth: 600, mr: { md: "auto" } }}>
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.6px",
+                color: tokens.ink60,
+                textTransform: "uppercase",
+                mb: 1.75,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>Record rack</span>
+              <span>{ALBUMS.length} records</span>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 1.25,
+              }}
+            >
+              {ALBUMS.map((a, i) => {
+                const isSelected = i === selectedIdx;
+                return (
+                  <Box
+                    key={a.src}
+                    onClick={() => setSelectedIdx(i)}
+                    sx={{
+                      cursor: "pointer",
+                      position: "relative",
+                      p: "3px",
+                      background: isSelected ? tokens.ink : "transparent",
+                      transition: "all 200ms",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        aspectRatio: "1 / 1",
+                      }}
+                    >
+                      <Image
+                        src={a.src}
+                        alt={a.title}
+                        fill
+                        sizes="(max-width: 900px) 30vw, 120px"
+                        style={{
+                          objectFit: "cover",
+                          filter: isSelected ? "none" : "saturate(0.9)",
+                          transition: "filter 200ms",
+                        }}
+                      />
+                    </Box>
+                    {isSelected && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: -18,
+                          right: 0,
+                          fontFamily: tokens.mono,
+                          fontSize: 9,
+                          letterSpacing: "1.4px",
+                          color: tokens.accent,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        → now
+                      </Box>
+                    )}
+                  </Box>
+                );
+              })}
+            </Box>
           </Box>
         </Box>
+      ) : (
+        <MoviesBlock />
+      )}
+    </PageShell>
+  );
+}
 
-        <Box sx={{ position: "relative", height: "80svh" }}>
+function MoviesBlock() {
+  return (
+    <Box>
+      <MoviesCards />
+      <Box
+        sx={{
+          mt: 5,
+          pt: 3,
+          borderTop: `1px solid ${tokens.hair}`,
+          fontFamily: tokens.mono,
+          fontSize: 10,
+          letterSpacing: "1.4px",
+          textTransform: "uppercase",
+          color: tokens.ink60,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+        }}
+      >
+        <span>Check out more on</span>
+        <MuiLink
+          href="https://letterboxd.com/lucy_gai/"
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="none"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.75,
+            color: tokens.accent,
+            borderBottom: `1px solid ${tokens.accent}`,
+            paddingBottom: "1px",
+            "&:hover": { opacity: 0.8 },
+          }}
+        >
+          <span>letterboxd</span>
           <Box
+            component="span"
             sx={{
-              position: "absolute",
-              top: 0,
-              bottom: 10,
-              right: -160,
-              width: 400,
-              height: "auto",
-              opacity: 0.20,
-              pointerEvents: "none",
+              position: "relative",
+              display: "inline-block",
+              width: 20,
+              height: 20,
             }}
           >
             <Image
-              src="/images/favorites/angels-kissing.png"
-              alt="Angels kissing mobile"
+              src="/images/about/letterboxd-logo.png"
+              alt="Letterboxd"
               fill
-              sizes="400px"
+              sizes="20px"
               style={{ objectFit: "contain" }}
             />
           </Box>
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "100vw",
-              height: "100%",
-              overflow: "hidden",
-              pointerEvents: "none",
-            }}
-          >
-            {mobileView === "albums" && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: -140,
-                  left: 36 + MOBILE_SHIFT_X,
-                  width: 96,
-                  height: "calc(100% + 280px)",
-                  opacity: 0.9,
-                }}
-              >
-                <Box
-                  component="svg"
-                  viewBox="0 0 96 1000"
-                  preserveAspectRatio="none"
-                  shapeRendering="crispEdges"
-                  sx={{ width: "100%", height: "100%", display: "block" }}
-                >
-                  <line
-                    x1="30"
-                    y1="0"
-                    x2="30"
-                    y2="1000"
-                    stroke="#ab0000"
-                    strokeWidth="2.9"
-                    vectorEffect="non-scaling-stroke"
-                    strokeLinecap="round"
-                    strokeDasharray="6 7"
-                  />
-                  <line
-                    x1="52"
-                    y1="0"
-                    x2="52"
-                    y2="1000"
-                    stroke="#bccfdd"
-                    strokeWidth="2.9"
-                    vectorEffect="non-scaling-stroke"
-                    strokeLinecap="round"
-                    strokeDasharray="6 7"
-                  />
-                </Box>
-              </Box>
-            )}
-          </Box>
+        </MuiLink>
+      </Box>
+    </Box>
+  );
+}
 
+function MoviesCards() {
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+        },
+        gap: 2.5,
+      }}
+    >
+      {MOVIES.map((m) => (
+        <Box
+          key={m.title}
+          sx={{
+            background: tokens.paperCard,
+            border: `1px solid ${tokens.hairStrong}`,
+            p: 1.75,
+            display: "flex",
+            gap: 1.75,
+          }}
+        >
           <Box
             sx={{
               position: "relative",
-              height: "100%",
+              width: 84,
+              height: 126,
+              flex: "0 0 auto",
               overflow: "hidden",
-              pr: 2,
-              pb: 4,
-              mt: 5.5,
-              ml: `${MOBILE_SHIFT_X}px`,
-              zIndex: 1,
             }}
           >
-            {mobileView === "albums" ? (
-              <Box
-                sx={{
-                  position: "relative",
-                  height: "100%",
-                  overflowY: "auto",
-                  overflowX: "hidden",
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  "&::-webkit-scrollbar": {
-                    display: "none",
-                  },
-                }}
-              >
-                <Box sx={{ position: "relative", display: "grid", gap: 6, pr: 2 }}>
-                  {albums.map((item) => (
-                    <Box
-                      key={item.src}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "120px 1fr",
-                        gap: 2,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          position: "relative",
-                          width: 120,
-                          height: 120,
-                        }}
-                      >
-                        <Image
-                          src={item.src}
-                          alt={`${item.title} cover`}
-                          fill
-                          sizes="120px"
-                          style={{ objectFit: "cover" }}
-                          quality={100}
-                          unoptimized
-                        />
-                      </Box>
-                      <Box sx={{ pl: 2 }}>
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--font-roboto-mono), monospace",
-                            fontSize: "0.75rem",
-                            color: "#c94b62",
-                            letterSpacing: "0.3px",
-                          }}
-                        >
-                          {item.title}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--font-roboto-mono), monospace",
-                            fontSize: "0.75rem",
-                            color: "#2a2521",
-                            letterSpacing: "0.2px",
-                          }}
-                        >
-                          {item.artist}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  overflowY: "auto",
-                  overflowX: "hidden",
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  "&::-webkit-scrollbar": {
-                    display: "none",
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    height: "64svh",
-                    minHeight: 360,
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    pr: 0,
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                    "&::-webkit-scrollbar": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                      gap: 4,
-                      px: 1,
-                      maxWidth: 420,
-                      mx: "auto",
-                    }}
-                  >
-                    {movies.map((item) => (
-                      <Box
-                        key={item.src}
-                        sx={{
-                          position: "relative",
-                          width: "100%",
-                          aspectRatio: "2 / 3",
-                        }}
-                      >
-                        <Image
-                          src={item.src}
-                          alt={`${item.title} cover`}
-                          fill
-                          sizes="(max-width: 600px) 42vw, 220px"
-                          style={{ objectFit: "cover" }}
-                          quality={100}
-                          unoptimized
-                        />
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-
-                <Box sx={{ mt: 4, mb: 4, px: 2, textAlign: "left" }}>
-                  {movieList.map((movie) => (
-                    <Typography
-                      key={movie}
-                      sx={{
-                        fontFamily: "var(--font-roboto-mono), monospace",
-                        fontSize: "0.75rem",
-                        color: "#2a2521",
-                        letterSpacing: "0.3px",
-                        lineHeight: 2.1,
-                        maxWidth: 460,
-                      }}
-                    >
-                      - {movie}
-                    </Typography>
-                  ))}
-                </Box>
-
-                <Box
-                  component="a"
-                  href="https://letterboxd.com/lucy_gai/"
-                  target="_blank"
-                  rel="noreferrer"
-                  sx={{
-                    mt: "auto",
-                    pt: 1,
-                    px: 2,
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    gap: 1,
-                    fontFamily: "var(--font-roboto-mono), monospace",
-                    fontSize: "0.75rem",
-                    color: "#2a2521",
-                    textDecoration: "none",
-                    textAlign: "right",
-                  }}
-                >
-                  <Box sx={{ position: "relative", width: 16, height: 16 }}>
-                    <Image
-                      src="/images/about/letterboxd-logo.png"
-                      alt="Letterboxd logo"
-                      fill
-                      sizes="16px"
-                      style={{ objectFit: "contain" }}
-                    />
-                  </Box>
-                  check out more here
-                </Box>
-              </Box>
-            )}
-          </Box>
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          "--gutter": {
-            md: `clamp(${GUTTER_MIN}px, 28vw, ${GUTTER_MAX}px)`,
-            lg: `clamp(${GUTTER_MIN}px, 28vw, ${GUTTER_MAX}px)`,
-            xl: `clamp(${GUTTER_MIN}px, 28vw, ${GUTTER_MAX}px)`,
-          },
-          "--canvas-scale": {
-            md: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-            lg: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-            xl: `calc((100vw - var(--gutter)) / ${CANVAS_WIDTH}px)`,
-          },
-          "--canvas-width": {
-            md: `${CANVAS_WIDTH}px`,
-            lg: `${CANVAS_WIDTH}px`,
-            xl: `${CANVAS_WIDTH}px`,
-          },
-          "--canvas-height": {
-            md: `${CANVAS_HEIGHT}px`,
-            lg: `${CANVAS_HEIGHT}px`,
-            xl: `${CANVAS_HEIGHT}px`,
-          },
-          position: "relative",
-          width: "calc(var(--canvas-width) * var(--canvas-scale))",
-          height: "calc(var(--canvas-height) * var(--canvas-scale))",
-          minHeight: "100svh",
-          mx: "auto",
-          px: { md: "calc(var(--gutter) / 2)" },
-          display: { xs: "none", sm: "none", md: "block" },
-          pb: { md: PAGE_BOTTOM_PADDING },
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: `calc(${HEADER_GAP}px / var(--canvas-scale) + ${CONTENT_SHIFT_Y}px)`,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: "var(--canvas-width)",
-            height: "var(--canvas-height)",
-            transform: "scale(var(--canvas-scale))",
-            transformOrigin: "top left",
-            zIndex: 1,
-          }}
-        >
-          {!isMoviesView && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: LINE_TOP,
-                left: -LINE_BLEED + LINE_SHIFT_X,
-                width: CANVAS_WIDTH + LINE_BLEED * 2,
-                height: LINE_HEIGHT,
-                pointerEvents: "none",
-                opacity: 0.9,
-                zIndex: 0,
-                backgroundImage: "url(/images/favorites/albums/zig-zag-large.svg)",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                overflow: "hidden",
-              }}
+            <Image
+              src={m.src}
+              alt={m.title}
+              fill
+              sizes="84px"
+              style={{ objectFit: "cover" }}
             />
-          )}
-          <Typography
-            component="h1"
-            sx={{
-              position: "absolute",
-              top: 130,
-              left: 70 + CONTENT_SHIFT,
-              fontFamily: "var(--font-cooper-light), serif",
-              fontSize: "2.0rem",
-              fontWeight: 400,
-              color: "#2a2521",
-            }}
-          >
-            Some of my favorite{" "}
-            <Box
-              component="span"
-              onMouseEnter={() => setIsAlbumsHovered(true)}
-              onMouseLeave={() => setIsAlbumsHovered(false)}
-              onClick={() => setIsAlbumsPinned(isAlbumsView)}
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography
               sx={{
-                color: "#d26aa7",
+                fontFamily: tokens.serif,
+                fontSize: 17,
                 fontStyle: "italic",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "4px",
+                lineHeight: 1.1,
               }}
             >
-              {isAlbumsView ? "albums:" : "movies:"}
+              {m.title}
+            </Typography>
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 8,
+                color: tokens.ink60,
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                mt: 0.5,
+              }}
+            >
+              {m.director} · {m.year}
             </Box>
-          </Typography>
-
-          {isMoviesView ? (
-            <>
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 210,
-                  left: 90 + CONTENT_SHIFT,
-                  width: MOVIES_BG_WIDTH,
-                  height: MOVIES_BG_HEIGHT,
-                  overflow: "hidden",
-                  opacity: 0.7,
-                }}
-              >
-                <Image
-                  src="/images/favorites/movies/movies-view-background.jpg"
-                  alt="Movies background"
-                  fill
-                  sizes="1200px"
-                  style={{ objectFit: "cover" }}
-                  quality={100}
-                  unoptimized
-                  priority
-                />
-              </Box>
-
-              {movies.map((movie) => (
-                <MovieCard
-                  key={movie.src}
-                  {...movie}
-                  left={movie.left + CONTENT_SHIFT}
-                />
-              ))}
-
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 330,
-                  left: 870 + CONTENT_SHIFT,
-                  width: 430,
-                  color: "#f4eee7",
-                }}
-              >
-                {movieList.map((movie) => (
-                  <Typography
-                    key={movie}
-                    sx={{
-                      fontFamily: "var(--font-roboto-mono), monospace",
-                      fontSize: "0.7rem",
-                      letterSpacing: "0.3px",
-                      lineHeight: 2.4,
-                    }}
-                  >
-                    - {movie}
-                  </Typography>
-                ))}
-              </Box>
-
-              <Box
-                component="a"
-                href="https://letterboxd.com/lucy_gai/"
-                target="_blank"
-                rel="noreferrer"
-                sx={{
-                  position: "absolute",
-                  top: 610,
-                  left: 1000 + CONTENT_SHIFT,
-                  width: 430,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  color: "#f4eee7",
-                  textDecoration: "none",
-                }}
-              >
-                <Box sx={{ position: "relative", width: 16, height: 16 }}>
-                  <Image
-                    src="/images/about/letterboxd-logo.png"
-                    alt="Letterboxd logo"
-                    fill
-                    sizes="16px"
-                    style={{ objectFit: "contain" }}
-                  />
-                </Box>
-                <Typography
-                  sx={{
-                    fontFamily: "var(--font-roboto-mono), monospace",
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.2px",
-                  }}
-                >
-                  check out more here
-                </Typography>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 120,
-                  left: 630 + CONTENT_SHIFT,
-                  width: 470,
-                  height: 610,
-                  opacity: 0.3,
-                }}
-              >
-                <Image
-                  src="/images/favorites/angels-kissing.png"
-                  alt="Angels kissing"
-                  fill
-                  sizes="610px"
-                  style={{ objectFit: "contain" }}
-                  priority
-                />
-              </Box>
-
-              {albums.map((album) => (
-                <AlbumCard key={album.src} {...album} left={album.left + CONTENT_SHIFT} />
-              ))}
-            </>
-          )}
+            <Box
+              sx={{
+                mt: 1.25,
+                fontFamily: tokens.mono,
+                fontSize: 11,
+                color: tokens.accent,
+                letterSpacing: "1px",
+              }}
+            >
+              {"★".repeat(Math.floor(m.rating))}
+              {m.rating % 1 ? "½" : ""}
+            </Box>
+            <Hair style={{ margin: "10px 0" }} />
+            <Box
+              sx={{
+                fontFamily: tokens.serif,
+                fontSize: 12,
+                color: tokens.ink60,
+                fontStyle: "italic",
+                lineHeight: 1.4,
+              }}
+            >
+              &ldquo;{m.note}&rdquo;
+            </Box>
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 8,
+                color: tokens.ink40,
+                mt: 1,
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+              }}
+            >
+              LOGGED {m.date}
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      ))}
     </Box>
   );
 }
 
-function AlbumCard({
-  src,
-  title,
-  artist,
-  top,
-  left,
-  size,
-}: {
-  src: string;
-  title: string;
-  artist: string;
-  top: number;
-  left: number;
-  size: number;
-}) {
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top,
-        left,
-        width: size,
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative",
-          width: size,
-          height: size,
-        }}
-      >
-        <Image
-          src={src}
-          alt={`${title} album cover`}
-          fill
-          sizes={`${size}px`}
-          style={{ objectFit: "cover" }}
-        />
-      </Box>
-      <Box sx={{ mt: 1 }}>
-        <Typography
-          sx={{
-            fontFamily: "var(--font-roboto-mono), monospace",
-            fontSize: "0.7rem",
-            color: "#c94b62",
-            lineHeight: 1.0,
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: "var(--font-roboto-mono), monospace",
-            fontSize: "0.7rem",
-            color: "#2a2521",
-            lineHeight: 1.5,
-          }}
-        >
-          {artist}
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
-
-function MovieCard({
-  src,
-  title,
-  top,
-  left,
-  size,
-}: {
-  src: string;
-  title: string;
-  top: number;
-  left: number;
-  size: number;
-}) {
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top,
-        left,
-        width: size,
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative",
-          width: size,
-          height: size * 1.45,
-          overflow: "hidden",
-        }}
-      >
-        <Image
-          src={src}
-          alt={`${title} poster`}
-          fill
-          sizes={`${size}px`}
-          style={{ objectFit: "cover" }}
-          quality={100}
-          unoptimized
-        />
-      </Box>
-    </Box>
-  );
-}

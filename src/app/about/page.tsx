@@ -1,229 +1,220 @@
 "use client";
-import { Box, Stack, Typography, Link as MuiLink } from "@mui/material";
-import Image from "next/image";
-import Header from "@/components/Header";
+import { Box, Typography, Link as MuiLink } from "@mui/material";
+import PageShell from "@/components/design/PageShell";
+import { CardLabel, Hair } from "@/components/design/primitives";
+import { tokens } from "@/components/design/tokens";
 
-const socials = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/lucy.gai",
-    icon: "/images/about/instagram-logo.png",
-  },
-  {
-    label: "Spotify",
-    href: "https://open.spotify.com/user/charlottefour?si=dc89b15e82cf438b",
-    icon: "/images/about/spotify-logo.png",
-  },
-  {
-    label: "Letterboxd",
-    href: "https://letterboxd.com/lucy_gai/",
-    icon: "/images/about/letterboxd-logo.png",
-  },
-  {
-    label: "Twitch",
-    href: "https://www.twitch.tv/88lucie",
-    icon: "/images/about/twitch-logo.png",
-  },
-  {
-    label: "hello@lucygai.com",
-    href: "mailto:hello@lucygai.com",
-  },
+const SOCIALS = [
+  { label: "Instagram", handle: "@lucy.gai",        url: "https://instagram.com/lucy.gai",                                   display: "instagram.com/lucy.gai" },
+  { label: "Letterboxd", handle: "lucy_gai",        url: "https://letterboxd.com/lucy_gai/",                                 display: "letterboxd.com/lucy_gai" },
+  { label: "Spotify",   handle: "charlottefour",    url: "https://open.spotify.com/user/charlottefour",                      display: "open.spotify.com/user/charlottefour" },
+  { label: "Twitch",    handle: "88lucie",          url: "https://twitch.tv/88lucie",                                        display: "twitch.tv/88lucie" },
+  { label: "Email",     handle: "hello@lucygai.com",url: "mailto:hello@lucygai.com",                                         display: "hello@lucygai.com" },
+];
+
+const CURRENTLY: Array<[string, React.ReactNode]> = [
+  ["Reading",   <><em>A Little Life</em> — Hanya Yanagihara</>],
+  ["Listening", "nolimit, — Knock2 (on repeat, regrettably)"],
+  ["Building",  "this site, and a quiet tool for keeping lists"],
+  ["Planning",  "Tokyo in September, Lisbon in November"],
 ];
 
 export default function AboutPage() {
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        width: "100%",
-        position: "relative",
-        backgroundColor: "#f5ede6",
-        overflow: "hidden",
-      }}
-    >
-      <Header />
-
+    <PageShell section="SECTION F · ABOUT" catNo="file: about.idx">
       <Box
         sx={{
-          pt: { xs: 18, sm: 18, md: 20, lg: 20, xl: 20 },
-          pb: { xs: 10, sm: 10, md: 12, lg: 12, xl: 12 },
-          px: { xs: 3, sm: 4, md: 6, lg: 8, xl: 10 },
-          width: "min(92vw, 1920px)",
-          maxWidth: "100%",
-          mx: "auto",
           display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "1fr",
-            md: "1.05fr 0.95fr",
-            lg: "1.2fr 0.8fr",
-            xl: "1.25fr 0.75fr",
-          },
-          gap: { xs: 8, sm: 7, md: 4, lg: 3, xl: 2 },
+          gridTemplateColumns: { xs: "1fr", md: "1.1fr 0.9fr" },
+          gap: { xs: 5, md: 7 },
+          pt: { xs: 3, md: 4 },
         }}
       >
-        <Box sx={{ position: "relative", pr: { xs: 0, sm: 0, md: 2, lg: 2, xl: 2 } }}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: { xs: -40, md: 0 },
-              left: { xs: 0,  md: -20},
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                width: "clamp(140px, 24vw, 220px)",
-                aspectRatio: "641 / 351",
-              }}
-            >
-              <Image
-                src="/images/about/cherries-heart.png"
-                alt="Cherries and heart"
-                fill
-                sizes="(max-width: 900px) 45vw, (max-width: 1200px) 240px, 260px"
-                quality={100}
-                style={{ objectFit: "contain" }}
-                priority
-              />
-            </Box>
-          </Box>
-
+        <Box>
           <Typography
+            component="div"
             sx={{
-              mt: { xs: 10, md: 22 },
-              fontFamily: "var(--font-cooper-light), serif",
-              fontSize: {
-                xs: "1.5rem",
-                sm: "1.75rem",
-                md: "2.05rem",
-                lg: "2.35rem",
-                xl: "2.6rem",
-              },
-              lineHeight: 1.5,
-              maxWidth: { xs: 520, sm: 520, md: 600, lg: 720, xl: 820 },
-              color: "#2a2521",
+              fontFamily: tokens.serif,
+              fontSize: { xs: 30, sm: 36, md: 48 },
+              lineHeight: 1.2,
+              letterSpacing: "-0.6px",
+              fontWeight: 400,
+              color: tokens.ink,
             }}
           >
-            Hi! I&apos;m Lucy. This site is a collective space on the things I
-            love and things I&apos;m working on, in an effort to keep track of it
-            all.
+            Hi! I&apos;m <Box component="span" sx={{ fontStyle: "italic" }}>Lucy</Box> — a
+            software engineer in{" "}
+            <Box component="span" sx={{ fontStyle: "italic" }}>San Francisco</Box>,
+            currently building tools at a small startup and cataloging the things I love
+            here.
           </Typography>
 
+          <Hair style={{ margin: "40px 0" }} />
+
           <Box
             sx={{
-              mt: { xs: 6, sm: 6, md: 8, lg: 8, xl: 8 },
-              width: "clamp(180px, 28vw, 260px)",
-              aspectRatio: "1 / 1",
-              position: "relative",
+              fontFamily: tokens.mono,
+              fontSize: 11,
+              letterSpacing: "1.2px",
+              color: tokens.ink60,
+              textTransform: "uppercase",
+              mb: 1.75,
             }}
           >
-            <Image
-              src="/images/about/napkin.png"
-              alt="Napkin note"
-              fill
-              sizes="(max-width: 900px) 45vw, (max-width: 1200px) 260px, 280px"
-              quality={100}
-              style={{ objectFit: "contain" }}
-            />
+            Currently
+          </Box>
+
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "100px 1fr", md: "120px 1fr" },
+              gap: { xs: "10px 20px", md: "12px 28px" },
+              fontSize: 15,
+              lineHeight: 1.5,
+            }}
+          >
+            {CURRENTLY.map(([k, v], i) => (
+              <Box key={`${k}-${i}`} sx={{ display: "contents" }}>
+                <Box
+                  component="span"
+                  sx={{
+                    fontFamily: tokens.mono,
+                    fontSize: 10,
+                    color: tokens.ink60,
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    pt: 0.4,
+                  }}
+                >
+                  {k}
+                </Box>
+                <Box component="span">{v}</Box>
+              </Box>
+            ))}
           </Box>
         </Box>
 
         <Box
           sx={{
+            background: tokens.paperCard,
+            border: `1px solid ${tokens.hairStrong}`,
+            p: { xs: 3, md: 4 },
             position: "relative",
-            display: "flex",
-            justifyContent: { xs: "flex-start", sm: "flex-start", md: "flex-end", lg: "flex-end", xl: "flex-end" },
-            pl: { xs: 0, sm: 0, md: 2, lg: 2, xl: 2 },
+            height: "fit-content",
           }}
         >
           <Box
             sx={{
-              position: "relative",
-              width: {
-                xs: "clamp(300px, 70vw, 440px)",
-                sm: "clamp(320px, 62vw, 500px)",
-                md: "clamp(320px, 54vw, 560px)",
-                lg: "clamp(420px, 46vw, 640px)",
-                xl: "clamp(520px, 40vw, 720px)",
-              },
-              aspectRatio: "27 / 32",
+              position: "absolute",
+              top: -12,
+              left: 20,
+              background: tokens.paper,
+              padding: "2px 12px",
+              fontFamily: tokens.mono,
+              fontSize: 9,
+              letterSpacing: "1.6px",
+              color: tokens.ink60,
+              textTransform: "uppercase",
+              border: `1px solid ${tokens.hairStrong}`,
             }}
           >
-            <Image
-              src="/images/about/about-paper-background.png"
-              alt="Contact paper background"
-              fill
-              sizes="(max-width: 1200px) 78vw, (max-width: 1800px) 50vw, 42vw"
-              quality={100}
-              style={{ objectFit: "contain" }}
-              priority
-            />
+            Contact index
+          </Box>
 
-            <Box
+          <CardLabel cat="F" no="001" date="04 · 22 · 26" />
+
+          <Typography
+            component="div"
+            sx={{
+              fontFamily: tokens.serif,
+              fontSize: 34,
+              fontStyle: "italic",
+              mt: 2.25,
+              color: tokens.ink,
+            }}
+          >
+            Gai, Lucy
+          </Typography>
+          <Box
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 10,
+              color: tokens.ink60,
+              letterSpacing: "0.8px",
+              textTransform: "uppercase",
+              mt: 0.5,
+            }}
+          >
+            Engineer / amateur archivist
+          </Box>
+
+          <Hair style={{ margin: "22px 0" }} />
+
+          {SOCIALS.map((s, i) => (
+            <MuiLink
+              key={s.label}
+              href={s.url}
+              target="_blank"
+              rel="noreferrer"
+              underline="none"
               sx={{
-                position: "absolute",
-                top: { xs: "29%", sm: "29%", md: "31%", lg: "31%", xl: "31%" },
-                left: { xs: "23%", sm: "23%", md: "25%", lg: "25%", xl: "25%" },
-                right: { xs: "0%", sm: "0%", md: "0%", lg: "0%", xl: "0%" },
-                textAlign: "left",
+                display: "grid",
+                gridTemplateColumns: "110px 1fr auto",
+                alignItems: "baseline",
+                color: tokens.ink,
+                p: "12px 0",
+                borderBottom:
+                  i < SOCIALS.length - 1 ? `1px dashed ${tokens.hair}` : "none",
+                "&:hover": {
+                  "& .handle": { color: tokens.accent },
+                },
               }}
             >
-              <Stack spacing={{ xs: 2 }} alignItems="flex-start">
-                {socials.map((social) => (
-                  <Stack
-                    key={social.label}
-                    component={MuiLink}
-                    href={social.href}
-                    underline="none"
-                    color="inherit"
-                    target="_blank"
-                    rel="noreferrer"
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    sx={{ justifyContent: "flex-start" }}
-                  >
-                    {social.icon ? (
-                      <Box
-                        sx={{
-                          position: "relative",
-                          width: "clamp(18px, 3vw, 26px)",
-                          aspectRatio: "1 / 1",
-                        }}
-                      >
-                        <Image
-                          src={social.icon}
-                          alt={`${social.label} logo`}
-                          fill
-                          sizes="(max-width: 900px) 5vw, 28px"
-                          quality={100}
-                          style={{ objectFit: "contain" }}
-                        />
-                      </Box>
-                    ) : null}
-                    <Typography
-                      sx={{
-                        fontFamily: "var(--font-vt323), monospace",
-                        fontSize: { xs: "1.0rem", md: "1.6rem", lg: "1.6rem", xl: "1.6rem" },
-                        letterSpacing: "0.6px",
-                        color: "#2a2521",
-                        minWidth: { xs: 150, md: 180, lg: 180, xl: 180 },
-                        textAlign: "left",
-                      }}
-                    >
-                      {social.label}
-                    </Typography>
-                  </Stack>
-                ))}
-              </Stack>
-            </Box>
-          </Box>
+              <Box
+                component="span"
+                sx={{
+                  fontFamily: tokens.mono,
+                  fontSize: 9,
+                  letterSpacing: "1.4px",
+                  color: tokens.ink60,
+                  textTransform: "uppercase",
+                }}
+              >
+                {s.label}
+              </Box>
+              <Box>
+                <Box
+                  className="handle"
+                  sx={{
+                    fontFamily: tokens.serif,
+                    fontSize: 16,
+                    fontStyle: "italic",
+                    transition: "color 180ms",
+                  }}
+                >
+                  {s.handle}
+                </Box>
+                <Box
+                  sx={{
+                    fontFamily: tokens.mono,
+                    fontSize: 9,
+                    color: tokens.ink40,
+                    mt: 0.25,
+                  }}
+                >
+                  {s.display}
+                </Box>
+              </Box>
+              <Box
+                component="span"
+                sx={{ fontFamily: tokens.mono, fontSize: 11, color: tokens.accent }}
+              >
+                ↗
+              </Box>
+            </MuiLink>
+          ))}
         </Box>
       </Box>
-    </Box>
+    </PageShell>
   );
 }

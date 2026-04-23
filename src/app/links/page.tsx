@@ -1,20 +1,28 @@
-import { Box } from '@mui/material';
-import Header from '@/components/Header';
+"use client";
+import { Box } from "@mui/material";
+import PageShell from "@/components/design/PageShell";
+import { tokens } from "@/components/design/tokens";
 
 export default function LinksPage() {
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        width: '100%',
-        position: 'relative',
-        backgroundColor: '#f5ede6',
-      }}
+    <PageShell
+      section="SECTION G · LINKS"
+      catNo="file: links.idx"
+      title="Links"
+      subtitle="The contact index lives on About."
     >
-      <Header />
-      <Box sx={{ pt: 20, px: 11 }}>
-        <p>Links page coming soon...</p>
+      <Box
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: 18,
+          color: tokens.ink60,
+          maxWidth: 560,
+          lineHeight: 1.6,
+        }}
+      >
+        Head to <Box component="span" sx={{ fontStyle: "italic" }}>About</Box> for
+        Instagram, Letterboxd, Spotify, Twitch, and email.
       </Box>
-    </Box>
+    </PageShell>
   );
 }

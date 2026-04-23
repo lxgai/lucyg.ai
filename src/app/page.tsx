@@ -1,304 +1,300 @@
 "use client";
 import { Box, Typography, Link as MuiLink } from "@mui/material";
 import Image from "next/image";
-import Header from "@/components/Header";
+import NextLink from "next/link";
+import Nav from "@/components/design/Nav";
+import { CardLabel } from "@/components/design/primitives";
+import { tokens, LAST_UPDATED } from "@/components/design/tokens";
 
-type ResponsivePosition = {
-  xs?: string;
-  sm?: string;
-  md?: string;
-  lg?: string;
-  xl?: string;
-};
-
-const CANVAS_WIDTH = 1280;
-const CANVAS_HEIGHT = 900;
-const MOBILE_CANVAS_WIDTH = 430;
-const MOBILE_CANVAS_HEIGHT = 667;
-
-const decorations = {
-  star: {
-    src: "/images/home/chrome_star.png",
-    alt: "star",
-    width: 130,
-    height: 130,
-    top: { xs: "8%", md: "18%" },
-    left: { xs: "20%", md: "3%" },
-    transform: { xs: "translateX(-50%)", md: "none" },
-    display: { xs: "block", md: "block" },
-  },
-  miffy: {
-    src: "/images/home/miffy.png",
-    alt: "miffy",
-    width: 200,
-    height: 200,
-    top: { xs: "6%", md: "20%" },
-    left: { xs: "62%", sm: "62%", md: "auto" },
-    right: { md: "20%" },
-    transform: { xs: "scale(0.7) rotate(6deg)", md: "rotate(8deg)" },
-  },
-  cursor: {
-    src: "/images/home/95_mouse.png",
-    alt: "cursor",
-    width: 32,
-    height: 32,
-    top: { md: "16%" },
-    right: { md: "12%" },
-    display: { xs: "none", md: "block" },
-  },
-  start: {
-    src: "/images/home/95_start.png",
-    alt: "start button",
-    width: 120,
-    height: 40,
-    paddingY: 8,
-    top: { xs: "115%", md: "90%" },
-    left: { xs: "70%", md: "auto" },
-    right: { md: "10%" },
-    transform: { xs: "translateX(-50%)", md: "none" },
-    href: "/travels",
-    zIndex: 20,
-  },
-};
+const QUICK_LINKS = [
+  { label: "Latest writing", sub: "on keeping a slow internet", to: "/blog" },
+  { label: "Recently played", sub: "nolimit, — Knock2", to: "/favorites" },
+  { label: "Where I've been", sub: "Amsterdam, Mar 2025", to: "/travels" },
+  { label: "What I'm making", sub: "this site, Fieldnotes", to: "/projects" },
+];
 
 export default function Home() {
   return (
     <Box
-      sx={{
-        minHeight: "100svh",
-        width: "100%",
-        position: "relative",
-        backgroundColor: "#f5ede6",
-        overflow: "clip",
-      }}
+      className="page-fade paper-a"
+      sx={{ minHeight: "100svh", fontFamily: tokens.serif, color: tokens.ink }}
     >
-      <Header blurOnMobileOpen />
+      <Nav />
+
+      <Box sx={{ px: { xs: 4, md: 10, lg: 13 }, pt: { xs: 3, md: 4 } }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 2,
+            flexWrap: "wrap",
+            fontFamily: tokens.mono,
+            fontSize: { xs: 9, md: 10 },
+            letterSpacing: "1.6px",
+            color: tokens.ink60,
+            textTransform: "uppercase",
+            py: 1,
+            borderTop: `1px solid ${tokens.hairStrong}`,
+            borderBottom: `1px solid ${tokens.hairStrong}`,
+          }}
+        >
+          <Box component="span">Personal archive · vol. 01</Box>
+          <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+            file: home.idx
+          </Box>
+          <Box component="span">last updated {LAST_UPDATED}</Box>
+        </Box>
+      </Box>
 
       <Box
         sx={{
-          "--page-gutter": { xs: "16px", md: "32px" },
-          px: "var(--page-gutter)",
-          boxSizing: "border-box",
+          px: { xs: 4, md: 10, lg: 13 },
+          pt: { xs: 6, md: 9 },
+          pb: { xs: 8, md: 10 },
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1.1fr 0.9fr" },
+          gap: { xs: 6, md: 9 },
         }}
       >
+        <Box>
+          <Box
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 10,
+              letterSpacing: "2px",
+              color: tokens.accent,
+              textTransform: "uppercase",
+              mb: 3.5,
+            }}
+          >
+            ENTRY 001 ·····  A COLLECTION
+          </Box>
+
+          <Typography
+            component="div"
+            sx={{
+              fontFamily: tokens.serif,
+              fontSize: { xs: 72, sm: 96, md: 128 },
+              lineHeight: 0.92,
+              letterSpacing: "-3px",
+              fontWeight: 400,
+              color: tokens.ink,
+            }}
+          >
+            Hi,
+            <br />
+            <Box component="span" sx={{ fontStyle: "italic" }}>
+              I&apos;m Lucy.
+            </Box>
+          </Typography>
+
+          <Typography
+            sx={{
+              mt: 5,
+              maxWidth: 480,
+              fontSize: { xs: 17, md: 19 },
+              lineHeight: 1.55,
+              color: tokens.ink,
+            }}
+          >
+            A software engineer cataloging the things I love — trips, records, films, and
+            the small projects in between. This site is a room I keep returning to.
+          </Typography>
+
+          <Box
+            sx={{
+              mt: 5.5,
+              display: "flex",
+              gap: 2.5,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <MuiLink
+              component={NextLink}
+              href="/about"
+              underline="none"
+              sx={{
+                px: 3.5,
+                py: 1.75,
+                background: tokens.ink,
+                color: tokens.paper,
+                fontFamily: tokens.mono,
+                fontSize: 11,
+                letterSpacing: "1.6px",
+                textTransform: "uppercase",
+                transition: "opacity 180ms",
+                "&:hover": { opacity: 0.88 },
+              }}
+            >
+              More about me →
+            </MuiLink>
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                color: tokens.ink60,
+                letterSpacing: "1.4px",
+                textTransform: "uppercase",
+              }}
+            >
+              5 sections · updated weekly
+            </Box>
+          </Box>
+
+          <Box sx={{ mt: 8 }}>
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.6px",
+                color: tokens.ink60,
+                textTransform: "uppercase",
+                mb: 2,
+              }}
+            >
+              ━━ Lately
+            </Box>
+            <Box>
+              {QUICK_LINKS.map((q) => (
+                <MuiLink
+                  key={q.to}
+                  component={NextLink}
+                  href={q.to}
+                  underline="none"
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto",
+                    alignItems: "baseline",
+                    color: tokens.ink,
+                    p: "14px 0",
+                    borderBottom: `1px solid ${tokens.hair}`,
+                    transition: "background 180ms",
+                    "&:hover": { background: "rgba(31,26,22,0.04)" },
+                  }}
+                >
+                  <Box>
+                    <Box
+                      sx={{
+                        fontFamily: tokens.serif,
+                        fontSize: 22,
+                        fontStyle: "italic",
+                        color: tokens.ink,
+                      }}
+                    >
+                      {q.label}
+                    </Box>
+                    <Box
+                      sx={{
+                        fontFamily: tokens.mono,
+                        fontSize: 10,
+                        color: tokens.ink60,
+                        mt: 0.5,
+                        letterSpacing: "1px",
+                      }}
+                    >
+                      {q.sub}
+                    </Box>
+                  </Box>
+                  <Box
+                    component="span"
+                    sx={{ fontFamily: tokens.mono, fontSize: 12, color: tokens.accent }}
+                  >
+                    ↗
+                  </Box>
+                </MuiLink>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+
         <Box
           sx={{
-            "--canvas-scale": {
-              xs: `min(calc((100vw - (var(--page-gutter) * 2)) / ${MOBILE_CANVAS_WIDTH}px), 1)`,
-              sm: `min(calc((100vw - (var(--page-gutter) * 2)) / ${MOBILE_CANVAS_WIDTH}px), 1)`,
-              md: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
-              lg: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
-              xl: `min(calc((100vw - (var(--page-gutter) * 2)) / ${CANVAS_WIDTH}px), 1)`,
-            },
-            "--canvas-width": {
-              xs: `${MOBILE_CANVAS_WIDTH}px`,
-              sm: `${MOBILE_CANVAS_WIDTH}px`,
-              md: `${CANVAS_WIDTH}px`,
-              lg: `${CANVAS_WIDTH}px`,
-              xl: `${CANVAS_WIDTH}px`,
-            },
-            "--canvas-height": {
-              xs: `${MOBILE_CANVAS_HEIGHT}px`,
-              sm: `${MOBILE_CANVAS_HEIGHT}px`,
-              md: `${CANVAS_HEIGHT}px`,
-              lg: `${CANVAS_HEIGHT}px`,
-              xl: `${CANVAS_HEIGHT}px`,
-            },
             position: "relative",
-            width: "calc(var(--canvas-width) * var(--canvas-scale))",
-            height: "calc(var(--canvas-height) * var(--canvas-scale))",
-            minHeight: "100svh",
-            mx: "auto",
+            pt: { xs: 2, md: 5 },
+            minHeight: { xs: 440, md: 560 },
           }}
         >
           <Box
             sx={{
-              position: { xs: "relative", sm: "relative", md: "absolute" },
-              inset: { md: 0 },
-              width: "var(--canvas-width)",
-              minHeight: "var(--canvas-height)",
-              height: "var(--canvas-height)",
-              transform: "scale(var(--canvas-scale))",
-              transformOrigin: "top left",
+              position: "absolute",
+              top: 40,
+              left: 50,
+              right: 20,
+              bottom: 60,
+              background: tokens.paperDeep,
+              transform: "rotate(-1.8deg)",
+              border: `1px solid ${tokens.hairStrong}`,
             }}
-          >
-          {/* Decorative assets */}
-          <Box sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-            <DecorativeImage {...decorations.star} />
-            <DecorativeImage {...decorations.miffy} />
-            <DecorativeImage {...decorations.cursor} />
-          </Box>
-
-          {/* Scrapbook hero stage */}
+          />
           <Box
             sx={{
-              position: "relative",
-              minHeight: "100%",
-              width: "100%",
-              px: { xs: 3, sm: 3, md: 6, lg: 6, xl: 6 },
+              position: "absolute",
+              top: 30,
+              left: 20,
+              right: 40,
+              bottom: 80,
+              background: "#eae1d2",
+              transform: "rotate(1.4deg)",
+              border: `1px solid ${tokens.hairStrong}`,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              top: 10,
+              left: 30,
+              right: 10,
+              bottom: 40,
+              background: tokens.paperCard,
+              border: `1px solid ${tokens.hairStrong}`,
+              p: 2,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Typography
-              component="div"
-              sx={{
-                position: "absolute",
-                top: { xs: "34%", md: "52%" },
-                left: { xs: "16%",  md: "0%", lg: "0%", xl: "0%" },
-                transform: { xs: "translateX(-50%)", md: "none" },
-                fontFamily: "var(--font-cooper-light), serif",
-                fontSize: { xs: "3.5rem", md: "9rem", lg: "9rem", xl: "9rem" },
-                fontWeight: 400,
-                lineHeight: 1,
-                color: "#2a2521",
-                zIndex: 2,
-                whiteSpace: "nowrap",
-              }}
-            >
-              Hi,
-            </Typography>
-
             <Box
               sx={{
-                position: "absolute",
-                top: { xs: "21%", sm: "21%", md: "38%"},
-                left: { xs: "52%", md: "0%", lg: "0%", xl: "0%" },
-                transform: { xs: "translateX(-50%) rotate(2deg)", md: "rotate(4deg)" },
-                zIndex: 1,
+                flex: 1,
+                position: "relative",
+                overflow: "hidden",
+                background: tokens.paperDeep,
               }}
             >
-              <SelfieImage />
+              <Image
+                src="/images/home/selfie1.png"
+                alt="Self-portrait"
+                fill
+                sizes="(max-width: 900px) 90vw, 420px"
+                style={{ objectFit: "cover", filter: "sepia(0.15) saturate(0.9)" }}
+                priority
+              />
             </Box>
-
-            <Typography
-              component="div"
+            <Box
               sx={{
-                position: "absolute",
-                top: { xs: "89%", md: "52%" },
-                left: { xs: "58%", md: "50%", lg: "50%", xl: "50%" },
-                transform: { xs: "translateX(-50%)", md: "none" },
-                fontFamily: "var(--font-cooper-light), serif",
-                fontSize: { xs: "3.5rem", md: "10rem", lg: "10rem", xl: "10rem" },
-                fontWeight: 400,
-                lineHeight: 1,
-                color: "#2a2521",
-                zIndex: 2,
-                /*transform: "rotate(1deg)",*/
-                whiteSpace: "nowrap",
+                mt: 1.5,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                gap: 2,
               }}
             >
-              I&apos;m Lucy
-            </Typography>
-
-            <Typography
-              component="div"
-              sx={{
-                position: "absolute",
-                top: { xs: "103%", md: "78%" },
-                left: { xs: "50%",  md: "54%", lg: "54%", xl: "54%" },
-                transform: { xs: "translateX(-50%)", md: "none" },
-                fontFamily: "var(--font-vt323), monospace",
-                fontSize: { xs: "1rem",  md: "1.15rem", lg: "1.15rem", xl: "1.15rem" },
-                letterSpacing: "0.5px",
-                lineHeight: 1.6,
-                width: { xs: "85vw", md: "auto" },
-                maxWidth: { xs: 440, sm: 520, md: 800 },
-                color: "#2a2521",
-                zIndex: 2,
-                /*transform: "rotate(-1deg)",*/
-              }}
-            >
-              Currently a software engineer, travel enthusiast, and [something else].{" "}
-              Read about my thoughts, travels, and projects here.
-            </Typography>
+              <Box
+                sx={{
+                  fontFamily: tokens.serif,
+                  fontStyle: "italic",
+                  fontSize: 17,
+                  color: tokens.ink,
+                }}
+              >
+                Self-portrait, spring
+              </Box>
+              <CardLabel cat="A" no="001" />
+            </Box>
           </Box>
-
-          {/* Clickable start button overlay */}
-          <DecorativeImage {...decorations.start} />
         </Box>
       </Box>
-    </Box>
-    </Box>
-  );
-}
-
-function SelfieImage() {
-  return (
-    <Box
-      sx={{
-            position: "relative",
-        width: { xs: 420, md: 720, lg: 720, xl: 720 },
-        height: { xs: 520, md: 820, lg: 820, xl: 820 },
-        overflow: "visible",
-        borderRadius: 12,
-      }}
-    >
-      <Image
-        src="/images/home/selfie1.png"
-        alt="Lucy selfie"
-        fill
-        sizes="(max-width: 600px) 85vw, (max-width: 900px) 70vw, (max-width: 1536px) 620px, 720px"
-        style={{ objectFit: "contain", }} /* backgroundColor: "#f8f8f8" */
-        priority
-      />
-    </Box>
-  );
-}
-
-function DecorativeImage({
-  src,
-  alt,
-  width,
-  height,
-  top,
-  left,
-  right,
-  rotate,
-  transform,
-  display,
-  href,
-  zIndex,
-  paddingY,
-}: {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  top?: string | ResponsivePosition;
-  left?: string | ResponsivePosition;
-  right?: string | ResponsivePosition;
-  rotate?: string;
-  transform?: string | ResponsivePosition;
-  display?: string | ResponsivePosition;
-  href?: string;
-  zIndex?: number;
-  paddingY?: number | string;
-}) {
-  const imageTransform = transform ?? (rotate ? `rotate(${rotate})` : undefined);
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top,
-        left,
-        right,
-        transform: imageTransform,
-        display,
-        pointerEvents: href ? "auto" : "none",
-        cursor: href ? "pointer" : "default",
-        zIndex,
-      }}
-    >
-      {href ? (
-        <MuiLink
-          href={href}
-          underline="none"
-          sx={{ display: "inline-flex", py: paddingY }}
-        >
-          <Image src={src} alt={alt} width={width} height={height} priority />
-        </MuiLink>
-      ) : (
-        <Image src={src} alt={alt} width={width} height={height} priority />
-      )}
     </Box>
   );
 }
