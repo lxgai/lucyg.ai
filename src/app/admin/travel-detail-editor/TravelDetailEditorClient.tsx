@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { tokens } from "@/components/design/tokens";
@@ -9,9 +8,11 @@ import {
   TravelDetailSurface,
   TravelDetailViewportContainer,
 } from "@/components/travel/TravelDetailSectionFrame";
+import { Closing, Hero, TravelMetadataStrip } from "@/components/travel/TravelDetailPage";
 import {
   travelDetailCanvasWidth,
   travelDetailCanvasXBounds,
+  travelDetailSurfaceWidth,
 } from "@/components/travel/detailGeometry";
 import type {
   TravelDetailBlock,
@@ -223,10 +224,11 @@ function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset,
 function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: (sectionId: string, src: string) => void; onDragItem: (state: DragState) => void }) {
   return (
     <TravelDetailSurface
-      data={data}
       breakpoint={breakpoint}
+      mode="fixed"
       sx={{
         mx: "auto",
+        width: travelDetailSurfaceWidth(breakpoint),
         minHeight: 640,
         maxWidth: "none",
         border: "1px solid rgba(120, 113, 108, 0.65)",
@@ -235,84 +237,12 @@ function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragIte
         boxShadow: "0 1px 3px rgba(31, 26, 22, 0.1)",
       }}
     >
-      <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 3 : 4.5 }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 2,
-            fontFamily: tokens.mono,
-            fontSize: breakpoint === "small" ? 9 : 10,
-            letterSpacing: "1.6px",
-            color: tokens.ink60,
-            textTransform: "uppercase",
-            py: 1,
-            borderTop: `1px solid ${tokens.hairStrong}`,
-            borderBottom: `1px solid ${tokens.hairStrong}`,
-            flexWrap: "wrap",
-          }}
-        >
-          <Box component="span" sx={{ color: tokens.accent }}>{data.section}</Box>
-          <Box component="span">{data.catNo}</Box>
-          <Box component="span">{data.updatedLabel}</Box>
-        </Box>
-      </TravelDetailViewportContainer>
-
-      <TravelDetailViewportContainer
-        breakpoint={breakpoint}
-        sx={{
-          pt: 4,
-          display: "grid",
-          gridTemplateColumns: breakpoint === "large" ? "1.35fr 1fr" : "1fr",
-          gap: breakpoint === "small" ? 4 : 4.5,
-          alignItems: "start",
-        }}
-      >
-        <Box sx={{ position: "relative", maxWidth: breakpoint === "large" ? 760 : "100%" }}>
-          <Box sx={{ position: "relative", width: "100%", background: tokens.paperCard, border: `1px solid ${tokens.hairStrong}`, p: breakpoint === "small" ? 1 : 1.5, boxShadow: "0 14px 30px rgba(31, 26, 22, 0.12)" }}>
-            <Box sx={{ position: "relative", width: "100%", aspectRatio: data.hero.image.aspect, overflow: "hidden", background: tokens.paperDeep }}>
-              {data.hero.image.src && <Image src={data.hero.image.src} alt={data.hero.image.alt} fill sizes={breakpoint === "large" ? "620px" : "90vw"} draggable={false} style={{ objectFit: "cover", filter: "sepia(0.08) saturate(0.94)" }} />}
-            </Box>
-            <Box sx={{ mt: 1.1, display: "flex", justifyContent: "space-between", gap: 2, alignItems: "baseline" }}>
-              <Typography sx={{ fontFamily: tokens.serif, fontStyle: "italic", fontSize: breakpoint === "small" ? 14 : 16, lineHeight: 1.2 }}>
-                {data.hero.image.caption}
-              </Typography>
-              <Typography sx={{ flex: "0 0 auto", fontFamily: tokens.mono, fontSize: 9, color: tokens.ink40, letterSpacing: "1.2px", textTransform: "uppercase" }}>
-                Filed
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-
-        <Box sx={{ pt: breakpoint === "small" ? 0 : 0.75, maxWidth: 540 }}>
-          <Typography sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "2px", color: tokens.accent, textTransform: "uppercase" }}>
-            Section C · Travels No. {data.fileNo}
-          </Typography>
-          <Typography
-            component="h1"
-            sx={{
-              mt: 0.75,
-              fontFamily: tokens.serif,
-              fontWeight: 400,
-              fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,
-              lineHeight: 0.92,
-              letterSpacing: breakpoint === "small" ? "-1.2px" : "-2px",
-              color: tokens.ink,
-            }}
-          >
-            <Box component="span" sx={{ fontStyle: "italic" }}>{data.hero.title}</Box>
-            <br />
-            <Box component="span" sx={{ color: tokens.ink60 }}>{data.hero.italicTitle}</Box>
-          </Typography>
-          <Typography sx={{ mt: 2.75, fontFamily: tokens.serif, fontSize: breakpoint === "small" ? 17 : 18, lineHeight: 1.55, color: tokens.ink60 }}>
-            {data.hero.intro}
-          </Typography>
-        </Box>
-      </TravelDetailViewportContainer>
-
+      <TravelMetadataStrip data={data} breakpoint={breakpoint} />
+      <Hero data={data} breakpoint={breakpoint} onOpen={() => undefined} />
       <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>
         {data.sections.map((section) => <SectionPreview key={section.id} section={section} breakpoint={breakpoint} selection={selection} onSelect={onSelect} onDropAsset={onDropAsset} onDragItem={onDragItem} />)}
       </TravelDetailViewportContainer>
+      <Closing data={data} breakpoint={breakpoint} onOpen={() => undefined} />
     </TravelDetailSurface>
   );
 }

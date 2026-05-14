@@ -1,4 +1,4 @@
-import type { TravelDetailBreakpoint, TravelDetailData, TravelDetailSection } from "@/types/travelDetail";
+import type { TravelDetailBreakpoint, TravelDetailSection } from "@/types/travelDetail";
 
 export const travelDetailCanvasXBounds = {
   min: -50,
@@ -6,8 +6,14 @@ export const travelDetailCanvasXBounds = {
 } as const;
 
 export const travelDetailViewportWidth: Record<TravelDetailBreakpoint, number> = {
-  large: 2048,
+  large: 1440,
   medium: 1120,
+  small: 470,
+};
+
+export const travelDetailMinViewportWidth: Record<TravelDetailBreakpoint, number> = {
+  large: 1328,
+  medium: 1020,
   small: 470,
 };
 
@@ -29,12 +35,6 @@ export function travelDetailCanvasHeight(section: TravelDetailSection, breakpoin
   return section.canvas.smallHeight;
 }
 
-export function travelDetailSurfaceWidth(data: TravelDetailData, breakpoint: TravelDetailBreakpoint) {
-  const viewportWidth = travelDetailViewportWidth[breakpoint];
-  const widestCanvas = data.sections.length
-    ? Math.max(...data.sections.map((section) => travelDetailCanvasWidth(section, breakpoint)))
-    : 0;
-  const canvasBleedRight = Math.max(0, ((travelDetailCanvasXBounds.max - 100) / 100) * widestCanvas);
-
-  return viewportWidth + canvasBleedRight;
+export function travelDetailSurfaceWidth(breakpoint: TravelDetailBreakpoint) {
+  return travelDetailViewportWidth[breakpoint];
 }

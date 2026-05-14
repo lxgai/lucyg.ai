@@ -2,39 +2,108 @@
 
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
+import { useEffect, useRef, useState } from "react";
 import type { DragEventHandler, MouseEventHandler, ReactNode, Ref } from "react";
 import { tokens } from "@/components/design/tokens";
-import type { TravelDetailBreakpoint, TravelDetailData, TravelDetailSection } from "@/types/travelDetail";
+import type { TravelDetailBreakpoint, TravelDetailSection } from "@/types/travelDetail";
 import {
   travelDetailCanvasHeight,
   travelDetailCanvasWidth,
   travelDetailPageGutterPx,
   travelDetailSurfaceWidth,
-  travelDetailViewportWidth,
 } from "./detailGeometry";
 
 export function TravelDetailSurface({
-  data,
   breakpoint,
+  mode = "fixed",
   children,
   sx,
 }: {
-  data: TravelDetailData;
   breakpoint: TravelDetailBreakpoint;
+  mode?: "fixed" | "fit-width";
   children: ReactNode;
   sx?: SxProps<Theme>;
 }) {
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLDivElement | null>(null);
+  const designWidth = travelDetailSurfaceWidth(breakpoint);
+  const [availableWidth, setAvailableWidth] = useState(designWidth);
+  const [innerHeight, setInnerHeight] = useState(0);
+  const scale = mode === "fit-width" ? availableWidth / designWidth : 1;
+
+  useEffect(() => {
+    if (mode !== "fit-width") return undefined;
+    const outer = outerRef.current;
+    if (!outer) return undefined;
+
+    const updateWidth = () => setAvailableWidth(outer.clientWidth || designWidth);
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(outer);
+    return () => observer.disconnect();
+  }, [designWidth, mode]);
+
+  useEffect(() => {
+    if (mode !== "fit-width") return undefined;
+    const inner = innerRef.current;
+    if (!inner) return undefined;
+
+    const updateHeight = () => setInnerHeight(inner.offsetHeight);
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(inner);
+    return () => observer.disconnect();
+  }, [breakpoint, mode]);
+
+  if (mode === "fixed") {
+    return (
+      <Box
+        ref={innerRef}
+        sx={[
+          {
+            width: designWidth,
+            flex: "0 0 auto",
+            overflow: "visible",
+          },
+          ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
+        ]}
+      >
+        {children}
+      </Box>
+    );
+  }
+
   return (
     <Box
+      ref={outerRef}
       sx={[
         {
-          width: travelDetailSurfaceWidth(data, breakpoint),
-          overflow: "visible",
+          width: "100%",
+          height: innerHeight > 0 ? innerHeight * scale : undefined,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          overflow: "clip",
         },
-        ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
       ]}
     >
-      <Box sx={{ width: travelDetailViewportWidth[breakpoint], overflow: "visible" }}>{children}</Box>
+      <Box
+        ref={innerRef}
+        sx={[
+          {
+            width: designWidth,
+            flex: "0 0 auto",
+            overflow: "visible",
+            transform: `scale(${scale})`,
+            transformOrigin: "top center",
+          },
+          ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
+        ]}
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
@@ -52,7 +121,7 @@ export function TravelDetailViewportContainer({
     <Box
       sx={[
         {
-          width: travelDetailViewportWidth[breakpoint],
+          width: "100%",
           px: `${travelDetailPageGutterPx[breakpoint]}px`,
           boxSizing: "border-box",
           overflow: "visible",
