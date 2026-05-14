@@ -16,11 +16,13 @@ import {
 export function TravelDetailSurface({
   breakpoint,
   mode = "fixed",
+  scaleMultiplier = 1,
   children,
   sx,
 }: {
   breakpoint: TravelDetailBreakpoint;
   mode?: "fixed" | "fit-width";
+  scaleMultiplier?: number;
   children: ReactNode;
   sx?: SxProps<Theme>;
 }) {
@@ -29,7 +31,7 @@ export function TravelDetailSurface({
   const designWidth = travelDetailSurfaceWidth(breakpoint);
   const [availableWidth, setAvailableWidth] = useState(designWidth);
   const [innerHeight, setInnerHeight] = useState(0);
-  const scale = mode === "fit-width" ? availableWidth / designWidth : 1;
+  const scale = mode === "fit-width" ? (availableWidth / designWidth) * scaleMultiplier : 1;
 
   useEffect(() => {
     if (mode !== "fit-width") return undefined;

@@ -562,9 +562,8 @@ export default function TravelDetailPage({ data }: { data: TravelDetailData }) {
 
   return (
     <Box id="top">
-      <PageShell contentPadding={false}>
-        <TravelDetailSurface breakpoint={breakpoint} mode="fit-width">
-          <TravelMetadataStrip data={data} breakpoint={breakpoint} />
+      <PageShell section={data.section} catNo={data.catNo} updatedLabel={data.updatedLabel} contentPadding={false}>
+        <TravelDetailSurface breakpoint={breakpoint} mode="fit-width" scaleMultiplier={0.94}>
           <Hero data={data} breakpoint={breakpoint} onOpen={setLightboxImage} />
           <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>
             {data.sections.map((section) => (
