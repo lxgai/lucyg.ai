@@ -1,7 +1,9 @@
 "use client";
 import { Box, Typography } from "@mui/material";
+import type { SxProps, Theme } from "@mui/material/styles";
 import type { ReactNode } from "react";
 import Nav from "./Nav";
+import { MetadataStrip, PageContainer } from "./layout";
 import { LAST_UPDATED, tokens } from "./tokens";
 
 type PageShellProps = {
@@ -11,6 +13,8 @@ type PageShellProps = {
   title?: ReactNode;
   subtitle?: ReactNode;
   updatedLabel?: string;
+  contentPadding?: boolean;
+  contentSx?: SxProps<Theme>;
 };
 
 export default function PageShell({
@@ -20,6 +24,8 @@ export default function PageShell({
   title,
   subtitle,
   updatedLabel = `UPDATED ${LAST_UPDATED}`,
+  contentPadding = true,
+  contentSx,
 }: PageShellProps) {
   return (
     <Box
@@ -33,36 +39,11 @@ export default function PageShell({
       <Nav />
 
       {section && (
-        <Box sx={{ px: { xs: 4, md: 10, lg: 13 }, pt: { xs: 3, md: 4.5 } }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 2,
-              fontFamily: tokens.mono,
-              fontSize: { xs: 9, md: 10 },
-              letterSpacing: "1.6px",
-              color: tokens.ink60,
-              textTransform: "uppercase",
-              py: 1,
-              borderTop: `1px solid ${tokens.hairStrong}`,
-              borderBottom: `1px solid ${tokens.hairStrong}`,
-              flexWrap: "wrap",
-            }}
-          >
-            <Box component="span" sx={{ color: tokens.accent }}>
-              {section}
-            </Box>
-            {catNo && <Box component="span">{catNo}</Box>}
-            <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
-              {updatedLabel}
-            </Box>
-          </Box>
-        </Box>
+        <MetadataStrip section={section} catNo={catNo} updatedLabel={updatedLabel} sx={{ pt: { xs: 3, md: 4.5 } }} />
       )}
 
       {(title || subtitle) && (
-        <Box sx={{ px: { xs: 4, md: 10, lg: 13 }, pt: { xs: 5, md: 6 }, pb: { xs: 3, md: 4 } }}>
+        <PageContainer sx={{ pt: { xs: 5, md: 6 }, pb: { xs: 3, md: 4 } }}>
           {title && (
             <Typography
               component="h1"
@@ -93,17 +74,22 @@ export default function PageShell({
               {subtitle}
             </Box>
           )}
-        </Box>
+        </PageContainer>
       )}
 
-      <Box
-        sx={{
-          px: { xs: 4, md: 10, lg: 13 },
-          pt: title || subtitle ? 0 : { xs: 3, md: 3 },
-          pb: { xs: 8, md: 10 },
-        }}
-      >
-        {children}
+      <Box sx={contentSx}>
+        {contentPadding ? (
+          <PageContainer
+            sx={{
+              pt: title || subtitle ? 0 : { xs: 3, md: 3 },
+              pb: { xs: 8, md: 10 },
+            }}
+          >
+            {children}
+          </PageContainer>
+        ) : (
+          children
+        )}
       </Box>
     </Box>
   );

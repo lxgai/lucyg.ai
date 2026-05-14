@@ -1,35 +1,7 @@
-"use client";
-
-import { Box } from "@mui/material";
-import Header from "@/components/Header";
-import CollageLayout from "@/components/CollageLayout";
-import layoutData from "@/data/travels/china-24.json";
-import { CollageLayoutData } from "@/types/collage";
+import TravelDetailPage from "@/components/travel/TravelDetailPage";
+import china24 from "@/data/travel-details/china-24.json";
+import type { TravelDetailData } from "@/types/travelDetail";
 
 export default function China24Page() {
-  return (
-    <Box
-      sx={{
-        minHeight: "100svh",
-        width: "100%",
-        position: "relative",
-        backgroundColor: "#f5ede6",
-        overflow: "clip",
-      }}
-    >
-      <Header />
-
-      <Box
-        sx={{
-          px: { xs: "24px", md: "72px" },
-          pt: { xs: 4, md: 12 },
-          boxSizing: "border-box",
-        }}
-      >
-        <Box sx={{ maxWidth: `${1920 * 1.6}px`, mx: "auto" }}>
-          <CollageLayout layout={layoutData as CollageLayoutData} />
-        </Box>
-      </Box>
-    </Box>
-  );
+  return <TravelDetailPage data={china24 as TravelDetailData} />;
 }

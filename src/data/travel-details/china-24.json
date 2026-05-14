@@ -1,0 +1,676 @@
+{
+  "slug": "china-24",
+  "fileNo": "001",
+  "section": "SECTION C · TRAVELS / CHINA",
+  "catNo": "01 / 2024 · 14 days",
+  "updatedLabel": "UPDATED 04 · 22 · 26",
+  "metadata": {
+    "place": "China",
+    "dateRange": "JUL 06 - JUL 19, 2024",
+    "duration": "14 days",
+    "citySummary": "Chongqing · Hangzhou · Wulong",
+    "companions": "Mom & Dad"
+  },
+  "hero": {
+    "title": "China,",
+    "italicTitle": "summer '24.",
+    "subtitle": "Chongqing · Hangzhou · Wulong",
+    "intro": "Two summer weeks across three very different Chinas. Hangzhou for lotus ponds and slow lake mornings; Chongqing for hot pots, river lights, and noodles that left me sweating into my soup; Wulong for cliffs that swallowed everything human-sized. I traveled with my parents - first time in a while - and ate constantly.",
+    "facts": [
+      "14 days",
+      "3 cities",
+      "Mom & Dad"
+    ],
+    "image": {
+      "id": "hero-west-lake",
+      "type": "image",
+      "src": "/images/travels/china-24/hangzhou.jpg",
+      "alt": "West Lake in Hangzhou at dusk with lotus blooms",
+      "caption": "West Lake, Hangzhou - first morning.",
+      "aspect": "3 / 2",
+      "layout": {
+        "large": {
+          "x": 0,
+          "y": 0,
+          "width": 58,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "medium": {
+          "x": 0,
+          "y": 0,
+          "width": 58,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "small": {
+          "x": 0,
+          "y": 0,
+          "width": 88,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        }
+      }
+    }
+  },
+  "closing": {
+    "eyebrow": "End of file - China '24",
+    "title": "See you next summer.",
+    "noteTitle": "note to future me:",
+    "note": "you didn't take enough photos of the food. take more next time. also, learn to read the menu - pointing only gets you so far.",
+    "signature": "- Lucy, somewhere over the Pacific",
+    "nextHref": "/travels/japan-24",
+    "nextLabel": "Next: Japan '24",
+    "image": {
+      "id": "closing-family",
+      "type": "image",
+      "src": "/images/travels/china-24/family-stickered.png",
+      "alt": "Lucy and her parents in Wulong with stickers on their faces",
+      "caption": "the three of us, somewhere in Wulong",
+      "aspect": "1 / 1",
+      "cutout": true,
+      "layout": {
+        "large": {
+          "x": 0,
+          "y": 0,
+          "width": 32,
+          "rotation": -1.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "medium": {
+          "x": 0,
+          "y": 0,
+          "width": 32,
+          "rotation": -1.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "small": {
+          "x": 0,
+          "y": 0,
+          "width": 80,
+          "rotation": -1.6,
+          "zIndex": 1,
+          "visible": true
+        }
+      }
+    }
+  },
+  "sections": [
+    {
+      "id": "hangzhou",
+      "no": "01",
+      "name": "Hangzhou",
+      "nativeName": "杭州",
+      "romanizedName": "Hangzhou",
+      "dayLabel": "Days 1 - 4",
+      "coordinates": "30.27°N · 120.15°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 660,
+        "mediumWidth": 860,
+        "mediumHeight": 660,
+        "smallWidth": 390,
+        "smallHeight": 760
+      },
+      "blurb": "Mornings on West Lake before the heat. Lotus the size of a dinner plate. Dumplings that disappeared faster than I can describe them. The kind of quiet that makes you talk softer.",
+      "blocks": [
+        {
+          "id": "hangzhou-lake",
+          "type": "image",
+          "src": "/images/travels/china-24/hangzhou.jpg",
+          "alt": "West Lake at dusk",
+          "caption": "West Lake - lotus the size of dinner plates",
+          "aspect": "3 / 2",
+          "layout": {
+            "large": {
+              "x": -21.869054521833156,
+              "y": 182.933349609375,
+              "width": 54.28841098080581,
+              "rotation": -1.8,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 2.0861984574005916,
+              "y": 208.00006103515625,
+              "width": 39.1693651782807,
+              "rotation": -1.8,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 86,
+              "rotation": -1.8,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-dumplings",
+          "type": "image",
+          "src": "/images/travels/china-24/westlake-dumplings.png",
+          "alt": "Crab-roe dumplings served along West Lake",
+          "caption": "",
+          "aspect": "4 / 3",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 42.60922270011513,
+              "y": -109.4666748046875,
+              "width": 91.78571428571429,
+              "rotation": 5,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 40.692560756406984,
+              "y": 0,
+              "width": 58.2421126975653,
+              "rotation": 5,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 360,
+              "width": 86,
+              "rotation": 5,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-note",
+          "type": "text",
+          "text": "Mornings on West Lake before the heat. Lotus the size of a dinner plate. Dumplings that disappeared faster than I can describe them. The kind of quiet that makes you talk softer.",
+          "tone": "caption",
+          "layout": {
+            "large": {
+              "x": -22.92857578822546,
+              "y": 38.399993896484375,
+              "width": 65.45693386661286,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 2.4940948950033666,
+              "y": 66.39999389648438,
+              "width": 37.59979100947,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 590,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          },
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "hangzhou-primary-tape",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": -5.850824069706533,
+              "y": 172.53338623046875,
+              "width": 13.968708887031605,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 15.45868520763722,
+              "y": 192.800048828125,
+              "width": 13.968708887031605,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 18,
+              "y": 12,
+              "width": 24,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "chongqing",
+      "no": "02",
+      "name": "Chongqing",
+      "nativeName": "重庆",
+      "romanizedName": "Chongqing",
+      "dayLabel": "Days 5 - 10",
+      "coordinates": "29.56°N · 106.55°E",
+      "align": "right",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 700,
+        "mediumWidth": 860,
+        "mediumHeight": 700,
+        "smallWidth": 390,
+        "smallHeight": 860
+      },
+      "blurb": "A vertical city - bridges over bridges, escalators that climb six floors at once. We ate hot pot until we couldn't, then walked it off along the river while Hongyadong lit up gold. My favorite chaos of the trip.",
+      "blocks": [
+        {
+          "id": "chongqing-hongyadong",
+          "type": "image",
+          "src": "/images/travels/china-24/hongyadong-heart.png",
+          "alt": "Hongyadong lit up at night from across the river",
+          "caption": "Hongyadong, 8:42pm",
+          "aspect": "3 / 4",
+          "layout": {
+            "large": {
+              "x": 72.07277702503454,
+              "y": 0,
+              "width": 35.84298635638984,
+              "rotation": 2.4,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 52.715618909102616,
+              "y": 0,
+              "width": 35.84298635638984,
+              "rotation": 2.4,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 86,
+              "rotation": 2.4,
+              "zIndex": 2,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "chongqing-xiaomian",
+          "type": "image",
+          "src": "/images/travels/china-24/xiaomian.png",
+          "alt": "A bowl of Chongqing xiaomian noodles",
+          "caption": "xiaomian - small noodles, very big heat",
+          "aspect": "5 / 4",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 0,
+              "y": 339.5999755859375,
+              "width": 21.85177320690808,
+              "rotation": -3,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 8.344768698465987,
+              "y": 318.79998779296875,
+              "width": 21.85177320690808,
+              "rotation": -3,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 310,
+              "width": 86,
+              "rotation": -3,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "chongqing-coconut",
+          "type": "image",
+          "src": "/images/travels/china-24/coconut-drink.png",
+          "alt": "Coconut Tree brand drink carton",
+          "caption": "coconut tree",
+          "aspect": "1 / 2.5",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 88.0829002470642,
+              "y": 459.199951171875,
+              "width": 5,
+              "rotation": 8,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 88.0829002470642,
+              "y": 459.199951171875,
+              "width": 5,
+              "rotation": 8,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 520,
+              "width": 44,
+              "rotation": 8,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "chongqing-note",
+          "type": "text",
+          "text": "A vertical city - bridges over bridges, escalators that climb six floors at once. We ate hot pot until we couldn't, then walked it off along the river while Hongyadong lit up gold. My favorite chaos of the trip.",
+          "tone": "caption",
+          "layout": {
+            "large": {
+              "x": 2.066704988857273,
+              "y": 109,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "medium": {
+              "x": 2.066704988857273,
+              "y": 109,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 690,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          },
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "chongqing-hongyadong-tape",
+          "type": "tape",
+          "color": "rgba(228, 170, 160, 0.6)",
+          "opacity": 0.86,
+          "height": {
+            "large": 22,
+            "medium": 22,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 83.60402589555352,
+              "y": 70.79998779296875,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 60.10403025520753,
+              "y": 82,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 54,
+              "y": 300,
+              "width": 23,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "wulong",
+      "no": "03",
+      "name": "Wulong",
+      "nativeName": "武隆",
+      "romanizedName": "Wulong",
+      "dayLabel": "Days 11 - 14",
+      "coordinates": "29.32°N · 107.76°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 720,
+        "mediumWidth": 860,
+        "mediumHeight": 720,
+        "smallWidth": 390,
+        "smallHeight": 790
+      },
+      "blurb": "The Three Natural Bridges scaled my sense of size all the way back down. Jiuli Ancient City below - half real, half theme park, fully fun. The kind of trip you stop photographing because the phone can't hold it.",
+      "blocks": [
+        {
+          "id": "wulong-bridges",
+          "type": "image",
+          "src": "/images/travels/china-24/three-natural-bridges-arrow.png",
+          "alt": "Looking down into the canyon at Wulong",
+          "caption": "Three Natural Bridges - look at the tiny people",
+          "aspect": "3 / 4",
+          "layout": {
+            "large": {
+              "x": -29.928577968052455,
+              "y": 99.39996337890625,
+              "width": 32,
+              "rotation": -2,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 0,
+              "y": 5,
+              "width": 32,
+              "rotation": -2,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 86,
+              "rotation": -2,
+              "zIndex": 1,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "wulong-jiuli",
+          "type": "image",
+          "src": "/images/travels/china-24/jiuli-city.jpg",
+          "alt": "Jiuli Ancient City with a large snow leopard figure",
+          "caption": "Jiuli - half real, half theme park",
+          "aspect": "4 / 3",
+          "layout": {
+            "large": {
+              "x": 42.71427590506418,
+              "y": 217.2000732421875,
+              "width": 42,
+              "rotation": 2.2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 1,
+              "y": 42,
+              "width": 42,
+              "rotation": 2.2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 390,
+              "width": 86,
+              "rotation": 2.2,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "wulong-note",
+          "type": "text",
+          "text": "The Three Natural Bridges scaled my sense of size all the way back down. Jiuli Ancient City below - half real, half theme park, fully fun. The kind of trip you stop photographing because the phone can't hold it.",
+          "tone": "caption",
+          "layout": {
+            "large": {
+              "x": 44.35714503696987,
+              "y": 40.799957275390625,
+              "width": 46.42856924874442,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 2,
+              "y": 8,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 610,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          },
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "wulong-bridges-tape",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 73.42857033865792,
+              "y": 207.40005493164062,
+              "width": 15,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 13,
+              "y": 5,
+              "width": 15,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 18,
+              "y": 12,
+              "width": 24,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "wulong-jiuli-tape",
+          "type": "tape",
+          "color": "rgba(228, 170, 160, 0.6)",
+          "opacity": 0.86,
+          "height": {
+            "large": 22,
+            "medium": 22,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 55.92857142857143,
+              "y": 204.20001220703125,
+              "width": 14,
+              "rotation": 6,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 72,
+              "y": 377,
+              "width": 14,
+              "rotation": 6,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 54,
+              "y": 378,
+              "width": 23,
+              "rotation": 6,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

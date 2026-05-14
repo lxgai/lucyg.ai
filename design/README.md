@@ -1,22 +1,22 @@
-# CODING AGENTS: READ THIS FIRST
+# Design Prototypes
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+This folder contains exported prototype and reference material from Claude Design.
+It is not the canonical design system for the production site.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+For the current production visual direction, use [`../docs/design.md`](../docs/design.md).
+That document is the source of truth for the aesthetic, palette,
+typography, layout rules, recurring components, and copy guidance.
 
-## What you should do — IMPORTANT
+## How To Use This Folder
 
-**Read `personal-site/project/Prototype.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+- Treat files in `project/` as visual references and implementation prompts.
+- Prefer the production design system in `../docs/design.md` when prototype details
+  conflict with the current direction.
+- Do not copy prototype internals directly unless they fit the Next.js codebase.
+- Check `../AGENTS.md` for coding conventions, verification steps, and project-specific
+  implementation notes.
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Contents
 
-## About the design files
-
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
-
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
-
-## Bundle contents
-
-- `personal-site/README.md` — this file
-- `personal-site/project/` — the `Personal Site` project files (HTML prototypes, assets, components)
+- `project/` - Claude Design export files, including HTML prototypes and supporting
+  JSX/reference files.

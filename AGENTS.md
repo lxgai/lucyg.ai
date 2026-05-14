@@ -129,17 +129,19 @@ The editor at `/admin/collage-editor` is development-only.
 
 ## Verification
 
-For code changes, prefer:
+For code changes, Codex should stop once TypeScript and lint pass:
 
 ```bash
+npx tsc --noEmit
 npm run lint
-npm run build
 ```
 
-For visual changes, also run the app with:
+Lucy will run dependency installation, production builds, and dev servers herself. Do not run these unless she explicitly asks in that turn:
 
 ```bash
+npm install
+npm run build
 npm run dev
 ```
 
-Then inspect the changed pages at desktop and mobile widths. Pay special attention to text overflow, scroll behavior, and whether legacy styling was unintentionally preserved where the new Memory Archive design should apply.
+When visual changes are involved, describe what should be checked at desktop and mobile widths instead of starting the dev server. Pay special attention to text overflow, scroll behavior, and whether legacy styling was unintentionally preserved where the new Memory Archive design should apply.
