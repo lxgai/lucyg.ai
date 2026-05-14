@@ -105,3 +105,7 @@ The site uses an "archival document" aesthetic: warm paper background, serif-ita
   - Loads/saves JSON files in `src/data/travels/` via API routes under `/api/admin/collage/*`
   - Interactive canvas with drag-to-move, resize, rotate, and a properties sidebar
   - All `/api/admin/*` routes and the editor page return 404 in production — this guard must be the first line of every handler
+
+
+
+  
