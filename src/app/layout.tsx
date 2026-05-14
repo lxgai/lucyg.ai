@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { VT323, Newsreader, JetBrains_Mono } from "next/font/google";
+import { VT323, Newsreader, JetBrains_Mono, Caveat } from "next/font/google";
 import localFont from "next/font/local";
 import "../styles/globals.css";
 
@@ -21,6 +21,13 @@ const newsreader = Newsreader({
 const jetbrains = JetBrains_Mono({
   weight: ["400", "500"],
   variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  weight: ["400", "500", "600"],
+  variable: "--font-caveat",
   subsets: ["latin"],
   display: "swap",
 });
@@ -84,7 +91,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${vt323.variable} ${newsreader.variable} ${jetbrains.variable} ${cooperLight.variable} ${robotoMono.variable} antialiased`}
+        className={`${vt323.variable} ${newsreader.variable} ${jetbrains.variable} ${caveat.variable} ${cooperLight.variable} ${robotoMono.variable} antialiased`}
       >
         {children}
       </body>

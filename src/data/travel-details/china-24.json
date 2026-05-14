@@ -30,7 +30,7 @@
       "large": {
         "x": 61,
         "y": 6,
-        "width": 39,
+        "width": 40.3636403269582,
         "rotation": 0,
         "zIndex": 2,
         "visible": true
@@ -137,9 +137,9 @@
       "aspect": "3 / 2",
       "layout": {
         "large": {
-          "x": 0,
-          "y": 0,
-          "width": 58,
+          "x": 1.4285694469105115,
+          "y": 28,
+          "width": 51.18181818181818,
           "rotation": -0.6,
           "zIndex": 1,
           "visible": true
@@ -160,8 +160,19 @@
           "zIndex": 1,
           "visible": true
         }
+      },
+      "cutout": true
+    },
+    "metadataFields": [
+      {
+        "label": "14 DAYS",
+        "description": "Chongqing · Hangzhou · Wulong"
+      },
+      {
+        "label": "Weather",
+        "description": "Warm, humid, occasional rain - 32°C avg"
       }
-    }
+    ]
   },
   "closing": {
     "eyebrow": "End of file - China '24",
@@ -604,8 +615,8 @@
           "aspect": "3 / 4",
           "layout": {
             "large": {
-              "x": -29.928577968052455,
-              "y": 99.39996337890625,
+              "x": -3.285718645368302,
+              "y": 46.59991455078125,
               "width": 32,
               "rotation": -2,
               "zIndex": 1,

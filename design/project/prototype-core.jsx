@@ -24,7 +24,7 @@ function Nav({ route, setRoute, theme }) {
   ];
   const activeKey = route.startsWith("travels") ? "travels" : route;
   return (
-    <div style={{
+    <div className="m-nav" style={{
       position: "sticky", top: 0, zIndex: 50,
       background: A.paper,
       borderBottom: `1px solid ${A.hair}`,
@@ -33,10 +33,10 @@ function Nav({ route, setRoute, theme }) {
       fontFamily: A.mono,
     }}>
       <div onClick={() => setRoute("home")} style={{ cursor: "pointer", display: "flex", alignItems: "baseline", gap: 10 }}>
-        <span style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, color: A.ink, letterSpacing: -0.2 }}>Lucy Gai</span>
-        <span style={{ fontSize: 9, color: A.ink40, letterSpacing: 1.6, textTransform: "uppercase" }}>— EST. 2024</span>
+        <span className="m-nav-brand" style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, color: A.ink, letterSpacing: -0.2 }}>Lucy Gai</span>
+        <span className="m-nav-est" style={{ fontSize: 9, color: A.ink40, letterSpacing: 1.6, textTransform: "uppercase" }}>— EST. 2024</span>
       </div>
-      <div style={{ display: "flex", gap: 28, fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase" }}>
+      <div className="m-nav-links" style={{ display: "flex", gap: 28, fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase" }}>
         {links.map(([label, key]) => (
           <span key={key}
             onClick={() => setRoute(key)}
@@ -94,8 +94,8 @@ function PageShell({ children, route, setRoute, theme, section, catNo, title, su
     <div className="page-fade" style={{ color: A.ink, fontFamily: theme.serif, minHeight: "100vh", background: A.paper }}>
       <Nav route={route} setRoute={setRoute} theme={theme} />
       {section && (
-        <div style={{ padding: "36px 56px 0" }}>
-          <div style={{
+        <div className="m-page-pad" style={{ padding: "36px 56px 0" }}>
+          <div className="m-strip" style={{
             display: "flex", justifyContent: "space-between",
             fontFamily: A.mono, fontSize: 10, letterSpacing: 1.6, color: A.ink60,
             padding: "8px 0", textTransform: "uppercase",
@@ -109,12 +109,12 @@ function PageShell({ children, route, setRoute, theme, section, catNo, title, su
         </div>
       )}
       {(title || subtitle) && (
-        <div style={{ padding: "48px 56px 32px" }}>
-          {title && <div style={{ fontFamily: theme.serif, fontSize: 84, lineHeight: 0.95, letterSpacing: -2, fontWeight: 400 }}>{title}</div>}
+        <div className="m-page-pad" style={{ padding: "48px 56px 32px" }}>
+          {title && <div className="m-page-title" style={{ fontFamily: theme.serif, fontSize: 84, lineHeight: 0.95, letterSpacing: -2, fontWeight: 400 }}>{title}</div>}
           {subtitle && <div style={{ fontFamily: A.mono, fontSize: 11, color: A.ink60, marginTop: 16, letterSpacing: 1.4, textTransform: "uppercase" }}>{subtitle}</div>}
         </div>
       )}
-      <div style={{ padding: `${(title || subtitle) ? 0 : 24}px 56px 80px` }}>
+      <div className="m-page-pad" style={{ padding: `${(title || subtitle) ? 0 : 24}px 56px 80px` }}>
         {children}
       </div>
     </div>

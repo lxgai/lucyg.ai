@@ -113,7 +113,7 @@ function HeroV2Style({ onOpen }) {
 
           <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "auto auto auto", gap: "4px 24px", fontFamily: A.mono, fontSize: 10, letterSpacing: 1.4, color: A.ink60, textTransform: "uppercase", maxWidth: 480 }}>
             <span>14 days</span><span>·</span><span>{CHINA.subtitle}</span>
-            <span>Companions</span><span>·</span><span>Mom & Dad</span>
+            <span>Weather</span><span>·</span><span>Warm, humid, occasional rain — 32°C avg</span>
           </div>
         </div>
       </div>

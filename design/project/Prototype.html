@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Personal Site — Prototype</title>
 <link rel="stylesheet" href="styles/canvas-reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,14 +26,66 @@
   @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .page-fade { opacity: 1; animation: fadeIn 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+  /* ============================================================
+     MOBILE — <=768px
+     Inline styles get overridden via !important on targeted classes
+     ============================================================ */
+  @media (max-width: 768px) {
+    /* Nav */
+    .m-nav { padding: 14px 20px 12px !important; flex-wrap: wrap !important; gap: 8px !important; }
+    .m-nav-brand { font-size: 18px !important; }
+    .m-nav-est { display: none !important; }
+    .m-nav-links { gap: 14px !important; font-size: 10px !important; flex-wrap: wrap !important; width: 100% !important; justify-content: space-between !important; }
+
+    /* Page-level side padding */
+    .m-page-pad { padding-left: 20px !important; padding-right: 20px !important; }
+    .m-page-pad-inner { padding-left: 20px !important; padding-right: 20px !important; }
+
+    /* Section strip */
+    .m-strip { font-size: 8px !important; gap: 8px !important; flex-wrap: wrap !important; }
+    .m-strip > span { flex: 1 1 auto !important; }
+
+    /* Hero / title scale */
+    .m-hero-title { font-size: 68px !important; letter-spacing: -1.2px !important; }
+    .m-page-title { font-size: 46px !important; letter-spacing: -1px !important; }
+    .m-about-intro { font-size: 28px !important; }
+
+    /* Grids collapse */
+    .m-2col, .m-3col, .m-5col { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .m-blog-row { grid-template-columns: 1fr !important; gap: 8px !important; }
+    .m-blog-row > div:nth-child(3) { justify-content: flex-start !important; }
+    .m-proj-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+    .m-proj-head { display: none !important; }
+    .m-about-grid { grid-template-columns: 1fr !important; gap: 56px !important; padding-top: 28px !important; }
+
+    /* Home-specific */
+    .m-home-photo { min-height: 360px !important; margin-top: 20px !important; }
+
+    /* Favorites */
+    .m-fav-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .m-vinyl-wrap { min-height: 320px !important; transform: scale(0.78) !important; transform-origin: center top !important; }
+    .m-rack { grid-template-columns: repeat(4, 1fr) !important; }
+    .m-movies-cards { grid-template-columns: 1fr !important; }
+    .m-movies-tickets { grid-template-columns: 1fr !important; }
+
+    /* Trip scrapbook */
+    .m-scrap-cols { column-count: 1 !important; }
+    .m-trip-head { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .m-trip-stamp { justify-self: start !important; }
+    .m-trip-title { font-size: 64px !important; letter-spacing: -1.2px !important; }
+
+    /* Tweaks panel */
+    .m-tweaks { left: 12px !important; right: 12px !important; bottom: 12px !important; min-width: 0 !important; }
+  }
 </style>
 </head>
 <body>
 <div id="root"></div>
 
-<script type="text/babel" src="direction-data.jsx?v=4"></script>
-<script type="text/babel" src="prototype-core.jsx?v=4"></script>
-<script type="text/babel" src="prototype-pages.jsx?v=4"></script>
+<script type="text/babel" src="direction-data.jsx?v=13"></script>
+<script type="text/babel" src="prototype-core.jsx?v=13"></script>
+<script type="text/babel" src="prototype-pages.jsx?v=13"></script>
 
 <script type="text/babel">
 const { useState, useEffect } = React;
@@ -40,7 +93,6 @@ const { useState, useEffect } = React;
 // ==== Tweakable defaults ====
 const TWEAKS = /*EDITMODE-BEGIN*/{
   "accentColor": "navy",
-  "moviesView": "reel",
   "serifStyle": "newsreader"
 }/*EDITMODE-END*/;
 
@@ -57,8 +109,12 @@ function App() {
     try { return localStorage.getItem("route") || "home"; } catch { return "home"; }
   });
   const [accentColor, setAccent] = useState(TWEAKS.accentColor);
-  const [moviesView, setMoviesView] = useState(TWEAKS.moviesView);
   const [serifStyle, setSerifStyle] = useState(TWEAKS.serifStyle);
+  // Settled defaults (no longer user-tweakable):
+  const moviesView = "cards";
+  const projectsView = "spread";
+  const projectDetailView = "report";
+  const blogPostView = "letter";
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => { try { localStorage.setItem("route", route); } catch {} }, [route]);
@@ -84,14 +140,14 @@ function App() {
     serif: serifStyle === "fraunces" ? "'Fraunces', Georgia, serif" : "'Newsreader', Georgia, serif",
   };
 
-  const ctx = { route, setRoute, theme, moviesView };
+  const ctx = { route, setRoute, theme, moviesView, projectsView, projectDetailView, blogPostView };
 
   return (
     <>
       <RouteView {...ctx} />
 
       {editMode && (
-        <div style={{
+        <div className="m-tweaks" style={{
           position: "fixed", bottom: 20, right: 20, zIndex: 9999,
           background: "#1a1512", color: "#f1e9df",
           border: `1px solid ${theme.accent}`,
@@ -127,17 +183,6 @@ function App() {
             ))}
           </TweakRow>
 
-          <TweakRow label="Movies view">
-            {["cards", "tickets", "reel"].map(v => (
-              <div key={v} onClick={() => { setMoviesView(v); persist("moviesView", v); }}
-                style={{
-                  padding: "6px 10px", fontSize: 10,
-                  border: `1px solid ${moviesView === v ? theme.accent : "rgba(241,233,223,0.2)"}`,
-                  background: moviesView === v ? theme.accent : "transparent",
-                  cursor: "pointer", flex: 1, textAlign: "center", textTransform: "uppercase", letterSpacing: 1,
-                }}>{v}</div>
-            ))}
-          </TweakRow>
         </div>
       )}
     </>
@@ -157,7 +202,15 @@ function RouteView(props) {
   const { route } = props;
   if (route === "home") return <PageHome key="home" {...props} />;
   if (route === "blog") return <PageBlog key="blog" {...props} />;
-  if (route === "projects") return <PageProjects key="projects" {...props} />;
+  if (route.startsWith("blog/")) {
+    const slug = route.split("/")[1];
+    return <PageBlogPost key={"blog-" + slug + "-" + props.blogPostView} slug={slug} {...props} />;
+  }
+  if (route === "projects") return <PageProjects key={"projects-" + props.projectsView} {...props} />;
+  if (route.startsWith("projects/")) {
+    const slug = route.split("/")[1];
+    return <PageProject key={"project-" + slug + "-" + props.projectDetailView} slug={slug} {...props} />;
+  }
   if (route === "favorites") return <PageFavorites key="favorites" {...props} />;
   if (route === "about") return <PageAbout key="about" {...props} />;
   if (route === "travels") return <PageTravels key="travels" {...props} />;

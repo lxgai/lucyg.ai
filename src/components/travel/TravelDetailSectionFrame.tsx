@@ -248,7 +248,7 @@ export function TravelDetailSectionFrame({
           <Typography sx={{ fontFamily: tokens.serif, fontSize: isSmall ? 30 : 42, color: tokens.ink60, letterSpacing: "2px" }}>
             {section.nativeName}
           </Typography>
-          <Typography sx={{ display: isSmall ? "none" : "block", fontFamily: tokens.serif, fontStyle: "italic", fontSize: 25, color: tokens.accent }}>
+          <Typography sx={{ display: isSmall ? "none" : "block", fontFamily: tokens.hand, fontWeight: 500, fontSize: 32, lineHeight: 1, color: tokens.accent }}>
             {section.dayLabel.toLowerCase()}
           </Typography>
         </Box>

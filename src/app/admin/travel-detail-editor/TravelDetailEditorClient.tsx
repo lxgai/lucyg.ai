@@ -107,6 +107,14 @@ function normalizeAssetSrc(src: string) {
   }
 }
 
+function updateHeroMetadataField(draft: TravelDetailData, index: number, key: "label" | "description", value: string) {
+  draft.hero.metadataFields ??= [];
+  while (draft.hero.metadataFields.length <= index) {
+    draft.hero.metadataFields.push({ label: "", description: "" });
+  }
+  draft.hero.metadataFields[index][key] = value;
+}
+
 function heroCanvasWidth(breakpoint: TravelDetailBreakpoint) {
   return travelDetailSurfaceWidth(breakpoint) - travelDetailPageGutterPx[breakpoint] * 2;
 }
@@ -168,6 +176,24 @@ function CheckboxField({ label, checked, onChange }: { label: string; checked: b
   );
 }
 
+function HeroMetadataFieldsEditor({ data, updateData }: { data: TravelDetailData; updateData: (description: string, mutator: (draft: TravelDetailData) => void) => void }) {
+  return (
+    <>
+      {[0, 1].map((index) => {
+        const field = data.hero.metadataFields?.[index] ?? { label: "", description: "" };
+        const fieldNo = index + 1;
+
+        return (
+          <div key={fieldNo} className="grid gap-3 border border-stone-300 bg-[#f1e9df] p-3">
+            <Field label={`Metadata field ${fieldNo}`} value={field.label} onChange={(label) => updateData(`Edit hero metadata field ${fieldNo}`, (draft) => updateHeroMetadataField(draft, index, "label", label))} />
+            <Field label={`Metadata description ${fieldNo}`} value={field.description} onChange={(description) => updateData(`Edit hero metadata description ${fieldNo}`, (draft) => updateHeroMetadataField(draft, index, "description", description))} />
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 function getSelected(data: TravelDetailData, selection: Selection | null) {
   if (!selection) return null;
   if (selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy" || selection.kind === "heroDecoration") return null;
@@ -187,9 +213,9 @@ function PreviewBlock({ block, breakpoint, selected, onSelect, onPointerDown }: 
       {block.type === "image" ? (
         <figure draggable={false} className={block.cutout ? "" : "border border-stone-500 bg-[#fbf6ee] p-2 shadow-sm"}>
           <div className="relative w-full" style={{ aspectRatio: block.aspect }}>
-            {block.src && <Image src={block.src} alt={block.alt} fill sizes="420px" draggable={false} className={block.cutout ? "object-contain drop-shadow-lg" : "object-cover sepia-[.08]"} />}
+            {block.src && <Image src={block.src} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className={block.cutout ? "object-contain" : "object-cover"} />}
           </div>
-          <figcaption className="mt-1 font-serif text-sm italic leading-tight text-stone-700">{block.caption}</figcaption>
+          <figcaption className="mt-1 leading-tight text-stone-700" style={{ fontFamily: tokens.hand, fontSize: 21, fontWeight: 500 }}>{block.caption}</figcaption>
         </figure>
       ) : (
         <p className="font-serif italic leading-snug text-stone-700" style={{ fontSize: block.fontSize[breakpoint] }}>{block.text}</p>
@@ -644,7 +670,7 @@ export default function TravelDetailEditorPage() {
               <Field label="Title" value={data.hero.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
               <Field label="Subtitle line" value={data.hero.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
               <Field label="Hero intro" value={data.hero.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <Field label="Facts" value={data.hero.facts.join(" | ")} onChange={(facts) => updateData("Edit hero facts", (draft) => void (draft.hero.facts = facts.split("|").map((item) => item.trim()).filter(Boolean)))} />
+              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
               <Field label="Hero image" value={data.hero.image.src} onChange={(src) => updateData("Edit hero image", (draft) => void (draft.hero.image.src = src))} />
               <Field label="Hero caption" value={data.hero.image.caption} onChange={(caption) => updateData("Edit hero caption", (draft) => void (draft.hero.image.caption = caption))} />
               <Field label="Hero alt" value={data.hero.image.alt} onChange={(alt) => updateData("Edit hero alt", (draft) => void (draft.hero.image.alt = alt))} />
@@ -683,7 +709,7 @@ export default function TravelDetailEditorPage() {
               <Field label="Title" value={heroSelected.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
               <Field label="Subtitle line" value={heroSelected.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
               <Field label="Intro" value={heroSelected.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <Field label="Facts" value={heroSelected.facts.join(" | ")} onChange={(facts) => updateData("Edit hero facts", (draft) => void (draft.hero.facts = facts.split("|").map((item) => item.trim()).filter(Boolean)))} />
+              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
               <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={addHeroTape}>Add hero tape</button>
             </div>
           )}
@@ -703,7 +729,7 @@ export default function TravelDetailEditorPage() {
               <Field label="Title" value={data.hero.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
               <Field label="Subtitle line" value={data.hero.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
               <Field label="Intro" value={data.hero.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <Field label="Facts" value={data.hero.facts.join(" | ")} onChange={(facts) => updateData("Edit hero facts", (draft) => void (draft.hero.facts = facts.split("|").map((item) => item.trim()).filter(Boolean)))} />
+              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
             </div>
           )}
           {heroDecorationItem && (

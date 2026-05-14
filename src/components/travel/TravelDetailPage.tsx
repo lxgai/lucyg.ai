@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import Image from "next/image";
 import NextLink from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
@@ -119,8 +119,6 @@ function PhotoFrame({
             width: "100%",
             cursor: "zoom-in",
             transform: isSmall ? "none" : `rotate(${frameRotation})`,
-            transition: "transform 240ms ease",
-            "&:hover": { transform: isSmall ? "none" : `rotate(${frameRotation}) scale(1.025)` },
           },
           ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
         ]}
@@ -130,15 +128,16 @@ function PhotoFrame({
             src={photo.src}
             alt={photo.alt}
             fill
+            unoptimized
             sizes="(max-width: 768px) 82vw, 360px"
-            style={{ objectFit: "contain", filter: "drop-shadow(0 10px 16px rgba(31, 26, 22, 0.18))" }}
+            style={{ objectFit: "contain" }}
           />
         </Box>
         <Typography
           sx={{
             mt: 0.5,
-            fontFamily: tokens.serif,
-            fontStyle: "italic",
+            fontFamily: tokens.hand,
+            fontWeight: 500,
             fontSize: isSmall ? 17 : 20,
             lineHeight: 1.1,
             color: tokens.accent,
@@ -180,21 +179,20 @@ function PhotoFrame({
           p: 0,
           background: tokens.paperDeep,
           cursor: "zoom-in",
-          "& img": { transition: "transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1)" },
-          "&:hover img": { transform: "scale(1.035)" },
         }}
       >
         <Image
           src={photo.src}
           alt={photo.alt}
           fill
+          unoptimized
           priority={priority}
           sizes="(max-width: 768px) 90vw, 620px"
-          style={{ objectFit: "cover", filter: "sepia(0.08) saturate(0.94)" }}
+          style={{ objectFit: "cover" }}
         />
       </Box>
       <Box sx={{ mt: 1.1, display: "flex", justifyContent: "space-between", gap: 2, alignItems: "baseline" }}>
-        <Typography sx={{ fontFamily: tokens.serif, fontStyle: "italic", fontSize: isSmall ? 14 : 16, lineHeight: 1.2 }}>
+        <Typography sx={{ fontFamily: tokens.hand, fontWeight: 500, fontSize: isSmall ? 18 : 21, lineHeight: 1.05 }}>
           {photo.caption}
         </Typography>
         <Typography
@@ -413,6 +411,8 @@ export function Hero({
     [breakpoint, data.hero.decorations]
   );
 
+  const heroMetadataFields = data.hero.metadataFields?.filter((field) => field.label.trim() || field.description.trim()) ?? [];
+
   return (
     <TravelDetailViewportContainer
       breakpoint={breakpoint}
@@ -440,11 +440,11 @@ export function Hero({
             <Typography
               component="h1"
               sx={{
-                mt: 0.75,
+                mt: 1.45,
                 fontFamily: tokens.serif,
                 fontWeight: 400,
                 fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,
-                lineHeight: 0.92,
+                lineHeight: 0.86,
                 letterSpacing: breakpoint === "small" ? "-1.2px" : "-2px",
                 color: tokens.ink,
               }}
@@ -464,20 +464,43 @@ export function Hero({
 
             <Box
               sx={{
-                mt: 3,
-                display: "flex",
-                gap: "8px 18px",
-                flexWrap: "wrap",
+                mt: 4,
+                alignItems: "baseline",
                 fontFamily: tokens.mono,
                 fontSize: 10,
-                letterSpacing: "1.4px",
+                letterSpacing: "2.4px",
                 color: tokens.ink60,
                 textTransform: "uppercase",
+                ...(heroMetadataFields.length > 0
+                  ? {
+                      display: "grid",
+                      gridTemplateColumns: breakpoint === "small" ? "minmax(76px, auto) 14px minmax(0, 1fr)" : "minmax(116px, auto) 18px minmax(0, 1fr)",
+                      gap: "8px 12px",
+                    }
+                  : {
+                      display: "flex",
+                      gap: "8px 18px",
+                      flexWrap: "wrap",
+                    }),
               }}
             >
-              {data.hero.facts.map((fact) => (
-                <span key={fact}>{fact}</span>
-              ))}
+              {heroMetadataFields.length > 0
+                ? heroMetadataFields.map((field, index) => (
+                    <Fragment key={`${field.label}-${field.description}-${index}`}>
+                      <Box component="span">{field.label}</Box>
+                      <Box component="span" sx={{ color: tokens.ink }}>
+                        ·
+                      </Box>
+                      <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere" }}>
+                        {field.description}
+                      </Box>
+                    </Fragment>
+                  ))
+                : data.hero.facts.map((fact) => (
+                    <Box component="span" key={fact}>
+                      {fact}
+                    </Box>
+                  ))}
             </Box>
           </Box>
         </HeroEditableFrame>
@@ -646,9 +669,9 @@ function Lightbox({ image, onClose }: { image: LightboxImage | null; onClose: ()
     >
       <Box sx={{ width: "min(1100px, 100%)", maxHeight: "86vh" }}>
         <Box sx={{ position: "relative", width: "100%", height: "78vh" }}>
-          <Image src={image.src} alt={image.alt} fill sizes="100vw" style={{ objectFit: "contain" }} />
+          <Image src={image.src} alt={image.alt} fill unoptimized sizes="100vw" style={{ objectFit: "contain" }} />
         </Box>
-        <Typography sx={{ mt: 1.5, fontFamily: tokens.serif, fontStyle: "italic", fontSize: 16, color: tokens.paper, textAlign: "center" }}>
+        <Typography sx={{ mt: 1.5, fontFamily: tokens.hand, fontWeight: 500, fontSize: 21, lineHeight: 1.05, color: tokens.paper, textAlign: "center" }}>
           {image.caption}
         </Typography>
       </Box>

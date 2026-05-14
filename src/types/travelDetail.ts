@@ -54,6 +54,11 @@ export type TravelDetailTapeDecoration = {
   layout: TravelDetailResponsiveLayout;
 };
 
+export type TravelDetailHeroMetadataField = {
+  label: string;
+  description: string;
+};
+
 export type TravelDetailHero = {
   title: string;
   italicTitle?: string;
@@ -61,6 +66,7 @@ export type TravelDetailHero = {
   image: TravelDetailImageBlock;
   intro: string;
   facts: string[];
+  metadataFields?: TravelDetailHeroMetadataField[];
   canvasHeight: TravelDetailResponsiveNumber;
   copyLayout: TravelDetailResponsiveLayout;
   decorations: TravelDetailTapeDecoration[];

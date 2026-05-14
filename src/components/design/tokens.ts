@@ -11,6 +11,7 @@ export const tokens = {
   accent: "oklch(0.38 0.08 250)",
   serif: "var(--font-newsreader), Georgia, serif",
   mono: "var(--font-jetbrains-mono), ui-monospace, monospace",
+  hand: "var(--font-caveat), cursive",
 } as const;
 
 export const LAST_UPDATED = "04 · 22 · 26";

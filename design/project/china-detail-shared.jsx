@@ -54,9 +54,8 @@ const CHINA = {
   meta: [
     { k: "Length", v: "14 days" },
     { k: "Cities", v: "Hangzhou, Chongqing, Wulong" },
-    { k: "Companions", v: "Mom, Dad" },
     { k: "Camera", v: "iPhone 15 Pro" },
-    { k: "Weather", v: "Humid — 32°C avg" },
+    { k: "Weather", v: "Warm, humid, occasional rain — 32°C avg" },
   ],
   cities: [
     {
