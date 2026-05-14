@@ -5,6 +5,7 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import { TravelDetailSectionFrame, TravelDetailSurface, TravelDetailViewportContainer } from "@/components/travel/TravelDetailSectionFrame";
@@ -12,6 +13,7 @@ import type {
   TravelDetailBlock,
   TravelDetailBreakpoint,
   TravelDetailData,
+  TravelDetailFreeformLayout,
   TravelDetailImageBlock,
   TravelDetailSection,
   TravelDetailTapeDecoration,
@@ -25,6 +27,14 @@ type LightboxImage = {
 
 const tape = "rgba(243, 215, 158, 0.65)";
 const tapeRed = "rgba(228, 170, 160, 0.6)";
+type HeroEditMode = "move" | "resize";
+type HeroEditableItem = "image" | "copy" | `decoration:${string}`;
+
+type HeroEditableProps = {
+  selectedItem?: HeroEditableItem;
+  onSelect: (item: HeroEditableItem) => void;
+  onPointerDown: (item: HeroEditableItem, event: React.PointerEvent<HTMLElement>, mode: HeroEditMode) => void;
+};
 
 function useActiveBreakpoint(): TravelDetailBreakpoint {
   const [breakpoint, setBreakpoint] = useState<TravelDetailBreakpoint>("large");
@@ -269,6 +279,91 @@ function TapeDecoration({ decoration, breakpoint }: { decoration: TravelDetailTa
   );
 }
 
+function HeroEditableFrame({
+  id,
+  layout,
+  editable,
+  children,
+}: {
+  id: HeroEditableItem;
+  layout: TravelDetailFreeformLayout;
+  editable?: HeroEditableProps;
+  children: ReactNode;
+}) {
+  if (!layout.visible) return null;
+  const selected = editable?.selectedItem === id;
+
+  return (
+    <Box
+      onPointerDown={(event) => editable?.onPointerDown(id, event, "move")}
+      onClick={(event) => {
+        if (!editable) return;
+        event.stopPropagation();
+        editable.onSelect(id);
+      }}
+      sx={{
+        position: "absolute",
+        left: `${layout.x}%`,
+        top: layout.y,
+        width: `${layout.width}%`,
+        zIndex: layout.zIndex,
+        transform: `rotate(${layout.rotation}deg)`,
+        transformOrigin: "center center",
+        outline: selected ? "2px solid #1c1917" : "none",
+        outlineOffset: 4,
+        cursor: editable ? "move" : "inherit",
+      }}
+    >
+      {children}
+      {editable && (
+        <Box
+          component="button"
+          type="button"
+          aria-label="Resize hero item"
+          onPointerDown={(event: React.PointerEvent<HTMLElement>) => {
+            event.stopPropagation();
+            editable.onPointerDown(id, event, "resize");
+          }}
+          sx={{
+            position: "absolute",
+            right: -8,
+            bottom: -8,
+            width: 16,
+            height: 16,
+            border: "1px solid #1c1917",
+            background: "#e6dccb",
+            p: 0,
+            cursor: "nwse-resize",
+          }}
+        />
+      )}
+    </Box>
+  );
+}
+
+function HeroTape({
+  decoration,
+  breakpoint,
+}: {
+  decoration: TravelDetailTapeDecoration;
+  breakpoint: TravelDetailBreakpoint;
+}) {
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        width: "100%",
+        height: decoration.height[breakpoint],
+        background: decoration.color,
+        borderTop: "1px dashed rgba(180, 140, 80, 0.35)",
+        borderBottom: "1px dashed rgba(180, 140, 80, 0.35)",
+        opacity: decoration.opacity,
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
+
 export function TravelMetadataStrip({ data, breakpoint }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint }) {
   return (
     <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 3 : 4.5 }}>
@@ -304,74 +399,94 @@ export function Hero({
   data,
   breakpoint,
   onOpen,
+  editable,
 }: {
   data: TravelDetailData;
   breakpoint: TravelDetailBreakpoint;
   onOpen: (image: LightboxImage) => void;
+  editable?: HeroEditableProps;
 }) {
+  const imageLayout = data.hero.image.layout[breakpoint];
+  const copyLayout = data.hero.copyLayout[breakpoint];
+  const decorations = useMemo(
+    () => [...data.hero.decorations].sort((a, b) => a.layout[breakpoint].zIndex - b.layout[breakpoint].zIndex),
+    [breakpoint, data.hero.decorations]
+  );
+
   return (
     <TravelDetailViewportContainer
       breakpoint={breakpoint}
       sx={{
         pt: 4,
-        display: "grid",
-        gridTemplateColumns: breakpoint === "large" ? "1.35fr 1fr" : "1fr",
-        gap: breakpoint === "small" ? 4 : 4.5,
-        alignItems: "start",
       }}
     >
-      <Box sx={{ position: "relative", maxWidth: breakpoint === "large" ? 760 : "100%" }}>
-        <PhotoFrame photo={data.hero.image} breakpoint={breakpoint} priority onOpen={onOpen} />
-        <Tape breakpoint={breakpoint} sx={{ top: breakpoint === "small" ? -8 : -10, left: breakpoint === "small" ? 42 : 60, transform: "rotate(-6deg)" }} />
-        <Tape color={tapeRed} breakpoint={breakpoint} sx={{ bottom: breakpoint === "small" ? 38 : 30, right: breakpoint === "small" ? -6 : -16, transform: "rotate(8deg)" }} />
-      </Box>
+      <Box
+        onClick={() => editable?.onSelect("copy")}
+        sx={{
+          position: "relative",
+          height: data.hero.canvasHeight[breakpoint],
+          overflow: "visible",
+        }}
+      >
+        <HeroEditableFrame id="image" layout={imageLayout} editable={editable}>
+          <PhotoFrame photo={data.hero.image} breakpoint={breakpoint} priority onOpen={onOpen} rotation={0} />
+        </HeroEditableFrame>
 
-      <Box sx={{ pt: breakpoint === "small" ? 0 : 0.75, maxWidth: 540 }}>
-        <Typography sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "2px", color: tokens.accent, textTransform: "uppercase" }}>
-          Section C · Travels No. {data.fileNo}
-        </Typography>
-        <Typography
-          component="h1"
-          sx={{
-            mt: 0.75,
-            fontFamily: tokens.serif,
-            fontWeight: 400,
-            fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,
-            lineHeight: 0.92,
-            letterSpacing: breakpoint === "small" ? "-1.2px" : "-2px",
-            color: tokens.ink,
-          }}
-        >
-          <Box component="span" sx={{ fontStyle: "italic" }}>
-            {data.hero.title}
+        <HeroEditableFrame id="copy" layout={copyLayout} editable={editable}>
+          <Box>
+            <Typography sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "2px", color: tokens.accent, textTransform: "uppercase" }}>
+              Section C · Travels No. {data.fileNo}
+            </Typography>
+            <Typography
+              component="h1"
+              sx={{
+                mt: 0.75,
+                fontFamily: tokens.serif,
+                fontWeight: 400,
+                fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,
+                lineHeight: 0.92,
+                letterSpacing: breakpoint === "small" ? "-1.2px" : "-2px",
+                color: tokens.ink,
+              }}
+            >
+              <Box component="span" sx={{ fontStyle: "italic" }}>
+                {data.hero.title}
+              </Box>
+              <br />
+              <Box component="span" sx={{ color: tokens.ink60 }}>
+                {data.hero.italicTitle}
+              </Box>
+            </Typography>
+
+            <Typography sx={{ mt: 2.75, fontFamily: tokens.serif, fontSize: breakpoint === "small" ? 17 : 18, lineHeight: 1.55, color: tokens.ink60 }}>
+              {data.hero.intro}
+            </Typography>
+
+            <Box
+              sx={{
+                mt: 3,
+                display: "flex",
+                gap: "8px 18px",
+                flexWrap: "wrap",
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.4px",
+                color: tokens.ink60,
+                textTransform: "uppercase",
+              }}
+            >
+              {data.hero.facts.map((fact) => (
+                <span key={fact}>{fact}</span>
+              ))}
+            </Box>
           </Box>
-          <br />
-          <Box component="span" sx={{ color: tokens.ink60 }}>
-            {data.hero.italicTitle}
-          </Box>
-        </Typography>
+        </HeroEditableFrame>
 
-        <Typography sx={{ mt: 2.75, fontFamily: tokens.serif, fontSize: breakpoint === "small" ? 17 : 18, lineHeight: 1.55, color: tokens.ink60 }}>
-          {data.hero.intro}
-        </Typography>
-
-        <Box
-          sx={{
-            mt: 3,
-            display: "flex",
-            gap: "8px 18px",
-            flexWrap: "wrap",
-            fontFamily: tokens.mono,
-            fontSize: 10,
-            letterSpacing: "1.4px",
-            color: tokens.ink60,
-            textTransform: "uppercase",
-          }}
-        >
-          {data.hero.facts.map((fact) => (
-            <span key={fact}>{fact}</span>
-          ))}
-        </Box>
+        {decorations.map((decoration) => (
+          <HeroEditableFrame key={decoration.id} id={`decoration:${decoration.id}`} layout={decoration.layout[breakpoint]} editable={editable}>
+            <HeroTape decoration={decoration} breakpoint={breakpoint} />
+          </HeroEditableFrame>
+        ))}
       </Box>
     </TravelDetailViewportContainer>
   );

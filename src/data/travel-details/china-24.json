@@ -21,6 +21,113 @@
       "3 cities",
       "Mom & Dad"
     ],
+    "canvasHeight": {
+      "large": 570,
+      "medium": 520,
+      "small": 700
+    },
+    "copyLayout": {
+      "large": {
+        "x": 61,
+        "y": 6,
+        "width": 39,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "medium": {
+        "x": 60,
+        "y": 4,
+        "width": 40,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "small": {
+        "x": 6,
+        "y": 330,
+        "width": 88,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      }
+    },
+    "decorations": [
+      {
+        "id": "hero-tape-top",
+        "type": "tape",
+        "color": "rgba(243, 215, 158, 0.65)",
+        "opacity": 1,
+        "height": {
+          "large": 24,
+          "medium": 24,
+          "small": 18
+        },
+        "layout": {
+          "large": {
+            "x": 5,
+            "y": -10,
+            "width": 10,
+            "rotation": -6,
+            "zIndex": 4,
+            "visible": true
+          },
+          "medium": {
+            "x": 5,
+            "y": -10,
+            "width": 12,
+            "rotation": -6,
+            "zIndex": 4,
+            "visible": true
+          },
+          "small": {
+            "x": 10,
+            "y": -8,
+            "width": 22,
+            "rotation": -6,
+            "zIndex": 4,
+            "visible": true
+          }
+        }
+      },
+      {
+        "id": "hero-tape-lower",
+        "type": "tape",
+        "color": "rgba(228, 170, 160, 0.6)",
+        "opacity": 1,
+        "height": {
+          "large": 24,
+          "medium": 24,
+          "small": 18
+        },
+        "layout": {
+          "large": {
+            "x": 49,
+            "y": 450,
+            "width": 10,
+            "rotation": 8,
+            "zIndex": 4,
+            "visible": true
+          },
+          "medium": {
+            "x": 49,
+            "y": 350,
+            "width": 12,
+            "rotation": 8,
+            "zIndex": 4,
+            "visible": true
+          },
+          "small": {
+            "x": 72,
+            "y": 252,
+            "width": 22,
+            "rotation": 8,
+            "zIndex": 4,
+            "visible": true
+          }
+        }
+      }
+    ],
     "image": {
       "id": "hero-west-lake",
       "type": "image",

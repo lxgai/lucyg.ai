@@ -12,6 +12,7 @@ import { Closing, Hero, TravelMetadataStrip } from "@/components/travel/TravelDe
 import {
   travelDetailCanvasWidth,
   travelDetailCanvasXBounds,
+  travelDetailPageGutterPx,
   travelDetailSurfaceWidth,
 } from "@/components/travel/detailGeometry";
 import type {
@@ -30,13 +31,25 @@ import type {
 type PageInfo = { slug: string; filePath: string };
 type HistoryEntry = { data: TravelDetailData; description: string };
 type Selection =
+  | { kind: "hero" }
+  | { kind: "heroImage" }
+  | { kind: "heroCopy" }
+  | { kind: "heroDecoration"; id: string }
   | { kind: "section"; sectionId: string }
   | { kind: "block"; sectionId: string; id: string }
   | { kind: "decoration"; sectionId: string; id: string };
-type DragState = {
+type SectionDragState = {
+  scope: "section";
   sectionId: string;
   itemKind: "block" | "decoration";
   id: string;
+};
+type HeroDragState = {
+  scope: "hero";
+  itemKind: "image" | "copy" | "decoration";
+  id: string;
+};
+type DragState = (SectionDragState | HeroDragState) & {
   mode: "move" | "resize";
   startX: number;
   startY: number;
@@ -94,6 +107,16 @@ function normalizeAssetSrc(src: string) {
   }
 }
 
+function heroCanvasWidth(breakpoint: TravelDetailBreakpoint) {
+  return travelDetailSurfaceWidth(breakpoint) - travelDetailPageGutterPx[breakpoint] * 2;
+}
+
+function heroLayoutFor(data: TravelDetailData, itemKind: "image" | "copy" | "decoration", id: string) {
+  if (itemKind === "image") return data.hero.image.layout;
+  if (itemKind === "copy") return data.hero.copyLayout;
+  return data.hero.decorations.find((decoration) => decoration.id === id)?.layout ?? null;
+}
+
 function Toast({ message, type, onClose }: { message: string; type: "success" | "error"; onClose: () => void }) {
   useEffect(() => {
     const t = window.setTimeout(onClose, 3000);
@@ -147,6 +170,7 @@ function CheckboxField({ label, checked, onChange }: { label: string; checked: b
 
 function getSelected(data: TravelDetailData, selection: Selection | null) {
   if (!selection) return null;
+  if (selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy" || selection.kind === "heroDecoration") return null;
   const section = data.sections.find((item) => item.id === selection.sectionId);
   if (!section) return null;
   if (selection.kind === "section") return { section, item: section };
@@ -195,7 +219,7 @@ function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset,
     const item = itemKind === "block" ? section.blocks.find((block) => block.id === id) : section.decorations.find((decoration) => decoration.id === id);
     if (!item) return;
     event.currentTarget.setPointerCapture(event.pointerId);
-    onDragItem({ sectionId: section.id, itemKind, id, mode, startX: event.clientX, startY: event.clientY, designWidth: width, initial: { ...item.layout[breakpoint] } });
+    onDragItem({ scope: "section", sectionId: section.id, itemKind, id, mode, startX: event.clientX, startY: event.clientY, designWidth: width, initial: { ...item.layout[breakpoint] } });
   };
 
   return (
@@ -221,6 +245,68 @@ function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset,
   );
 }
 
+function HeroPreview({
+  data,
+  breakpoint,
+  selection,
+  onSelect,
+  onDragItem,
+}: {
+  data: TravelDetailData;
+  breakpoint: TravelDetailBreakpoint;
+  selection: Selection | null;
+  onSelect: (selection: Selection) => void;
+  onDragItem: (state: DragState) => void;
+}) {
+  const selectedItem =
+    selection?.kind === "heroImage"
+      ? "image"
+      : selection?.kind === "heroCopy"
+        ? "copy"
+        : selection?.kind === "heroDecoration"
+          ? (`decoration:${selection.id}` as const)
+          : undefined;
+
+  const startDrag = (item: "image" | "copy" | `decoration:${string}`, event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => {
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+
+    const isDecoration = item.startsWith("decoration:");
+    const itemKind: "image" | "copy" | "decoration" = isDecoration ? "decoration" : item === "image" ? "image" : "copy";
+    const id = isDecoration ? item.replace("decoration:", "") : item;
+    const layout = heroLayoutFor(data, itemKind, id);
+    if (!layout) return;
+
+    onDragItem({
+      scope: "hero",
+      itemKind,
+      id,
+      mode,
+      startX: event.clientX,
+      startY: event.clientY,
+      designWidth: heroCanvasWidth(breakpoint),
+      initial: { ...layout[breakpoint] },
+    });
+  };
+
+  return (
+    <Hero
+      data={data}
+      breakpoint={breakpoint}
+      onOpen={() => undefined}
+      editable={{
+        selectedItem,
+        onSelect: (item) => {
+          if (item === "image") onSelect({ kind: "heroImage" });
+          else if (item === "copy") onSelect({ kind: "heroCopy" });
+          else onSelect({ kind: "heroDecoration", id: item.replace("decoration:", "") });
+        },
+        onPointerDown: startDrag,
+      }}
+    />
+  );
+}
+
 function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: (sectionId: string, src: string) => void; onDragItem: (state: DragState) => void }) {
   return (
     <TravelDetailSurface
@@ -238,7 +324,7 @@ function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragIte
       }}
     >
       <TravelMetadataStrip data={data} breakpoint={breakpoint} />
-      <Hero data={data} breakpoint={breakpoint} onOpen={() => undefined} />
+      <HeroPreview data={data} breakpoint={breakpoint} selection={selection} onSelect={onSelect} onDragItem={onDragItem} />
       <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>
         {data.sections.map((section) => <SectionPreview key={section.id} section={section} breakpoint={breakpoint} selection={selection} onSelect={onSelect} onDropAsset={onDropAsset} onDragItem={onDragItem} />)}
       </TravelDetailViewportContainer>
@@ -320,17 +406,23 @@ export default function TravelDetailEditorPage() {
       setData((current) => {
         if (!current) return current;
         const next = structuredClone(current);
-        const section = next.sections.find((item) => item.id === dragState.sectionId);
-        if (!section) return current;
-        const item = dragState.itemKind === "block" ? section.blocks.find((block) => block.id === dragState.id) : section.decorations.find((decoration) => decoration.id === dragState.id);
-        if (!item) return current;
+        const layout =
+          dragState.scope === "hero"
+            ? heroLayoutFor(next, dragState.itemKind, dragState.id)
+            : (() => {
+                const section = next.sections.find((item) => item.id === dragState.sectionId);
+                if (!section) return null;
+                const item = dragState.itemKind === "block" ? section.blocks.find((block) => block.id === dragState.id) : section.decorations.find((decoration) => decoration.id === dragState.id);
+                return item?.layout ?? null;
+              })();
+        if (!layout) return current;
         const dx = event.clientX - dragState.startX;
         const dy = event.clientY - dragState.startY;
         if (dragState.mode === "resize") {
-          item.layout[breakpoint].width = Math.max(5, Math.min(100, dragState.initial.width + (dx / dragState.designWidth) * 100));
+          layout[breakpoint].width = Math.max(5, Math.min(100, dragState.initial.width + (dx / dragState.designWidth) * 100));
         } else {
-          item.layout[breakpoint].x = Math.max(minCanvasX, Math.min(maxCanvasX, dragState.initial.x + (dx / dragState.designWidth) * 100));
-          item.layout[breakpoint].y = Math.max(minCanvasY, dragState.initial.y + dy);
+          layout[breakpoint].x = Math.max(minCanvasX, Math.min(maxCanvasX, dragState.initial.x + (dx / dragState.designWidth) * 100));
+          layout[breakpoint].y = Math.max(minCanvasY, dragState.initial.y + dy);
         }
         return next;
       });
@@ -435,9 +527,24 @@ export default function TravelDetailEditorPage() {
     setSelection({ kind: "decoration", sectionId, id: decoration.id });
   });
 
+  const addHeroTape = () => updateData("Add hero tape", (draft) => {
+    const decoration: TravelDetailTapeDecoration = { id: uid("hero-tape"), type: "tape", color: "rgba(243, 215, 158, 0.65)", opacity: 0.88, height: { large: 24, medium: 24, small: 18 }, layout: defaultLayout(12, 20, 12, 20) };
+    draft.hero.decorations.push(decoration);
+    setSelection({ kind: "heroDecoration", id: decoration.id });
+  });
+
   const deleteSelection = () => {
     if (!selection) return;
     updateData("Delete selection", (draft) => {
+      if (selection.kind === "heroDecoration") {
+        draft.hero.decorations = draft.hero.decorations.filter((decoration) => decoration.id !== selection.id);
+        setSelection({ kind: "hero" });
+        return;
+      }
+      if (selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy") {
+        setSelection({ kind: "hero" });
+        return;
+      }
       if (selection.kind === "section") {
         draft.sections = draft.sections.filter((section) => section.id !== selection.sectionId);
         setSelection(draft.sections[0] ? { kind: "section", sectionId: draft.sections[0].id } : null);
@@ -452,18 +559,36 @@ export default function TravelDetailEditorPage() {
   };
 
   const updateLayout = (next: Partial<TravelDetailFreeformLayout>) => {
-    if (!selection || selection.kind === "section") return;
+    if (!selection || selection.kind === "section" || selection.kind === "hero") return;
     updateData("Edit layout", (draft) => {
+      if (selection.kind === "heroImage") {
+        draft.hero.image.layout[breakpoint] = { ...draft.hero.image.layout[breakpoint], ...next };
+        return;
+      }
+      if (selection.kind === "heroCopy") {
+        draft.hero.copyLayout[breakpoint] = { ...draft.hero.copyLayout[breakpoint], ...next };
+        return;
+      }
+      if (selection.kind === "heroDecoration") {
+        const decoration = draft.hero.decorations.find((item) => item.id === selection.id);
+        if (decoration) decoration.layout[breakpoint] = { ...decoration.layout[breakpoint], ...next };
+        return;
+      }
       const section = draft.sections.find((item) => item.id === selection.sectionId);
       const item = selection.kind === "block" ? section?.blocks.find((block) => block.id === selection.id) : section?.decorations.find((decoration) => decoration.id === selection.id);
       if (item) item.layout[breakpoint] = { ...item.layout[breakpoint], ...next };
     });
   };
 
-  const selectedSectionId = selection?.sectionId ?? data?.sections[0]?.id ?? "";
+  const selectedSectionId = selection && "sectionId" in selection ? selection.sectionId : "";
   const selectedSection = data?.sections.find((section) => section.id === selectedSectionId) ?? null;
   const sectionItem = selected?.item && "blocks" in selected.item ? selected.item : null;
   const layoutItem = selected?.item && "layout" in selected.item ? selected.item : null;
+  const heroSelected = data && selection?.kind === "hero" ? data.hero : null;
+  const heroImageItem = data && selection?.kind === "heroImage" ? data.hero.image : null;
+  const heroCopyLayout = data && selection?.kind === "heroCopy" ? data.hero.copyLayout : null;
+  const heroDecorationItem = data && selection?.kind === "heroDecoration" ? data.hero.decorations.find((decoration) => decoration.id === selection.id) ?? null : null;
+  const selectedHeroLayout = heroImageItem?.layout ?? heroCopyLayout ?? heroDecorationItem?.layout ?? null;
 
   if (!data) {
     return <main className="min-h-screen bg-[#f1e9df] p-6 font-mono text-sm uppercase tracking-[0.16em] text-stone-600">Loading travel detail editor...</main>;
@@ -489,7 +614,10 @@ export default function TravelDetailEditorPage() {
         <aside className="grid content-start gap-5">
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">
             <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Sections</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={addSection}>Add section</button></div>
-            <div className="mt-3 grid gap-2">{data.sections.map((section) => <button key={section.id} className={`border px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.12em] ${selection?.sectionId === section.id ? "border-stone-900 bg-[#e6dccb]" : "border-stone-300"}`} onClick={() => setSelection({ kind: "section", sectionId: section.id })}>{section.no} · {section.name}</button>)}</div>
+            <div className="mt-3 grid gap-2">
+              <button className={`border px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.12em] ${selection?.kind === "hero" ? "border-stone-900 bg-[#e6dccb]" : "border-stone-300"}`} onClick={() => setSelection({ kind: "hero" })}>00 · Hero</button>
+              {data.sections.map((section) => <button key={section.id} className={`border px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.12em] ${selection && "sectionId" in selection && selection.sectionId === section.id ? "border-stone-900 bg-[#e6dccb]" : "border-stone-300"}`} onClick={() => setSelection({ kind: "section", sectionId: section.id })}>{section.no} · {section.name}</button>)}
+            </div>
             {selectedSection && <div className="mt-3 flex gap-2"><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={() => addText(selectedSection.id)}>Add text</button><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={() => addTape(selectedSection.id)}>Add tape</button></div>}
           </div>
 
@@ -520,6 +648,9 @@ export default function TravelDetailEditorPage() {
               <Field label="Hero image" value={data.hero.image.src} onChange={(src) => updateData("Edit hero image", (draft) => void (draft.hero.image.src = src))} />
               <Field label="Hero caption" value={data.hero.image.caption} onChange={(caption) => updateData("Edit hero caption", (draft) => void (draft.hero.image.caption = caption))} />
               <Field label="Hero alt" value={data.hero.image.alt} onChange={(alt) => updateData("Edit hero alt", (draft) => void (draft.hero.image.alt = alt))} />
+              <CheckboxField label="Hero cutout" checked={Boolean(data.hero.image.cutout)} onChange={(cutout) => updateData("Edit hero cutout", (draft) => void (draft.hero.image.cutout = cutout))} />
+              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={() => setSelection({ kind: "hero" })}>Select hero layout</button>
+              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={addHeroTape}>Add hero tape</button>
             </div>
           </div>
 
@@ -541,8 +672,60 @@ export default function TravelDetailEditorPage() {
         <section className="overflow-auto px-2 pb-4"><Preview data={data} breakpoint={breakpoint} selection={selection} onSelect={setSelection} onDropAsset={addImage} onDragItem={setDragState} /></section>
 
         <aside className="sticky top-24 h-[calc(100vh-7rem)] overflow-auto border border-stone-400 bg-[#fbf6ee] p-4">
-          <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Selection</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] disabled:opacity-40" disabled={!selection} onClick={deleteSelection}>Delete</button></div>
-          {!selected?.item && <p className="mt-4 font-serif text-sm italic text-stone-600">Select a section, image, text block, or tape piece.</p>}
+          <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Selection</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] disabled:opacity-40" disabled={!selection || selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy"} onClick={deleteSelection}>Delete</button></div>
+          {!selected?.item && !heroSelected && !heroImageItem && !heroCopyLayout && !heroDecorationItem && <p className="mt-4 font-serif text-sm italic text-stone-600">Select a section, image, text block, or tape piece.</p>}
+          {heroSelected && (
+            <div className="mt-4 grid gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero · {breakpointLabels[breakpoint]}</div>
+              <NumberField label="Large height" value={heroSelected.canvasHeight.large} min={240} onChange={(large) => updateData("Edit hero large height", (draft) => void (draft.hero.canvasHeight.large = large))} />
+              <NumberField label="Medium height" value={heroSelected.canvasHeight.medium} min={240} onChange={(medium) => updateData("Edit hero medium height", (draft) => void (draft.hero.canvasHeight.medium = medium))} />
+              <NumberField label="Small height" value={heroSelected.canvasHeight.small} min={240} onChange={(small) => updateData("Edit hero small height", (draft) => void (draft.hero.canvasHeight.small = small))} />
+              <Field label="Title" value={heroSelected.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
+              <Field label="Subtitle line" value={heroSelected.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
+              <Field label="Intro" value={heroSelected.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
+              <Field label="Facts" value={heroSelected.facts.join(" | ")} onChange={(facts) => updateData("Edit hero facts", (draft) => void (draft.hero.facts = facts.split("|").map((item) => item.trim()).filter(Boolean)))} />
+              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={addHeroTape}>Add hero tape</button>
+            </div>
+          )}
+          {heroImageItem && (
+            <div className="mt-4 grid gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero image · {breakpointLabels[breakpoint]}</div>
+              <Field label="Image path" value={heroImageItem.src} onChange={(src) => updateData("Edit hero image", (draft) => void (draft.hero.image.src = src))} />
+              <Field label="Alt" value={heroImageItem.alt} onChange={(alt) => updateData("Edit hero alt", (draft) => void (draft.hero.image.alt = alt))} />
+              <Field label="Caption" value={heroImageItem.caption} onChange={(caption) => updateData("Edit hero caption", (draft) => void (draft.hero.image.caption = caption))} />
+              <Field label="Aspect" value={heroImageItem.aspect} onChange={(aspect) => updateData("Edit hero aspect", (draft) => void (draft.hero.image.aspect = aspect))} />
+              <CheckboxField label="Cutout" checked={Boolean(heroImageItem.cutout)} onChange={(cutout) => updateData("Edit hero cutout", (draft) => void (draft.hero.image.cutout = cutout))} />
+            </div>
+          )}
+          {heroCopyLayout && (
+            <div className="mt-4 grid gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero copy · {breakpointLabels[breakpoint]}</div>
+              <Field label="Title" value={data.hero.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
+              <Field label="Subtitle line" value={data.hero.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
+              <Field label="Intro" value={data.hero.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
+              <Field label="Facts" value={data.hero.facts.join(" | ")} onChange={(facts) => updateData("Edit hero facts", (draft) => void (draft.hero.facts = facts.split("|").map((item) => item.trim()).filter(Boolean)))} />
+            </div>
+          )}
+          {heroDecorationItem && (
+            <div className="mt-4 grid gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">{heroDecorationItem.id} · Hero tape · {breakpointLabels[breakpoint]}</div>
+              <Field label="Color" value={heroDecorationItem.color} onChange={(color) => updateData("Edit hero tape color", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.color = color; })} />
+              <NumberField label="Opacity" value={heroDecorationItem.opacity} min={0} max={1} step={0.05} onChange={(opacity) => updateData("Edit hero tape opacity", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.opacity = opacity; })} />
+              <NumberField label="Height" value={heroDecorationItem.height[breakpoint]} min={4} max={80} onChange={(height) => updateData("Edit hero tape height", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.height[breakpoint] = height; })} />
+            </div>
+          )}
+          {selectedHeroLayout && (
+            <div className="mt-4 grid gap-3">
+              <div className="grid grid-cols-2 gap-3">
+                <NumberField label="X %" value={selectedHeroLayout[breakpoint].x} min={minCanvasX} max={maxCanvasX} step={0.1} onChange={(x) => updateLayout({ x })} />
+                <NumberField label="Y px" value={selectedHeroLayout[breakpoint].y} min={minCanvasY} step={1} onChange={(y) => updateLayout({ y })} />
+                <NumberField label="Width %" value={selectedHeroLayout[breakpoint].width} min={1} max={100} step={0.1} onChange={(width) => updateLayout({ width })} />
+                <NumberField label="Rotation" value={selectedHeroLayout[breakpoint].rotation} min={-45} max={45} step={0.1} onChange={(rotation) => updateLayout({ rotation })} />
+                <NumberField label="Z-index" value={selectedHeroLayout[breakpoint].zIndex} min={0} onChange={(zIndex) => updateLayout({ zIndex })} />
+                <CheckboxField label="Visible" checked={selectedHeroLayout[breakpoint].visible} onChange={(visible) => updateLayout({ visible })} />
+              </div>
+            </div>
+          )}
           {sectionItem && (
             <div className="mt-4 grid gap-3">
               <Field label="Name" value={sectionItem.name} onChange={(name) => updateData("Edit section name", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.name = name; })} />
@@ -562,25 +745,25 @@ export default function TravelDetailEditorPage() {
               <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">{layoutItem.id} · {layoutItem.type} · {breakpointLabels[breakpoint]}</div>
               {layoutItem.type === "image" && (
                 <>
-                  <Field label="Image path" value={layoutItem.src} onChange={(src) => updateData("Edit image path", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.src = src; })} />
-                  <Field label="Alt" value={layoutItem.alt} onChange={(alt) => updateData("Edit alt", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.alt = alt; })} />
-                  <Field label="Caption" value={layoutItem.caption} onChange={(caption) => updateData("Edit caption", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.caption = caption; })} />
-                  <Field label="Aspect" value={layoutItem.aspect} onChange={(aspect) => updateData("Edit aspect", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.aspect = aspect; })} />
-                  <CheckboxField label="Cutout" checked={Boolean(layoutItem.cutout)} onChange={(cutout) => updateData("Edit cutout", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.cutout = cutout; })} />
+                  <Field label="Image path" value={layoutItem.src} onChange={(src) => updateData("Edit image path", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.src = src; })} />
+                  <Field label="Alt" value={layoutItem.alt} onChange={(alt) => updateData("Edit alt", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.alt = alt; })} />
+                  <Field label="Caption" value={layoutItem.caption} onChange={(caption) => updateData("Edit caption", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.caption = caption; })} />
+                  <Field label="Aspect" value={layoutItem.aspect} onChange={(aspect) => updateData("Edit aspect", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.aspect = aspect; })} />
+                  <CheckboxField label="Cutout" checked={Boolean(layoutItem.cutout)} onChange={(cutout) => updateData("Edit cutout", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.cutout = cutout; })} />
                 </>
               )}
               {layoutItem.type === "text" && (
                 <>
-                  <Field label="Text" value={layoutItem.text} multiline onChange={(text) => updateData("Edit text", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.text = text; })} />
-                  <SelectField label="Tone" value={layoutItem.tone ?? "caption"} options={tones} onChange={(tone) => updateData("Edit tone", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.tone = tone; })} />
-                  <NumberField label="Font size" value={layoutItem.fontSize[breakpoint]} min={8} max={80} onChange={(fontSize) => updateData("Edit font size", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.fontSize[breakpoint] = fontSize; })} />
+                  <Field label="Text" value={layoutItem.text} multiline onChange={(text) => updateData("Edit text", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.text = text; })} />
+                  <SelectField label="Tone" value={layoutItem.tone ?? "caption"} options={tones} onChange={(tone) => updateData("Edit tone", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.tone = tone; })} />
+                  <NumberField label="Font size" value={layoutItem.fontSize[breakpoint]} min={8} max={80} onChange={(fontSize) => updateData("Edit font size", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.fontSize[breakpoint] = fontSize; })} />
                 </>
               )}
               {layoutItem.type === "tape" && (
                 <>
-                  <Field label="Color" value={layoutItem.color} onChange={(color) => updateData("Edit tape color", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.color = color; })} />
-                  <NumberField label="Opacity" value={layoutItem.opacity} min={0} max={1} step={0.05} onChange={(opacity) => updateData("Edit tape opacity", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.opacity = opacity; })} />
-                  <NumberField label="Height" value={layoutItem.height[breakpoint]} min={4} max={80} onChange={(height) => updateData("Edit tape height", (draft) => { const section = draft.sections.find((item) => item.id === selection?.sectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.height[breakpoint] = height; })} />
+                  <Field label="Color" value={layoutItem.color} onChange={(color) => updateData("Edit tape color", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.color = color; })} />
+                  <NumberField label="Opacity" value={layoutItem.opacity} min={0} max={1} step={0.05} onChange={(opacity) => updateData("Edit tape opacity", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.opacity = opacity; })} />
+                  <NumberField label="Height" value={layoutItem.height[breakpoint]} min={4} max={80} onChange={(height) => updateData("Edit tape height", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.height[breakpoint] = height; })} />
                 </>
               )}
               <div className="grid grid-cols-2 gap-3">

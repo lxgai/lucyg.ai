@@ -33,6 +33,7 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 - `src/app/` - App Router pages and API routes
 - `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`, `CollageLayout`, `CollageCanvas`
 - `src/data/travels/` - JSON collage layouts for trip pages
+- `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
 - `src/types/` - shared TypeScript types
 - `src/styles/globals.css` - global CSS, Tailwind import, font variables
 - `public/fonts/` - local fonts currently registered in `src/app/layout.tsx`
@@ -109,6 +110,19 @@ Trip pages use responsive collage layout JSON from `src/data/travels/`.
 - Keep layout JSON structured and formatted; avoid ad hoc string manipulation.
 - When changing collage item types, update `src/types/collage.ts`, renderer logic, and the admin editor together.
 
+## Travel Detail System
+
+Detailed trip pages, such as `/travels/china-24`, use travel detail JSON from `src/data/travel-details/`.
+
+- Travel detail content uses fixed design canvases per breakpoint: `large` 1440px, `medium` 1120px, and `small` 470px.
+- The public page renders the fixed travel detail block centered and scaled to fit the available page width. The current public scale multiplier is `0.94`.
+- The site nav and public metadata strip are normal site chrome and must not be inside the scaled travel detail surface.
+- The scaled travel detail block starts below the metadata strip and includes hero, section canvases, and closing content.
+- The dev editor preview renders the selected breakpoint at exact scale `1` for stable drag and resize coordinates.
+- Hero layout is editable through travel detail JSON: image frame, copy block, tape decorations, and per-breakpoint hero canvas height.
+- Section canvas widths define the horizontal coordinate system. Do not expose editable section width controls in the editor; only section heights should be editable per breakpoint.
+- Drag and resize math should continue to use unscaled design coordinates.
+
 ## Admin Collage Editor
 
 The editor at `/admin/collage-editor` is development-only.
@@ -117,6 +131,16 @@ The editor at `/admin/collage-editor` is development-only.
 - All `/api/admin/*` routes must return 404 in production before doing any file or request work.
 - The API routes read/write JSON files under `src/data/travels/`.
 - Be careful when touching save/load path handling; do not broaden write access beyond the project data files.
+
+## Admin Travel Detail Editor
+
+The editor at `/admin/travel-detail-editor` is development-only.
+
+- It edits travel detail JSON under `src/data/travel-details/`.
+- It should render the same detail components as the public page where practical, but in fixed preview mode at scale `1`.
+- The hero can be visually edited by selecting and dragging its image frame, copy block, and tape pieces in the preview.
+- Keep section width values in JSON/types for compatibility, but do not make them editable in the UI.
+- Height controls are allowed because they change vertical canvas space without changing the horizontal coordinate contract.
 
 ## Implementation Notes
 

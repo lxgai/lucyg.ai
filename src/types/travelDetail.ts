@@ -61,6 +61,9 @@ export type TravelDetailHero = {
   image: TravelDetailImageBlock;
   intro: string;
   facts: string[];
+  canvasHeight: TravelDetailResponsiveNumber;
+  copyLayout: TravelDetailResponsiveLayout;
+  decorations: TravelDetailTapeDecoration[];
 };
 
 export type TravelDetailSection = {

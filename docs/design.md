@@ -183,17 +183,21 @@ The site reads like a personal **library card catalog** — an archival room whe
   * Hover flattens + lifts
   * Photo with sepia filter + corner stamp
 
-* **Trip pages**
+* **Travel detail pages**
 
-  * Big place name
-  * Italic place subtitle
-  * Oversized postage stamp on the right
-  * Masonry scrapbook (`column-count: 3`) of:
+  * Public metadata strip remains normal site chrome, matching the scale of other section pages
+  * Detail content below the strip is a fixed design canvas per breakpoint:
 
-    * photo cards
-    * text blocks
-    * pull quotes
-  * Slight rotational offsets
+    * `large` `1440px`
+    * `medium` `1120px`
+    * `small` `470px`
+  * Public detail canvas is centered and scaled to fit the available page width; current scale multiplier is `0.94`
+  * Hero, section headers, section canvases, and closing content share the same scaled content block
+  * Hero image frame, copy block, tape pieces, and canvas height are editable per breakpoint
+  * Editor preview renders the selected breakpoint at exact scale `1`
+  * Section canvas widths are part of the horizontal coordinate system and should not be edited in the UI
+  * Section canvas heights remain editable per breakpoint to manage vertical space
+  * Photo mounts, tape pieces, handwritten-style annotations, and slight rotational offsets provide the scrapbook texture inside the archive layout
 
 * **About**
 

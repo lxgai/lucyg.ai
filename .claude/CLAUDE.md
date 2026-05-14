@@ -1,111 +1,169 @@
 # CLAUDE.md
 
-## Project Overview
+## Project
 
-Personal portfolio site for Lucy — an archival / document-style personal site cataloging travel, projects, writing, and favorites. Individual travel pages keep a scrapbook collage aesthetic; everything else uses a warm-paper, newsprint-style "Direction A" design.
+Personal site for Lucy Gai. This is a design-focused Next.js portfolio with sections for home, blog, travels, projects, favorites, about, links, and a development-only collage editor.
 
-## Tech Stack
+Use `docs/design.md` as the current visual source of truth. Some older code and `.claude/CLAUDE.md` still reflect the previous scrapbook/retro system; when making new design work, migrate toward the Memory Archive direction in `docs/design.md` rather than preserving older VT323/Cooper/pink styling by default.
 
-- **Framework**: Next.js 15 (App Router) with React 19, TypeScript (strict)
-- **UI**: Material-UI v7 (`@mui/material`) — primary component library
-- **Styling**: MUI `sx` prop (primary), Tailwind CSS v4 (utility), CSS variables for fonts
-- **Maps**: Leaflet + react-leaflet (travel pages, when used)
-- **Data**: Static TS/JSON (no database, no backend API). Shared content lives in `src/data/content.ts`; trip collage layouts in `src/data/travels/*.json`.
-- **Fonts**:
-  - **Newsreader** (Google, serif) — primary body + display, used as `var(--font-newsreader)`
-  - **JetBrains Mono** (Google) — all uppercase UI / meta / labels, used as `var(--font-jetbrains-mono)`
-  - **Cooper Light** (local, serif) — legacy, still used inside the scrapbook trip pages
-  - **VT323** (Google, retro mono) — legacy, still used inside the scrapbook trip pages
-  - **Roboto Mono** (local) — available but no longer the primary UI font
+## Stack
+
+- Next.js 15 App Router
+- React 19
+- TypeScript with `strict: true`
+- MUI v7 / Joy UI available; most UI is currently MUI `sx`
+- Tailwind CSS v4 is configured and used in the admin editor
+- Leaflet / react-leaflet for travel maps
+- Static JSON data under `src/data/`; no database
 
 ## Commands
 
 ```bash
-npm run dev       # Dev server on localhost:3000
-npm run build     # Production build
-npm run lint      # ESLint (Next.js + TypeScript rules)
+npm run dev
+npm run build
+npm run lint
 ```
 
-No test framework is configured.
+There is no test framework configured. Before handing off code changes, run `npm run lint` and `npm run build` when practical.
 
-## Project Structure
+Note: `npm run lint` currently maps to `next lint`; verify it still works with the installed Next version before relying on it.
 
-```
-src/
-  app/                      # Next.js App Router pages (file-based routing)
-    travels/<trip-id>/      # Individual trip pages (scrapbook collage — keep aesthetic as-is)
-  components/
-    design/                 # Direction-A primitives (Nav, PageShell, VinylPlayer, tokens, primitives)
-    Header.tsx              # Thin re-export of design/Nav for legacy imports
-    CollageLayout.tsx,
-    CollageCanvas.tsx,
-    PhotoGallery.tsx,
-    TravelMap.tsx           # Scrapbook/collage primitives (trip pages)
-  styles/                   # globals.css (Tailwind, CSS vars, paper texture, keyframes)
-  types/                    # TypeScript interfaces (collage.ts, photo.ts)
-  data/
-    content.ts              # POSTS, PROJECTS, ALBUMS, TRACKLISTS, MOVIES, TRIPS
-    travels/*.json          # Per-trip collage layouts (drive the scrapbook pages)
-public/
-  fonts/                    # Local font files (Cooper, Roboto)
-  images/                   # Static images organized by page (home/, about/, favorites/, travels/)
-```
+## Important Paths
 
-## Design System (Direction A)
+- `src/app/` - App Router pages and API routes
+- `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`, `CollageLayout`, `CollageCanvas`
+- `src/data/travels/` - JSON collage layouts for trip pages
+- `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
+- `src/types/` - shared TypeScript types
+- `src/styles/globals.css` - global CSS, Tailwind import, font variables
+- `public/fonts/` - local fonts currently registered in `src/app/layout.tsx`
+- `docs/design.md` - current design system and copy guidance
+- `.claude/CLAUDE.md` - older but still useful implementation notes, especially scroll and admin-editor details
 
-The site uses an "archival document" aesthetic: warm paper background, serif-italic for display, uppercase monospace for labels / meta / nav, and a navy accent.
+## Design Direction
 
-- **Tokens**: `src/components/design/tokens.ts` — single source of truth for colors + font stacks.
-  - `paper: #f1e9df`, `paperDeep: #e6dccb`, `paperCard: #fbf6ee`
-  - `ink: #1f1a16`, `ink60`, `ink40`, `ink20`
-  - `hair` / `hairStrong` — horizontal rules
-  - `accent: oklch(0.38 0.08 250)` (navy)
-  - `serif: var(--font-newsreader)`, `mono: var(--font-jetbrains-mono)`
-- **CSS vars** (globals.css): `--paper`, `--ink`, `--accent`, plus `--font-newsreader` / `--font-jetbrains-mono` from `next/font/google` in `src/app/layout.tsx`.
-- **Utility classes**: `.paper-a` (radial-gradient paper texture), `.page-fade` (enter animation).
+The intended aesthetic is "Memory Archive": a quiet personal archive / library card catalog with structured, editorial layouts.
 
-## Shared Components
+Follow these defaults for new or refreshed public-facing UI:
 
-- **`design/Nav.tsx`** — sticky top nav. Serif-italic "Lucy Gai" + "EST. 2024", uppercase mono links, navy underline on active, mobile drawer on right. Use this (or the `Header` re-export) on every page; do not hand-roll navigation.
-- **`design/PageShell.tsx`** — standard page frame. Renders Nav + optional section strip (`section` / `catNo` / updated-date) + optional hero title/subtitle + padded content. Use on every Direction-A page; the home page is the only intentional exception (custom hero layout).
-- **`design/primitives.tsx`** — `Hair` (horizontal rule, solid or dashed), `CardLabel` (`CAT. X · № 001 · date`), `Pill` (uppercase mono tag).
-- **`design/VinylPlayer.tsx`** — animated record used on Favorites/music.
+- Background paper: `#f1e9df`
+- Secondary paper: `#e6dccb`
+- Card paper: `#fbf6ee`
+- Primary ink: `#1f1a16`
+- Secondary ink: `#5a4e43`
+- Metadata ink: `#8a7e70`
+- Hairline: `rgba(31, 26, 22, 0.2)`
+- Strong hairline: `rgba(31, 26, 22, 0.55)`
+- Accent rust: `oklch(0.52 0.13 40)`, used sparingly
+
+Typography direction:
+
+- Display serif should be Newsreader for headings, page titles, place names, post titles, and other human/editorial content.
+- Mono should be JetBrains Mono for metadata, section labels, catalog numbers, dates, and taxonomy.
+- Older VT323, Cooper Light, ChunkFive, and pink accent styling are legacy unless the task explicitly asks to preserve them.
+
+Layout direction:
+
+- Desktop page gutters: about `56px`
+- Mobile gutters: about `20px`
+- Use wide horizontal containers and generous whitespace.
+- Section pages should use a hairline-bordered metadata strip with section name, file id, and last updated.
+- Page titles should be large serif type with one italicized word where appropriate.
+- Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
+
+Copy direction:
+
+- Quiet and considered, not chatty.
+- Prefer archival words such as "Cataloged", "Filed", and "Entry".
+- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `FILE: HOME.IDX`.
+- Use italics for places and titles, not generic emphasis.
 
 ## Coding Conventions
 
-- **Client components**: Most pages use `"use client"` (interactivity throughout). PageShell is a client component, so any page using it is already client-side.
-- **Page frame**:
-  - For Direction-A pages, use `<PageShell>` and put content as children. Pass `section`, `catNo`, `title`, `subtitle` as needed.
-  - Home (`src/app/page.tsx`) renders `<Nav />` directly and builds its own layout.
-  - Scrapbook trip pages render `<Header />` (which is `<Nav />`) and then the collage — keep this pattern; don't force PageShell there.
-- **Gutters**: Horizontal padding is standardized across Nav and PageShell as `px: { xs: 4, md: 10, lg: 13 }`. If you add a page that doesn't use PageShell, match these values.
-- **Styling**: MUI `sx` prop with responsive object notation — `{ xs: ..., md: ..., lg: ... }`. No CSS modules, no styled-components.
-- **Responsive breakpoints**: `xs` (mobile-first), `sm`, `md` (768+), `lg` (1024+), `xl` (1280+).
-- **Typography rules**:
-  - Display / titles → `fontFamily: tokens.serif`, often with `fontStyle: "italic"` for emphasis.
-  - Meta / nav / labels / CAT·№ / tags → `fontFamily: tokens.mono`, `textTransform: "uppercase"`, `letterSpacing: ~1.4–1.6px`, `fontSize: 9–11`, `color: tokens.ink60` or `tokens.accent`.
-  - Body → `tokens.serif`, `fontSize: 15–19`, `lineHeight ~1.5`.
-- **Colors**: Pull from `tokens.*` — never hard-code hexes except in files that already define the tokens.
-- **Images**: Always `next/image` with explicit `width`/`height` or `fill`+`sizes`. Use `priority` for above-the-fold.
-- **Path alias**: `@/*` maps to `./src/*`.
-- **Naming**: PascalCase for types/components, camelCase for variables, kebab-case for route folders.
+- Keep page components client-side when they need hooks, browser APIs, MUI interactivity, or match the existing page pattern.
+- Use the `@/*` alias for imports from `src`.
+- Prefer MUI `sx` responsive object notation for public UI unless working in an area already using Tailwind.
+- Use `next/image` for images with explicit `width`/`height`, or `fill` plus `sizes`.
+- Use `priority` only for above-the-fold images.
+- Keep route folders kebab-case and components/types PascalCase.
+- Prefer local React state; no global state library is configured.
+- Preserve TypeScript strictness and avoid `any` unless a narrow, documented escape hatch is genuinely needed.
 
-## Key Patterns
+## Page Layout And Scroll Rules
 
-- **Content data lives in `src/data/content.ts`** — pages import `POSTS`, `PROJECTS`, `ALBUMS`, `TRACKLISTS`, `MOVIES`, `TRIPS`. Add entries here; don't inline arrays in page files.
-- **Trip pages are two layers**:
-  1. `src/data/content.ts` `TRIPS[]` — card data for the `/travels` index (place, date, duration, cover, stamp).
-  2. `src/app/travels/<trip-id>/page.tsx` — the scrapbook page itself. If a trip has a JSON layout in `src/data/travels/`, wire it with `CollageLayout`. If not, use `PageShell` with a "not filed yet" message (see `japan-24`, `netherlands-25`).
-- **Scrapbook collage** (trip pages only): `CollageLayout` selects a responsive variant (`large`/`medium`/`small`) from JSON, passes it to `CollageCanvas` which renders absolutely-positioned items (text/images) as % of canvas dimensions. Keep the scrapbook aesthetic; these pages deliberately don't follow Direction A.
-- **No state management library** — local React state only.
+For root page wrappers:
 
-## Admin / Dev Tools
+- Use `minHeight: "100svh"`.
+- Use `width: "100%"`, not `width: "100vw"`.
+- Use `overflow: "clip"` when clipping is needed.
+- Do not use `overflowX: "hidden"` on root boxes.
+- Do not set `overscroll-behavior` or `touch-action` on `html` or `body`.
 
-- **Collage Editor** (`/admin/collage-editor`): Visual editor for the JSON layout files that drive travel collage pages. Dev-only — guarded with `notFound()` in production.
-  - Loads/saves JSON files in `src/data/travels/` via API routes under `/api/admin/collage/*`
-  - Interactive canvas with drag-to-move, resize, rotate, and a properties sidebar
-  - All `/api/admin/*` routes and the editor page return 404 in production — this guard must be the first line of every handler
+The document should remain the only vertical scroll container. Using `100vw` or `overflowX: hidden` on page roots can create horizontal overflow or accidental nested vertical scroll containers, especially on Windows/Linux.
 
+## Collage System
 
+Trip pages use responsive collage layout JSON from `src/data/travels/`.
 
-  
+- `CollageLayout` selects `large`, `medium`, or `small` based on `window.innerWidth`.
+- `CollageCanvas` renders items with percentage-based absolute positioning.
+- Keep layout JSON structured and formatted; avoid ad hoc string manipulation.
+- When changing collage item types, update `src/types/collage.ts`, renderer logic, and the admin editor together.
+
+## Travel Detail System
+
+Detailed trip pages, such as `/travels/china-24`, use travel detail JSON from `src/data/travel-details/`.
+
+- Travel detail content uses fixed design canvases per breakpoint: `large` 1440px, `medium` 1120px, and `small` 470px.
+- The public page renders the fixed travel detail block centered and scaled to fit the available page width. The current public scale multiplier is `0.94`.
+- The site nav and public metadata strip are normal site chrome and must not be inside the scaled travel detail surface.
+- The scaled travel detail block starts below the metadata strip and includes hero, section canvases, and closing content.
+- The dev editor preview renders the selected breakpoint at exact scale `1` for stable drag and resize coordinates.
+- Section canvas widths define the horizontal coordinate system. Do not expose editable section width controls in the editor; only section heights should be editable per breakpoint.
+- Drag and resize math should continue to use unscaled design coordinates.
+
+## Admin Collage Editor
+
+The editor at `/admin/collage-editor` is development-only.
+
+- It must call `notFound()` in production.
+- All `/api/admin/*` routes must return 404 in production before doing any file or request work.
+- The API routes read/write JSON files under `src/data/travels/`.
+- Be careful when touching save/load path handling; do not broaden write access beyond the project data files.
+
+## Admin Travel Detail Editor
+
+The editor at `/admin/travel-detail-editor` is development-only.
+
+- It edits travel detail JSON under `src/data/travel-details/`.
+- It should render the same detail components as the public page where practical, but in fixed preview mode at scale `1`.
+- Keep section width values in JSON/types for compatibility, but do not make them editable in the UI.
+- Height controls are allowed because they change vertical canvas space without changing the horizontal coordinate contract.
+
+## Implementation Notes
+
+- The current working tree may contain user edits. Do not revert unrelated changes.
+- Keep changes scoped to the requested feature or fix.
+- If updating the design system implementation, prefer adding clear shared constants/helpers only when they reduce real duplication.
+- Do not introduce new UI libraries unless the task requires it.
+- Avoid decorative one-off assets or layouts that conflict with the archive/catalog direction.
+- Public pages should be responsive at mobile `<=768px`; multi-column layouts collapse to one column.
+
+## Verification
+
+For code changes, Codex should stop once TypeScript and lint pass:
+
+```bash
+npx tsc --noEmit
+npm run lint
+```
+
+Lucy will run dependency installation, production builds, and dev servers herself. Do not run these unless she explicitly asks in that turn:
+
+```bash
+npm install
+npm run build
+npm run dev
+```
+
+When visual changes are involved, describe what should be checked at desktop and mobile widths instead of starting the dev server. Pay special attention to text overflow, scroll behavior, and whether legacy styling was unintentionally preserved where the new Memory Archive design should apply.
