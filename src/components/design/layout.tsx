@@ -33,11 +33,13 @@ export function MetadataStrip({
   section,
   catNo,
   updatedLabel = `UPDATED ${LAST_UPDATED}`,
+  extra,
   sx,
 }: {
   section: ReactNode;
   catNo?: ReactNode;
   updatedLabel?: ReactNode;
+  extra?: ReactNode;
   sx?: SxProps<Theme>;
 }) {
   return (
@@ -67,6 +69,7 @@ export function MetadataStrip({
             {updatedLabel}
           </Box>
         )}
+        {extra && <Box component="span">{extra}</Box>}
       </Box>
     </PageContainer>
   );

@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import { POSTS } from "@/data/content";
@@ -62,6 +63,8 @@ export default function BlogPage() {
         return (
           <Box
             key={p.title}
+            component={NextLink}
+            href={`/blog/${p.slug}`}
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "120px 1fr 160px" },
@@ -70,6 +73,8 @@ export default function BlogPage() {
               borderBottom: `1px solid ${tokens.hair}`,
               alignItems: { md: "baseline" },
               cursor: "pointer",
+              color: tokens.ink,
+              textDecoration: "none",
               transition: "background 180ms",
               "&:hover": { background: "rgba(31,26,22,0.02)" },
             }}
@@ -125,6 +130,7 @@ export default function BlogPage() {
                   key={t}
                   component="span"
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setActiveTag(t);
                   }}

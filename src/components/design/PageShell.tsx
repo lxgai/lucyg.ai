@@ -13,6 +13,7 @@ type PageShellProps = {
   title?: ReactNode;
   subtitle?: ReactNode;
   updatedLabel?: string;
+  metadataExtra?: ReactNode;
   contentPadding?: boolean;
   contentSx?: SxProps<Theme>;
 };
@@ -24,6 +25,7 @@ export default function PageShell({
   title,
   subtitle,
   updatedLabel = `UPDATED ${LAST_UPDATED}`,
+  metadataExtra,
   contentPadding = true,
   contentSx,
 }: PageShellProps) {
@@ -39,7 +41,13 @@ export default function PageShell({
       <Nav />
 
       {section && (
-        <MetadataStrip section={section} catNo={catNo} updatedLabel={updatedLabel} sx={{ pt: { xs: 3, md: 4.5 } }} />
+        <MetadataStrip
+          section={section}
+          catNo={catNo}
+          updatedLabel={updatedLabel}
+          extra={metadataExtra}
+          sx={{ pt: { xs: 3, md: 4.5 } }}
+        />
       )}
 
       {(title || subtitle) && (
