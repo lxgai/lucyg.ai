@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import { TravelDetailSectionFrame, TravelDetailSurface, TravelDetailViewportContainer } from "@/components/travel/TravelDetailSectionFrame";
+import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
 import type {
   TravelDetailBlock,
   TravelDetailBreakpoint,
@@ -361,6 +362,8 @@ function HeroTape({
 }
 
 export function TravelMetadataStrip({ data, breakpoint }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint }) {
+  const detailMeta = getTravelDetailIndexMeta(data);
+
   return (
     <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 3 : 4.5 }}>
       <Box
@@ -382,10 +385,7 @@ export function TravelMetadataStrip({ data, breakpoint }: { data: TravelDetailDa
         <Box component="span" sx={{ color: tokens.accent }}>
           {data.section}
         </Box>
-        <Box component="span">{data.catNo}</Box>
-        <Box component="span" sx={{ display: breakpoint === "small" ? "none" : "inline" }}>
-          {data.updatedLabel}
-        </Box>
+        {detailMeta.catNo && <Box component="span">{detailMeta.catNo}</Box>}
       </Box>
     </TravelDetailViewportContainer>
   );
@@ -434,7 +434,7 @@ export function Hero({
         <HeroEditableFrame id="copy" layout={copyLayout} editable={editable}>
           <Box>
             <Typography sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "2px", color: tokens.accent, textTransform: "uppercase" }}>
-              Section C · Travels No. {data.fileNo}
+              Section B · Travels No. {data.fileNo}
             </Typography>
             <Typography
               component="h1"
@@ -483,23 +483,17 @@ export function Hero({
                     }),
               }}
             >
-              {heroMetadataFields.length > 0
-                ? heroMetadataFields.map((field, index) => (
-                    <Fragment key={`${field.label}-${field.description}-${index}`}>
-                      <Box component="span">{field.label}</Box>
-                      <Box component="span" sx={{ color: tokens.ink }}>
-                        ·
-                      </Box>
-                      <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere" }}>
-                        {field.description}
-                      </Box>
-                    </Fragment>
-                  ))
-                : data.hero.facts.map((fact) => (
-                    <Box component="span" key={fact}>
-                      {fact}
-                    </Box>
-                  ))}
+              {heroMetadataFields.map((field, index) => (
+                <Fragment key={`${field.label}-${field.description}-${index}`}>
+                  <Box component="span">{field.label}</Box>
+                  <Box component="span" sx={{ color: tokens.ink }}>
+                    ·
+                  </Box>
+                  <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere" }}>
+                    {field.description}
+                  </Box>
+                </Fragment>
+              ))}
             </Box>
           </Box>
         </HeroEditableFrame>
@@ -621,10 +615,11 @@ function Lightbox({ image, onClose }: { image: LightboxImage | null; onClose: ()
 export default function TravelDetailPage({ data }: { data: TravelDetailData }) {
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
   const breakpoint = useActiveBreakpoint();
+  const detailMeta = useMemo(() => getTravelDetailIndexMeta(data), [data]);
 
   return (
     <Box id="top">
-      <PageShell section={data.section} catNo={data.catNo} contentPadding={false}>
+      <PageShell section={data.section} catNo={detailMeta.catNo} contentPadding={false}>
         <TravelDetailSurface breakpoint={breakpoint} mode="fit-width" scaleMultiplier={0.94}>
           <Hero data={data} breakpoint={breakpoint} onOpen={setLightboxImage} />
           <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>

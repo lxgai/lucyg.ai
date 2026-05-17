@@ -3,17 +3,24 @@
 // stitched to V3's city spreads (large bg numerals, alternating tilted polaroids,
 // cutouts, washi tape, handwritten captions). Chongqing flipped right-aligned so
 // the city headers read left → right → left across the page.
+//
+// Wrapped in an IIFE — locals (A, CHINA, primitives) are pulled from the
+// CN_-prefixed globals exposed by china-detail-shared.jsx.
+(function () {
+const {
+  CN_A: A, CHINA,
+  CN_Hair: Hair, CN_Crumb: Crumb,
+  CN_Photo: Photo, CN_Cutout: Cutout,
+  CN_useLightbox: useLightbox,
+} = window;
 
 function ChinaDetail() {
-  const { setOpen, Lightbox } = window.useLightbox();
-  const { A, CHINA, NavBar, Hair, Crumb, Photo, Cutout } = window;
+  const { setOpen, Lightbox } = useLightbox();
 
   return (
-    <div className="ab-root paper-a" style={{ color: A.ink, fontFamily: A.serif }}>
-      <NavBar active="Travels" />
-
+    <div className="paper-a" style={{ color: A.ink, fontFamily: A.serif }}>
       {/* ── Top crumb strip ──────────────────────────────────── */}
-      <div style={{ padding: "96px 48px 0" }}>
+      <div style={{ padding: "24px 48px 0" }}>
         <Hair color={A.hairStrong} />
         <div style={{
           display: "flex", justifyContent: "space-between",
@@ -54,8 +61,6 @@ function ChinaDetail() {
 // Hero — copied straight from V2's first section
 // ============================================================
 function HeroV2Style({ onOpen }) {
-  const { A, CHINA, Photo } = window;
-
   return (
     <div style={{ padding: "32px 48px 0", position: "relative" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 36, alignItems: "start" }}>
@@ -93,7 +98,7 @@ function HeroV2Style({ onOpen }) {
         {/* Title block */}
         <div style={{ paddingTop: 6 }}>
           <div style={{ fontFamily: A.mono, fontSize: 10, letterSpacing: 2, color: A.cinnabar, textTransform: "uppercase" }}>
-            Section C · Travels № {CHINA.no}
+            Section B · Travels № {CHINA.no}
           </div>
           <div style={{ fontFamily: A.serif, fontSize: 88, lineHeight: 0.92, letterSpacing: -2, marginTop: 6 }}>
             <span style={{ fontStyle: "italic" }}>China,</span><br />
@@ -125,7 +130,6 @@ function HeroV2Style({ onOpen }) {
 // City spread — V3 collage with per-city alignment
 // ============================================================
 function CitySpread({ city, idx, align, onOpen }) {
-  const { A } = window;
   const isRight = align === "right";
 
   return (
@@ -159,7 +163,6 @@ function CitySpread({ city, idx, align, onOpen }) {
 }
 
 function LeftAlignedHeader({ city }) {
-  const { A } = window;
   return (
     <>
       <div style={{
@@ -185,7 +188,6 @@ function LeftAlignedHeader({ city }) {
 }
 
 function RightAlignedHeader({ city }) {
-  const { A } = window;
   return (
     <>
       <div style={{
@@ -216,7 +218,6 @@ function RightAlignedHeader({ city }) {
 // flipped header is enough to create the L-R-L rhythm)
 // ============================================================
 function CollageHangzhou({ city, onOpen }) {
-  const { A, Photo, Cutout } = window;
   const lake = city.photos[0];
   const dumplings = city.photos[1];
 
@@ -258,7 +259,6 @@ function CollageHangzhou({ city, onOpen }) {
 }
 
 function CollageChongqing({ city, onOpen }) {
-  const { A, Photo, Cutout } = window;
   const [hongyadong, xiaomian, coconut] = city.photos;
 
   return (
@@ -309,7 +309,6 @@ function CollageChongqing({ city, onOpen }) {
 }
 
 function CollageWulong({ city, onOpen }) {
-  const { A, Photo, Cutout } = window;
   const [bridges, jiuli] = city.photos;
 
   return (
@@ -358,7 +357,6 @@ function CollageWulong({ city, onOpen }) {
 // Closing — family polaroid + handwritten note
 // ============================================================
 function Closing({ onOpen }) {
-  const { A, CHINA, Hair, Cutout } = window;
   return (
     <div style={{ padding: "8px 48px 32px" }}>
       <Hair color={A.hairStrong} />
@@ -432,4 +430,37 @@ function Closing({ onOpen }) {
   );
 }
 
-Object.assign(window, { ChinaDetail });
+// ============================================================
+// PageChinaDetail — prototype-integrated wrapper.
+// Renders the prototype's sticky Nav + a back link + the rich
+// scrapbook detail. Used for the `travels/china-24` route.
+// ============================================================
+function PageChinaDetail({ route, setRoute, theme }) {
+  const Nav = window.Nav;
+  return (
+    <div className="page-fade paper-a" style={{ minHeight: "100vh", background: A.paper, color: A.ink, fontFamily: A.serif }}>
+      <Nav route={route} setRoute={setRoute} theme={theme} />
+
+      {/* Back link sitting above the archive strip */}
+      <div className="m-page-pad" style={{
+        maxWidth: 1280, margin: "0 auto",
+        padding: "20px 48px 0",
+      }}>
+        <span onClick={() => setRoute("travels")} style={{
+          fontFamily: A.mono, fontSize: 10, color: A.ink60, letterSpacing: 1.4,
+          textTransform: "uppercase", cursor: "pointer",
+        }}
+          onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
+          onMouseLeave={(e) => e.currentTarget.style.color = A.ink60}
+        >← back to travels</span>
+      </div>
+
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        <ChinaDetail />
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { ChinaDetail, PageChinaDetail });
+})();

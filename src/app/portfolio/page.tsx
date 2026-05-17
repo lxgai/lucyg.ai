@@ -6,7 +6,7 @@ import { tokens } from "@/components/design/tokens";
 export default function PortfolioPage() {
   return (
     <PageShell
-      section="SECTION B · PORTFOLIO"
+      section="SECTION A · PORTFOLIO"
       catNo="file: portfolio.idx"
       title={
         <>

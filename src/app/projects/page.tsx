@@ -7,7 +7,7 @@ import { PROJECTS } from "@/data/content";
 export default function ProjectsPage() {
   return (
     <PageShell
-      section="SECTION B · PROJECTS"
+      section="SECTION A · PROJECTS"
       catNo="file: projects.idx"
       title={
         <>

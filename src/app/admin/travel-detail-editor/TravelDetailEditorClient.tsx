@@ -678,11 +678,9 @@ export default function TravelDetailEditorPage() {
             <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Trip metadata</h2>
             <div className="mt-4 grid gap-3">
               <Field label="Section" value={data.section} onChange={(section) => updateData("Edit section", (draft) => void (draft.section = section))} />
-              <Field label="Catalog" value={data.catNo} onChange={(catNo) => updateData("Edit catalog", (draft) => void (draft.catNo = catNo))} />
               <Field label="Place" value={data.metadata.place} onChange={(place) => updateData("Edit place", (draft) => void (draft.metadata.place = place))} />
               <Field label="Date range" value={data.metadata.dateRange} onChange={(dateRange) => updateData("Edit date range", (draft) => void (draft.metadata.dateRange = dateRange))} />
               <Field label="Duration" value={data.metadata.duration} onChange={(duration) => updateData("Edit duration", (draft) => void (draft.metadata.duration = duration))} />
-              <Field label="City summary" value={data.metadata.citySummary} onChange={(citySummary) => updateData("Edit city summary", (draft) => void (draft.metadata.citySummary = citySummary))} />
             </div>
           </div>
 
@@ -706,13 +704,6 @@ export default function TravelDetailEditorPage() {
             <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Closing</h2>
             <div className="mt-4 grid gap-3">
               <Field label="Eyebrow" value={data.closing.eyebrow} onChange={(eyebrow) => updateData("Edit closing eyebrow", (draft) => void (draft.closing.eyebrow = eyebrow))} />
-              <Field label="Title" value={data.closing.title} onChange={(title) => updateData("Edit closing title", (draft) => void (draft.closing.title = title))} />
-              <Field label="Note title" value={data.closing.noteTitle} onChange={(noteTitle) => updateData("Edit closing note title", (draft) => void (draft.closing.noteTitle = noteTitle))} />
-              <Field label="Note" value={data.closing.note} multiline onChange={(note) => updateData("Edit closing note", (draft) => void (draft.closing.note = note))} />
-              <Field label="Signature" value={data.closing.signature} onChange={(signature) => updateData("Edit closing signature", (draft) => void (draft.closing.signature = signature))} />
-              <Field label="Closing image" value={data.closing.image.src} onChange={(src) => updateData("Edit closing image", (draft) => void (draft.closing.image.src = src))} />
-              <Field label="Closing caption" value={data.closing.image.caption} onChange={(caption) => updateData("Edit closing caption", (draft) => void (draft.closing.image.caption = caption))} />
-              <Field label="Closing alt" value={data.closing.image.alt} onChange={(alt) => updateData("Edit closing alt", (draft) => void (draft.closing.image.alt = alt))} />
             </div>
           </div>
         </aside>

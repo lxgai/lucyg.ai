@@ -19,10 +19,10 @@ import { usePathname } from "next/navigation";
 import { tokens } from "./tokens";
 
 const LINKS: Array<{ label: string; href: string; match: string }> = [
-  { label: "Blog", href: "/blog", match: "/blog" },
-  { label: "Travels", href: "/travels", match: "/travels" },
   { label: "Projects", href: "/projects", match: "/projects" },
+  { label: "Travels", href: "/travels", match: "/travels" },
   { label: "Favorites", href: "/favorites", match: "/favorites" },
+  { label: "Blog", href: "/blog", match: "/blog" },
   { label: "About", href: "/about", match: "/about" },
 ];
 

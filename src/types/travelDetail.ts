@@ -62,10 +62,8 @@ export type TravelDetailHeroMetadataField = {
 export type TravelDetailHero = {
   title: string;
   italicTitle?: string;
-  subtitle: string;
   image: TravelDetailImageBlock;
   intro: string;
-  facts: string[];
   metadataFields?: TravelDetailHeroMetadataField[];
   titleTopMargin?: TravelDetailResponsiveNumber;
   canvasHeight: TravelDetailResponsiveNumber;
@@ -90,29 +88,15 @@ export type TravelDetailSection = {
 
 export type TravelDetailClosing = {
   eyebrow: string;
-  title: string;
-  image: TravelDetailImageBlock;
-  noteTitle: string;
-  note: string;
-  signature: string;
-  previousHref?: string;
-  previousLabel?: string;
-  nextHref?: string;
-  nextLabel?: string;
 };
 
 export type TravelDetailData = {
-  slug: string;
   fileNo: string;
   section: string;
-  catNo: string;
-  updatedLabel: string;
   metadata: {
     place: string;
     dateRange: string;
     duration: string;
-    citySummary: string;
-    companions?: string;
   };
   hero: TravelDetailHero;
   sections: TravelDetailSection[];

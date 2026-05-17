@@ -10,7 +10,7 @@ export default async function BlogPage() {
 
   return (
     <PageShell
-      section="SECTION A · BLOG"
+      section="SECTION D · BLOG"
       catNo="file: blog.idx"
       title={
         <>

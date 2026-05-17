@@ -1,26 +1,15 @@
 {
-  "slug": "china-24",
   "fileNo": "001",
-  "section": "SECTION C · TRAVELS / CHINA",
-  "catNo": "01 / 2024 · 14 days",
-  "updatedLabel": "UPDATED 04 · 22 · 26",
+  "section": "SECTION B · TRAVELS / CHINA",
   "metadata": {
     "place": "China",
     "dateRange": "JUL 06 - JUL 19, 2024",
-    "duration": "14 days",
-    "citySummary": "Chongqing · Hangzhou · Wulong",
-    "companions": "Mom & Dad"
+    "duration": "14 days"
   },
   "hero": {
     "title": "China,",
     "italicTitle": "summer '24.",
-    "subtitle": "Chongqing · Hangzhou · Wulong",
     "intro": "Two summer weeks across three very different Chinas. Hangzhou for lotus ponds and slow lake mornings; Chongqing for hot pots, river lights, and noodles that left me sweating into my soup; Wulong for cliffs that swallowed everything human-sized. I traveled with my parents - first time in a while - and ate constantly.",
-    "facts": [
-      "14 days",
-      "3 cities",
-      "Mom & Dad"
-    ],
     "canvasHeight": {
       "large": 570,
       "medium": 520,
@@ -143,48 +132,7 @@
     ]
   },
   "closing": {
-    "eyebrow": "End of file - China '24",
-    "title": "See you next summer.",
-    "noteTitle": "note to future me:",
-    "note": "you didn't take enough photos of the food. take more next time. also, learn to read the menu - pointing only gets you so far.",
-    "signature": "- Lucy, somewhere over the Pacific",
-    "nextHref": "/travels/japan-24",
-    "nextLabel": "Next: Japan '24",
-    "image": {
-      "id": "closing-family",
-      "type": "image",
-      "src": "/images/travels/china-24/family-stickered.png",
-      "alt": "Lucy and her parents in Wulong with stickers on their faces",
-      "caption": "the three of us, somewhere in Wulong",
-      "aspect": "1880 / 2228",
-      "cutout": true,
-      "layout": {
-        "large": {
-          "x": 0,
-          "y": 0,
-          "width": 32,
-          "rotation": -1.6,
-          "zIndex": 1,
-          "visible": true
-        },
-        "medium": {
-          "x": 0,
-          "y": 0,
-          "width": 32,
-          "rotation": -1.6,
-          "zIndex": 1,
-          "visible": true
-        },
-        "small": {
-          "x": 0,
-          "y": 0,
-          "width": 80,
-          "rotation": -1.6,
-          "zIndex": 1,
-          "visible": true
-        }
-      }
-    }
+    "eyebrow": "End of file - China '24"
   },
   "sections": [
     {

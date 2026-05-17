@@ -7,7 +7,7 @@ import { tokens } from "@/components/design/tokens";
 export default function Netherlands25Page() {
   return (
     <PageShell
-      section="SECTION C · TRAVELS / NETHERLANDS"
+      section="SECTION B · TRAVELS / NETHERLANDS"
       catNo="03 / 2025 · 7 days"
       title={
         <>

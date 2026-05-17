@@ -328,7 +328,7 @@ export function ProjectDetailReport({
 
   return (
     <PageShell
-      section={`SECTION B · PROJECTS · ${project.slug}`}
+      section={`SECTION A · PROJECTS · ${project.slug}`}
       catNo={`file: ${project.slug}.entry`}
       updatedLabel={project.year}
       contentSx={{ width: "100%" }}

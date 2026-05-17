@@ -49,7 +49,7 @@ export function BlogPostArticle({
 
   return (
     <PageShell
-      section={`SECTION A · BLOG · ${post.slug}`}
+      section={`SECTION D · BLOG · ${post.slug}`}
       catNo={`file: ${post.slug}.entry`}
       updatedLabel={displayDate}
       metadataExtra={

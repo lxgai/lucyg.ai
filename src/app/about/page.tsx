@@ -21,7 +21,7 @@ const CURRENTLY: Array<[string, React.ReactNode]> = [
 
 export default function AboutPage() {
   return (
-    <PageShell section="SECTION F · ABOUT" catNo="file: about.idx">
+    <PageShell section="SECTION E · ABOUT" catNo="file: about.idx">
       <Box
         sx={{
           display: "grid",
@@ -121,7 +121,7 @@ export default function AboutPage() {
             Contact index
           </Box>
 
-          <CardLabel cat="F" no="001" date="04 · 22 · 26" />
+          <CardLabel cat="E" no="001" date="04 · 22 · 26" />
 
           <Typography
             component="div"

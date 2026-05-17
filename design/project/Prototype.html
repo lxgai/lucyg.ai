@@ -83,9 +83,11 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" src="direction-data.jsx?v=13"></script>
-<script type="text/babel" src="prototype-core.jsx?v=13"></script>
-<script type="text/babel" src="prototype-pages.jsx?v=13"></script>
+<script type="text/babel" src="direction-data.jsx?v=20"></script>
+<script type="text/babel" src="prototype-core.jsx?v=20"></script>
+<script type="text/babel" src="prototype-pages.jsx?v=20"></script>
+<script type="text/babel" src="china-detail-shared.jsx?v=20"></script>
+<script type="text/babel" src="china-detail.jsx?v=20"></script>
 
 <script type="text/babel">
 const { useState, useEffect } = React;
@@ -110,11 +112,6 @@ function App() {
   });
   const [accentColor, setAccent] = useState(TWEAKS.accentColor);
   const [serifStyle, setSerifStyle] = useState(TWEAKS.serifStyle);
-  // Settled defaults (no longer user-tweakable):
-  const moviesView = "cards";
-  const projectsView = "spread";
-  const projectDetailView = "report";
-  const blogPostView = "letter";
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => { try { localStorage.setItem("route", route); } catch {} }, [route]);
@@ -140,7 +137,7 @@ function App() {
     serif: serifStyle === "fraunces" ? "'Fraunces', Georgia, serif" : "'Newsreader', Georgia, serif",
   };
 
-  const ctx = { route, setRoute, theme, moviesView, projectsView, projectDetailView, blogPostView };
+  const ctx = { route, setRoute, theme };
 
   return (
     <>
@@ -204,16 +201,17 @@ function RouteView(props) {
   if (route === "blog") return <PageBlog key="blog" {...props} />;
   if (route.startsWith("blog/")) {
     const slug = route.split("/")[1];
-    return <PageBlogPost key={"blog-" + slug + "-" + props.blogPostView} slug={slug} {...props} />;
+    return <PageBlogPost key={"blog-" + slug} slug={slug} {...props} />;
   }
-  if (route === "projects") return <PageProjects key={"projects-" + props.projectsView} {...props} />;
+  if (route === "projects") return <PageProjects key="projects" {...props} />;
   if (route.startsWith("projects/")) {
     const slug = route.split("/")[1];
-    return <PageProject key={"project-" + slug + "-" + props.projectDetailView} slug={slug} {...props} />;
+    return <PageProject key={"project-" + slug} slug={slug} {...props} />;
   }
   if (route === "favorites") return <PageFavorites key="favorites" {...props} />;
   if (route === "about") return <PageAbout key="about" {...props} />;
   if (route === "travels") return <PageTravels key="travels" {...props} />;
+  if (route === "travels/china-24") return <PageChinaDetail key="china-24" {...props} />;
   if (route.startsWith("travels/")) {
     const tripId = route.split("/")[1];
     return <PageTrip key={route} tripId={tripId} {...props} />;

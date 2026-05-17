@@ -114,7 +114,7 @@ function PageBlog({ route, setRoute, theme }) {
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION A · BLOG" catNo="file: blog.idx"
+      section="SECTION D · BLOG" catNo="file: blog.idx"
       title={<>Notes, filed by <span style={{ fontStyle: "italic" }}>date.</span></>}
       subtitle={`${window.POSTS.length} entries · most recent first`}>
 
@@ -242,114 +242,17 @@ function StatusDot({ project, theme }) {
   );
 }
 
-function PageProjects({ route, setRoute, theme, projectsView = "polaroids" }) {
+function PageProjects({ route, setRoute, theme }) {
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION B · PROJECTS" catNo="file: projects.idx"
+      section="SECTION A · PROJECTS" catNo="file: projects.idx"
       title={<>Things I've <span style={{ fontStyle: "italic" }}>made.</span></>}
-      subtitle={`${window.PROJECTS.length} entries · solo + collab · view: ${projectsView}`}>
+      subtitle={`${window.PROJECTS.length} entries · solo + collab`}>
 
       <div style={{ height: 24 }}/>
 
-      {projectsView === "index"     && <ProjectsIndex theme={theme} setRoute={setRoute} />}
-      {projectsView === "polaroids" && <ProjectsPolaroids theme={theme} setRoute={setRoute} />}
-      {projectsView === "spread"    && <ProjectsSpread theme={theme} setRoute={setRoute} />}
+      <ProjectsSpread theme={theme} setRoute={setRoute} />
     </PageShell>
-  );
-}
-
-// ---- INDEX: the original catalog table, now with a thumbnail column ----
-function ProjectsIndex({ theme, setRoute }) {
-  return (
-    <>
-      <div className="m-proj-head m-proj-row" style={{ display: "grid", gridTemplateColumns: "92px 80px 2fr 1.4fr 1fr 0.9fr", gap: 24, padding: "12px 0", borderBottom: `1px solid ${T.hairStrong}`,
-        fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>
-        <span>Plate</span><span>Year</span><span>Title / role</span><span>Kind</span><span>Stack</span><span>Status</span>
-      </div>
-      {window.PROJECTS.map((p) => (
-        <div key={p.name} className="m-proj-row"
-          onClick={() => setRoute(`projects/${p.slug}`)}
-          style={{ display: "grid", gridTemplateColumns: "92px 80px 2fr 1.4fr 1fr 0.9fr", gap: 24, padding: "20px 0", borderBottom: `1px solid ${T.hair}`, alignItems: "center", cursor: "pointer" }}
-          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(31,26,22,0.02)"}
-          onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-        >
-          <div style={{ width: 92 }}>
-            <ProjectThumb project={p} theme={theme} aspect="4/3" />
-          </div>
-          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.ink60 }}>{p.year}</span>
-          <span>
-            <div style={{ fontFamily: theme.serif, fontSize: 24, fontStyle: "italic", lineHeight: 1.1 }}>{p.name}</div>
-            <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>{p.role}</div>
-          </span>
-          <span style={{ fontFamily: theme.serif, fontSize: 15, color: T.ink }}>{p.kind}</span>
-          <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, lineHeight: 1.6 }}>{p.stack.join(" · ")}</span>
-          <StatusDot project={p} theme={theme} />
-        </div>
-      ))}
-    </>
-  );
-}
-
-// ---- POLAROIDS: scrapbook grid, each entry is a tilted card on paper ----
-function ProjectsPolaroids({ theme, setRoute }) {
-  // Stable per-card rotation based on index
-  const tilts = [-1.4, 0.8, -0.6, 1.2, -1.0, 0.5];
-  return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-      gap: "44px 32px",
-      paddingTop: 8,
-    }}>
-      {window.PROJECTS.map((p, i) => {
-        const rot = tilts[i % tilts.length];
-        return (
-          <div key={p.name}
-            onClick={() => setRoute(`projects/${p.slug}`)}
-            style={{
-            transform: `rotate(${rot}deg)`,
-            transition: "transform 220ms cubic-bezier(0.2,0.7,0.2,1)",
-            cursor: "pointer",
-          }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = "rotate(0deg) translateY(-3px)"}
-            onMouseLeave={(e) => e.currentTarget.style.transform = `rotate(${rot}deg)`}
-          >
-            {/* Polaroid card */}
-            <div style={{
-              background: "#fbf6ee",
-              padding: "12px 12px 18px",
-              boxShadow: "0 14px 28px rgba(60,40,20,0.14), 0 2px 4px rgba(60,40,20,0.08)",
-              border: "1px solid rgba(31,26,22,0.06)",
-            }}>
-              <ProjectThumb project={p} theme={theme} aspect="5/4" />
-
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 14, gap: 12 }}>
-                <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic", lineHeight: 1.05, letterSpacing: -0.3 }}>
-                  {p.name}
-                </div>
-                <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.2, whiteSpace: "nowrap" }}>
-                  №{String(i + 1).padStart(2, "0")}
-                </div>
-              </div>
-
-              <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, textTransform: "uppercase", letterSpacing: 1.2, marginTop: 4 }}>
-                {p.role}
-              </div>
-
-              <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${T.hair}`,
-                display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                <span style={{ fontFamily: theme.serif, fontSize: 13, color: T.ink }}>{p.kind}</span>
-                <StatusDot project={p} theme={theme} />
-              </div>
-
-              <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink40, letterSpacing: 1, marginTop: 6, lineHeight: 1.5 }}>
-                {p.stack.join(" · ")}
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
   );
 }
 
@@ -413,7 +316,47 @@ function ProjectsSpread({ theme, setRoute }) {
 // ============================================================
 // FAVORITES — albums (vinyl) + movies
 // ============================================================
-function PageFavorites({ route, setRoute, theme, moviesView }) {
+function TracklistView({ tracks, trackIdx, playing, onPick, theme }) {
+  const favCount = tracks.filter(t => t.fav).length;
+
+  return (
+    <div style={{ marginTop: 10 }}>
+      <div style={{
+        fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6,
+        color: T.ink60, textTransform: "uppercase",
+        marginBottom: 10,
+      }}>
+        Tracklist · {favCount} pick{favCount === 1 ? "" : "s"}
+      </div>
+      {tracks.map((tr, i) => {
+        const isCurrent = i === trackIdx;
+        const isPicked = !!tr.fav;
+        return (
+          <div key={tr.n} onClick={() => onPick(i)} style={{
+            display: "grid", gridTemplateColumns: "26px 1fr auto", gap: 14, padding: "6px 0",
+            alignItems: "baseline", cursor: "pointer",
+            fontFamily: T.mono, fontSize: 11,
+            color: isCurrent ? theme.accent : (!isPicked ? T.ink60 : T.ink),
+            borderLeft: isCurrent ? `2px solid ${theme.accent}` : "2px solid transparent",
+            paddingLeft: 10, marginLeft: -12,
+            opacity: !isPicked ? 0.55 : 1,
+            transition: "all 180ms",
+          }}>
+            <span style={{ color: T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
+            <span style={{ fontFamily: theme.serif, fontSize: 15, fontStyle: isCurrent ? "italic" : "normal" }}>
+              {isCurrent && playing && <span style={{ marginRight: 6, color: theme.accent }}>♪</span>}
+              {isPicked && !isCurrent && <span style={{ marginRight: 6, color: theme.accent }}>★</span>}
+              {tr.name}
+            </span>
+            <span style={{ color: T.ink60, fontSize: 10 }}>{tr.time}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function PageFavorites({ route, setRoute, theme }) {
   const [tab, setTab] = uS("music");
   const [selectedIdx, setSelectedIdx] = uS(0);
   const [playing, setPlaying] = uS(false);
@@ -432,8 +375,8 @@ function PageFavorites({ route, setRoute, theme, moviesView }) {
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION D · FAVORITES" catNo="file: favorites.idx"
-      title={<>A <span style={{ fontStyle: "italic" }}>listening</span> & <span style={{ fontStyle: "italic" }}>watching</span> log.</>}>
+      section="SECTION C · FAVORITES" catNo="file: favorites.idx"
+      title={<>Personal favorites, <span style={{ fontStyle: "italic" }}>hand-picked</span>.</>}>
 
       <div style={{ display: "flex", gap: 4, marginBottom: 40 }}>
         {["music", "films"].map(t => (
@@ -454,7 +397,7 @@ function PageFavorites({ route, setRoute, theme, moviesView }) {
             <div className="m-vinyl-wrap" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 440, paddingBottom: 30 }}>
               <VinylPlayer album={selectedAlbum} playing={playing} setPlaying={setPlaying} theme={theme} />
             </div>
-            <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18, maxWidth: 580 }}>
+            <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18, maxWidth: 580, margin: "0 auto" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
                 <div>
                   <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, lineHeight: 1 }}>{selectedAlbum.title}</div>
@@ -463,26 +406,13 @@ function PageFavorites({ route, setRoute, theme, moviesView }) {
                 <CardLabel cat="D.M" no={String(selectedIdx + 1).padStart(3, "0")} accent={theme.accent} />
               </div>
               <Hair />
-              <div style={{ marginTop: 10 }}>
-                {tracks.map((tr, i) => (
-                  <div key={tr.n} onClick={() => { setTrackIdx(i); setPlaying(true); }} style={{
-                    display: "grid", gridTemplateColumns: "26px 1fr auto", gap: 14, padding: "6px 0",
-                    alignItems: "baseline", cursor: "pointer",
-                    fontFamily: T.mono, fontSize: 11,
-                    color: i === trackIdx ? theme.accent : T.ink,
-                    borderLeft: i === trackIdx ? `2px solid ${theme.accent}` : "2px solid transparent",
-                    paddingLeft: 10, marginLeft: -12,
-                    transition: "all 180ms",
-                  }}>
-                    <span style={{ color: T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
-                    <span style={{ fontFamily: theme.serif, fontSize: 15, fontStyle: i === trackIdx ? "italic" : "normal" }}>
-                      {i === trackIdx && playing && <span style={{ marginRight: 6, color: theme.accent }}>♪</span>}
-                      {tr.name}
-                    </span>
-                    <span style={{ color: T.ink60, fontSize: 10 }}>{tr.time}</span>
-                  </div>
-                ))}
-              </div>
+              <TracklistView
+                tracks={tracks}
+                trackIdx={trackIdx}
+                playing={playing}
+                onPick={(i) => { setTrackIdx(i); setPlaying(true); }}
+                theme={theme}
+              />
             </div>
           </div>
 
@@ -514,81 +444,32 @@ function PageFavorites({ route, setRoute, theme, moviesView }) {
           </div>
         </div>
       ) : (
-        <MoviesBlock moviesView={moviesView} theme={theme} />
+        <MoviesBlock theme={theme} />
       )}
     </PageShell>
   );
 }
 
-function MoviesBlock({ moviesView, theme }) {
-  if (moviesView === "cards") {
-    return (
-      <div className="m-movies-cards" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-        {window.MOVIES.map(m => (
-          <div key={m.title} style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 14, display: "flex", gap: 14 }}>
-            <div style={{ width: 84, height: 126, overflow: "hidden", flex: "0 0 auto" }}>
-              <img src={m.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontFamily: theme.serif, fontSize: 17, fontStyle: "italic", lineHeight: 1.1 }}>{m.title}</div>
-              <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 4 }}>{m.director} · {m.year}</div>
-              <div style={{ marginTop: 10, fontFamily: T.mono, fontSize: 11, color: theme.accent, letterSpacing: 1 }}>
-                {"★".repeat(Math.floor(m.rating))}{m.rating % 1 ? "½" : ""}
-              </div>
-              <Hair style={{ margin: "10px 0" }}/>
-              <div style={{ fontFamily: theme.serif, fontSize: 12, color: T.ink60, fontStyle: "italic", lineHeight: 1.4 }}>"{m.note}"</div>
-              <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink40, marginTop: 8, letterSpacing: 1, textTransform: "uppercase" }}>LOGGED {m.date}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  if (moviesView === "tickets") {
-    return (
-      <div className="m-movies-tickets" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 18 }}>
-        {window.MOVIES.map((m, i) => (
-          <div key={m.title} style={{ display: "grid", gridTemplateColumns: "90px 1fr 80px", background: T.paperCard, border: `1px dashed ${T.ink60}`, transform: `rotate(${i%2?0.4:-0.5}deg)` }}>
-            <div style={{ borderRight: `1px dashed ${T.ink60}`, padding: 14, display: "flex", flexDirection: "column", justifyContent: "space-between", background: T.paperDeep }}>
-              <div style={{ fontFamily: T.mono, fontSize: 8, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase" }}>ADMIT ONE</div>
-              <div style={{ fontFamily: theme.serif, fontSize: 24, fontStyle: "italic" }}>★ {m.rating}</div>
-              <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink60, letterSpacing: 1 }}>{m.date}</div>
-            </div>
-            <div style={{ padding: 14 }}>
-              <div style={{ fontFamily: theme.serif, fontSize: 19, fontStyle: "italic", lineHeight: 1.1 }}>{m.title}</div>
-              <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, marginTop: 4, textTransform: "uppercase", letterSpacing: 1 }}>{m.director} · {m.year}</div>
-              <div style={{ fontFamily: theme.serif, fontSize: 12, color: T.ink60, marginTop: 8, lineHeight: 1.4, fontStyle: "italic" }}>"{m.note}"</div>
-            </div>
+function MoviesBlock({ theme }) {
+  return (
+    <div className="m-movies-cards" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+      {window.MOVIES.map(m => (
+        <div key={m.title} style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 14, display: "flex", gap: 14 }}>
+          <div style={{ width: 84, height: 126, overflow: "hidden", flex: "0 0 auto" }}>
             <img src={m.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
           </div>
-        ))}
-      </div>
-    );
-  }
-  // reel
-  return (
-    <div>
-      <div style={{ background: T.ink, padding: "14px 12px", display: "flex", gap: 4, position: "relative" }}>
-        <div style={{ position: "absolute", top: 3, left: 0, right: 0, display: "flex", gap: 14, padding: "0 14px" }}>
-          {Array.from({length:28}).map((_,i) => <div key={i} style={{ width: 9, height: 6, background: T.paper, borderRadius: 1 }}/>)}
-        </div>
-        <div style={{ position: "absolute", bottom: 3, left: 0, right: 0, display: "flex", gap: 14, padding: "0 14px" }}>
-          {Array.from({length:28}).map((_,i) => <div key={i} style={{ width: 9, height: 6, background: T.paper, borderRadius: 1 }}/>)}
-        </div>
-        <div style={{ marginTop: 14, marginBottom: 14, display: "flex", gap: 4, width: "100%" }}>
-          {window.MOVIES.map(m => (
-            <img key={m.title} src={m.src} alt="" style={{ flex: 1, aspectRatio: "2/3", objectFit: "cover", width: 0 }}/>
-          ))}
-        </div>
-      </div>
-      <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-        {window.MOVIES.map(m => (
-          <div key={m.title}>
-            <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic" }}>{m.title}</div>
-            <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>{m.director} · {m.year} · {"★".repeat(Math.floor(m.rating))}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: theme.serif, fontSize: 17, fontStyle: "italic", lineHeight: 1.1 }}>{m.title}</div>
+            <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 4 }}>{m.director} · {m.year}</div>
+            <div style={{ marginTop: 10, fontFamily: T.mono, fontSize: 11, color: theme.accent, letterSpacing: 1 }}>
+              {"★".repeat(Math.floor(m.rating))}{m.rating % 1 ? "½" : ""}
+            </div>
+            <Hair style={{ margin: "10px 0" }}/>
+            <div style={{ fontFamily: theme.serif, fontSize: 12, color: T.ink60, fontStyle: "italic", lineHeight: 1.4 }}>"{m.note}"</div>
+            <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink40, marginTop: 8, letterSpacing: 1, textTransform: "uppercase" }}>LOGGED {m.date}</div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -606,7 +487,7 @@ function PageAbout({ route, setRoute, theme }) {
   ];
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION F · ABOUT" catNo="file: about.idx">
+      section="SECTION E · ABOUT" catNo="file: about.idx">
 
       <div className="m-about-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 56, paddingTop: 32 }}>
         <div>
@@ -656,56 +537,184 @@ function PageAbout({ route, setRoute, theme }) {
 }
 
 // ============================================================
-// TRAVELS — postcards grid
+// TRAVELS — 3-up triptych. Arrows scroll horizontally when >3 entries.
 // ============================================================
+const TRAVELS_CUTOUTS = {
+  "china-24": "images/travels/china-24/yangtze-river.png",
+};
+
+function travelsTitle(trip) {
+  const parts = trip.place.split(",").map(s => s.trim()).filter(Boolean);
+  const country = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+  const yy = (trip.date.match(/(\d{4})/) || ["", ""])[1].slice(-2);
+  return { country, yy };
+}
+
 function PageTravels({ route, setRoute, theme }) {
+  const trips = window.TRIPS;
+  const [isMobile, setIsMobile] = uS(typeof window !== "undefined" && window.innerWidth <= 768);
+  uE(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const visible = isMobile ? 1 : 3;
+  const hasCarousel = trips.length > visible;
+  const maxStart = Math.max(0, trips.length - visible);
+
+  const [start, setStart] = uS(0);
+  // Reset start when responsive switch changes the visible count
+  uE(() => { setStart(s => Math.min(s, Math.max(0, trips.length - visible))); }, [visible, trips.length]);
+  const canPrev = start > 0;
+  const canNext = start < maxStart;
+
+  // Preflight which cutouts exist (transparent PNGs render with contain;
+  // missing ones fall back to t.cover transparently).
+  const [cutouts, setCutouts] = uS({});
+  uE(() => {
+    let cancelled = false;
+    Promise.all(Object.entries(TRAVELS_CUTOUTS).map(([id, src]) =>
+      fetch(src, { method: "HEAD" })
+        .then(r => r.ok ? [id, src] : null)
+        .catch(() => null)
+    )).then(results => {
+      if (cancelled) return;
+      const next = {};
+      results.forEach(r => { if (r) next[r[0]] = r[1]; });
+      setCutouts(next);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Measure rendered column width in design-space px (offsetWidth ignores
+  // ancestor transforms) so the translateX shift matches the grid layout.
+  const gap = 36;
+  const trackRef = React.useRef(null);
+  const [colW, setColW] = uS(0);
+  uE(() => {
+    if (!trackRef.current) return;
+    const update = () => {
+      const first = trackRef.current.querySelector("[data-trip-col]");
+      if (first) setColW(first.offsetWidth);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION C · TRAVELS" catNo="file: travels.idx"
+      section="SECTION B · TRAVELS" catNo="file: travels.idx"
       title={<>Places, <span style={{ fontStyle: "italic" }}>cataloged.</span></>}
-      subtitle={`${window.TRIPS.length} entries · filed by date`}>
+      subtitle={`${trips.length} entries · filed by date`}>
 
-      <div className="m-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32 }}>
-        {window.TRIPS.map((t, i) => (
-          <div key={t.id} onClick={() => setRoute(`travels/${t.id}`)} style={{
-            background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18, cursor: "pointer",
-            transform: `rotate(${i === 1 ? 0.8 : i === 0 ? -0.6 : 0.3}deg)`,
-            boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
-            position: "relative", transition: "transform 260ms, box-shadow 260ms",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.transform = "rotate(0) translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.12)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = `rotate(${i === 1 ? 0.8 : i === 0 ? -0.6 : 0.3}deg)`; e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.06)"; }}
-          >
-            <div style={{ width: "100%", aspectRatio: "4/3", overflow: "hidden", background: T.paperDeep }}>
-              <img src={t.cover} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "sepia(0.1) saturate(0.92)" }}/>
-            </div>
-            <div style={{
-              position: "absolute", top: 10, right: 10,
-              width: 60, height: 72, background: T.paper, border: `1px dashed ${T.ink}`, padding: 4,
-              fontFamily: T.mono,
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-              transform: `rotate(${i % 2 === 0 ? -6 : 5}deg)`,
-            }}>
-              <div style={{ fontFamily: theme.serif, fontSize: 20, fontStyle: "italic" }}>{t.stamp}</div>
-              <div style={{ height: 1, width: "80%", background: T.ink, margin: "3px 0" }}/>
-              <div style={{ fontSize: 7, letterSpacing: 0.8 }}>POSTED</div>
-              <div style={{ fontSize: 7, letterSpacing: 0.8 }}>{t.date.replace(" / ", "·")}</div>
-            </div>
-            <div style={{ marginTop: 16, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <div>
-                <div style={{ fontFamily: theme.serif, fontSize: 28, fontStyle: "italic", lineHeight: 1 }}>{t.place}</div>
-                <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, marginTop: 5, letterSpacing: 0.6 }}>{t.sub}</div>
-              </div>
-            </div>
-            <Hair style={{ margin: "14px 0 10px" }}/>
-            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>
-              <span>{t.duration}</span>
-              <span style={{ color: theme.accent }}>№ {String(i+1).padStart(3, "0")} →</span>
-            </div>
+      {/* Carousel toolbar — counter + arrows only when there's more than fits */}
+      {hasCarousel && (
+        <div className="m-page-pad" style={{
+          margin: "8px 0 24px",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, color: T.ink60, textTransform: "uppercase",
+          paddingBottom: 14, borderBottom: `1px solid ${T.hair}`,
+        }}>
+          <span>filed by date · newest first</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <span>{String(start + 1).padStart(2, "0")} — {String(Math.min(start + visible, trips.length)).padStart(2, "0")} / {String(trips.length).padStart(2, "0")}</span>
+            <TravelsArrow disabled={!canPrev} dir="prev" theme={theme} onClick={() => canPrev && setStart(start - 1)} />
+            <TravelsArrow disabled={!canNext} dir="next" theme={theme} onClick={() => canNext && setStart(start + 1)} />
           </div>
-        ))}
+        </div>
+      )}
+
+      {/* Viewport — clips off-frame columns */}
+      <div style={{ overflow: "hidden", width: "100%" }}>
+        <div
+          ref={trackRef}
+          className="m-trav-track"
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${trips.length}, calc((100% - ${(visible - 1) * gap}px) / ${visible}))`,
+            gap,
+            transform: hasCarousel && colW ? `translateX(${-start * (colW + gap)}px)` : "translateX(0)",
+            transition: "transform 480ms cubic-bezier(.2,.7,.2,1)",
+            willChange: "transform",
+          }}>
+          {trips.map((t, i) => (
+            <div key={t.id} data-trip-col>
+              <TravelsColumn trip={t} idx={i} cutouts={cutouts} setRoute={setRoute} theme={theme} />
+            </div>
+          ))}
+        </div>
       </div>
     </PageShell>
+  );
+}
+
+function TravelsColumn({ trip, idx, cutouts, setRoute, theme }) {
+  const [hover, setHover] = uS(false);
+  const isCutout = !!(cutouts && cutouts[trip.id]);
+  const src = (cutouts && cutouts[trip.id]) || trip.cover;
+  const imgStyle = isCutout
+    ? { width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block" }
+    : { width: "100%", height: "100%", objectFit: "cover", filter: "saturate(0.92)", display: "block" };
+  const { country, yy } = travelsTitle(trip);
+
+  return (
+    <div onClick={() => setRoute(`travels/${trip.id}`)}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{ display: "flex", flexDirection: "column", cursor: "pointer" }}>
+
+      {/* Number + stamp + date */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.8, color: T.ink60, textTransform: "uppercase", marginBottom: 18 }}>
+        <span>№ {String(idx + 1).padStart(3, "0")} · {trip.stamp}</span>
+        <span style={{ color: theme.accent }}>{trip.date}</span>
+      </div>
+
+      {/* Image — no card chrome */}
+      <div style={{
+        position: "relative", width: "100%", aspectRatio: "4/5", overflow: "hidden",
+        marginBottom: 22,
+        transition: "transform 380ms cubic-bezier(.2,.7,.2,1)",
+        transform: hover ? "translateY(-6px)" : "translateY(0)",
+      }}>
+        <img src={src} alt="" style={imgStyle}/>
+      </div>
+
+      {/* Title — Country 'YY. */}
+      <div style={{ fontFamily: theme.serif, fontSize: 52, lineHeight: 0.95, letterSpacing: -1.2, fontWeight: 400 }}>
+        {country} <span style={{ fontStyle: "italic", color: theme.accent }}>’{yy}.</span>
+      </div>
+
+      {/* Subtitle */}
+      <div style={{ fontFamily: theme.serif, fontSize: 17, fontStyle: "italic", color: T.ink60, marginTop: 12, lineHeight: 1.45, flex: 1 }}>
+        {trip.sub}
+      </div>
+
+      {/* Footer meta */}
+      <div style={{ marginTop: 22, paddingTop: 14, borderTop: `1px solid ${T.hair}`, fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase", display: "flex", justifyContent: "space-between" }}>
+        <span>{trip.duration}</span>
+        <span style={{ color: theme.accent }}>read entry →</span>
+      </div>
+    </div>
+  );
+}
+
+function TravelsArrow({ dir, onClick, disabled, theme }) {
+  return (
+    <span onClick={disabled ? undefined : onClick} style={{
+      display: "inline-flex", alignItems: "center", justifyContent: "center",
+      width: 36, height: 36, border: `1px solid ${disabled ? T.hair : T.hairStrong}`,
+      color: disabled ? T.ink40 : T.ink,
+      cursor: disabled ? "not-allowed" : "pointer",
+      fontFamily: T.mono, fontSize: 14,
+      transition: "background 180ms, color 180ms, border-color 180ms",
+      userSelect: "none",
+    }}
+    onMouseEnter={(e) => { if (!disabled) { e.currentTarget.style.background = theme.accent; e.currentTarget.style.color = T.paper; e.currentTarget.style.borderColor = theme.accent; } }}
+    onMouseLeave={(e) => { if (!disabled) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = T.ink; e.currentTarget.style.borderColor = T.hairStrong; } }}
+    >
+      {dir === "prev" ? "←" : "→"}
+    </span>
   );
 }
 
@@ -891,9 +900,9 @@ function TripNav({ tripId, setRoute, theme }) {
 Object.assign(window, { PageHome, PageBlog, PageBlogPost, PageProjects, PageProject, PageFavorites, PageAbout, PageTravels, PageTrip });
 
 // ============================================================
-// PROJECT DETAIL — three variations of the same template
+// PROJECT DETAIL
 // ============================================================
-function PageProject({ slug, route, setRoute, theme, projectDetailView = "letter" }) {
+function PageProject({ slug, route, setRoute, theme }) {
   const p = window.PROJECTS.find(x => x.slug === slug);
   if (!p) {
     return (
@@ -920,7 +929,7 @@ function PageProject({ slug, route, setRoute, theme, projectDetailView = "letter
           borderTop: `1px solid ${T.hairStrong}`,
           borderBottom: `1px solid ${T.hairStrong}`,
         }}>
-          <span style={{ color: theme.accent }}>SECTION B · PROJECTS · {p.slug}</span>
+          <span style={{ color: theme.accent }}>SECTION A · PROJECTS · {p.slug}</span>
           <span>file: {p.slug}.entry</span>
           <span>{p.year}</span>
         </div>
@@ -939,9 +948,7 @@ function PageProject({ slug, route, setRoute, theme, projectDetailView = "letter
 
       {/* Variant-specific body */}
       <div className="m-page-pad" style={{ padding: "28px 56px 80px" }}>
-        {projectDetailView === "letter"     && <DetailLetter     p={p} theme={theme} />}
-        {projectDetailView === "report"     && <DetailReport     p={p} theme={theme} />}
-        {projectDetailView === "sketchbook" && <DetailSketchbook p={p} theme={theme} />}
+        <DetailReport p={p} theme={theme} />
 
         {/* Prev / next nav */}
         <div style={{ marginTop: 72, paddingTop: 24, borderTop: `1px solid ${T.hairStrong}`,
@@ -1044,73 +1051,6 @@ function ProjectSpecs({ p, theme, layout = "row" }) {
 }
 
 // =========================================
-// VARIATION A — LETTER
-// Dated diary entries, drop-cap on first, single inline image break
-// =========================================
-function DetailLetter({ p, theme }) {
-  return (
-    <>
-      <ProjectHero p={p} theme={theme} aspect="21/9" />
-
-      <div style={{ marginTop: 56, display: "grid", gridTemplateColumns: "1fr 240px", gap: 64 }} className="m-2col">
-        <div>
-          {p.entries.map((e, i) => (
-            <div key={i} style={{
-              borderTop: i === 0 ? "none" : `1px solid ${T.hair}`,
-              paddingTop: i === 0 ? 0 : 36,
-              marginTop: i === 0 ? 0 : 36,
-            }}>
-              <div style={{
-                fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8,
-                color: theme.accent, textTransform: "uppercase",
-                marginBottom: 12,
-              }}>
-                Entry {String(i + 1).padStart(2, "0")} · {e.date}
-              </div>
-              <div style={{
-                fontFamily: theme.serif, fontSize: 28, fontStyle: "italic",
-                lineHeight: 1.15, letterSpacing: -0.4, marginBottom: 18,
-              }}>
-                {e.h}
-              </div>
-              <div style={{
-                fontFamily: theme.serif, fontSize: 18, lineHeight: 1.65, color: T.ink,
-                textWrap: "pretty",
-              }}>
-                {i === 0 ? (
-                  <>
-                    <span style={{
-                      float: "left", fontFamily: theme.serif, fontStyle: "italic",
-                      fontSize: 72, lineHeight: 0.85, marginRight: 12, marginTop: 6, color: theme.accent,
-                    }}>{e.b[0]}</span>
-                    {e.b.slice(1)}
-                  </>
-                ) : e.b}
-              </div>
-            </div>
-          ))}
-
-          {/* Sign-off */}
-          <div style={{ marginTop: 56, fontFamily: theme.serif, fontStyle: "italic", fontSize: 17, color: T.ink60 }}>
-            — filed {p.filed}
-          </div>
-        </div>
-
-        <aside style={{
-          position: "sticky", top: 32, alignSelf: "start",
-          borderLeft: `1px solid ${T.hairStrong}`, paddingLeft: 24,
-        }}>
-          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 2, color: T.ink60, textTransform: "uppercase", marginBottom: 18 }}>
-            Card · file
-          </div>
-          <ProjectSpecs p={p} theme={theme} layout="stack" />
-        </aside>
-      </div>
-    </>
-  );
-}
-
-// =========================================
 // VARIATION B — REPORT
 // Magazine spread: pull quote, two-column body, outcome numbers
 // =========================================
@@ -1208,131 +1148,10 @@ function DetailReport({ p, theme }) {
   );
 }
 
-// =========================================
-// VARIATION C — SKETCHBOOK
-// Taped-photo collage on paper, margin notes in monospace
-// =========================================
-function DetailSketchbook({ p, theme }) {
-  // Each entry gets a "scrap" — a small image scrap and a handwritten-style note.
-  return (
-    <>
-      <ProjectHero p={p} theme={theme} aspect="21/9" />
-
-      {/* Margin-note metadata */}
-      <div style={{
-        marginTop: 32,
-        display: "grid", gridTemplateColumns: "1fr auto", gap: 24, alignItems: "end",
-        paddingBottom: 18, borderBottom: `1px dashed ${T.ink60}`,
-      }}>
-        <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, color: T.ink60, lineHeight: 1.8 }}>
-          STARTED <span style={{ color: T.ink }}>{p.started}</span> &nbsp;·&nbsp;
-          FILED <span style={{ color: T.ink }}>{p.filed}</span> &nbsp;·&nbsp;
-          STACK <span style={{ color: T.ink }}>{p.stack.join(" / ")}</span>
-        </div>
-        <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 18, color: T.ink60 }}>
-          ※ from the sketchbook
-        </div>
-      </div>
-
-      {/* Scrap collage — each entry is a tilted card with a small thumb + handwritten note */}
-      <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 64 }}>
-        {p.entries.map((e, i) => {
-          const tilts = [-1.6, 1.2, -0.8, 0.9, -1.1];
-          const rot = tilts[i % tilts.length];
-          const reverse = i % 2 === 1;
-          return (
-            <div key={i} style={{
-              display: "grid",
-              gridTemplateColumns: reverse ? "1fr 360px" : "360px 1fr",
-              gap: 52, alignItems: "start",
-            }} className="m-2col">
-              {/* Photo scrap */}
-              <div style={{ order: reverse ? 2 : 1, position: "relative", padding: "0 8px" }}>
-                <div style={{
-                  transform: `rotate(${rot}deg)`,
-                  background: "#fbf6ee",
-                  padding: "10px 10px 14px",
-                  boxShadow: "0 16px 32px rgba(60,40,20,0.14), 0 2px 4px rgba(60,40,20,0.08)",
-                  border: "1px solid rgba(31,26,22,0.05)",
-                  position: "relative",
-                }}>
-                  {/* Tape strip */}
-                  <div style={{
-                    position: "absolute", top: -10, left: "50%", transform: "translateX(-50%) rotate(-2deg)",
-                    width: 80, height: 18,
-                    background: "rgba(212, 180, 130, 0.55)",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
-                  }}/>
-                  <ProjectThumb project={p} theme={theme} aspect="4/3" />
-                  <div style={{
-                    fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.2,
-                    textTransform: "uppercase", marginTop: 8, textAlign: "center",
-                  }}>
-                    plate · {String(i + 1).padStart(2, "0")} / {String(p.entries.length).padStart(2, "0")}
-                  </div>
-                </div>
-              </div>
-
-              {/* Note */}
-              <div style={{ order: reverse ? 1 : 2, paddingTop: 12 }}>
-                <div style={{
-                  fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, color: theme.accent,
-                  textTransform: "uppercase", marginBottom: 10,
-                }}>
-                  ↪ {e.date}
-                </div>
-                <div style={{
-                  fontFamily: theme.serif, fontSize: 32, fontStyle: "italic", lineHeight: 1.1,
-                  letterSpacing: -0.5, marginBottom: 14, color: T.ink,
-                }}>
-                  {e.h}
-                </div>
-                <div style={{
-                  fontFamily: theme.serif, fontSize: 17, lineHeight: 1.6, color: T.ink,
-                  textWrap: "pretty",
-                  paddingLeft: 18, borderLeft: `2px solid ${theme.accent}`,
-                }}>
-                  {e.b}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Footer scrap — links + tagline as if scribbled */}
-      <div style={{
-        marginTop: 80, padding: "32px 36px", background: T.paperCard,
-        border: `1px dashed ${T.ink60}`, position: "relative",
-      }}>
-        <div style={{
-          position: "absolute", top: -12, left: 24, background: T.paper,
-          padding: "2px 12px", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6,
-          color: T.ink60, textTransform: "uppercase", border: `1px solid ${T.hairStrong}`,
-        }}>
-          Endnote
-        </div>
-        <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, lineHeight: 1.45, color: T.ink, maxWidth: 640 }}>
-          {p.tagline}
-        </div>
-        {p.links && (
-          <div style={{ marginTop: 18, display: "flex", gap: 18, flexWrap: "wrap" }}>
-            {p.links.map(([k, v]) => (
-              <span key={k} style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, color: theme.accent, textTransform: "uppercase" }}>
-                {k}: <span style={{ color: T.ink }}>{v}</span> ↗
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
-
 // ============================================================
-// BLOG POST DETAIL — three variations
+// BLOG POST DETAIL
 // ============================================================
-function PageBlogPost({ slug, route, setRoute, theme, blogPostView = "letter" }) {
+function PageBlogPost({ slug, route, setRoute, theme }) {
   const p = window.POSTS.find(x => x.slug === slug);
   if (!p) {
     return (
@@ -1365,7 +1184,7 @@ function PageBlogPost({ slug, route, setRoute, theme, blogPostView = "letter" })
           borderTop: `1px solid ${T.hairStrong}`,
           borderBottom: `1px solid ${T.hairStrong}`,
         }}>
-          <span style={{ color: theme.accent }}>SECTION A · BLOG · {p.slug}</span>
+          <span style={{ color: theme.accent }}>SECTION D · BLOG · {p.slug}</span>
           <span>file: {p.slug}.entry</span>
           <span>{p.date}</span>
           <span className="m-strip-syndication" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
@@ -1388,13 +1207,11 @@ function PageBlogPost({ slug, route, setRoute, theme, blogPostView = "letter" })
 
       {/* Body */}
       <div className="m-page-pad" style={{ padding: "28px 56px 80px" }}>
-        {blogPostView === "letter" && <PostLetter p={p} theme={theme} readMin={readMin} words={words} />}
-        {blogPostView === "report" && <PostReport p={p} theme={theme} readMin={readMin} words={words} />}
-        {blogPostView === "card"   && <PostCard   p={p} theme={theme} readMin={readMin} words={words} setRoute={setRoute} />}
+        <PostLetter p={p} theme={theme} readMin={readMin} words={words} />
 
         {/* Footnotes (if any) */}
-        {p.foot && p.foot.length > 0 && blogPostView !== "card" && (
-          <div style={{ marginTop: 56, maxWidth: blogPostView === "letter" ? 640 : "100%", marginLeft: blogPostView === "letter" ? "auto" : 0, marginRight: blogPostView === "letter" ? "auto" : 0 }}>
+        {p.foot && p.foot.length > 0 && (
+          <div style={{ marginTop: 56, maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
             <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14, paddingBottom: 8, borderBottom: `1px solid ${T.hair}` }}>
               Footnotes
             </div>
@@ -1407,10 +1224,8 @@ function PageBlogPost({ slug, route, setRoute, theme, blogPostView = "letter" })
           </div>
         )}
 
-        {/* Substack: subscribe card + comments (letter view only — fits the centered column) */}
-        {blogPostView === "letter" && (
-          <PostSubscribeAndComments p={p} theme={theme} setRoute={setRoute} />
-        )}
+        {/* Substack: subscribe card + comments */}
+        <PostSubscribeAndComments p={p} theme={theme} setRoute={setRoute} />
 
         {/* Related */}
         {related.length > 0 && (
@@ -1530,7 +1345,7 @@ function PostFigure({ b, theme, dense = false, fullBleed = false }) {
   );
 }
 
-// ----- Variation A: LETTER — narrow centered column -----
+// ----- LETTER — narrow centered column -----
 function PostLetter({ p, theme, readMin, words }) {
   return (
     <article style={{ maxWidth: 640, margin: "16px auto 0" }}>
@@ -1634,204 +1449,8 @@ function PostLetter({ p, theme, readMin, words }) {
   );
 }
 
-// ----- Variation B: REPORT — magazine spread, 2-col body -----
-function PostReport({ p, theme, readMin, words }) {
-  // Split body into a lede paragraph and the rest for two-column flow
-  const firstParaIdx = p.body.findIndex(b => b.kind === "p");
-  const lede = p.body[firstParaIdx];
-  const rest = p.body.filter((_, i) => i !== firstParaIdx);
-
-  return (
-    <article>
-      {/* Header: title left, lede + meta right */}
-      <div style={{
-        display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 56,
-        alignItems: "end",
-        paddingBottom: 32, borderBottom: `1px solid ${T.hairStrong}`,
-        marginTop: 16,
-      }} className="m-2col">
-        <div>
-          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, color: theme.accent, textTransform: "uppercase", marginBottom: 18 }}>
-            Vol. 26 · {p.date} · {readMin} min
-          </div>
-          <h1 style={{
-            fontFamily: theme.serif, fontStyle: "italic",
-            fontSize: 88, lineHeight: 0.96, letterSpacing: -2.2, fontWeight: 400,
-            margin: 0, textWrap: "balance",
-          }}>
-            {p.title}.
-          </h1>
-        </div>
-        <div>
-          <div style={{ fontFamily: theme.serif, fontSize: 22, lineHeight: 1.45, color: T.ink, textWrap: "pretty" }}>
-            {p.excerpt}
-          </div>
-          <div style={{ display: "flex", gap: 8, marginTop: 18, flexWrap: "wrap" }}>
-            {p.tags.map(t => (
-              <span key={t} style={{
-                fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: theme.accent,
-                border: `1px solid ${theme.accent}`, padding: "2px 8px", textTransform: "uppercase",
-              }}>{t}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Lede in big serif */}
-      {lede && (
-        <p style={{
-          fontFamily: theme.serif, fontSize: 24, lineHeight: 1.45, color: T.ink,
-          margin: "44px 0 36px", textWrap: "pretty",
-          maxWidth: 900,
-        }}>
-          <span style={{
-            float: "left", fontFamily: theme.serif, fontStyle: "italic",
-            fontSize: 84, lineHeight: 0.85, marginRight: 14, marginTop: 6,
-            color: theme.accent,
-          }}>{lede.text[0]}</span>
-          {lede.text.slice(1)}
-        </p>
-      )}
-
-      {/* 2-column body */}
-      <div style={{
-        columnCount: 2, columnGap: 56,
-        fontFamily: theme.serif, fontSize: 17, lineHeight: 1.65, color: T.ink,
-      }} className="m-scrap-cols">
-        {rest.map((b, i) => (
-          <div key={i} style={{ breakInside: "avoid" }}>
-            <PostBlock b={b} theme={theme} accent={theme.accent} dense />
-          </div>
-        ))}
-      </div>
-
-      {/* Sign-off bar */}
-      <div style={{
-        marginTop: 56, padding: "18px 0",
-        borderTop: `1px solid ${T.hair}`, borderBottom: `1px solid ${T.hair}`,
-        display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16,
-        fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase",
-      }}>
-        <span>— Lucy Gai</span>
-        <span>{words.toLocaleString()} words · {readMin} min</span>
-        <span>filed {p.date}</span>
-      </div>
-    </article>
-  );
-}
-
-// ----- Variation C: CARD — sidebar metadata, wide prose, footnotes inline -----
-function PostCard({ p, theme, readMin, words, setRoute }) {
-  return (
-    <article style={{
-      display: "grid", gridTemplateColumns: "220px 1fr", gap: 56,
-      marginTop: 20,
-    }} className="m-2col">
-      <aside style={{
-        position: "sticky", top: 32, alignSelf: "start",
-      }}>
-        {/* Index card */}
-        <div style={{
-          background: T.paperCard, border: `1px solid ${T.hairStrong}`,
-          padding: 22, position: "relative",
-        }}>
-          <div style={{
-            position: "absolute", top: -10, left: 18,
-            background: T.paper, padding: "2px 10px",
-            fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60,
-            textTransform: "uppercase", border: `1px solid ${T.hairStrong}`,
-          }}>
-            Entry card
-          </div>
-
-          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase", marginTop: 10 }}>
-            Filed
-          </div>
-          <div style={{ fontFamily: theme.serif, fontSize: 17, fontStyle: "italic", marginTop: 2 }}>
-            {p.date}
-          </div>
-
-          <div style={{ height: 1, background: T.hair, margin: "16px 0" }} />
-
-          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>Length</div>
-          <div style={{ fontFamily: theme.serif, fontSize: 17, marginTop: 2 }}>
-            {readMin} min &nbsp;<span style={{ fontSize: 12, color: T.ink60 }}>({words.toLocaleString()} words)</span>
-          </div>
-
-          <div style={{ height: 1, background: T.hair, margin: "16px 0" }} />
-
-          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>Tags</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
-            {p.tags.map(t => (
-              <span key={t} style={{
-                fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: theme.accent,
-                border: `1px solid ${theme.accent}`, padding: "2px 8px", textTransform: "uppercase",
-              }}>{t}</span>
-            ))}
-          </div>
-
-          {p.foot && p.foot.length > 0 && (
-            <>
-              <div style={{ height: 1, background: T.hair, margin: "16px 0" }} />
-              <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>Footnotes</div>
-              <div style={{ fontFamily: theme.serif, fontSize: 13, marginTop: 6, color: T.ink60, fontStyle: "italic" }}>
-                {p.foot.length} {p.foot.length === 1 ? "note" : "notes"} at end
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Stamp */}
-        <div style={{
-          marginTop: 18, padding: "12px 14px",
-          border: `1px dashed ${T.ink60}`,
-          fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-        }}>
-          <span>● live</span>
-          <span>№ {String(window.POSTS.length - window.POSTS.findIndex(x => x.slug === p.slug)).padStart(3, "0")}</span>
-        </div>
-      </aside>
-
-      <div style={{ minWidth: 0 }}>
-        <h1 style={{
-          fontFamily: theme.serif, fontStyle: "italic",
-          fontSize: 72, lineHeight: 1.0, letterSpacing: -1.8, fontWeight: 400,
-          margin: 0, textWrap: "balance",
-        }}>
-          {p.title}.
-        </h1>
-        <div style={{ fontFamily: theme.serif, fontSize: 22, lineHeight: 1.45, color: T.ink60, fontStyle: "italic", marginTop: 18, maxWidth: 660, textWrap: "pretty" }}>
-          {p.excerpt}
-        </div>
-
-        <div style={{ height: 1, background: T.hairStrong, margin: "36px 0" }} />
-
-        <div style={{ maxWidth: 720 }}>
-          {p.body.map((b, i) => <PostBlock key={i} b={b} theme={theme} accent={theme.accent} />)}
-        </div>
-
-        {p.foot && p.foot.length > 0 && (
-          <div style={{ marginTop: 48, maxWidth: 720 }}>
-            <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14, paddingBottom: 8, borderBottom: `1px solid ${T.hair}` }}>
-              Footnotes
-            </div>
-            {p.foot.map((f, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: 12, marginBottom: 12, fontFamily: theme.serif, fontSize: 14, lineHeight: 1.55, color: T.ink60, fontStyle: "italic" }}>
-                <span style={{ fontFamily: T.mono, fontStyle: "normal", fontSize: 10, color: theme.accent, letterSpacing: 1 }}>[{String(i + 1).padStart(2, "0")}]</span>
-                <span>{f}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-
 // ============================================================
-// SUBSCRIBE CARD + COMMENTS — Substack integration on the letter view
+// SUBSCRIBE CARD + COMMENTS — Substack integration
 // ============================================================
 function PostSubscribeAndComments({ p, theme, setRoute }) {
   // Sample static comments — in production these'd come from Substack's embed.

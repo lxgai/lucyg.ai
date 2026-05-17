@@ -1,182 +1,343 @@
 "use client";
-import { Box, Typography, Link as MuiLink } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
-import { Hair } from "@/components/design/primitives";
+import china24 from "@/data/travel-details/china-24.json";
 import { tokens } from "@/components/design/tokens";
-import { TRIPS } from "@/data/content";
+import { TRIPS, type Trip } from "@/data/content";
+import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
+import type { TravelDetailData } from "@/types/travelDetail";
 
-function rotationFor(i: number) {
-  if (i % 3 === 1) return "0.8deg";
-  if (i % 3 === 0) return "-0.6deg";
-  return "0.3deg";
+const TRAVEL_DETAILS: Partial<Record<string, TravelDetailData>> = {
+  "china-24": china24 as TravelDetailData,
+};
+
+type TravelIndexEntry = Trip & {
+  detail?: TravelDetailData;
+};
+
+const TRAVEL_INDEX_ENTRIES: TravelIndexEntry[] = TRIPS.map((trip) => {
+  const detail = TRAVEL_DETAILS[trip.id];
+  if (!detail) return trip;
+
+  const detailMeta = getTravelDetailIndexMeta(detail);
+
+  return {
+    ...trip,
+    place: detail.metadata.place || trip.place,
+    sub: detailMeta.citySummary || trip.sub,
+    date: detailMeta.date || trip.date,
+    duration: detailMeta.duration || trip.duration,
+    detail,
+  };
+});
+
+function travelTitle(trip: TravelIndexEntry) {
+  const parts = trip.place
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const country = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+  const yy = (trip.date.match(/(\d{4})/)?.[1] ?? "").slice(-2);
+
+  return { country, yy };
 }
 
 export default function TravelsPage() {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
+  const visible = isMobile ? 1 : 3;
+  const hasCarousel = TRAVEL_INDEX_ENTRIES.length > visible;
+  const maxStart = Math.max(0, TRAVEL_INDEX_ENTRIES.length - visible);
+  const [start, setStart] = useState(0);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [colW, setColW] = useState(0);
+  const gap = 36;
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    setStart((current) => Math.min(current, maxStart));
+  }, [maxStart]);
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    const update = () => {
+      const first = trackRef.current?.querySelector<HTMLElement>("[data-trip-col]");
+      if (first) setColW(first.offsetWidth);
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const canPrev = start > 0;
+  const canNext = start < maxStart;
+
   return (
     <PageShell
-      section="SECTION C · TRAVELS"
+      section="SECTION B · TRAVELS"
       catNo="file: travels.idx"
       title={
         <>
           Places, <Box component="span" sx={{ fontStyle: "italic" }}>cataloged.</Box>
         </>
       }
-      subtitle={`${TRIPS.length} entries · filed by date`}
+      subtitle={`${TRAVEL_INDEX_ENTRIES.length} entries · filed by date`}
+    >
+      {hasCarousel && (
+        <Box
+          sx={{
+            mt: 1,
+            mb: 3,
+            pb: 1.75,
+            borderBottom: `1px solid ${tokens.hair}`,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 2,
+            fontFamily: tokens.mono,
+            fontSize: 10,
+            letterSpacing: "1.8px",
+            color: tokens.ink60,
+            textTransform: "uppercase",
+          }}
+        >
+          <Box component="span">filed by date · newest first</Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2.25 }}>
+            <Box component="span">
+              {String(start + 1).padStart(2, "0")} -{" "}
+              {String(Math.min(start + visible, TRAVEL_INDEX_ENTRIES.length)).padStart(2, "0")} /{" "}
+              {String(TRAVEL_INDEX_ENTRIES.length).padStart(2, "0")}
+            </Box>
+            <TravelsArrow
+              disabled={!canPrev}
+              dir="prev"
+              onClick={() => {
+                if (canPrev) setStart((current) => current - 1);
+              }}
+            />
+            <TravelsArrow
+              disabled={!canNext}
+              dir="next"
+              onClick={() => {
+                if (canNext) setStart((current) => current + 1);
+              }}
+            />
+          </Box>
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          overflow: "hidden",
+          width: "100%",
+        }}
+      >
+        <Box
+          ref={trackRef}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${TRAVEL_INDEX_ENTRIES.length}, calc((100% - ${
+              (visible - 1) * gap
+            }px) / ${visible}))`,
+            gap: `${gap}px`,
+            transform:
+              hasCarousel && colW
+                ? `translateX(${-start * (colW + gap)}px)`
+                : "translateX(0)",
+            transition: "transform 480ms cubic-bezier(.2,.7,.2,1)",
+            willChange: "transform",
+          }}
+        >
+          {TRAVEL_INDEX_ENTRIES.map((trip, i) => (
+            <Box key={trip.id} data-trip-col>
+              <TravelsColumn trip={trip} idx={i} />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </PageShell>
+  );
+}
+
+function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
+  const { country, yy } = travelTitle(trip);
+
+  return (
+    <MuiLink
+      component={NextLink}
+      href={`/travels/${trip.id}`}
+      underline="none"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        color: tokens.ink,
+        cursor: "pointer",
+        minHeight: "100%",
+        "&:hover .travel-image": {
+          transform: "translateY(-6px)",
+        },
+        "&:hover .travel-cta": {
+          color: tokens.ink,
+        },
+      }}
     >
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-          },
-          gap: 4,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+          gap: 2,
+          fontFamily: tokens.mono,
+          fontSize: 9,
+          letterSpacing: "1.8px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+          mb: 2.25,
         }}
       >
-        {TRIPS.map((t, i) => {
-          const restingRotate = rotationFor(i);
-          return (
-            <MuiLink
-              key={t.id}
-              component={NextLink}
-              href={`/travels/${t.id}`}
-              underline="none"
-              sx={{
-                position: "relative",
-                background: tokens.paperCard,
-                border: `1px solid ${tokens.hairStrong}`,
-                p: 2.25,
-                cursor: "pointer",
-                transform: `rotate(${restingRotate})`,
-                boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
-                color: tokens.ink,
-                transition: "transform 260ms, box-shadow 260ms",
-                "&:hover": {
-                  transform: "rotate(0) translateY(-4px)",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.12)",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  width: "100%",
-                  aspectRatio: "4 / 3",
-                  position: "relative",
-                  overflow: "hidden",
-                  background: tokens.paperDeep,
-                }}
-              >
-                <Image
-                  src={t.cover}
-                  alt={t.place}
-                  fill
-                  sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 32vw"
-                  style={{
-                    objectFit: "cover",
-                    filter: "sepia(0.1) saturate(0.92)",
-                  }}
-                />
-              </Box>
-
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 10,
-                  right: 10,
-                  width: 60,
-                  height: 72,
-                  background: tokens.paper,
-                  border: `1px dashed ${tokens.ink}`,
-                  p: "4px",
-                  fontFamily: tokens.mono,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transform: `rotate(${i % 2 === 0 ? -6 : 5}deg)`,
-                }}
-              >
-                <Box
-                  sx={{
-                    fontFamily: tokens.serif,
-                    fontSize: 20,
-                    fontStyle: "italic",
-                  }}
-                >
-                  {t.stamp}
-                </Box>
-                <Box
-                  sx={{
-                    height: "1px",
-                    width: "80%",
-                    background: tokens.ink,
-                    my: "3px",
-                  }}
-                />
-                <Box sx={{ fontSize: 7, letterSpacing: "0.8px" }}>POSTED</Box>
-                <Box sx={{ fontSize: 7, letterSpacing: "0.8px" }}>
-                  {t.date.replace(" / ", "·")}
-                </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  mt: 2,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                }}
-              >
-                <Box>
-                  <Typography
-                    sx={{
-                      fontFamily: tokens.serif,
-                      fontSize: 28,
-                      fontStyle: "italic",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {t.place}
-                  </Typography>
-                  <Box
-                    sx={{
-                      fontFamily: tokens.mono,
-                      fontSize: 10,
-                      color: tokens.ink60,
-                      mt: 0.6,
-                      letterSpacing: "0.6px",
-                    }}
-                  >
-                    {t.sub}
-                  </Box>
-                </Box>
-              </Box>
-
-              <Hair style={{ margin: "14px 0 10px" }} />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontFamily: tokens.mono,
-                  fontSize: 9,
-                  letterSpacing: "1.4px",
-                  color: tokens.ink60,
-                  textTransform: "uppercase",
-                }}
-              >
-                <span>{t.duration}</span>
-                <Box component="span" sx={{ color: tokens.accent }}>
-                  № {String(i + 1).padStart(3, "0")} →
-                </Box>
-              </Box>
-            </MuiLink>
-          );
-        })}
+        <Box component="span">
+          № {String(idx + 1).padStart(3, "0")} · {trip.stamp}
+        </Box>
+        <Box component="span" sx={{ color: tokens.accent }}>
+          {trip.date}
+        </Box>
       </Box>
-    </PageShell>
+
+      <Box
+        className="travel-image"
+        sx={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "4 / 5",
+          overflow: "hidden",
+          mb: 2.75,
+          transition: "transform 380ms cubic-bezier(.2,.7,.2,1)",
+          background: tokens.paperDeep,
+        }}
+      >
+        <Image
+          src={trip.cover}
+          alt={trip.place}
+          fill
+          sizes="(max-width: 768px) 90vw, 30vw"
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+            filter: "saturate(0.92)",
+          }}
+        />
+      </Box>
+
+      <Typography
+        component="h2"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 48, md: 52 },
+          fontWeight: 400,
+          lineHeight: 0.95,
+          letterSpacing: "-1.2px",
+          m: 0,
+        }}
+      >
+        {country}{" "}
+        <Box component="span" sx={{ color: tokens.accent, fontStyle: "italic" }}>
+          &rsquo;{yy}.
+        </Box>
+      </Typography>
+
+      <Box
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: 17,
+          fontStyle: "italic",
+          color: tokens.ink60,
+          mt: 1.5,
+          lineHeight: 1.45,
+          flex: 1,
+        }}
+      >
+        {trip.sub}
+      </Box>
+
+      <Box
+        sx={{
+          mt: 2.75,
+          pt: 1.75,
+          borderTop: `1px solid ${tokens.hair}`,
+          fontFamily: tokens.mono,
+          fontSize: 9,
+          letterSpacing: "1.4px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 2,
+        }}
+      >
+        <Box component="span">{trip.duration}</Box>
+        <Box className="travel-cta" component="span" sx={{ color: tokens.accent }}>
+          read entry →
+        </Box>
+      </Box>
+    </MuiLink>
+  );
+}
+
+function TravelsArrow({
+  dir,
+  disabled,
+  onClick,
+}: {
+  dir: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Box
+      component="button"
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      aria-label={dir === "prev" ? "Previous trips" : "Next trips"}
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 36,
+        height: 36,
+        border: `1px solid ${disabled ? tokens.hair : tokens.hairStrong}`,
+        borderRadius: 0,
+        background: "transparent",
+        color: disabled ? tokens.ink40 : tokens.ink,
+        cursor: disabled ? "not-allowed" : "pointer",
+        fontFamily: tokens.mono,
+        fontSize: 14,
+        lineHeight: 1,
+        transition: "background 180ms, color 180ms, border-color 180ms",
+        userSelect: "none",
+        "&:hover": disabled
+          ? {}
+          : {
+              background: tokens.accent,
+              color: tokens.paper,
+              borderColor: tokens.accent,
+            },
+      }}
+    >
+      {dir === "prev" ? "←" : "→"}
+    </Box>
   );
 }

@@ -11,6 +11,7 @@ import {
   DEFAULT_TRACKLIST,
   MOVIES,
   TRACKLISTS,
+  type Track,
 } from "@/data/content";
 
 type Tab = "music" | "films";
@@ -30,13 +31,12 @@ export default function FavoritesPage() {
 
   return (
     <PageShell
-      section="SECTION D · FAVORITES"
+      section="SECTION C · FAVORITES"
       catNo="file: favorites.idx"
       title={
         <>
-          A <Box component="span" sx={{ fontStyle: "italic" }}>listening</Box>
-          {" "}&{" "}
-          <Box component="span" sx={{ fontStyle: "italic" }}>watching</Box> log.
+          Personal favorites,{" "}
+          <Box component="span" sx={{ fontStyle: "italic" }}>hand-picked</Box>.
         </>
       }
     >
@@ -134,71 +134,20 @@ export default function FavoritesPage() {
                   </Box>
                 </Box>
                 <CardLabel
-                  cat="D.M"
+                  cat="C.M"
                   no={String(selectedIdx + 1).padStart(3, "0")}
                 />
               </Box>
               <Hair />
-              <Box sx={{ mt: 1.25 }}>
-                {tracks.map((tr, i) => {
-                  const isActive = i === trackIdx;
-                  return (
-                    <Box
-                      key={tr.n}
-                      onClick={() => {
-                        setTrackIdx(i);
-                        setPlaying(true);
-                      }}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "26px 1fr auto",
-                        gap: 1.75,
-                        alignItems: "baseline",
-                        cursor: "pointer",
-                        p: "6px 0",
-                        pl: "10px",
-                        ml: "-12px",
-                        borderLeft: `2px solid ${isActive ? tokens.accent : "transparent"}`,
-                        color: isActive ? tokens.accent : tokens.ink,
-                        fontFamily: tokens.mono,
-                        fontSize: 11,
-                        transition: "all 180ms",
-                      }}
-                    >
-                      <Box
-                        component="span"
-                        sx={{ color: tokens.ink40, fontSize: 9 }}
-                      >
-                        {String(tr.n).padStart(2, "0")}
-                      </Box>
-                      <Box
-                        component="span"
-                        sx={{
-                          fontFamily: tokens.serif,
-                          fontSize: 15,
-                          fontStyle: isActive ? "italic" : "normal",
-                        }}
-                      >
-                        {isActive && playing && (
-                          <Box
-                            component="span"
-                            sx={{ mr: 0.75, color: tokens.accent }}
-                          >
-                            ♪
-                          </Box>
-                        )}
-                        {tr.name}
-                      </Box>
-                      <Box
-                        component="span"
-                        sx={{ color: tokens.ink60, fontSize: 10 }}
-                      >
-                        {tr.time}
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
+              <TracklistView
+                tracks={tracks}
+                trackIdx={trackIdx}
+                playing={playing}
+                onPick={(i) => {
+                  setTrackIdx(i);
+                  setPlaying(true);
+                }}
+              />
             </Box>
           </Box>
 
@@ -258,22 +207,6 @@ export default function FavoritesPage() {
                         }}
                       />
                     </Box>
-                    {isSelected && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: -18,
-                          right: 0,
-                          fontFamily: tokens.mono,
-                          fontSize: 9,
-                          letterSpacing: "1.4px",
-                          color: tokens.accent,
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        → now
-                      </Box>
-                    )}
                   </Box>
                 );
               })}
@@ -284,6 +217,91 @@ export default function FavoritesPage() {
         <MoviesBlock />
       )}
     </PageShell>
+  );
+}
+
+function TracklistView({
+  tracks,
+  trackIdx,
+  playing,
+  onPick,
+}: {
+  tracks: Track[];
+  trackIdx: number;
+  playing: boolean;
+  onPick: (idx: number) => void;
+}) {
+  const favCount = tracks.filter((track) => track.fav).length;
+
+  return (
+    <Box sx={{ mt: 1.25 }}>
+      <Box
+        sx={{
+          fontFamily: tokens.mono,
+          fontSize: 9,
+          letterSpacing: "1.6px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+          mb: 1.25,
+        }}
+      >
+        Tracklist · {favCount} pick{favCount === 1 ? "" : "s"}
+      </Box>
+      {tracks.map((tr, i) => {
+        const isCurrent = i === trackIdx;
+        const isPicked = Boolean(tr.fav);
+        return (
+          <Box
+            key={tr.n}
+            onClick={() => onPick(i)}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "26px 1fr auto",
+              gap: 1.75,
+              alignItems: "baseline",
+              cursor: "pointer",
+              p: "6px 0",
+              pl: "10px",
+              ml: "-12px",
+              borderLeft: `2px solid ${isCurrent ? tokens.accent : "transparent"}`,
+              color: isCurrent ? tokens.accent : isPicked ? tokens.ink : tokens.ink60,
+              opacity: isPicked || isCurrent ? 1 : 0.55,
+              fontFamily: tokens.mono,
+              fontSize: 11,
+              transition: "all 180ms",
+            }}
+          >
+            <Box component="span" sx={{ color: tokens.ink40, fontSize: 9 }}>
+              {String(tr.n).padStart(2, "0")}
+            </Box>
+            <Box
+              component="span"
+              sx={{
+                fontFamily: tokens.serif,
+                fontSize: 15,
+                fontStyle: isCurrent ? "italic" : "normal",
+                minWidth: 0,
+              }}
+            >
+              {isCurrent && playing && (
+                <Box component="span" sx={{ mr: 0.75, color: tokens.accent }}>
+                  ♪
+                </Box>
+              )}
+              {isPicked && !isCurrent && (
+                <Box component="span" sx={{ mr: 0.75, color: tokens.accent }}>
+                  ★
+                </Box>
+              )}
+              {tr.name}
+            </Box>
+            <Box component="span" sx={{ color: tokens.ink60, fontSize: 10 }}>
+              {tr.time}
+            </Box>
+          </Box>
+        );
+      })}
+    </Box>
   );
 }
 
@@ -453,4 +471,3 @@ function MoviesCards() {
     </Box>
   );
 }
-

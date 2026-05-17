@@ -1,7 +1,10 @@
 // Shared primitives + data for the China '24 detail-page variations.
 // All three variations live in Direction A (Memory Archive): paper + ink + rust,
 // Newsreader serif + JetBrains Mono. Caveat is added for hand-written moments.
-
+//
+// Wrapped in an IIFE so `const A` doesn't collide with prototype-core.jsx's
+// own `const A` when both load in the same global scope.
+(function () {
 const { useState, useEffect } = React;
 
 // ============================================================
@@ -309,8 +312,11 @@ function Cutout({ src, alt = "", style = {}, imgStyle = {}, onOpen, caption }) {
   );
 }
 
+// Expose with CN_ prefix to avoid clobbering prototype-core's window.Hair etc.
 Object.assign(window, {
-  A, CHINA,
-  NavBar, Hair, ArchiveStrip, Crumb, CatTag, SectionFooter,
-  useLightbox, Photo, Cutout,
+  CN_A: A, CHINA,
+  CN_NavBar: NavBar, CN_Hair: Hair, CN_ArchiveStrip: ArchiveStrip,
+  CN_Crumb: Crumb, CN_CatTag: CatTag, CN_SectionFooter: SectionFooter,
+  CN_useLightbox: useLightbox, CN_Photo: Photo, CN_Cutout: Cutout,
 });
+})();

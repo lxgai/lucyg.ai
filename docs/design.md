@@ -134,15 +134,6 @@ The site reads like a personal **library card catalog** — an archival room whe
   * `ENTRY 001` mono label
   * `"Lately"` quick-link list with ↗ arrows
 
-* **Blog**
-
-  * Filterable tag pills
-  * 3-column rows:
-
-    * `№ / date`
-    * `title + excerpt`
-    * `tags`
-
 * **Projects**
 
   * Spreadsheet-style table:
@@ -153,6 +144,14 @@ The site reads like a personal **library card catalog** — an archival room whe
     * stack
     * status
   * `● shipping/live` displayed in accent color
+
+* **Travels**
+
+  * Postcard grid
+  * 3 cards
+  * Slight rotation
+  * Hover flattens + lifts
+  * Photo with sepia filter + corner stamp
 
 * **Favorites — albums**
 
@@ -175,13 +174,14 @@ The site reads like a personal **library card catalog** — an archival room whe
     * quote
     * date logged
 
-* **Travels**
+* **Blog**
 
-  * Postcard grid
-  * 3 cards
-  * Slight rotation
-  * Hover flattens + lifts
-  * Photo with sepia filter + corner stamp
+  * Filterable tag pills
+  * 3-column rows:
+
+    * `№ / date`
+    * `title + excerpt`
+    * `tags`
 
 * **Travel detail pages**
 
@@ -216,7 +216,7 @@ The site reads like a personal **library card catalog** — an archival room whe
 * `"Entry"` not `"post"`
 * Mono labels lean taxonomic:
 
-  * `"SERIES C · TRAVELS"`
+  * `"SERIES B · TRAVELS"`
   * `"FILE: HOME.IDX"`
 * Italics used for places and titles, never for emphasis
 

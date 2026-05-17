@@ -5,12 +5,12 @@ export const PAGE_UPDATED = {
   "/about": "UPDATED 05 · 17 · 26",
   "/blog": "UPDATED 05 · 17 · 26",
   "/favorites": "UPDATED 05 · 17 · 26",
-  "/links": "UPDATED 05 · 17 · 26",
+  "/links": "UPDATED 04 · 23 · 26",
   "/portfolio": "UPDATED 05 · 17 · 26",
-  "/projects": "UPDATED 05 · 14 · 26",
+  "/projects": "UPDATED 05 · 17 · 26",
   "/travels": "UPDATED 05 · 17 · 26",
   "/travels/china-24": "UPDATED 05 · 17 · 26",
-  "/travels/japan-24": "UPDATED 05 · 17 · 26",
+  "/travels/japan-24": "UPDATED 04 · 11 · 26",
   "/travels/netherlands-25": "UPDATED 05 · 17 · 26"
 } as const;
 
