@@ -412,6 +412,7 @@ export function Hero({
   );
 
   const heroMetadataFields = data.hero.metadataFields?.filter((field) => field.label.trim() || field.description.trim()) ?? [];
+  const heroTitleTopMargin = data.hero.titleTopMargin?.[breakpoint] ?? 11.6;
 
   return (
     <TravelDetailViewportContainer
@@ -440,7 +441,7 @@ export function Hero({
             <Typography
               component="h1"
               sx={{
-                mt: 1.45,
+                mt: `${heroTitleTopMargin}px`,
                 fontFamily: tokens.serif,
                 fontWeight: 400,
                 fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,

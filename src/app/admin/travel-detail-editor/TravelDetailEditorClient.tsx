@@ -60,6 +60,7 @@ type DragState = (SectionDragState | HeroDragState) & {
 type AssetResponse = { assets?: string[]; error?: string };
 
 type PageResponse = { pages?: PageInfo[]; error?: string };
+type DropAssetHandler = (sectionId: string, src: string) => void | Promise<void>;
 
 const breakpoints: TravelDetailBreakpoint[] = ["large", "medium", "small"];
 const breakpointLabels: Record<TravelDetailBreakpoint, string> = {
@@ -105,6 +106,23 @@ function normalizeAssetSrc(src: string) {
   } catch {
     return "";
   }
+}
+
+function originalImageAspect(src: string) {
+  return new Promise<string>((resolve) => {
+    const image = new window.Image();
+
+    image.onload = () => {
+      if (image.naturalWidth > 0 && image.naturalHeight > 0) {
+        resolve(`${image.naturalWidth} / ${image.naturalHeight}`);
+        return;
+      }
+
+      resolve("3 / 2");
+    };
+    image.onerror = () => resolve("3 / 2");
+    image.src = src;
+  });
 }
 
 function updateHeroMetadataField(draft: TravelDetailData, index: number, key: "label" | "description", value: string) {
@@ -236,7 +254,7 @@ function PreviewTape({ decoration, breakpoint, selected, onSelect, onPointerDown
   );
 }
 
-function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { section: TravelDetailSection; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: (sectionId: string, src: string) => void; onDragItem: (state: DragState) => void }) {
+function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { section: TravelDetailSection; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: DropAssetHandler; onDragItem: (state: DragState) => void }) {
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const width = travelDetailCanvasWidth(section, breakpoint);
 
@@ -262,7 +280,7 @@ function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset,
         if (!rawSrc) return;
         event.preventDefault();
         const src = normalizeAssetSrc(rawSrc);
-        if (src) onDropAsset(section.id, src);
+        if (src) void onDropAsset(section.id, src);
       }}
     >
       {section.decorations.map((decoration) => <PreviewTape key={decoration.id} decoration={decoration} breakpoint={breakpoint} selected={selection?.kind === "decoration" && selection.id === decoration.id} onSelect={() => onSelect({ kind: "decoration", sectionId: section.id, id: decoration.id })} onPointerDown={(event, mode) => startDrag("decoration", decoration.id, event, mode)} />)}
@@ -333,7 +351,7 @@ function HeroPreview({
   );
 }
 
-function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: (sectionId: string, src: string) => void; onDragItem: (state: DragState) => void }) {
+function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: DropAssetHandler; onDragItem: (state: DragState) => void }) {
   return (
     <TravelDetailSurface
       breakpoint={breakpoint}
@@ -527,15 +545,19 @@ export default function TravelDetailEditorPage() {
     setSelection({ kind: "section", sectionId: section.id });
   });
 
-  const addImage = (sectionId: string, src: string) => updateData("Add image", (draft) => {
+  const addImage = async (sectionId: string, src: string) => {
     const imageSrc = normalizeAssetSrc(src);
     if (!imageSrc) return;
-    const section = draft.sections.find((item) => item.id === sectionId);
-    if (!section) return;
-    const block: TravelDetailImageBlock = { id: uid("image"), type: "image", src: imageSrc, alt: imageName(imageSrc), caption: imageName(imageSrc), aspect: "3 / 2", layout: defaultLayout(8, 40, 42, section.blocks.length + 1) };
-    section.blocks.push(block);
-    setSelection({ kind: "block", sectionId, id: block.id });
-  });
+    const aspect = await originalImageAspect(imageSrc);
+
+    updateData("Add image", (draft) => {
+      const section = draft.sections.find((item) => item.id === sectionId);
+      if (!section) return;
+      const block: TravelDetailImageBlock = { id: uid("image"), type: "image", src: imageSrc, alt: imageName(imageSrc), caption: imageName(imageSrc), aspect, layout: defaultLayout(8, 40, 42, section.blocks.length + 1) };
+      section.blocks.push(block);
+      setSelection({ kind: "block", sectionId, id: block.id });
+    });
+  };
 
   const addText = (sectionId: string) => updateData("Add text", (draft) => {
     const section = draft.sections.find((item) => item.id === sectionId);

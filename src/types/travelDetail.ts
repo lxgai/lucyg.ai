@@ -67,6 +67,7 @@ export type TravelDetailHero = {
   intro: string;
   facts: string[];
   metadataFields?: TravelDetailHeroMetadataField[];
+  titleTopMargin?: TravelDetailResponsiveNumber;
   canvasHeight: TravelDetailResponsiveNumber;
   copyLayout: TravelDetailResponsiveLayout;
   decorations: TravelDetailTapeDecoration[];
