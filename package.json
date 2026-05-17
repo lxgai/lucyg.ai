@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate:page-updated": "node scripts/generate-page-updated.mjs",
+    "predev": "npm run generate:page-updated",
     "dev": "next dev",
+    "prebuild": "npm run generate:page-updated",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

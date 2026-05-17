@@ -1,10 +1,12 @@
 "use client";
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { getPageUpdatedLabel } from "@/data/page-updated";
 import Nav from "./Nav";
 import { MetadataStrip, PageContainer } from "./layout";
-import { LAST_UPDATED, tokens } from "./tokens";
+import { tokens } from "./tokens";
 
 type PageShellProps = {
   children: ReactNode;
@@ -24,11 +26,14 @@ export default function PageShell({
   catNo,
   title,
   subtitle,
-  updatedLabel = `UPDATED ${LAST_UPDATED}`,
+  updatedLabel,
   metadataExtra,
   contentPadding = true,
   contentSx,
 }: PageShellProps) {
+  const pathname = usePathname();
+  const resolvedUpdatedLabel = updatedLabel ?? getPageUpdatedLabel(pathname);
+
   return (
     <Box
       className="page-fade paper-a"
@@ -44,7 +49,7 @@ export default function PageShell({
         <MetadataStrip
           section={section}
           catNo={catNo}
-          updatedLabel={updatedLabel}
+          updatedLabel={resolvedUpdatedLabel}
           extra={metadataExtra}
           sx={{ pt: { xs: 3, md: 4.5 } }}
         />

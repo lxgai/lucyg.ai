@@ -4,7 +4,8 @@ import Image from "next/image";
 import NextLink from "next/link";
 import Nav from "@/components/design/Nav";
 import { CardLabel } from "@/components/design/primitives";
-import { tokens, LAST_UPDATED } from "@/components/design/tokens";
+import { getPageUpdatedLabel } from "@/data/page-updated";
+import { tokens } from "@/components/design/tokens";
 
 const QUICK_LINKS = [
   { label: "Latest writing", sub: "on keeping a slow internet", to: "/blog" },
@@ -14,6 +15,8 @@ const QUICK_LINKS = [
 ];
 
 export default function Home() {
+  const updatedLabel = getPageUpdatedLabel("/");
+
   return (
     <Box
       className="page-fade paper-a"
@@ -42,7 +45,7 @@ export default function Home() {
           <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
             file: home.idx
           </Box>
-          <Box component="span">last updated {LAST_UPDATED}</Box>
+          <Box component="span">{updatedLabel}</Box>
         </Box>
       </Box>
 

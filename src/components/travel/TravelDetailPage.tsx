@@ -3,7 +3,6 @@
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import Image from "next/image";
-import NextLink from "next/link";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
@@ -26,7 +25,6 @@ type LightboxImage = {
 };
 
 const tape = "rgba(243, 215, 158, 0.65)";
-const tapeRed = "rgba(228, 170, 160, 0.6)";
 type HeroEditMode = "move" | "resize";
 type HeroEditableItem = "image" | "copy" | `decoration:${string}`;
 
@@ -546,92 +544,17 @@ function SectionSpread({
 export function Closing({
   data,
   breakpoint,
-  onOpen,
 }: {
   data: TravelDetailData;
   breakpoint: TravelDetailBreakpoint;
   onOpen: (image: LightboxImage) => void;
 }) {
   return (
-    <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pb: breakpoint === "small" ? 5 : 4 }}>
+    <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pb: breakpoint === "small" ? 5 : 4, textAlign: "center" }}>
       <Box sx={{ borderTop: `1px solid ${tokens.hairStrong}` }} />
       <Typography sx={{ mt: 2.25, fontFamily: tokens.mono, fontSize: 10, letterSpacing: "2px", color: tokens.accent, textTransform: "uppercase", textAlign: "center" }}>
         {data.closing.eyebrow}
       </Typography>
-      <Typography sx={{ mt: 0.75, fontFamily: tokens.serif, fontStyle: "italic", fontSize: breakpoint === "small" ? 30 : 36, textAlign: "center" }}>
-        {data.closing.title}
-      </Typography>
-
-      <Box sx={{ mt: 4, display: "grid", gridTemplateColumns: breakpoint === "small" ? "1fr" : "1fr 1fr", gap: breakpoint === "small" ? 4 : 6, alignItems: "center" }}>
-        <Box sx={{ display: "flex", justifyContent: breakpoint === "small" ? "center" : "flex-end" }}>
-          <Box sx={{ position: "relative", width: 320, maxWidth: "100%" }}>
-            <PhotoFrame
-              photo={data.closing.image}
-              breakpoint={breakpoint}
-              onOpen={onOpen}
-              sx={{
-                background: tokens.paperCard,
-                border: `1px solid ${tokens.hairStrong}`,
-                p: 1.5,
-                boxShadow: "0 14px 30px rgba(31, 26, 22, 0.12)",
-              }}
-            />
-            <Tape breakpoint={breakpoint} sx={{ top: -9, left: "50%", transform: "translateX(-50%) rotate(2deg)", width: 120 }} />
-          </Box>
-        </Box>
-
-        <Box sx={{ display: "flex", justifyContent: breakpoint === "small" ? "center" : "flex-start" }}>
-          <Box
-            sx={{
-              position: "relative",
-              width: 380,
-              maxWidth: "100%",
-              background: tokens.paperCard,
-              border: `1px solid ${tokens.hair}`,
-              p: breakpoint === "small" ? 2.5 : 3,
-              boxShadow: "0 12px 28px rgba(31, 26, 22, 0.08)",
-              transform: breakpoint === "small" ? "none" : "rotate(1.4deg)",
-            }}
-          >
-            <Typography sx={{ fontFamily: tokens.serif, fontStyle: "italic", fontSize: breakpoint === "small" ? 25 : 30, lineHeight: 1.1 }}>
-              {data.closing.noteTitle}
-            </Typography>
-            <Typography sx={{ mt: 1.25, fontFamily: tokens.serif, fontSize: breakpoint === "small" ? 18 : 20, lineHeight: 1.35, color: tokens.ink60 }}>
-              {data.closing.note}
-            </Typography>
-            <Typography sx={{ mt: 1.75, fontFamily: tokens.serif, fontStyle: "italic", fontSize: 13, color: tokens.ink60 }}>
-              {data.closing.signature}
-            </Typography>
-            <Tape color={tapeRed} breakpoint={breakpoint} sx={{ top: -8, left: 60, width: 100, transform: "rotate(-4deg)" }} />
-          </Box>
-        </Box>
-      </Box>
-
-      <Box sx={{ mt: 5, borderTop: `1px solid ${tokens.hairStrong}` }} />
-      <Box
-        sx={{
-          pt: 1.25,
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 2,
-          flexWrap: "wrap",
-          fontFamily: tokens.mono,
-          fontSize: 9,
-          letterSpacing: "1.6px",
-          color: tokens.ink40,
-          textTransform: "uppercase",
-        }}
-      >
-        <span>Fig. C.{data.fileNo} - {data.metadata.place}</span>
-        {data.closing.nextHref && (
-          <Box component={NextLink} href={data.closing.nextHref} sx={{ color: "inherit", textDecoration: "none", "&:hover": { color: tokens.accent } }}>
-            {data.closing.nextLabel ?? "Next"}
-          </Box>
-        )}
-        <Box component="a" href="#top" sx={{ color: "inherit", textDecoration: "none", "&:hover": { color: tokens.accent } }}>
-          To top
-        </Box>
-      </Box>
     </TravelDetailViewportContainer>
   );
 }
@@ -701,7 +624,7 @@ export default function TravelDetailPage({ data }: { data: TravelDetailData }) {
 
   return (
     <Box id="top">
-      <PageShell section={data.section} catNo={data.catNo} updatedLabel={data.updatedLabel} contentPadding={false}>
+      <PageShell section={data.section} catNo={data.catNo} contentPadding={false}>
         <TravelDetailSurface breakpoint={breakpoint} mode="fit-width" scaleMultiplier={0.94}>
           <Hero data={data} breakpoint={breakpoint} onOpen={setLightboxImage} />
           <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>
