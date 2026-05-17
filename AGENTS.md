@@ -34,6 +34,9 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 - `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`, `CollageLayout`, `CollageCanvas`
 - `src/data/travels/` - JSON collage layouts for trip pages
 - `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
+- `src/data/blog-tags.ts` - local tag mapping for Substack-imported blog entries
+- `src/data/substack/sample-feed.xml` - fixture RSS feed for local Substack integration testing
+- `src/lib/substack.ts` - server-only Substack RSS importer and sanitizer
 - `src/types/` - shared TypeScript types
 - `src/styles/globals.css` - global CSS, Tailwind import, font variables
 - `public/fonts/` - local fonts currently registered in `src/app/layout.tsx`
@@ -100,6 +103,19 @@ For root page wrappers:
 - Do not set `overscroll-behavior` or `touch-action` on `html` or `body`.
 
 The document should remain the only vertical scroll container. Using `100vw` or `overflowX: hidden` on page roots can create horizontal overflow or accidental nested vertical scroll containers, especially on Windows/Linux.
+
+## Blog And Substack
+
+The public blog uses Substack as the primary source when configured.
+
+- `SUBSTACK_FEED_URL` points at the publication RSS feed, usually `https://your-subdomain.substack.com/feed`.
+- `SUBSTACK_USE_SAMPLE_FEED=1` forces the committed fixture feed at `src/data/substack/sample-feed.xml`.
+- `SUBSTACK_EMBED_URL` optionally enables the official Substack subscribe iframe.
+- If no feed is configured or feed parsing fails, the site falls back to local `POSTS` from `src/data/content.ts`.
+- Substack RSS often does not expose editor tags. Add personal-site tags by slug in `src/data/blog-tags.ts`.
+- Do not add a generic fallback tag such as `entry`; entries with no RSS or local tags should render without tag chips.
+- Imported article HTML must remain sanitized in `src/lib/substack.ts`; do not render raw feed HTML directly.
+- Keep RSS images rendered through sanitized HTML/CSS instead of `next/image`, unless a deliberate remote image policy is added.
 
 ## Collage System
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Lucy Gai</title>
+    <link>https://example.substack.com</link>
+    <description>Sample Substack feed for local integration testing.</description>
+    <item>
+      <title>Sample Substack Entry</title>
+      <link>https://example.substack.com/p/sample-substack-entry</link>
+      <guid isPermaLink="true">https://example.substack.com/p/sample-substack-entry</guid>
+      <pubDate>Sun, 17 May 2026 14:00:00 GMT</pubDate>
+      <category>notes</category>
+      <category>web</category>
+      <description><![CDATA[A fixture entry for confirming the Substack RSS importer, sanitized article rendering, and archive routing.]]></description>
+      <content:encoded><![CDATA[
+        <p>This is a sample public Substack entry rendered inside the Memory Archive blog frame. It includes enough structure to exercise the importer without depending on a live feed.</p>
+        <h2>A small section</h2>
+        <p>The importer keeps ordinary article markup, removes unsafe HTML, and rewrites external links with safer attributes. <a href="https://example.com/reference">This reference link</a> should open in a new tab.</p>
+        <blockquote><p>The site mirrors public RSS content, then lets Substack remain the source of truth.</p></blockquote>
+        <figure>
+          <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200&amp;auto=format&amp;fit=crop" alt="A desk with code on a laptop" />
+          <figcaption>A remote image rendered through sanitized RSS HTML.</figcaption>
+        </figure>
+        <p><script>alert("removed")</script>This sentence follows a script tag that should not survive sanitization.</p>
+      ]]></content:encoded>
+    </item>
+  </channel>
+</rss>

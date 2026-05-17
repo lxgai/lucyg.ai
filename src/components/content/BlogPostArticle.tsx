@@ -1,19 +1,31 @@
 "use client";
 
-import { Box, Button, InputBase, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
-import type { Post, PostBodyBlock } from "@/data/content";
+import type { PostBodyBlock } from "@/data/content";
+import type { BlogEntry } from "@/types/blog";
 
-export function countPostWords(post: Post) {
-  const text = post.body
-    .filter((block): block is Extract<PostBodyBlock, { text: string }> => "text" in block)
-    .map((block) => block.text)
-    .join(" ");
+export function countPostWords(post: BlogEntry) {
+  if (post.wordCount) {
+    return post.wordCount;
+  }
+
+  const text =
+    post.text ??
+    post.body
+      ?.filter((block): block is Extract<PostBodyBlock, { text: string }> => "text" in block)
+      .map((block) => block.text)
+      .join(" ") ??
+    "";
 
   return text.split(/\s+/).filter(Boolean).length;
+}
+
+function compactDate(date: string) {
+  return date.replace(/\s*\/\s*/g, "/");
 }
 
 export function BlogPostArticle({
@@ -21,24 +33,42 @@ export function BlogPostArticle({
   older,
   newer,
   related,
+  subscribeEmbedUrl,
+  subscribeUrl,
 }: {
-  post: Post;
-  older?: Post;
-  newer?: Post;
-  related: Post[];
+  post: BlogEntry;
+  older?: BlogEntry;
+  newer?: BlogEntry;
+  related: BlogEntry[];
+  subscribeEmbedUrl?: string;
+  subscribeUrl?: string;
 }) {
   const words = countPostWords(post);
   const readMin = Math.max(1, Math.round(words / 220));
+  const displayDate = compactDate(post.date);
 
   return (
     <PageShell
       section={`SECTION A · BLOG · ${post.slug}`}
       catNo={`file: ${post.slug}.entry`}
-      updatedLabel={post.date}
+      updatedLabel={displayDate}
       metadataExtra={
-        <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.75 }}>
+        <Box
+          component={post.sourceUrl ? "a" : "span"}
+          href={post.sourceUrl}
+          target={post.sourceUrl ? "_blank" : undefined}
+          rel={post.sourceUrl ? "noopener noreferrer" : undefined}
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.75,
+            color: "inherit",
+            textDecoration: "none",
+            "&:hover": { color: post.sourceUrl ? tokens.accent : "inherit" },
+          }}
+        >
           <Box component="span" sx={{ width: 6, height: 6, background: tokens.accent, borderRadius: "50%" }} />
-          <Box component="span">Also on Substack -&gt;</Box>
+          <Box component="span">{post.source === "substack" ? "Also on Substack ->" : "Filed locally"}</Box>
         </Box>
       }
     >
@@ -72,7 +102,7 @@ export function BlogPostArticle({
             mb: 2.25,
           }}
         >
-          {post.date} · {readMin} min read
+          {displayDate} · {readMin} min read
         </Box>
 
         <Typography
@@ -125,13 +155,17 @@ export function BlogPostArticle({
           </Box>
         )}
 
-        {post.body.map((block, index) => {
-          if (index === 0 && block.kind === "p") {
-            return <DropCapParagraph key={index} text={block.text} />;
-          }
+        {post.html ? (
+          <SubstackArticleHtml html={post.html} />
+        ) : (
+          post.body?.map((block, index) => {
+            if (index === 0 && block.kind === "p") {
+              return <DropCapParagraph key={index} text={block.text} />;
+            }
 
-          return <PostBlock key={index} block={block} />;
-        })}
+            return <PostBlock key={index} block={block} />;
+          })
+        )}
 
         <Box
           sx={{
@@ -143,12 +177,12 @@ export function BlogPostArticle({
             color: tokens.ink60,
           }}
         >
-          - filed {post.date}, {words.toLocaleString()} words
+          - filed {displayDate}, {words.toLocaleString()} words
         </Box>
       </Box>
 
       {post.foot && post.foot.length > 0 && <Footnotes notes={post.foot} />}
-      <SubscribeAndComments />
+      <SubscribeAndDiscussion post={post} subscribeEmbedUrl={subscribeEmbedUrl} subscribeUrl={subscribeUrl} />
       {related.length > 0 && <RelatedPosts related={related} />}
       <PostPrevNext older={older} newer={newer} />
     </PageShell>
@@ -188,7 +222,7 @@ function TagRow({ tags, centered = false }: { tags: string[]; centered?: boolean
   );
 }
 
-function HeroFigure({ post }: { post: Post }) {
+function HeroFigure({ post }: { post: BlogEntry }) {
   if (!post.hero) return null;
 
   return (
@@ -392,6 +426,93 @@ function PostFigure({ block }: { block: Extract<PostBodyBlock, { kind: "img" }> 
   );
 }
 
+function SubstackArticleHtml({ html }: { html: string }) {
+  return (
+    <Box
+      className="substack-entry"
+      dangerouslySetInnerHTML={{ __html: html }}
+      sx={{
+        fontFamily: tokens.serif,
+        fontSize: 19,
+        lineHeight: 1.65,
+        color: tokens.ink,
+        overflowWrap: "break-word",
+        "& > :first-of-type": { mt: 0 },
+        "& p": { m: "0 0 22px" },
+        "& h1, & h2, & h3, & h4": {
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontWeight: 400,
+          color: tokens.ink,
+          lineHeight: 1.15,
+          mt: 5.5,
+          mb: 2.5,
+        },
+        "& h1": { fontSize: 36 },
+        "& h2": { fontSize: 30 },
+        "& h3": { fontSize: 24 },
+        "& h4": { fontSize: 20 },
+        "& a": {
+          color: tokens.accent,
+          textDecorationColor: tokens.hairStrong,
+          textUnderlineOffset: "3px",
+        },
+        "& blockquote": {
+          my: 5.5,
+          mx: 0,
+          pl: 2.75,
+          borderLeft: `2px solid ${tokens.accent}`,
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontSize: 30,
+          lineHeight: 1.25,
+          letterSpacing: "-0.4px",
+          color: tokens.ink,
+        },
+        "& blockquote p": { m: 0 },
+        "& ul, & ol": { my: 3, pl: 3 },
+        "& li": { mb: 1 },
+        "& figure": { my: 6, mx: 0 },
+        "& img": {
+          display: "block",
+          width: "100%",
+          maxWidth: "100%",
+          height: "auto",
+          filter: "sepia(0.06) saturate(0.92)",
+        },
+        "& figcaption": {
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontSize: 14,
+          lineHeight: 1.5,
+          color: tokens.ink60,
+          mt: 1.5,
+          pl: 1.75,
+          borderLeft: `1px solid ${tokens.hair}`,
+        },
+        "& pre": {
+          overflowX: "auto",
+          p: 2,
+          border: `1px solid ${tokens.hair}`,
+          background: tokens.paperCard,
+          fontFamily: tokens.mono,
+          fontSize: 13,
+          lineHeight: 1.6,
+        },
+        "& code": {
+          fontFamily: tokens.mono,
+          fontSize: "0.88em",
+        },
+        "& hr": {
+          border: 0,
+          borderTop: `1px dashed ${tokens.hair}`,
+          my: 5,
+        },
+      }}
+    />
+  );
+}
+
 function Footnotes({ notes }: { notes: string[] }) {
   return (
     <Box sx={{ mt: 7, maxWidth: 640, mx: "auto" }}>
@@ -434,15 +555,15 @@ function Footnotes({ notes }: { notes: string[] }) {
   );
 }
 
-function SubscribeAndComments() {
-  const comments = [
-    { who: "Mara K.", when: "2d", text: "The line about the homepage as a room you return to is exactly what I'm trying to do with my own site this year." },
-    { who: "P. Singh", when: "2d", text: "Five readers, one of which is me. I wrote back via email." },
-    { who: "Jess", when: "1d", text: "Curious about the RSS button you mentioned - what does the implementation look like?" },
-    { who: "Theo", when: "22h", text: "Deleted my analytics last month and have not missed them once." },
-    { who: "Anna L.", when: "18h", text: "This is making me reconsider my whole publishing setup." },
-  ];
-
+function SubscribeAndDiscussion({
+  post,
+  subscribeEmbedUrl,
+  subscribeUrl,
+}: {
+  post: BlogEntry;
+  subscribeEmbedUrl?: string;
+  subscribeUrl?: string;
+}) {
   return (
     <Box sx={{ maxWidth: 640, mx: "auto", mt: 9 }}>
       <Box
@@ -469,7 +590,7 @@ function SubscribeAndComments() {
           }}
         >
           <span>Form 06 · Inbox subscription</span>
-          <span>412 readers</span>
+          <span>Substack delivery</span>
         </Box>
         <Box sx={{ fontFamily: tokens.serif, fontStyle: "italic", fontSize: 32, lineHeight: 1.15, letterSpacing: "-0.6px", mb: 1.25 }}>
           Letters in your inbox, sometimes.
@@ -477,40 +598,52 @@ function SubscribeAndComments() {
         <Typography sx={{ fontFamily: tokens.serif, fontSize: 16, color: tokens.ink60, lineHeight: 1.5, mb: 2.75, maxWidth: 460 }}>
           A few posts a month, plus the occasional Friday note that does not make it onto the site. No tracking, no schedule, no upsells.
         </Typography>
-        <Box sx={{ display: "flex", mb: 1.75, alignItems: "stretch" }}>
-          <InputBase
-            placeholder="you@somewhere"
+        {subscribeEmbedUrl ? (
+          <Box
+            component="iframe"
+            src={subscribeEmbedUrl}
+            title="Subscribe on Substack"
             sx={{
-              flex: 1,
-              fontFamily: tokens.serif,
-              fontSize: 16,
-              fontStyle: "italic",
-              px: 1.75,
-              py: 1.25,
+              display: "block",
+              width: "100%",
+              height: 150,
               border: `1px solid ${tokens.ink}`,
-              borderRight: "none",
-              color: tokens.ink,
-              minWidth: 0,
+              background: tokens.paperCard,
+              mb: 1.75,
             }}
           />
+        ) : (
           <Button
+            component="a"
+            href={subscribeUrl}
+            target={subscribeUrl ? "_blank" : undefined}
+            rel={subscribeUrl ? "noopener noreferrer" : undefined}
+            disabled={!subscribeUrl}
             sx={{
               fontFamily: tokens.mono,
               fontSize: 10,
               letterSpacing: "1.8px",
               textTransform: "uppercase",
+              mb: 1.75,
               px: { xs: 1.5, md: 2.75 },
+              py: 1.25,
               background: tokens.accent,
               color: tokens.paper,
               border: `1px solid ${tokens.accent}`,
               borderRadius: 0,
               whiteSpace: "nowrap",
+              textDecoration: "none",
               "&:hover": { background: tokens.accent },
+              "&.Mui-disabled": {
+                color: tokens.ink40,
+                background: "transparent",
+                borderColor: tokens.hair,
+              },
             }}
           >
-            Subscribe -&gt;
+            Subscribe on Substack -&gt;
           </Button>
-        </Box>
+        )}
         <Box
           sx={{
             fontFamily: tokens.mono,
@@ -531,41 +664,54 @@ function SubscribeAndComments() {
         </Box>
       </Box>
 
-      <Box sx={{ mt: 7 }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            borderBottom: `1px solid ${tokens.hairStrong}`,
-            pb: 1.5,
-            mb: 2,
-          }}
-        >
-          <Box sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            Notes from readers
+      {post.sourceUrl && (
+        <Box sx={{ mt: 7 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              borderBottom: `1px solid ${tokens.hairStrong}`,
+              pb: 1.5,
+              mb: 2,
+            }}
+          >
+            <Box sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
+              Discussion
+            </Box>
           </Box>
-          <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink40, textTransform: "uppercase" }}>
-            static preview
+          <Box sx={{ py: 1.75, borderBottom: `1px solid ${tokens.hair}` }}>
+            <Box sx={{ fontFamily: tokens.serif, fontSize: 16, color: tokens.ink60, lineHeight: 1.5, mb: 1.5 }}>
+              Comments and reader notes live with the source entry.
+            </Box>
+            <Button
+              component="a"
+              href={post.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.8px",
+                textTransform: "uppercase",
+                color: tokens.accent,
+                border: `1px solid ${tokens.accent}`,
+                borderRadius: 0,
+                px: 2,
+                py: 0.9,
+                textDecoration: "none",
+              }}
+            >
+              Discuss on Substack -&gt;
+            </Button>
           </Box>
         </Box>
-        {comments.map((comment) => (
-          <Box key={`${comment.who}-${comment.when}`} sx={{ py: 1.75, borderBottom: `1px solid ${tokens.hair}` }}>
-            <Box sx={{ display: "flex", gap: 1, alignItems: "baseline", mb: 0.75 }}>
-              <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic" }}>{comment.who}</Box>
-              <Box sx={{ fontFamily: tokens.mono, fontSize: 9, color: tokens.ink40, letterSpacing: "1px", textTransform: "uppercase" }}>
-                {comment.when}
-              </Box>
-            </Box>
-            <Box sx={{ fontFamily: tokens.serif, fontSize: 14, color: tokens.ink60, lineHeight: 1.5 }}>{comment.text}</Box>
-          </Box>
-        ))}
-      </Box>
+      )}
     </Box>
   );
 }
 
-function RelatedPosts({ related }: { related: Post[] }) {
+function RelatedPosts({ related }: { related: BlogEntry[] }) {
   return (
     <Box sx={{ mt: 9, pt: 3, borderTop: `1px solid ${tokens.hairStrong}` }}>
       <Box sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase", mb: 2.75 }}>
@@ -575,7 +721,7 @@ function RelatedPosts({ related }: { related: Post[] }) {
         {related.map((post) => (
           <Box key={post.slug} component={NextLink} href={`/blog/${post.slug}`} sx={{ color: tokens.ink, textDecoration: "none" }}>
             <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
-              {post.date}
+              {compactDate(post.date)}
             </Box>
             <Box sx={{ fontFamily: tokens.serif, fontSize: 20, fontStyle: "italic", lineHeight: 1.15, mt: 0.75, letterSpacing: "-0.3px" }}>
               {post.title}
@@ -588,7 +734,7 @@ function RelatedPosts({ related }: { related: Post[] }) {
   );
 }
 
-function PostPrevNext({ older, newer }: { older?: Post; newer?: Post }) {
+function PostPrevNext({ older, newer }: { older?: BlogEntry; newer?: BlogEntry }) {
   return (
     <Box
       sx={{
