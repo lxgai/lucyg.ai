@@ -4,7 +4,7 @@ import process from "node:process";
 
 const root = process.cwd();
 const picksPath = path.join(root, "src/data/favorite-albums.json");
-const contentPath = path.join(root, "src/data/content.ts");
+const favoritesPath = path.join(root, "src/data/favorites.ts");
 const envPath = path.join(root, ".env.local");
 const spotifyApi = "https://api.spotify.com/v1";
 
@@ -228,7 +228,7 @@ function replaceTracklists(content, rendered) {
   const defaultStart = content.indexOf("\nexport const DEFAULT_TRACKLIST", start);
 
   if (start === -1 || defaultStart === -1) {
-    throw new Error("Could not find TRACKLISTS block in src/data/content.ts.");
+    throw new Error("Could not find TRACKLISTS block in src/data/favorites.ts.");
   }
 
   const commentStart = content.lastIndexOf(
@@ -271,10 +271,10 @@ async function main() {
     }
   }
 
-  const content = await readFile(contentPath, "utf8");
+  const content = await readFile(favoritesPath, "utf8");
   const nextContent = replaceTracklists(content, renderTracklists(generated));
-  await writeFile(contentPath, nextContent);
-  console.log("Updated src/data/content.ts");
+  await writeFile(favoritesPath, nextContent);
+  console.log("Updated src/data/favorites.ts");
 }
 
 main().catch((error) => {

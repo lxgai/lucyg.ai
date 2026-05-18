@@ -11,7 +11,7 @@ export const PAGE_UPDATED = {
   "/travels": "UPDATED 05 · 18 · 26",
   "/travels/china-24": "UPDATED 05 · 17 · 26",
   "/travels/japan-24": "UPDATED 04 · 11 · 26",
-  "/travels/netherlands-25": "UPDATED 05 · 18 · 26"
+  "/travels/netherlands-25": "UPDATED 05 · 17 · 26"
 } as const;
 
 export type PageUpdatedRoute = keyof typeof PAGE_UPDATED;

@@ -2,7 +2,7 @@
 import { Box } from "@mui/material";
 import { ProjectsSpreadList } from "@/components/content/ProjectArchive";
 import PageShell from "@/components/design/PageShell";
-import { PROJECTS } from "@/data/content";
+import { PROJECTS } from "@/data/projects";
 
 export default function ProjectsPage() {
   return (

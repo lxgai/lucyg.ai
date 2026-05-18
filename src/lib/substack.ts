@@ -5,7 +5,7 @@ import path from "node:path";
 import { XMLParser } from "fast-xml-parser";
 import sanitizeHtml from "sanitize-html";
 import { BLOG_TAGS_BY_SLUG } from "@/data/blog-tags";
-import { POSTS } from "@/data/content";
+import { POSTS } from "@/data/blog";
 import type { BlogEntry } from "@/types/blog";
 
 const SAMPLE_FEED_PATH = path.join(process.cwd(), "src/data/substack/sample-feed.xml");

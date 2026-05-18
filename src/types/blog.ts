@@ -1,4 +1,4 @@
-import type { PostBodyBlock } from "@/data/content";
+import type { PostBodyBlock } from "@/data/blog";
 
 export type BlogEntrySource = "local" | "substack";
 

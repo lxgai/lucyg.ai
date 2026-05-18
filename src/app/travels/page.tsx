@@ -6,7 +6,7 @@ import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import china24 from "@/data/travel-details/china-24.json";
 import { tokens } from "@/components/design/tokens";
-import { TRIPS, type Trip } from "@/data/content";
+import { TRIPS, type Trip } from "@/data/travels";
 import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
 import type { TravelDetailData } from "@/types/travelDetail";
 

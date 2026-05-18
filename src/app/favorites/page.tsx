@@ -13,7 +13,7 @@ import {
   TRACKLISTS,
   type Movie,
   type Track,
-} from "@/data/content";
+} from "@/data/favorites";
 
 type Tab = "music" | "films";
 type AlbumSort = "new" | "old" | "title";

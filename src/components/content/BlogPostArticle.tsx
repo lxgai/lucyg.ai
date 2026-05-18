@@ -5,7 +5,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
-import type { PostBodyBlock } from "@/data/content";
+import type { PostBodyBlock } from "@/data/blog";
 import type { BlogEntry } from "@/types/blog";
 
 export function countPostWords(post: BlogEntry) {

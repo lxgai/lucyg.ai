@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import sanitizeHtml from "sanitize-html";
-import { MOVIES } from "@/data/content";
+import { MOVIES } from "@/data/favorites";
 
 const DEFAULT_LETTERBOXD_FEED_URL = "https://letterboxd.com/lucy_gai/rss/";
 const REVALIDATE_SECONDS = 60 * 60;

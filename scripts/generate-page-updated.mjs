@@ -8,15 +8,15 @@ const OUTPUT_PATH = path.join(ROOT, "src/data/page-updated.ts");
 const ROUTES = [
   { route: "/", sources: ["src/app/page.tsx"] },
   { route: "/about", sources: ["src/app/about/page.tsx"] },
-  { route: "/blog", sources: ["src/app/blog/page.tsx", "src/app/blog/BlogIndexClient.tsx", "src/data/blog-tags.ts", "src/data/content.ts"] },
-  { route: "/favorites", sources: ["src/app/favorites/page.tsx", "src/data/content.ts"] },
+  { route: "/blog", sources: ["src/app/blog/page.tsx", "src/app/blog/BlogIndexClient.tsx", "src/data/blog-tags.ts", "src/data/blog.ts"] },
+  { route: "/favorites", sources: ["src/app/favorites/page.tsx", "src/data/favorites.ts", "src/data/favorite-albums.json"] },
   { route: "/links", sources: ["src/app/links/page.tsx"] },
   { route: "/portfolio", sources: ["src/app/portfolio/page.tsx"] },
-  { route: "/projects", sources: ["src/app/projects/page.tsx", "src/components/content/ProjectArchive.tsx", "src/data/content.ts"] },
-  { route: "/travels", sources: ["src/app/travels/page.tsx", "src/data/content.ts"] },
+  { route: "/projects", sources: ["src/app/projects/page.tsx", "src/components/content/ProjectArchive.tsx", "src/data/projects.ts"] },
+  { route: "/travels", sources: ["src/app/travels/page.tsx", "src/data/travels.ts"] },
   { route: "/travels/china-24", sources: ["src/app/travels/china-24/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/china-24.json"] },
   { route: "/travels/japan-24", sources: ["src/app/travels/japan-24/page.tsx", "src/components/CollageLayout.tsx", "src/components/CollageCanvas.tsx", "src/data/travels/japan-24.json"] },
-  { route: "/travels/netherlands-25", sources: ["src/app/travels/netherlands-25/page.tsx", "src/data/content.ts"] },
+  { route: "/travels/netherlands-25", sources: ["src/app/travels/netherlands-25/page.tsx"] },
 ];
 
 function git(args) {

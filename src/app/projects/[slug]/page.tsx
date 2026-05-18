@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProjectDetailReport } from "@/components/content/ProjectArchive";
-import { PROJECTS } from "@/data/content";
+import { PROJECTS } from "@/data/projects";
 
 export function generateStaticParams() {
   return PROJECTS.map((project) => ({ slug: project.slug }));

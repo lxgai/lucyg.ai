@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
-import type { Project } from "@/data/content";
+import type { Project } from "@/data/projects";
 
 export function ProjectThumb({
   project,
