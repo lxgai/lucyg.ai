@@ -11,11 +11,22 @@ import {
   DEFAULT_TRACKLIST,
   MOVIES,
   TRACKLISTS,
+  type Movie,
   type Track,
 } from "@/data/content";
 
 type Tab = "music" | "films";
 type AlbumSort = "new" | "old" | "title";
+type SyncedMovie = Movie & {
+  sourceUrl?: string;
+};
+type LetterboxdMovie = {
+  key: string;
+  rating?: number;
+  date?: string;
+  note?: string;
+  sourceUrl?: string;
+};
 
 const SORT_OPTIONS: { value: AlbumSort; label: string }[] = [
   { value: "new", label: "new -> old" },
@@ -30,6 +41,7 @@ export default function FavoritesPage() {
   const [selectedSrc, setSelectedSrc] = useState(ALBUMS[0].src);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [letterboxdMovies, setLetterboxdMovies] = useState<Record<string, LetterboxdMovie>>({});
 
   const sortedAlbums = useMemo(() => {
     return [...ALBUMS].sort((a, b) => {
@@ -43,6 +55,26 @@ export default function FavoritesPage() {
     sortedAlbums.find((album) => album.src === selectedSrc) ?? sortedAlbums[0];
   const selectedIdx = sortedAlbums.indexOf(selectedAlbum);
   const tracks = TRACKLISTS[selectedAlbum.title] ?? DEFAULT_TRACKLIST;
+  const movies = useMemo<SyncedMovie[]>(() => {
+    return MOVIES.map((movie) => {
+      const synced = letterboxdMovies[movieKey(movie.title, movie.year)];
+
+      if (!synced) {
+        return {
+          ...movie,
+          note: "Review coming soon",
+        };
+      }
+
+      return {
+        ...movie,
+        rating: synced.rating ?? movie.rating,
+        date: synced.date ?? movie.date,
+        note: synced.note || "Review coming soon",
+        sourceUrl: synced.sourceUrl,
+      };
+    });
+  }, [letterboxdMovies]);
 
   useEffect(() => {
     setPlaying(false);
@@ -70,6 +102,37 @@ export default function FavoritesPage() {
 
     return () => window.clearInterval(id);
   }, [playing]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadLetterboxdMovies() {
+      try {
+        const response = await fetch("/api/letterboxd/favorites");
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as { movies?: LetterboxdMovie[] };
+        const moviesByKey = Object.fromEntries(
+          (data.movies ?? []).map((movie) => [movie.key, movie])
+        );
+
+        if (active) {
+          setLetterboxdMovies(moviesByKey);
+        }
+      } catch {
+        // Local movie data is the fallback when Letterboxd is unavailable.
+      }
+    }
+
+    loadLetterboxdMovies();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <PageShell
@@ -255,10 +318,64 @@ export default function FavoritesPage() {
                 );
               })}
             </Box>
+            <Box
+              sx={{
+                mt: 5,
+                pt: 3,
+                borderTop: `1px solid ${tokens.hair}`,
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.4px",
+                textTransform: "uppercase",
+                color: tokens.ink60,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+                flexWrap: "wrap",
+                textAlign: "center",
+              }}
+            >
+              <span>Check out more of my picks and playlists on</span>
+              <MuiLink
+                href="https://open.spotify.com/user/charlottefour"
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="none"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.75,
+                  color: tokens.accent,
+                  borderBottom: `1px solid ${tokens.accent}`,
+                  paddingBottom: "1px",
+                  "&:hover": { opacity: 0.8 },
+                }}
+              >
+                <span>spotify</span>
+                <Box
+                  component="span"
+                  sx={{
+                    position: "relative",
+                    display: "inline-block",
+                    width: 20,
+                    height: 20,
+                  }}
+                >
+                  <Image
+                    src="/images/about/spotify-logo.png"
+                    alt="Spotify"
+                    fill
+                    sizes="20px"
+                    style={{ objectFit: "contain" }}
+                  />
+                </Box>
+              </MuiLink>
+            </Box>
           </Box>
         </Box>
       ) : (
-        <MoviesBlock />
+        <MoviesBlock movies={movies} />
       )}
     </PageShell>
   );
@@ -586,10 +703,10 @@ function TracklistView({
   );
 }
 
-function MoviesBlock() {
+function MoviesBlock({ movies }: { movies: SyncedMovie[] }) {
   return (
     <Box>
-      <MoviesCards />
+      <MoviesCards movies={movies} />
       <Box
         sx={{
           mt: 5,
@@ -646,7 +763,7 @@ function MoviesBlock() {
   );
 }
 
-function MoviesCards() {
+function MoviesCards({ movies }: { movies: SyncedMovie[] }) {
   return (
     <Box
       sx={{
@@ -659,7 +776,7 @@ function MoviesCards() {
         gap: 2.5,
       }}
     >
-      {MOVIES.map((m) => (
+      {movies.map((m) => (
         <Box
           key={m.title}
           sx={{
@@ -734,6 +851,26 @@ function MoviesCards() {
             >
               &ldquo;{m.note}&rdquo;
             </Box>
+            {m.sourceUrl && (
+              <MuiLink
+                href={m.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="none"
+                sx={{
+                  display: "inline-flex",
+                  mt: 1,
+                  fontFamily: tokens.mono,
+                  fontSize: 8,
+                  color: tokens.accent,
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  borderBottom: `1px solid ${tokens.accent}`,
+                }}
+              >
+                Letterboxd review
+              </MuiLink>
+            )}
             <Box
               sx={{
                 fontFamily: tokens.mono,
@@ -751,4 +888,16 @@ function MoviesCards() {
       ))}
     </Box>
   );
+}
+
+function movieKey(title: string, year: string) {
+  return `${slugify(title)}-${year}`;
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/['"]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
