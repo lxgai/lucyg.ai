@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import PageShell from "@/components/design/PageShell";
@@ -15,19 +15,61 @@ import {
 } from "@/data/content";
 
 type Tab = "music" | "films";
+type AlbumSort = "new" | "old" | "title";
+
+const SORT_OPTIONS: { value: AlbumSort; label: string }[] = [
+  { value: "new", label: "new -> old" },
+  { value: "old", label: "old -> new" },
+  { value: "title", label: "title (a-z)" },
+];
 
 export default function FavoritesPage() {
   const [tab, setTab] = useState<Tab>("music");
-  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [sort, setSort] = useState<AlbumSort>("new");
+  const [sortOpen, setSortOpen] = useState(false);
+  const [selectedSrc, setSelectedSrc] = useState(ALBUMS[0].src);
   const [playing, setPlaying] = useState(false);
-  const [trackIdx, setTrackIdx] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  const selectedAlbum = ALBUMS[selectedIdx];
+  const sortedAlbums = useMemo(() => {
+    return [...ALBUMS].sort((a, b) => {
+      if (sort === "new") return Number(b.year) - Number(a.year);
+      if (sort === "old") return Number(a.year) - Number(b.year);
+      return a.title.localeCompare(b.title);
+    });
+  }, [sort]);
+
+  const selectedAlbum =
+    sortedAlbums.find((album) => album.src === selectedSrc) ?? sortedAlbums[0];
+  const selectedIdx = sortedAlbums.indexOf(selectedAlbum);
   const tracks = TRACKLISTS[selectedAlbum.title] ?? DEFAULT_TRACKLIST;
 
   useEffect(() => {
-    setTrackIdx(0);
-  }, [selectedIdx]);
+    setPlaying(false);
+    setProgress(0);
+  }, [selectedSrc]);
+
+  useEffect(() => {
+    if (!sortOpen) return;
+
+    const close = () => setSortOpen(false);
+    const id = window.setTimeout(() => document.addEventListener("click", close), 0);
+
+    return () => {
+      window.clearTimeout(id);
+      document.removeEventListener("click", close);
+    };
+  }, [sortOpen]);
+
+  useEffect(() => {
+    if (!playing) return;
+
+    const id = window.setInterval(() => {
+      setProgress((p) => (p + 0.5) % 100);
+    }, 200);
+
+    return () => window.clearInterval(id);
+  }, [playing]);
 
   return (
     <PageShell
@@ -141,12 +183,9 @@ export default function FavoritesPage() {
               <Hair />
               <TracklistView
                 tracks={tracks}
-                trackIdx={trackIdx}
                 playing={playing}
-                onPick={(i) => {
-                  setTrackIdx(i);
-                  setPlaying(true);
-                }}
+                progress={progress}
+                onTogglePlay={() => setPlaying((p) => !p)}
               />
             </Box>
           </Box>
@@ -165,7 +204,12 @@ export default function FavoritesPage() {
               }}
             >
               <span>Record rack</span>
-              <span>{ALBUMS.length} records</span>
+              <SortMenu
+                sort={sort}
+                open={sortOpen}
+                onSortChange={setSort}
+                onOpenChange={setSortOpen}
+              />
             </Box>
             <Box
               sx={{
@@ -174,12 +218,12 @@ export default function FavoritesPage() {
                 gap: 1.25,
               }}
             >
-              {ALBUMS.map((a, i) => {
+              {sortedAlbums.map((a, i) => {
                 const isSelected = i === selectedIdx;
                 return (
                   <Box
                     key={a.src}
-                    onClick={() => setSelectedIdx(i)}
+                    onClick={() => setSelectedSrc(a.src)}
                     sx={{
                       cursor: "pointer",
                       position: "relative",
@@ -220,18 +264,180 @@ export default function FavoritesPage() {
   );
 }
 
+function SortMenu({
+  sort,
+  open,
+  onSortChange,
+  onOpenChange,
+}: {
+  sort: AlbumSort;
+  open: boolean;
+  onSortChange: (sort: AlbumSort) => void;
+  onOpenChange: (open: boolean | ((open: boolean) => boolean)) => void;
+}) {
+  const current = SORT_OPTIONS.find((option) => option.value === sort) ?? SORT_OPTIONS[0];
+
+  return (
+    <Box
+      sx={{ position: "relative" }}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <Box
+        component="button"
+        type="button"
+        onClick={() => onOpenChange((value) => !value)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        sx={{
+          appearance: "none",
+          border: 0,
+          background: "transparent",
+          p: "2px 0",
+          cursor: "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 0.75,
+          fontFamily: tokens.mono,
+          fontSize: 10,
+          letterSpacing: "1.4px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+        }}
+      >
+        <span>sort:</span>
+        <Box component="span" sx={{ color: tokens.ink }}>
+          {current.label}
+        </Box>
+        <Box
+          component="span"
+          sx={{
+            fontSize: 8,
+            color: tokens.ink60,
+            transform: open ? "rotate(180deg)" : "none",
+            transition: "transform 150ms",
+          }}
+        >
+          ▾
+        </Box>
+      </Box>
+
+      {open && (
+        <Box
+          role="listbox"
+          aria-label="Sort record rack"
+          sx={{
+            position: "absolute",
+            top: "calc(100% + 6px)",
+            right: 0,
+            zIndex: 10,
+            background: tokens.paperCard,
+            border: `1px solid ${tokens.hairStrong}`,
+            boxShadow: "0 8px 24px rgba(31, 26, 22, 0.12)",
+            minWidth: 160,
+          }}
+        >
+          {SORT_OPTIONS.map((option, i) => {
+            const active = option.value === sort;
+            return (
+              <Box
+                key={option.value}
+                role="option"
+                aria-selected={active}
+                onClick={() => {
+                  onSortChange(option.value);
+                  onOpenChange(false);
+                }}
+                sx={{
+                  p: "10px 14px",
+                  fontFamily: tokens.mono,
+                  fontSize: 10,
+                  letterSpacing: "1.4px",
+                  textTransform: "uppercase",
+                  color: active ? tokens.accent : tokens.ink,
+                  cursor: "pointer",
+                  borderTop: i > 0 ? `1px solid ${tokens.hair}` : "none",
+                  background: active ? "rgba(31, 26, 22, 0.04)" : "transparent",
+                  transition: "background 120ms",
+                  "&:hover": {
+                    background: active
+                      ? "rgba(31, 26, 22, 0.04)"
+                      : "rgba(31, 26, 22, 0.03)",
+                  },
+                }}
+              >
+                {option.label}
+              </Box>
+            );
+          })}
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+function PlayGlyph({
+  size = 14,
+  color,
+  playing = false,
+}: {
+  size?: number;
+  color: string;
+  playing?: boolean;
+}) {
+  if (playing) {
+    return (
+      <Box
+        component="span"
+        sx={{
+          display: "inline-flex",
+          gap: "2px",
+          width: size,
+          height: size,
+          alignItems: "center",
+        }}
+      >
+        <Box component="span" sx={{ width: size * 0.3, height: size, background: color }} />
+        <Box component="span" sx={{ width: size * 0.3, height: size, background: color }} />
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      component="span"
+      sx={{
+        display: "inline-block",
+        width: 0,
+        height: 0,
+        borderTop: `${size / 2}px solid transparent`,
+        borderBottom: `${size / 2}px solid transparent`,
+        borderLeft: `${size * 0.85}px solid ${color}`,
+      }}
+    />
+  );
+}
+
+function getFeaturedTrack(tracks: Track[]) {
+  return (
+    tracks.find((track) => track.featured) ??
+    tracks.find((track) => track.fav) ??
+    tracks[0]
+  );
+}
+
 function TracklistView({
   tracks,
-  trackIdx,
   playing,
-  onPick,
+  progress,
+  onTogglePlay,
 }: {
   tracks: Track[];
-  trackIdx: number;
   playing: boolean;
-  onPick: (idx: number) => void;
+  progress: number;
+  onTogglePlay: () => void;
 }) {
   const favCount = tracks.filter((track) => track.fav).length;
+  const featured = getFeaturedTrack(tracks);
 
   return (
     <Box sx={{ mt: 1.25 }}>
@@ -245,62 +451,137 @@ function TracklistView({
           mb: 1.25,
         }}
       >
-        Tracklist · {favCount} pick{favCount === 1 ? "" : "s"}
+        Featured cut
       </Box>
-      {tracks.map((tr, i) => {
-        const isCurrent = i === trackIdx;
-        const isPicked = Boolean(tr.fav);
-        return (
-          <Box
-            key={tr.n}
-            onClick={() => onPick(i)}
+
+      <Box
+        onClick={onTogglePlay}
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "32px 1fr",
+          gap: 1.75,
+          alignItems: "center",
+          cursor: "pointer",
+          p: "14px 14px 14px 12px",
+          background: "rgba(31, 26, 22, 0.04)",
+          borderLeft: `2px solid ${tokens.accent}`,
+          transition: "background 180ms",
+          "&:hover": { background: "rgba(31, 26, 22, 0.065)" },
+        }}
+      >
+        <Box
+          component="span"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <PlayGlyph size={16} color={tokens.accent} playing={playing} />
+        </Box>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography
             sx={{
-              display: "grid",
-              gridTemplateColumns: "26px 1fr auto",
-              gap: 1.75,
-              alignItems: "baseline",
-              cursor: "pointer",
-              p: "6px 0",
-              pl: "10px",
-              ml: "-12px",
-              borderLeft: `2px solid ${isCurrent ? tokens.accent : "transparent"}`,
-              color: isCurrent ? tokens.accent : isPicked ? tokens.ink : tokens.ink60,
-              opacity: isPicked || isCurrent ? 1 : 0.55,
-              fontFamily: tokens.mono,
-              fontSize: 11,
-              transition: "all 180ms",
+              fontFamily: tokens.serif,
+              fontStyle: "italic",
+              fontSize: 24,
+              lineHeight: 1.1,
+              color: tokens.ink,
             }}
           >
-            <Box component="span" sx={{ color: tokens.ink40, fontSize: 9 }}>
-              {String(tr.n).padStart(2, "0")}
-            </Box>
+            {featured.name}
+          </Typography>
+          <Box
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 9,
+              color: tokens.ink60,
+              letterSpacing: "1.4px",
+              textTransform: "uppercase",
+              mt: 0.5,
+            }}
+          >
+            Track {String(featured.n).padStart(2, "0")} · {featured.time} ·{" "}
+            {playing ? "now playing" : "press to play"}
+          </Box>
+        </Box>
+      </Box>
+
+      <Box sx={{ height: 2, mb: 2.25, position: "relative" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: "100%",
+            width: `${playing ? progress : 0}%`,
+            background: tokens.accent,
+            transition: "width 200ms linear",
+          }}
+        />
+      </Box>
+
+      <Box
+        sx={{
+          fontFamily: tokens.mono,
+          fontSize: 9,
+          letterSpacing: "1.6px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+          mb: 1,
+        }}
+      >
+        Full tracklist · {favCount} pick{favCount === 1 ? "" : "s"}
+      </Box>
+      <Box sx={{ columnCount: { xs: 1, sm: 2 }, columnGap: 2.25 }}>
+        {tracks.map((tr) => {
+          const isFeatured = tr === featured;
+          const isPicked = Boolean(tr.fav);
+          return (
             <Box
-              component="span"
+              key={tr.n}
               sx={{
-                fontFamily: tokens.serif,
-                fontSize: 15,
-                fontStyle: isCurrent ? "italic" : "normal",
-                minWidth: 0,
+                display: "grid",
+                gridTemplateColumns: "20px 1fr auto",
+                gap: 1,
+                alignItems: "baseline",
+                p: "3px 0",
+                color: isFeatured ? tokens.accent : tokens.ink60,
+                fontFamily: tokens.mono,
+                fontSize: 10.5,
+                breakInside: "avoid",
               }}
             >
-              {isCurrent && playing && (
-                <Box component="span" sx={{ mr: 0.75, color: tokens.accent }}>
-                  ♪
-                </Box>
-              )}
-              {isPicked && !isCurrent && (
-                <Box component="span" sx={{ mr: 0.75, color: tokens.accent }}>
-                  ★
-                </Box>
-              )}
-              {tr.name}
+              <Box
+                component="span"
+                sx={{ color: isFeatured ? tokens.accent : tokens.ink40, fontSize: 9 }}
+              >
+                {String(tr.n).padStart(2, "0")}
+              </Box>
+              <Box
+                component="span"
+                sx={{
+                  color: isFeatured ? tokens.accent : isPicked ? tokens.ink : tokens.ink60,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  minWidth: 0,
+                }}
+              >
+                {tr.name}
+                {isPicked && (
+                  <Box component="span" sx={{ ml: 0.625, color: tokens.accent }}>
+                    ★
+                  </Box>
+                )}
+              </Box>
+              <Box component="span" sx={{ fontSize: 9 }}>
+                {tr.time}
+              </Box>
             </Box>
-            <Box component="span" sx={{ color: tokens.ink60, fontSize: 10 }}>
-              {tr.time}
-            </Box>
-          </Box>
-        );
-      })}
+          );
+        })}
+      </Box>
     </Box>
   );
 }

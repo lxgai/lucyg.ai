@@ -18,7 +18,7 @@ const ALBUMS = [
 // Mock tracklists for the music player
 const TRACKLISTS = {
   "nolimit,": [
-    { n: 1, name: "Dashstar*", time: "2:51", fav: true },
+    { n: 1, name: "Dashstar*", time: "2:51", fav: true, featured: true },
     { n: 2, name: "Not Ur Friend", time: "3:12" },
     { n: 3, name: "Hunnids & Hunnids", time: "2:43", fav: true },
     { n: 4, name: "no limit", time: "3:05", fav: true },
@@ -30,7 +30,7 @@ const TRACKLISTS = {
     { n: 10, name: "outro*", time: "2:12" },
   ],
   "SMILE! :D": [
-    { n: 1, name: "Knock Yourself Out XD", time: "2:52", fav: true },
+    { n: 1, name: "Knock Yourself Out XD", time: "2:52", fav: true, featured: true },
     { n: 2, name: "Cheerleader", time: "3:30", fav: true },
     { n: 3, name: "Russian Roulette", time: "3:18" },
     { n: 4, name: "Perfect Pinterest Girl", time: "3:02", fav: true },
@@ -45,7 +45,7 @@ const TRACKLISTS = {
     { n: 2, name: "Should Have Known Better", time: "5:07", fav: true },
     { n: 3, name: "All of Me Wants All of You", time: "3:41" },
     { n: 4, name: "Drawn to the Blood", time: "3:08" },
-    { n: 5, name: "Fourth of July", time: "4:37", fav: true },
+    { n: 5, name: "Fourth of July", time: "4:37", fav: true, featured: true },
     { n: 6, name: "The Only Thing", time: "4:42", fav: true },
     { n: 7, name: "Carrie & Lowell", time: "3:25" },
     { n: 8, name: "Eugene", time: "2:30" },
@@ -55,7 +55,7 @@ const TRACKLISTS = {
   ],
 };
 const DEFAULT_TRACKLIST = [
-  { n: 1, name: "Opening", time: "3:12", fav: true },
+  { n: 1, name: "Opening", time: "3:12", fav: true, featured: true },
   { n: 2, name: "Second Wind", time: "2:48" },
   { n: 3, name: "Middle Distance", time: "4:05", fav: true },
   { n: 4, name: "Quiet Stretch", time: "3:31" },

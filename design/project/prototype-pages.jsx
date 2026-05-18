@@ -316,54 +316,179 @@ function ProjectsSpread({ theme, setRoute }) {
 // ============================================================
 // FAVORITES — albums (vinyl) + movies
 // ============================================================
-function TracklistView({ tracks, trackIdx, playing, onPick, theme }) {
-  const favCount = tracks.filter(t => t.fav).length;
+// SortMenu — mono-styled dropdown for the record rack.
+const SORT_OPTIONS = [
+  ["new",   "new \u2192 old"],
+  ["old",   "old \u2192 new"],
+  ["title", "title (a\u2013z)"],
+];
+function SortMenu({ sort, setSort, open, setOpen, theme }) {
+  const current = (SORT_OPTIONS.find(([k]) => k === sort) || SORT_OPTIONS[0])[1];
+  return (
+    <div style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
+      <span onClick={() => setOpen(o => !o)} style={{
+        cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6,
+        fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase",
+        padding: "2px 0",
+      }}>
+        <span>sort:</span>
+        <span style={{ color: T.ink }}>{current}</span>
+        <span style={{ fontSize: 8, color: T.ink60, transform: open ? "rotate(180deg)" : "none", transition: "transform 150ms" }}>▾</span>
+      </span>
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 6px)", right: 0, zIndex: 10,
+          background: T.paperCard, border: `1px solid ${T.hairStrong}`,
+          boxShadow: "0 8px 24px rgba(31,26,22,0.12)",
+          minWidth: 160,
+        }}>
+          {SORT_OPTIONS.map(([k, label], i) => (
+            <div key={k}
+              onClick={() => { setSort(k); setOpen(false); }}
+              style={{
+                padding: "10px 14px",
+                fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, textTransform: "uppercase",
+                color: k === sort ? theme.accent : T.ink,
+                cursor: "pointer",
+                borderTop: i > 0 ? `1px solid ${T.hair}` : "none",
+                background: k === sort ? "rgba(31,26,22,0.04)" : "transparent",
+                transition: "background 120ms",
+              }}
+              onMouseEnter={(e) => { if (k !== sort) e.currentTarget.style.background = "rgba(31,26,22,0.03)"; }}
+              onMouseLeave={(e) => { if (k !== sort) e.currentTarget.style.background = "transparent"; }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// PlayGlyph — CSS triangle / paused bars, used in the featured-cut row.
+function PlayGlyph({ size = 14, color, playing = false }) {
+  if (playing) {
+    return (
+      <span style={{ display: "inline-flex", gap: 2, width: size, height: size, alignItems: "center" }}>
+        <span style={{ width: size * 0.3, height: size, background: color }} />
+        <span style={{ width: size * 0.3, height: size, background: color }} />
+      </span>
+    );
+  }
+  return (
+    <span style={{
+      display: "inline-block",
+      width: 0, height: 0,
+      borderTop: `${size / 2}px solid transparent`,
+      borderBottom: `${size / 2}px solid transparent`,
+      borderLeft: `${size * 0.85}px solid ${color}`,
+    }} />
+  );
+}
+
+// One audio file per album — the first `fav: true` track is the playable
+// "featured cut"; everything else renders as small liner notes for context.
+function TracklistView({ tracks, playing, onTogglePlay, progress, theme }) {
+  const featuredIdx = (() => {
+    const i = tracks.findIndex(t => t.featured);
+    if (i >= 0) return i;
+    const j = tracks.findIndex(t => t.fav);
+    return j >= 0 ? j : 0;
+  })();
+  const featured = tracks[featuredIdx];
 
   return (
     <div style={{ marginTop: 10 }}>
       <div style={{
         fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6,
-        color: T.ink60, textTransform: "uppercase",
-        marginBottom: 10,
+        color: T.ink60, textTransform: "uppercase", marginBottom: 14,
       }}>
-        Tracklist · {favCount} pick{favCount === 1 ? "" : "s"}
+        Featured cut
       </div>
-      {tracks.map((tr, i) => {
-        const isCurrent = i === trackIdx;
-        const isPicked = !!tr.fav;
-        return (
-          <div key={tr.n} onClick={() => onPick(i)} style={{
-            display: "grid", gridTemplateColumns: "26px 1fr auto", gap: 14, padding: "6px 0",
-            alignItems: "baseline", cursor: "pointer",
-            fontFamily: T.mono, fontSize: 11,
-            color: isCurrent ? theme.accent : (!isPicked ? T.ink60 : T.ink),
-            borderLeft: isCurrent ? `2px solid ${theme.accent}` : "2px solid transparent",
-            paddingLeft: 10, marginLeft: -12,
-            opacity: !isPicked ? 0.55 : 1,
-            transition: "all 180ms",
-          }}>
-            <span style={{ color: T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
-            <span style={{ fontFamily: theme.serif, fontSize: 15, fontStyle: isCurrent ? "italic" : "normal" }}>
-              {isCurrent && playing && <span style={{ marginRight: 6, color: theme.accent }}>♪</span>}
-              {isPicked && !isCurrent && <span style={{ marginRight: 6, color: theme.accent }}>★</span>}
-              {tr.name}
-            </span>
-            <span style={{ color: T.ink60, fontSize: 10 }}>{tr.time}</span>
+
+      {/* Featured row — the only playable track. Aligns flush-left with the
+          "Featured cut" / "Full tracklist" headers so the accent bar sits
+          directly under them. */}
+      <div onClick={onTogglePlay} style={{
+        display: "grid", gridTemplateColumns: "32px 1fr", gap: 14,
+        alignItems: "center", cursor: "pointer",
+        padding: "14px 14px 14px 12px",
+        background: "rgba(31,26,22,0.04)",
+        borderLeft: `2px solid ${theme.accent}`,
+        transition: "background 180ms",
+      }}>
+        <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <PlayGlyph size={16} color={theme.accent} playing={playing} />
+        </span>
+        <div>
+          <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 24, lineHeight: 1.1, color: T.ink }}>
+            {featured.name}
           </div>
-        );
-      })}
+          <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.4, textTransform: "uppercase", marginTop: 4 }}>
+            Track {String(featured.n).padStart(2, "0")} · {featured.time} · {playing ? "now playing" : "press to play"}
+          </div>
+        </div>
+      </div>
+
+      {/* Progress — only the filled portion is visible; no empty track. */}
+      <div style={{ height: 2, margin: "0 0 18px", position: "relative" }}>
+        <div style={{
+          position: "absolute", top: 0, left: 0, height: "100%",
+          width: `${playing ? progress : 0}%`, background: theme.accent,
+          transition: "width 200ms linear",
+        }}/>
+      </div>
+
+      {/* Full tracklist — context only, no hover, no cursor */}
+      <div style={{
+        fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6,
+        color: T.ink60, textTransform: "uppercase", marginBottom: 8,
+      }}>
+        Full tracklist
+      </div>
+      <div className="m-liner" style={{ columnCount: 2, columnGap: 18 }}>
+        {tracks.map(tr => {
+          const isFeatured = tr === featured;
+          return (
+            <div key={tr.n} style={{
+              display: "grid", gridTemplateColumns: "20px 1fr auto", gap: 8,
+              padding: "3px 0",
+              fontFamily: T.mono, fontSize: 10.5, color: isFeatured ? theme.accent : T.ink60,
+              breakInside: "avoid",
+            }}>
+              <span style={{ color: isFeatured ? theme.accent : T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
+              <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: isFeatured ? theme.accent : (tr.fav ? T.ink : T.ink60) }}>
+                {tr.name}
+                {tr.fav && <span style={{ marginLeft: 5, color: theme.accent }}>★</span>}
+              </span>
+              <span style={{ fontSize: 9 }}>{tr.time}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 function PageFavorites({ route, setRoute, theme }) {
   const [tab, setTab] = uS("music");
-  const [selectedIdx, setSelectedIdx] = uS(0);
+  const [sort, setSort] = uS("new"); // "new" | "old" | "title"
+  const [sortOpen, setSortOpen] = uS(false);
+  const [selectedSrc, setSelectedSrc] = uS(window.ALBUMS[0].src);
   const [playing, setPlaying] = uS(false);
-  const [trackIdx, setTrackIdx] = uS(0);
   const [progress, setProgress] = uS(0);
 
-  const selectedAlbum = window.ALBUMS[selectedIdx];
+  const sortedAlbums = uM(() => {
+    const arr = window.ALBUMS.slice();
+    if (sort === "new") arr.sort((a, b) => Number(b.year) - Number(a.year));
+    else if (sort === "old") arr.sort((a, b) => Number(a.year) - Number(b.year));
+    else if (sort === "title") arr.sort((a, b) => a.title.localeCompare(b.title));
+    return arr;
+  }, [sort]);
+
+  const selectedAlbum = sortedAlbums.find(a => a.src === selectedSrc) || sortedAlbums[0];
+  const selectedIdx = sortedAlbums.indexOf(selectedAlbum);
   const tracks = window.TRACKLISTS[selectedAlbum.title] || window.DEFAULT_TRACKLIST;
 
   uE(() => {
@@ -371,7 +496,15 @@ function PageFavorites({ route, setRoute, theme }) {
     const id = setInterval(() => setProgress(p => (p + 0.5) % 100), 200);
     return () => clearInterval(id);
   }, [playing]);
-  uE(() => { setTrackIdx(0); setProgress(0); }, [selectedIdx]);
+  uE(() => { setPlaying(false); setProgress(0); }, [selectedSrc]);
+
+  // Close sort menu on any outside click
+  uE(() => {
+    if (!sortOpen) return;
+    const close = () => setSortOpen(false);
+    const t = setTimeout(() => document.addEventListener("click", close), 0);
+    return () => { clearTimeout(t); document.removeEventListener("click", close); };
+  }, [sortOpen]);
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
@@ -403,27 +536,27 @@ function PageFavorites({ route, setRoute, theme }) {
                   <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, lineHeight: 1 }}>{selectedAlbum.title}</div>
                   <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>{selectedAlbum.artist} · {selectedAlbum.year}</div>
                 </div>
-                <CardLabel cat="D.M" no={String(selectedIdx + 1).padStart(3, "0")} accent={theme.accent} />
+                <CardLabel cat="C.M" no={String(selectedIdx + 1).padStart(3, "0")} accent={theme.accent} />
               </div>
               <Hair />
               <TracklistView
                 tracks={tracks}
-                trackIdx={trackIdx}
                 playing={playing}
-                onPick={(i) => { setTrackIdx(i); setPlaying(true); }}
+                onTogglePlay={() => setPlaying(p => !p)}
+                progress={progress}
                 theme={theme}
               />
             </div>
           </div>
 
           <div>
-            <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14, display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <span>Record rack</span>
-              <span>{window.ALBUMS.length} records</span>
+              <SortMenu sort={sort} setSort={setSort} open={sortOpen} setOpen={setSortOpen} theme={theme} />
             </div>
             <div className="m-rack" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-              {window.ALBUMS.map((a, i) => (
-                <div key={a.src} onClick={() => setSelectedIdx(i)} style={{
+              {sortedAlbums.map((a, i) => (
+                <div key={a.src} onClick={() => setSelectedSrc(a.src)} style={{
                   cursor: "pointer", position: "relative", padding: 3,
                   background: i === selectedIdx ? T.ink : "transparent",
                   transition: "all 200ms",
@@ -433,11 +566,6 @@ function PageFavorites({ route, setRoute, theme }) {
                     filter: i === selectedIdx ? "none" : "saturate(0.9)",
                     transition: "filter 200ms",
                   }}/>
-                  {i === selectedIdx && (
-                    <div style={{ position: "absolute", top: -18, right: 0, fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: theme.accent, textTransform: "uppercase" }}>
-                      → now
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -515,7 +643,7 @@ function PageAbout({ route, setRoute, theme }) {
           <div style={{ position: "absolute", top: -12, left: 20, background: T.paper, padding: "2px 12px", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", border: `1px solid ${T.hairStrong}` }}>
             Contact index
           </div>
-          <CardLabel cat="F" no="001" date="04 · 22 · 26" accent={theme.accent} />
+          <CardLabel cat="E" no="001" date="04 · 22 · 26" accent={theme.accent} />
           <div style={{ fontFamily: theme.serif, fontSize: 34, fontStyle: "italic", marginTop: 18 }}>Gai, Lucy</div>
           <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, letterSpacing: 0.8, textTransform: "uppercase", marginTop: 4 }}>Engineer / amateur archivist</div>
 

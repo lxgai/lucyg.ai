@@ -16,10 +16,10 @@ const A = {
 
 function Nav({ route, setRoute, theme }) {
   const links = [
-    ["Blog", "blog"],
-    ["Travels", "travels"],
     ["Projects", "projects"],
+    ["Travels", "travels"],
     ["Favorites", "favorites"],
+    ["Blog", "blog"],
     ["About", "about"],
   ];
   const activeKey = route.startsWith("travels") ? "travels" : route;

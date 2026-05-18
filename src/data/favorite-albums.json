@@ -2,56 +2,68 @@
   {
     "title": "nolimit,",
     "artist": "Knock2",
-    "favoriteTracks": ["Dashstar*", "Hunnids & Hunnids", "no limit", "drift"]
+    "featuredTrackNumber": 14,
+    "favoriteTrackNumbers": [1, 2, 3, 4, 5, 6, 7, 8, 9, 14]
   },
   {
-    "title": "SMILE! :D",
+    "title": "Worlds",
     "artist": "Porter Robinson",
-    "favoriteTracks": ["Knock Yourself Out XD", "Cheerleader", "Perfect Pinterest Girl"]
+    "featuredTrackNumber": 1,
+    "favoriteTrackNumbers": []
+  },
+  {
+    "title": "EUSEXUA",
+    "artist": "FKA twigs",
+    "spotifyAlbumId": "3o1TOhMkU5FFMSJMDhXfdF",
+    "featuredTrackNumber": 3,
+    "favoriteTrackNumbers": [2, 3, 4, 6, 8, 9, 10]
   },
   {
     "title": "Killswitch Melodies",
     "artist": "Flawed Mangoes",
-    "favoriteTracks": []
+    "featuredTrackNumber": 1,
+    "favoriteTrackNumbers": [1, 5, 8, 10]
   },
   {
     "title": "无限意识 Meta Ego",
     "artist": "Lexie Liu",
-    "favoriteTracks": []
+    "featuredTrackNumber": 1,
+    "favoriteTrackNumbers": [1, 2, 3, 4, 9]
   },
   {
     "title": "Comfort in Chaos",
     "artist": "John Summit",
-    "favoriteTracks": []
-  },
-  {
-    "title": "130 Mood: TRBL",
-    "artist": "Dean",
-    "favoriteTracks": []
+    "featuredTrackNumber": 9,
+    "favoriteTrackNumbers": [4, 5, 7, 9, 11, 12]
   },
   {
     "title": "Demidevil",
     "artist": "Ashnikko",
-    "favoriteTracks": []
+    "featuredTrackNumber": 3,
+    "favoriteTrackNumbers": [3, 6, 7, 8, 9]
   },
   {
     "title": "Alone at Prom",
     "artist": "Tory Lanez",
-    "favoriteTracks": []
+    "featuredTrackNumber": 4,
+    "favoriteTrackNumbers": [4, 5, 7, 11]
   },
   {
     "title": "Come Over When You're Sober, Pt.1",
     "artist": "Lil Peep",
-    "favoriteTracks": []
+    "featuredTrackNumber": 2,
+    "favoriteTrackNumbers": [1, 2, 3, 6]
   },
   {
     "title": "Carrie & Lowell",
     "artist": "Sufjan Stevens",
-    "favoriteTracks": ["Death with Dignity", "Should Have Known Better", "Fourth of July", "The Only Thing"]
+    "featuredTrackNumber": 6,
+    "favoriteTrackNumbers": [1, 2, 4, 6, 7, 8, 11]
   },
   {
     "title": "Wiped Out!",
     "artist": "The Neighbourhood",
-    "favoriteTracks": []
+    "featuredTrackNumber": 5,
+    "favoriteTrackNumbers": [2, 3, 4, 5, 6, 8, 10, 11]
   }
 ]
