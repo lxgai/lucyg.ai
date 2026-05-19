@@ -1,5 +1,145 @@
 # Customization Manual
 
+## Projects Index And Detail Pages
+
+Project index metadata lives in `src/data/projects.ts`.
+
+The `PROJECTS` array controls the `/projects` index, the detail page hero, the specs strip, metrics, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
+
+```ts
+export const PROJECTS: Project[] = [
+  {
+    year: "2026",
+    slug: "memory-archive",
+    name: "Memory Archive",
+    role: "Solo · design + build",
+    kind: "Personal site",
+    status: "shipping",
+    stack: ["next.js", "mui", "tailwind"],
+    color: "#c94b62",
+    tagline: "A room I keep returning to - built so I have somewhere to put the things I love.",
+    started: "Jan · 2026",
+    filed: "ongoing",
+    metrics: [["entries", "44"]],
+    links: [["live", "lucygai.com"]],
+  },
+];
+```
+
+## Updating A Project Entry
+
+To edit an existing project, find its object in `PROJECTS` and update the fields directly.
+
+The `/projects` index uses:
+
+- `year` for the small year label on the thumbnail and entry metadata
+- `name` for the project title
+- `role` for the mono metadata line under the title
+- `kind` for the short description sentence
+- `status` for the status dot label
+- `stack` for the technology list
+- `color` for the generated thumbnail color
+
+The detail page uses the same metadata fields, plus:
+
+- `tagline` for the opening summary under the hero title
+- `started`, `filed`, `stack`, and `status` for the specs strip
+- `metrics`, when present, for the "By the numbers" section
+- `links`, when present, for the "Where to find it" section
+
+The detail page body comes from a Markdown file whose filename matches the project `slug`:
+
+```text
+src/content/projects/memory-archive.md
+```
+
+The first project shown on `/projects` is simply the first object in the `PROJECTS` array. Move objects up or down in that array to reorder the index and the previous/next links on detail pages.
+
+## Editing A Project Detail Page
+
+Edit the Markdown file under `src/content/projects/`.
+
+For example, `slug: "memory-archive"` loads:
+
+```text
+src/content/projects/memory-archive.md
+```
+
+Use normal Markdown:
+
+```md
+# Overview
+
+I wanted somewhere with rooms.
+
+## The editor
+
+The collage editor started as a small internal tool.
+
+> A useful pull quote can go here.
+
+![The admin editor with draggable image frames.](/images/projects/memory-archive/editor-view.jpg)
+```
+
+When a Markdown file starts with `# Overview`, that first section is rendered as the special project lede from the prototype: a small mono `¶ Overview` label followed by larger serif text. Content after the next heading, such as `## The editor`, returns to the normal detail-page section styling.
+
+Images should live in `public/images/projects/<slug>/`:
+
+```text
+public/images/projects/memory-archive/editor-view.jpg
+```
+
+Reference them from Markdown with a root-relative path:
+
+```md
+![The admin editor with draggable image frames.](/images/projects/memory-archive/editor-view.jpg)
+```
+
+The image alt text is also rendered as the visible caption. Keep it short and descriptive.
+
+## Creating A New Project
+
+To add a project:
+
+1. Copy an existing object in `src/data/projects.ts`.
+2. Paste it into the `PROJECTS` array where it should appear.
+3. Change the `slug` to a unique kebab-case value, for example `reading-room`.
+4. Update the visible fields: `year`, `name`, `role`, `kind`, `status`, `stack`, `color`, and `tagline`.
+5. Create a matching Markdown file, for example `src/content/projects/reading-room.md`.
+6. Keep `metrics` and `links` only if the project needs those sections; otherwise remove those properties.
+
+The project URL is generated from `slug`. For example:
+
+```ts
+slug: "reading-room"
+```
+
+creates:
+
+```text
+/projects/reading-room
+```
+
+If you change a slug later, the page URL changes too. Update any links that pointed at the old URL.
+
+## Editing The Project Page Design
+
+Use `src/data/projects.ts` for index metadata and detail page chrome. Use `src/content/projects/*.md` for the main detail page writing. Use `src/components/content/ProjectArchive.tsx` only when changing how projects are rendered.
+
+The main pieces are:
+
+- `ProjectsSpreadList` renders the `/projects` index list
+- `ProjectThumb` renders the generated color thumbnail
+- `StatusDot` renders the status dot and label
+- `ProjectDetailReport` renders the detail page
+- `ProjectSpecs` renders the detail page specs strip
+- `ProjectMarkdown` renders the Markdown body and image captions
+
+The route files are thin wrappers:
+
+- `src/app/projects/page.tsx` renders the projects index
+- `src/app/projects/[slug]/page.tsx` finds the project by `slug`, loads the matching Markdown file, and renders the detail page
+
 ## Favorite Albums And Tracklists
 
 Album display data lives in `src/data/content.ts`.

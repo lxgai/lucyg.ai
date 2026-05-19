@@ -1126,11 +1126,12 @@ function ProjectHero({ p, theme, aspect = "21/9" }) {
   );
 }
 
-// ----- Shared spec strip (year / role / stack / links) -----
+// ----- Shared spec strip (period / role / stack / status) -----
 function ProjectSpecs({ p, theme, layout = "row" }) {
+  const period = p.filed && p.filed !== p.started ? `${p.started} – ${p.filed}` : p.started;
   const cells = [
-    ["Started",  p.started],
-    ["Filed",    p.filed],
+    ["Period",   period],
+    ["Role",     p.role],
     ["Stack",    p.stack.join(" · ")],
     ["Status",   p.status],
   ];
@@ -1190,44 +1191,52 @@ function DetailReport({ p, theme }) {
         <ProjectSpecs p={p} theme={theme} />
       </div>
 
-      {/* Pull quote */}
-      <div style={{ margin: "72px 0 56px", maxWidth: 900 }}>
-        <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 14 }}>
-          ¶ Opening
+      {/* Lede — first entry as overview paragraph */}
+      <div style={{ margin: "72px auto 64px", maxWidth: 720 }}>
+        <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 18 }}>
+          ¶ Overview
         </div>
         <div style={{
-          fontFamily: theme.serif, fontSize: 42, lineHeight: 1.18, letterSpacing: -0.8,
-          fontStyle: "italic", color: T.ink, textWrap: "balance",
+          fontFamily: theme.serif, fontSize: 26, lineHeight: 1.4, letterSpacing: -0.3,
+          color: T.ink, textWrap: "pretty",
         }}>
-          “{p.entries[0].b.split(".")[0]}.”
+          {p.entries[0].b}
         </div>
       </div>
 
-      {/* Two-column body with images interspersed */}
-      <div style={{ columnCount: 2, columnGap: 56, fontFamily: theme.serif, fontSize: 17, lineHeight: 1.65, color: T.ink }} className="m-scrap-cols">
-        {p.entries.map((e, i) => (
-          <div key={i} style={{ breakInside: "avoid", marginBottom: 28 }}>
-            <div style={{
-              fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60,
-              textTransform: "uppercase", marginBottom: 6,
-            }}>
-              {e.date} · {e.h}
-            </div>
-            <div style={{ textWrap: "pretty" }}>{e.b}</div>
-          </div>
-        ))}
+      {/* Sectioned essay body — single readable column, thematic headings, no dates */}
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        {p.entries.slice(1).map((e, i) => (
+          <section key={i} style={{ marginBottom: 56 }}>
+            <h2 style={{
+              fontFamily: theme.serif, fontStyle: "italic", fontSize: 34,
+              letterSpacing: -0.6, lineHeight: 1.15, fontWeight: 400,
+              margin: "0 0 20px",
+              textWrap: "balance",
+            }}>{e.h}.</h2>
+            <p style={{
+              fontFamily: theme.serif, fontSize: 19, lineHeight: 1.65, color: T.ink,
+              margin: 0, textWrap: "pretty",
+            }}>{e.b}</p>
 
-        {/* An inline figure */}
-        <div style={{ breakInside: "avoid", marginBottom: 28 }}>
-          <ProjectThumb project={p} theme={theme} aspect="4/3" />
-          <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.4, textTransform: "uppercase", marginTop: 8 }}>
-            Fig. 01 — {p.name.toLowerCase()}, in situ
-          </div>
-        </div>
+            {/* Drop a figure midway through the essay */}
+            {i === Math.floor((p.entries.length - 1) / 2) - 1 && (
+              <figure style={{ margin: "48px 0 8px" }}>
+                <ProjectThumb project={p} theme={theme} aspect="4/3" />
+                <figcaption style={{
+                  fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.4,
+                  textTransform: "uppercase", marginTop: 10,
+                }}>
+                  Fig. 01 — {p.name.toLowerCase()}, in situ
+                </figcaption>
+              </figure>
+            )}
+          </section>
+        ))}
       </div>
 
       {/* Outcome numbers */}
-      {p.metrics && (
+      {theme.showMetrics && p.metrics && (
         <div style={{
           marginTop: 72,
           padding: "32px 0",

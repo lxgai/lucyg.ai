@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ProjectDetailReport } from "@/components/content/ProjectArchive";
 import { PROJECTS } from "@/data/projects";
+import { getProjectMarkdown } from "@/lib/projectContent";
 
 export function generateStaticParams() {
   return PROJECTS.map((project) => ({ slug: project.slug }));
@@ -18,9 +19,12 @@ export default async function ProjectDetailRoute({
     notFound();
   }
 
+  const projectMarkdown = await getProjectMarkdown(PROJECTS[index].slug);
+
   return (
     <ProjectDetailReport
       project={PROJECTS[index]}
+      projectMarkdown={projectMarkdown}
       previous={PROJECTS[index - 1]}
       next={PROJECTS[index + 1]}
     />

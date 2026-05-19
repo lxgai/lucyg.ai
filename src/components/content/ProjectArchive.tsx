@@ -2,6 +2,8 @@
 
 import { Box, Typography } from "@mui/material";
 import NextLink from "next/link";
+import React from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import type { Project } from "@/data/projects";
@@ -183,7 +185,6 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
               </Typography>
               <Box sx={{ display: "flex", gap: 3, alignItems: "center", mt: 3.5, flexWrap: "wrap" }}>
                 <StatusDot project={project} />
-                <Box component="span" sx={{ width: 1, height: 14, background: tokens.hair }} />
                 <Box
                   component="span"
                   sx={{
@@ -315,50 +316,314 @@ function ProjectSpecs({ project }: { project: Project }) {
   );
 }
 
-export function ProjectDetailReport({
-  project,
-  previous,
-  next,
-}: {
-  project: Project;
-  previous?: Project;
-  next?: Project;
-}) {
-  const opening = project.entries[0]?.b.split(".")[0] ?? project.tagline;
+function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
+  if (!src) {
+    return null;
+  }
 
   return (
-    <PageShell
-      section={`SECTION A · PROJECTS · ${project.slug}`}
-      catNo={`file: ${project.slug}.entry`}
-      updatedLabel={project.year}
-      contentSx={{ width: "100%" }}
-    >
+    <Box component="figure" sx={{ my: { xs: 4, md: 5.5 }, mx: 0 }}>
       <Box
-        component={NextLink}
-        href="/projects"
+        component="img"
+        src={src}
+        alt={alt ?? ""}
         sx={{
-          fontFamily: tokens.mono,
-          fontSize: 11,
-          letterSpacing: "1.6px",
-          color: tokens.ink60,
-          textTransform: "uppercase",
-          textDecoration: "none",
-          display: "inline-flex",
-          gap: 1,
-          alignItems: "center",
-          mb: 1,
-          "&:hover": { color: tokens.accent },
+          display: "block",
+          width: "100%",
+          height: "auto",
+          border: `1px solid ${tokens.hair}`,
+          filter: "sepia(0.08) saturate(0.92)",
+        }}
+      />
+      {alt && (
+        <Box
+          component="figcaption"
+          sx={{
+            fontFamily: tokens.mono,
+            fontSize: 9,
+            color: tokens.ink60,
+            letterSpacing: "1.4px",
+            textTransform: "uppercase",
+            mt: 1.25,
+          }}
+        >
+          {alt}
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+const markdownComponents: Components = {
+  h1({ children }) {
+    return (
+      <Typography
+        component="h2"
+        sx={{
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontWeight: 400,
+          fontSize: { xs: 34, md: 42 },
+          lineHeight: 1.12,
+          letterSpacing: { xs: "-0.5px", md: "-0.8px" },
+          color: tokens.ink,
+          mt: { xs: 5, md: 7 },
+          mb: 2,
         }}
       >
-        &lt;- Projects
+        {children}
+      </Typography>
+    );
+  },
+  h2({ children }) {
+    return (
+      <Typography
+        component="h2"
+        sx={{
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontWeight: 400,
+          fontSize: { xs: 30, md: 36 },
+          lineHeight: 1.15,
+          letterSpacing: "-0.5px",
+          color: tokens.ink,
+          mt: { xs: 4.5, md: 6 },
+          mb: 2,
+        }}
+      >
+        {children}
+      </Typography>
+    );
+  },
+  h3({ children }) {
+    return (
+      <Box
+        component="h3"
+        sx={{
+          fontFamily: tokens.mono,
+          fontSize: 10,
+          letterSpacing: "1.8px",
+          textTransform: "uppercase",
+          color: tokens.accent,
+          mt: 4,
+          mb: 1.5,
+        }}
+      >
+        {children}
       </Box>
+    );
+  },
+  p({ children }) {
+    const childArray = React.Children.toArray(children);
 
-      <ProjectHero project={project} />
+    if (
+      childArray.length === 1 &&
+      React.isValidElement(childArray[0]) &&
+      childArray[0].type === MarkdownImage
+    ) {
+      return childArray[0];
+    }
 
-      <Box sx={{ mt: 6 }}>
-        <ProjectSpecs project={project} />
+    return (
+      <Typography
+        component="p"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 18, md: 19 },
+          lineHeight: 1.68,
+          color: tokens.ink,
+          m: 0,
+          mb: 2.5,
+        }}
+      >
+        {children}
+      </Typography>
+    );
+  },
+  blockquote({ children }) {
+    return (
+      <Box
+        component="blockquote"
+        sx={{
+          fontFamily: tokens.serif,
+          fontStyle: "italic",
+          fontSize: { xs: 25, md: 32 },
+          lineHeight: 1.28,
+          color: tokens.ink,
+          my: { xs: 4, md: 5.5 },
+          mx: 0,
+          pl: { xs: 2.5, md: 3 },
+          borderLeft: `1px solid ${tokens.hairStrong}`,
+          "& p": {
+            fontSize: "inherit",
+            lineHeight: "inherit",
+            mb: 0,
+          },
+        }}
+      >
+        {children}
       </Box>
+    );
+  },
+  ul({ children }) {
+    return (
+      <Box
+        component="ul"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 18, md: 19 },
+          lineHeight: 1.65,
+          color: tokens.ink,
+          mt: 0,
+          mb: 3,
+          pl: 3,
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  ol({ children }) {
+    return (
+      <Box
+        component="ol"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 18, md: 19 },
+          lineHeight: 1.65,
+          color: tokens.ink,
+          mt: 0,
+          mb: 3,
+          pl: 3,
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  li({ children }) {
+    return <Box component="li" sx={{ mb: 1 }}>{children}</Box>;
+  },
+  a({ children, href }) {
+    return (
+      <Box
+        component="a"
+        href={href}
+        sx={{
+          color: tokens.accent,
+          textDecorationColor: "color-mix(in srgb, currentColor 45%, transparent)",
+          textUnderlineOffset: "0.18em",
+          "&:hover": { textDecorationColor: "currentColor" },
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  img({ src, alt }) {
+    return <MarkdownImage src={typeof src === "string" ? src : undefined} alt={alt} />;
+  },
+};
 
+const overviewMarkdownComponents: Components = {
+  ...markdownComponents,
+  p({ children }) {
+    const childArray = React.Children.toArray(children);
+
+    if (
+      childArray.length === 1 &&
+      React.isValidElement(childArray[0]) &&
+      childArray[0].type === MarkdownImage
+    ) {
+      return childArray[0];
+    }
+
+    return (
+      <Typography
+        component="p"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 22, md: 26 },
+          lineHeight: 1.4,
+          letterSpacing: 0,
+          color: tokens.ink,
+          m: 0,
+          mb: 2.5,
+        }}
+      >
+        {children}
+      </Typography>
+    );
+  },
+};
+
+function splitOverviewMarkdown(markdown: string) {
+  const trimmedMarkdown = markdown.trim();
+  const overviewHeading = /^#\s+Overview\s*\n+/i.exec(trimmedMarkdown);
+
+  if (!overviewHeading) {
+    return { bodyMarkdown: trimmedMarkdown };
+  }
+
+  const markdownAfterHeading = trimmedMarkdown.slice(overviewHeading[0].length);
+  const nextHeadingIndex = markdownAfterHeading.search(/\n#{1,6}\s+/);
+
+  if (nextHeadingIndex === -1) {
+    return {
+      overviewMarkdown: markdownAfterHeading.trim(),
+      bodyMarkdown: "",
+    };
+  }
+
+  return {
+    overviewMarkdown: markdownAfterHeading.slice(0, nextHeadingIndex).trim(),
+    bodyMarkdown: markdownAfterHeading.slice(nextHeadingIndex).trim(),
+  };
+}
+
+function ProjectMarkdown({ markdown }: { markdown: string }) {
+  const { overviewMarkdown, bodyMarkdown } = splitOverviewMarkdown(markdown);
+
+  return (
+    <>
+      {overviewMarkdown && (
+        <Box sx={{ mt: { xs: 6, md: 9 }, mb: { xs: 5, md: 8 }, maxWidth: 720, mx: "auto" }}>
+          <Box
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 10,
+              letterSpacing: "2px",
+              color: tokens.accent,
+              textTransform: "uppercase",
+              mb: 2.25,
+            }}
+          >
+            ¶ Overview
+          </Box>
+          <ReactMarkdown components={overviewMarkdownComponents}>{overviewMarkdown}</ReactMarkdown>
+        </Box>
+      )}
+
+      {bodyMarkdown && (
+        <Box
+          sx={{
+            maxWidth: 720,
+            mx: "auto",
+            mt: overviewMarkdown ? 0 : { xs: 6, md: 8 },
+          }}
+        >
+          <ReactMarkdown components={markdownComponents}>{bodyMarkdown}</ReactMarkdown>
+        </Box>
+      )}
+    </>
+  );
+}
+
+function ProjectLegacyEntries({ project }: { project: Project }) {
+  const opening = project.entries?.[0]?.b.split(".")[0] ?? project.tagline;
+
+  return (
+    <>
       <Box sx={{ my: { xs: 6, md: 8 }, maxWidth: 900 }}>
         <Box
           sx={{
@@ -397,7 +662,7 @@ export function ProjectDetailReport({
           color: tokens.ink,
         }}
       >
-        {project.entries.map((entry) => (
+        {project.entries?.map((entry) => (
           <Box key={`${entry.date}-${entry.h}`} sx={{ breakInside: "avoid", mb: 3.5 }}>
             <Box
               sx={{
@@ -431,6 +696,57 @@ export function ProjectDetailReport({
           </Box>
         </Box>
       </Box>
+    </>
+  );
+}
+
+export function ProjectDetailReport({
+  project,
+  projectMarkdown,
+  previous,
+  next,
+}: {
+  project: Project;
+  projectMarkdown?: string;
+  previous?: Project;
+  next?: Project;
+}) {
+  const hasMarkdown = Boolean(projectMarkdown?.trim());
+
+  return (
+    <PageShell
+      section={`SECTION A · PROJECTS · ${project.slug}`}
+      catNo={`file: ${project.slug}.entry`}
+      updatedLabel={project.year}
+      contentSx={{ width: "100%" }}
+    >
+      <Box
+        component={NextLink}
+        href="/projects"
+        sx={{
+          fontFamily: tokens.mono,
+          fontSize: 11,
+          letterSpacing: "1.6px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+          textDecoration: "none",
+          display: "inline-flex",
+          gap: 1,
+          alignItems: "center",
+          mb: 1,
+          "&:hover": { color: tokens.accent },
+        }}
+      >
+        &lt;- Projects
+      </Box>
+
+      <ProjectHero project={project} />
+
+      <Box sx={{ mt: 6 }}>
+        <ProjectSpecs project={project} />
+      </Box>
+
+      {hasMarkdown ? <ProjectMarkdown markdown={projectMarkdown ?? ""} /> : <ProjectLegacyEntries project={project} />}
 
       {project.metrics && (
         <Box

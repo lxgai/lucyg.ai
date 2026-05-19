@@ -96,7 +96,8 @@ const { useState, useEffect } = React;
 // ==== Tweakable defaults ====
 const TWEAKS = /*EDITMODE-BEGIN*/{
   "accentColor": "navy",
-  "serifStyle": "newsreader"
+  "serifStyle": "newsreader",
+  "showMetrics": true
 }/*EDITMODE-END*/;
 
 const ACCENTS = {
@@ -113,6 +114,7 @@ function App() {
   });
   const [accentColor, setAccent] = useState(TWEAKS.accentColor);
   const [serifStyle, setSerifStyle] = useState(TWEAKS.serifStyle);
+  const [showMetrics, setShowMetrics] = useState(TWEAKS.showMetrics);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => { try { localStorage.setItem("route", route); } catch {} }, [route]);
@@ -136,6 +138,7 @@ function App() {
   const theme = {
     accent: ACCENTS[accentColor] || ACCENTS.rust,
     serif: serifStyle === "fraunces" ? "'Fraunces', Georgia, serif" : "'Newsreader', Georgia, serif",
+    showMetrics,
   };
 
   const ctx = { route, setRoute, theme };
@@ -176,6 +179,18 @@ function App() {
                   padding: "6px 10px", fontSize: 10,
                   border: `1px solid ${serifStyle === k ? theme.accent : "rgba(241,233,223,0.2)"}`,
                   background: serifStyle === k ? theme.accent : "transparent",
+                  cursor: "pointer", flex: 1, textAlign: "center", letterSpacing: 1,
+                }}>{lbl}</div>
+            ))}
+          </TweakRow>
+
+          <TweakRow label="Project metrics">
+            {[[true, "Show"], [false, "Hide"]].map(([k, lbl]) => (
+              <div key={String(k)} onClick={() => { setShowMetrics(k); persist("showMetrics", k); }}
+                style={{
+                  padding: "6px 10px", fontSize: 10,
+                  border: `1px solid ${showMetrics === k ? theme.accent : "rgba(241,233,223,0.2)"}`,
+                  background: showMetrics === k ? theme.accent : "transparent",
                   cursor: "pointer", flex: 1, textAlign: "center", letterSpacing: 1,
                 }}>{lbl}</div>
             ))}
