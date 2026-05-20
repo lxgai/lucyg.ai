@@ -278,9 +278,11 @@ function ProjectHero({ project }: { project: Project }) {
 }
 
 function ProjectSpecs({ project }: { project: Project }) {
+  const published = project.published ?? project.started;
+  const lastUpdated = project.updated && project.updated !== published ? project.updated : "—";
   const cells = [
-    ["Started", project.started],
-    ["Filed", project.filed],
+    ["Published", published],
+    ["Last updated", lastUpdated],
     ["Stack", project.stack.join(" · ")],
     ["Status", project.status],
   ];

@@ -5,6 +5,8 @@ import PageShell from "@/components/design/PageShell";
 import { PROJECTS } from "@/data/projects";
 
 export default function ProjectsPage() {
+  const entryLabel = `${PROJECTS.length} ${PROJECTS.length === 1 ? "entry" : "entries"}`;
+
   return (
     <PageShell
       section="SECTION A · PROJECTS"
@@ -14,7 +16,7 @@ export default function ProjectsPage() {
           Things I&apos;ve <Box component="span" sx={{ fontStyle: "italic" }}>made.</Box>
         </>
       }
-      subtitle={`${PROJECTS.length} entries · solo + collab · view: spread`}
+      subtitle={`${entryLabel} · solo · view: spread`}
     >
       <Box sx={{ height: 24 }} />
       <ProjectsSpreadList projects={PROJECTS} />

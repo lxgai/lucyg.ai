@@ -1118,22 +1118,17 @@ function ProjectHero({ p, theme, aspect = "21/9" }) {
       }}>
         <span style={{ fontStyle: "italic" }}>{p.name}.</span>
       </div>
-
-      <div style={{ fontFamily: theme.serif, fontSize: 22, lineHeight: 1.45, marginTop: 22, maxWidth: 680, color: T.ink }}>
-        {p.tagline}
-      </div>
     </div>
   );
 }
 
-// ----- Shared spec strip (period / role / stack / status) -----
+// ----- Shared spec strip (published / updated / stack / status) -----
 function ProjectSpecs({ p, theme, layout = "row" }) {
-  const period = p.filed && p.filed !== p.started ? `${p.started} – ${p.filed}` : p.started;
   const cells = [
-    ["Period",   period],
-    ["Role",     p.role],
-    ["Stack",    p.stack.join(" · ")],
-    ["Status",   p.status],
+    ["Published",    p.published || p.started],
+    ["Last updated", (p.updated && p.updated !== p.published) ? p.updated : "—"],
+    ["Stack",        p.stack.join(" · ")],
+    ["Status",       p.status],
   ];
   if (layout === "stack") {
     return (
@@ -1187,11 +1182,11 @@ function DetailReport({ p, theme }) {
   return (
     <>
       <ProjectHero p={p} theme={theme} aspect="21/9" />
-      <div style={{ marginTop: 48 }}>
+      <div style={{ marginTop: 40 }}>
         <ProjectSpecs p={p} theme={theme} />
       </div>
 
-      {/* Lede — first entry as overview paragraph */}
+      {/* Lede — first entry as Overview */}
       <div style={{ margin: "72px auto 64px", maxWidth: 720 }}>
         <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 18 }}>
           ¶ Overview
