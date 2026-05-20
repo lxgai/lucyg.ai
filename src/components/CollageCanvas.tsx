@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { resolveSiteImageSrc } from "@/lib/images";
 import { CollageItem } from "@/types/collage";
 
 const REFERENCE_WIDTH = 1920;
@@ -55,7 +56,7 @@ export default function CollageCanvas({
           >
             {item.type === "image" && item.src && (
               <Image
-                src={item.src}
+                src={resolveSiteImageSrc(item.src)}
                 alt={item.alt || ""}
                 width={item.imageW || 100}
                 height={item.imageH || 100}

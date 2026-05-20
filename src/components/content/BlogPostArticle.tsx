@@ -5,6 +5,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
+import { resolveSiteImageSrc } from "@/lib/images";
 import type { PostBodyBlock } from "@/data/blog";
 import type { BlogEntry } from "@/types/blog";
 
@@ -224,6 +225,7 @@ function TagRow({ tags, centered = false }: { tags: string[]; centered?: boolean
 
 function HeroFigure({ post }: { post: BlogEntry }) {
   if (!post.hero) return null;
+  const heroSrc = resolveSiteImageSrc(post.hero);
 
   return (
     <Box
@@ -236,7 +238,7 @@ function HeroFigure({ post }: { post: BlogEntry }) {
     >
       <Box sx={{ position: "relative", width: "100%", aspectRatio: "21 / 9" }}>
         <Image
-          src={post.hero}
+          src={heroSrc}
           alt=""
           fill
           priority
@@ -362,13 +364,14 @@ function PostBlock({ block }: { block: PostBodyBlock }) {
 
 function PostFigure({ block }: { block: Extract<PostBodyBlock, { kind: "img" }> }) {
   const aspect = block.aspect ?? "16 / 10";
+  const blockSrc = block.src ? resolveSiteImageSrc(block.src) : "";
 
   return (
     <Box component="figure" sx={{ my: 6 }}>
-      {block.src ? (
+      {blockSrc ? (
         <Box sx={{ position: "relative", width: "100%", aspectRatio: aspect }}>
           <Image
-            src={block.src}
+            src={blockSrc}
             alt={block.caption ?? ""}
             fill
             sizes="(max-width: 768px) 100vw, 640px"

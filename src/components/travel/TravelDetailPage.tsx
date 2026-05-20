@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import { TravelDetailSectionFrame, TravelDetailSurface, TravelDetailViewportContainer } from "@/components/travel/TravelDetailSectionFrame";
+import { resolveSiteImageSrc } from "@/lib/images";
 import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
 import type {
   TravelDetailBlock,
@@ -102,13 +103,14 @@ function PhotoFrame({
 }) {
   const frameRotation = `${rotation ?? photo.layout.large.rotation}deg`;
   const isSmall = breakpoint === "small";
+  const imageSrc = resolveSiteImageSrc(photo.src);
 
   if (photo.cutout) {
     return (
       <Box
         component="button"
         type="button"
-        onClick={() => onOpen({ src: photo.src, caption: photo.caption, alt: photo.alt })}
+        onClick={() => onOpen({ src: imageSrc, caption: photo.caption, alt: photo.alt })}
         sx={[
           {
             display: "block",
@@ -124,7 +126,7 @@ function PhotoFrame({
       >
         <Box sx={{ position: "relative", aspectRatio: photo.aspect }}>
           <Image
-            src={photo.src}
+            src={imageSrc}
             alt={photo.alt}
             fill
             unoptimized
@@ -167,7 +169,7 @@ function PhotoFrame({
       <Box
         component="button"
         type="button"
-        onClick={() => onOpen({ src: photo.src, caption: photo.caption, alt: photo.alt })}
+        onClick={() => onOpen({ src: imageSrc, caption: photo.caption, alt: photo.alt })}
         sx={{
           display: "block",
           position: "relative",
@@ -181,7 +183,7 @@ function PhotoFrame({
         }}
       >
         <Image
-          src={photo.src}
+          src={imageSrc}
           alt={photo.alt}
           fill
           unoptimized
@@ -587,7 +589,7 @@ function Lightbox({ image, onClose }: { image: LightboxImage | null; onClose: ()
     >
       <Box sx={{ width: "min(1100px, 100%)", maxHeight: "86vh" }}>
         <Box sx={{ position: "relative", width: "100%", height: "78vh" }}>
-          <Image src={image.src} alt={image.alt} fill unoptimized sizes="100vw" style={{ objectFit: "contain" }} />
+          <Image src={resolveSiteImageSrc(image.src)} alt={image.alt} fill unoptimized sizes="100vw" style={{ objectFit: "contain" }} />
         </Box>
         <Typography sx={{ mt: 1.5, fontFamily: tokens.hand, fontWeight: 500, fontSize: 21, lineHeight: 1.05, color: tokens.paper, textAlign: "center" }}>
           {image.caption}

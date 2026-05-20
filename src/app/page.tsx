@@ -6,6 +6,7 @@ import Nav from "@/components/design/Nav";
 import { CardLabel } from "@/components/design/primitives";
 import { getPageUpdatedLabel } from "@/data/page-updated";
 import { tokens } from "@/components/design/tokens";
+import { resolveSiteImageSrc } from "@/lib/images";
 
 const QUICK_LINKS = [
   { label: "Latest writing", sub: "on keeping a slow internet", to: "/blog" },
@@ -266,7 +267,7 @@ export default function Home() {
               }}
             >
               <Image
-                src="/images/home/selfie1.png"
+                src={resolveSiteImageSrc("/images/home/selfie1.png")}
                 alt="Self-portrait"
                 fill
                 sizes="(max-width: 900px) 90vw, 420px"

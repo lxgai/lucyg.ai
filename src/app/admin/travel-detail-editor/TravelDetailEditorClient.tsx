@@ -15,6 +15,7 @@ import {
   travelDetailPageGutterPx,
   travelDetailSurfaceWidth,
 } from "@/components/travel/detailGeometry";
+import { normalizeSiteImagePath, resolveSiteImageSrc } from "@/lib/images";
 import type {
   TravelDetailBlock,
   TravelDetailBreakpoint,
@@ -94,18 +95,8 @@ function imageName(src: string) {
 }
 
 function normalizeAssetSrc(src: string) {
-  if (src.startsWith("/images/travels/")) return src;
-
-  try {
-    const url = new URL(src, window.location.origin);
-    const encodedPath = url.pathname === "/_next/image" ? url.searchParams.get("url") : url.pathname;
-    if (!encodedPath) return "";
-
-    const decodedPath = decodeURIComponent(encodedPath);
-    return decodedPath.startsWith("/images/travels/") ? decodedPath : "";
-  } catch {
-    return "";
-  }
+  const sitePath = normalizeSiteImagePath(src);
+  return sitePath.startsWith("/images/travels/") ? sitePath : "";
 }
 
 function originalImageAspect(src: string) {
@@ -121,7 +112,7 @@ function originalImageAspect(src: string) {
       resolve("3 / 2");
     };
     image.onerror = () => resolve("3 / 2");
-    image.src = src;
+    image.src = resolveSiteImageSrc(src);
   });
 }
 
@@ -231,7 +222,7 @@ function PreviewBlock({ block, breakpoint, selected, onSelect, onPointerDown }: 
       {block.type === "image" ? (
         <figure draggable={false} className={block.cutout ? "" : "border border-stone-500 bg-[#fbf6ee] p-2 shadow-sm"}>
           <div className="relative w-full" style={{ aspectRatio: block.aspect }}>
-            {block.src && <Image src={block.src} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className={block.cutout ? "object-contain" : "object-cover"} />}
+            {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className={block.cutout ? "object-contain" : "object-cover"} />}
           </div>
           <figcaption className="mt-1 leading-tight text-stone-700" style={{ fontFamily: tokens.hand, fontSize: 21, fontWeight: 500 }}>{block.caption}</figcaption>
         </figure>
@@ -671,7 +662,7 @@ export default function TravelDetailEditorPage() {
 
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">
             <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Image library</h2>
-            <div className="mt-3 grid grid-cols-2 gap-2">{assets.map((asset) => <button key={asset} draggable onDragStart={(event) => { event.dataTransfer.setData(assetDragType, asset); event.dataTransfer.setData("text/plain", asset); }} onClick={() => selectedSection && addImage(selectedSection.id, asset)} className="border border-stone-300 bg-[#f1e9df] p-1 text-left"><div className="relative aspect-square bg-stone-200">{asset && <Image src={asset} alt="" fill sizes="140px" className="object-cover" draggable={false} />}</div><div className="mt-1 truncate font-mono text-[10px] text-stone-600">{imageName(asset)}</div></button>)}</div>
+            <div className="mt-3 grid grid-cols-2 gap-2">{assets.map((asset) => <button key={asset} draggable onDragStart={(event) => { event.dataTransfer.setData(assetDragType, asset); event.dataTransfer.setData("text/plain", asset); }} onClick={() => selectedSection && addImage(selectedSection.id, asset)} className="border border-stone-300 bg-[#f1e9df] p-1 text-left"><div className="relative aspect-square bg-stone-200">{asset && <Image src={resolveSiteImageSrc(asset)} alt="" fill sizes="140px" className="object-cover" draggable={false} />}</div><div className="mt-1 truncate font-mono text-[10px] text-stone-600">{imageName(asset)}</div></button>)}</div>
           </div>
 
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">
