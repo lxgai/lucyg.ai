@@ -44,8 +44,8 @@ export default function AboutPage() {
           >
             Hi! I&apos;m <Box component="span" sx={{ fontStyle: "italic" }}>Lucy</Box> — a
             software engineer in{" "}
-            <Box component="span" sx={{ fontStyle: "italic" }}>San Francisco</Box>,
-            currently building tools at a small startup and cataloging the things I love
+            <Box component="span" sx={{ fontStyle: "italic" }}>the US</Box>,
+            currently building tools and cataloging the things I love
             here.
           </Typography>
 
