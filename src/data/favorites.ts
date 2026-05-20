@@ -7,6 +7,42 @@ export type Album = {
 
 export type Track = { n: number; name: string; time: string; fav?: boolean; featured?: boolean };
 
+export const FEATURED_TRACK_AUDIO: Record<string, Partial<Record<number, string>>> = {
+  "nolimit,": {
+    14: "/audio/favorites/feel-u-luv-me.mp3",
+  },
+  "EUSEXUA": {
+    3: "/audio/favorites/perfect-stranger.mp3",
+  },
+  "Killswitch Melodies": {
+    1: "/audio/favorites/the-beginning.mp3",
+  },
+  "无限意识 Meta Ego": {
+    1: "/audio/favorites/manta.mp3",
+  },
+  "Comfort in Chaos": {
+    9: "/audio/favorites/where-you-are.mp3",
+  },
+  "Demidevil": {
+    3: "/audio/favorites/deal-with-it.mp3",
+  },
+  "Alone at Prom": {
+    4: "/audio/favorites/the-color-violet.mp3",
+  },
+  "Come Over When You're Sober, Pt.1": {
+    2: "/audio/favorites/save-that-shit.mp3",
+  },
+  "Carrie & Lowell": {
+    6: "/audio/favorites/fourth-of-july.mp3",
+  },
+  "Wiped Out!": {
+    5: "/audio/favorites/the-beach.mp3",
+  },
+  "Worlds": {
+  1: "/audio/favorites/divinity.mp3",
+},
+};
+
 export type Movie = {
   src: string;
   title: string;

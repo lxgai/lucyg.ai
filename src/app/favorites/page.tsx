@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import PageShell from "@/components/design/PageShell";
@@ -9,6 +9,7 @@ import { tokens } from "@/components/design/tokens";
 import {
   ALBUMS,
   DEFAULT_TRACKLIST,
+  FEATURED_TRACK_AUDIO,
   MOVIES,
   TRACKLISTS,
   type Movie,
@@ -36,12 +37,13 @@ const SORT_OPTIONS: { value: AlbumSort; label: string }[] = [
 
 export default function FavoritesPage() {
   const [tab, setTab] = useState<Tab>("music");
-  const [sort, setSort] = useState<AlbumSort>("new");
+  const [sort, setSort] = useState<AlbumSort>("old");
   const [sortOpen, setSortOpen] = useState(false);
   const [selectedSrc, setSelectedSrc] = useState(ALBUMS[0].src);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [letterboxdMovies, setLetterboxdMovies] = useState<Record<string, LetterboxdMovie>>({});
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const sortedAlbums = useMemo(() => {
     return [...ALBUMS].sort((a, b) => {
@@ -55,6 +57,8 @@ export default function FavoritesPage() {
     sortedAlbums.find((album) => album.src === selectedSrc) ?? sortedAlbums[0];
   const selectedIdx = sortedAlbums.indexOf(selectedAlbum);
   const tracks = TRACKLISTS[selectedAlbum.title] ?? DEFAULT_TRACKLIST;
+  const featuredTrack = getFeaturedTrack(tracks);
+  const featuredAudioSrc = FEATURED_TRACK_AUDIO[selectedAlbum.title]?.[featuredTrack.n];
   const movies = useMemo<SyncedMovie[]>(() => {
     return MOVIES.map((movie) => {
       const synced = letterboxdMovies[movieKey(movie.title, movie.year)];
@@ -76,10 +80,36 @@ export default function FavoritesPage() {
     });
   }, [letterboxdMovies]);
 
+  const togglePlayback = () => {
+    const audio = audioRef.current;
+
+    if (!audio || !featuredAudioSrc) {
+      return;
+    }
+
+    if (playing) {
+      audio.pause();
+      setPlaying(false);
+      return;
+    }
+
+    void audio
+      .play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false));
+  };
+
   useEffect(() => {
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
     setPlaying(false);
     setProgress(0);
-  }, [selectedSrc]);
+  }, [featuredAudioSrc]);
 
   useEffect(() => {
     if (!sortOpen) return;
@@ -94,14 +124,42 @@ export default function FavoritesPage() {
   }, [sortOpen]);
 
   useEffect(() => {
-    if (!playing) return;
+    const audio = audioRef.current;
 
-    const id = window.setInterval(() => {
-      setProgress((p) => (p + 0.5) % 100);
-    }, 200);
+    if (!audio) return;
 
-    return () => window.clearInterval(id);
-  }, [playing]);
+    const updateProgress = () => {
+      if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+        setProgress(0);
+        return;
+      }
+
+      setProgress((audio.currentTime / audio.duration) * 100);
+    };
+
+    const handleEnded = () => {
+      setPlaying(false);
+      setProgress(0);
+      audio.currentTime = 0;
+    };
+
+    audio.addEventListener("timeupdate", updateProgress);
+    audio.addEventListener("loadedmetadata", updateProgress);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateProgress);
+      audio.removeEventListener("loadedmetadata", updateProgress);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [featuredAudioSrc]);
+
+  useEffect(() => {
+    if (tab === "music") return;
+
+    audioRef.current?.pause();
+    setPlaying(false);
+  }, [tab]);
 
   useEffect(() => {
     let active = true;
@@ -170,6 +228,9 @@ export default function FavoritesPage() {
           );
         })}
       </Box>
+      {featuredAudioSrc && (
+        <audio ref={audioRef} src={featuredAudioSrc} preload="metadata" />
+      )}
 
       {tab === "music" ? (
         <Box
@@ -193,7 +254,8 @@ export default function FavoritesPage() {
               <VinylPlayer
                 album={selectedAlbum}
                 playing={playing}
-                onToggle={() => setPlaying((p) => !p)}
+                disabled={!featuredAudioSrc}
+                onToggle={togglePlayback}
               />
             </Box>
 
@@ -246,9 +308,11 @@ export default function FavoritesPage() {
               <Hair />
               <TracklistView
                 tracks={tracks}
+                featured={featuredTrack}
+                audioAvailable={Boolean(featuredAudioSrc)}
                 playing={playing}
                 progress={progress}
-                onTogglePlay={() => setPlaying((p) => !p)}
+                onTogglePlay={togglePlayback}
               />
             </Box>
           </Box>
@@ -544,17 +608,20 @@ function getFeaturedTrack(tracks: Track[]) {
 
 function TracklistView({
   tracks,
+  featured,
+  audioAvailable,
   playing,
   progress,
   onTogglePlay,
 }: {
   tracks: Track[];
+  featured: Track;
+  audioAvailable: boolean;
   playing: boolean;
   progress: number;
   onTogglePlay: () => void;
 }) {
   const favCount = tracks.filter((track) => track.fav).length;
-  const featured = getFeaturedTrack(tracks);
 
   return (
     <Box sx={{ mt: 1.25 }}>
@@ -572,18 +639,20 @@ function TracklistView({
       </Box>
 
       <Box
-        onClick={onTogglePlay}
+        onClick={audioAvailable ? onTogglePlay : undefined}
         sx={{
           display: "grid",
           gridTemplateColumns: "32px 1fr",
           gap: 1.75,
           alignItems: "center",
-          cursor: "pointer",
+          cursor: audioAvailable ? "pointer" : "default",
           p: "14px 14px 14px 12px",
           background: "rgba(31, 26, 22, 0.04)",
-          borderLeft: `2px solid ${tokens.accent}`,
+          borderLeft: `2px solid ${audioAvailable ? tokens.accent : tokens.ink20}`,
           transition: "background 180ms",
-          "&:hover": { background: "rgba(31, 26, 22, 0.065)" },
+          "&:hover": audioAvailable
+            ? { background: "rgba(31, 26, 22, 0.065)" }
+            : undefined,
         }}
       >
         <Box
@@ -594,7 +663,11 @@ function TracklistView({
             justifyContent: "center",
           }}
         >
-          <PlayGlyph size={16} color={tokens.accent} playing={playing} />
+          <PlayGlyph
+            size={16}
+            color={audioAvailable ? tokens.accent : tokens.ink40}
+            playing={playing}
+          />
         </Box>
         <Box sx={{ minWidth: 0 }}>
           <Typography
@@ -619,7 +692,7 @@ function TracklistView({
             }}
           >
             Track {String(featured.n).padStart(2, "0")} · {featured.time} ·{" "}
-            {playing ? "now playing" : "press to play"}
+            {audioAvailable ? (playing ? "now playing" : "press to play") : "audio pending"}
           </Box>
         </Box>
       </Box>

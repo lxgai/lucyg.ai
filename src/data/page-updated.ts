@@ -4,7 +4,7 @@ export const PAGE_UPDATED = {
   "/": "UPDATED 05 · 17 · 26",
   "/about": "UPDATED 05 · 17 · 26",
   "/blog": "UPDATED 05 · 18 · 26",
-  "/favorites": "UPDATED 05 · 18 · 26",
+  "/favorites": "UPDATED 05 · 19 · 26",
   "/links": "UPDATED 04 · 23 · 26",
   "/portfolio": "UPDATED 05 · 17 · 26",
   "/projects": "UPDATED 05 · 18 · 26",

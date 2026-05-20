@@ -74,6 +74,13 @@ Layout direction:
 - Page titles should be large serif type with one italicized word where appropriate.
 - Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
 
+Metadata strip dates:
+
+- `UPDATED` labels are generated into `src/data/page-updated.ts` by `scripts/generate-page-updated.mjs`.
+- The generator runs on `predev` and `prebuild`; run `npm run generate:page-updated` manually after date-source changes while a dev server is already running.
+- Each route has a source-file list in `scripts/generate-page-updated.mjs`. If any listed source is dirty in Git, that route uses today's date; otherwise it uses the latest committed date for those sources.
+- When moving section data, update the route source list so unrelated section edits do not bump each other's metadata dates.
+
 Copy direction:
 
 - Quiet and considered, not chatty.

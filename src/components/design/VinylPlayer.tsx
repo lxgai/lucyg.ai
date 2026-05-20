@@ -7,16 +7,18 @@ type Album = { src: string; title: string };
 
 export default function VinylPlayer({
   album,
+  disabled = false,
   playing,
   onToggle,
 }: {
   album: Album;
+  disabled?: boolean;
   playing: boolean;
   onToggle: () => void;
 }) {
   return (
     <Box
-      onClick={onToggle}
+      onClick={disabled ? undefined : onToggle}
       sx={{
         width: { xs: 300, md: 400 },
         height: { xs: 300, md: 400 },
@@ -24,7 +26,8 @@ export default function VinylPlayer({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        cursor: "pointer",
+        cursor: disabled ? "default" : "pointer",
+        opacity: disabled ? 0.76 : 1,
         userSelect: "none",
       }}
     >
@@ -36,7 +39,7 @@ export default function VinylPlayer({
           position: "relative",
           background:
             "radial-gradient(circle, #1a1613 0%, #0d0a08 60%, #1a1613 100%)",
-          animation: playing ? "spin 4s linear infinite" : "none",
+          animation: playing && !disabled ? "spin 4s linear infinite" : "none",
           boxShadow:
             "0 14px 48px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06)",
         }}
@@ -101,7 +104,7 @@ export default function VinylPlayer({
           background: tokens.ink20,
           borderRadius: 1,
           transformOrigin: "right center",
-          transform: playing ? "rotate(-28deg)" : "rotate(-50deg)",
+          transform: playing && !disabled ? "rotate(-28deg)" : "rotate(-50deg)",
           transition: "transform 700ms cubic-bezier(0.4,0,0.2,1)",
           boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
         }}
@@ -145,7 +148,7 @@ export default function VinylPlayer({
           whiteSpace: "nowrap",
         }}
       >
-        {playing ? "▶ PLAYING" : "CLICK TO PLAY"}
+        {disabled ? "AUDIO PENDING" : playing ? "▶ PLAYING" : "CLICK TO PLAY"}
       </Box>
     </Box>
   );
