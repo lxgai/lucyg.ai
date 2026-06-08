@@ -705,11 +705,13 @@ function ProjectLegacyEntries({ project }: { project: Project }) {
 export function ProjectDetailReport({
   project,
   projectMarkdown,
+  refNo,
   previous,
   next,
 }: {
   project: Project;
   projectMarkdown?: string;
+  refNo: string;
   previous?: Project;
   next?: Project;
 }) {
@@ -718,8 +720,7 @@ export function ProjectDetailReport({
   return (
     <PageShell
       section={`SECTION A · PROJECTS · ${project.slug}`}
-      catNo={`file: ${project.slug}.entry`}
-      updatedLabel={project.year}
+      catNo={refNo}
       contentSx={{ width: "100%" }}
     >
       <Box

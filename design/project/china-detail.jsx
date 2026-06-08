@@ -14,27 +14,40 @@ const {
   CN_useLightbox: useLightbox,
 } = window;
 
-function ChinaDetail() {
+function ChinaDetail({ theme, setRoute }) {
   const { setOpen, Lightbox } = useLightbox();
 
   return (
     <div className="paper-a" style={{ color: A.ink, fontFamily: A.serif }}>
       {/* ── Top crumb strip ──────────────────────────────────── */}
-      <div style={{ padding: "24px 48px 0" }}>
-        <Hair color={A.hairStrong} />
+      <div style={{ padding: "36px 48px 0" }}>
         <div style={{
-          display: "flex", justifyContent: "space-between",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
           fontFamily: A.mono, fontSize: 10, letterSpacing: 1.6, color: A.ink60,
           padding: "8px 0", textTransform: "uppercase",
         }}>
-          <Crumb>China '24</Crumb>
-          <span>14 days · 3 cities · {CHINA.dates}</span>
+          <span style={{ background: theme.accent, color: A.paperWarm, padding: "4px 11px", letterSpacing: 1.6 }}>TRAVELS · CHINA '24</span>
+          <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <span className="m-strip-ref">REF. B-01</span>
+            <span className="m-strip-leader" style={{ width: 11, borderBottom: `1px dotted ${A.hairStrong}`, transform: "translateY(1px)" }} />
+            <span className="m-strip-updated">UPDATED 04·22·26</span>
+          </span>
         </div>
-        <Hair color={A.hairStrong} />
+      </div>
+
+      {/* ── Back link (under the strip, above content) ──────────── */}
+      <div style={{ padding: "20px 48px 0" }}>
+        <span onClick={() => setRoute && setRoute("travels")} style={{
+          fontFamily: A.mono, fontSize: 11, letterSpacing: 1.6, color: A.ink60,
+          textTransform: "uppercase", cursor: "pointer", display: "inline-flex", gap: 8, alignItems: "center",
+        }}
+          onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
+          onMouseLeave={(e) => e.currentTarget.style.color = A.ink60}
+        >← Travels</span>
       </div>
 
       {/* ── Hero (V2-style: tilted polaroid left, title block right) ── */}
-      <HeroV2Style onOpen={setOpen} />
+      <HeroV2Style onOpen={setOpen} theme={theme} />
 
       {/* ── City spreads (V3-style with alternating alignment) ─────── */}
       <div style={{ padding: "60px 48px 0" }}>
@@ -60,7 +73,7 @@ function ChinaDetail() {
 // ============================================================
 // Hero — copied straight from V2's first section
 // ============================================================
-function HeroV2Style({ onOpen }) {
+function HeroV2Style({ onOpen, theme }) {
   return (
     <div style={{ padding: "32px 48px 0", position: "relative" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 36, alignItems: "start" }}>
@@ -73,7 +86,7 @@ function HeroV2Style({ onOpen }) {
             <Photo src={CHINA.hero} caption="West Lake, Hangzhou — first morning."
               onOpen={onOpen} style={{ width: "100%", aspectRatio: "3/2" }} />
             <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between" }}>
-              <div style={{ fontFamily: A.serif, fontStyle: "italic", fontSize: 14 }}>
+              <div style={window.capStyle(theme, 15)}>
                 West Lake, Hangzhou — first morning.
               </div>
               <div style={{ fontFamily: A.mono, fontSize: 9, color: A.ink40, letterSpacing: 1.2, textTransform: "uppercase" }}>
@@ -441,22 +454,8 @@ function PageChinaDetail({ route, setRoute, theme }) {
     <div className="page-fade paper-a" style={{ minHeight: "100vh", background: A.paper, color: A.ink, fontFamily: A.serif }}>
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
-      {/* Back link sitting above the archive strip */}
-      <div className="m-page-pad" style={{
-        maxWidth: 1280, margin: "0 auto",
-        padding: "20px 48px 0",
-      }}>
-        <span onClick={() => setRoute("travels")} style={{
-          fontFamily: A.mono, fontSize: 10, color: A.ink60, letterSpacing: 1.4,
-          textTransform: "uppercase", cursor: "pointer",
-        }}
-          onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
-          onMouseLeave={(e) => e.currentTarget.style.color = A.ink60}
-        >← back to travels</span>
-      </div>
-
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <ChinaDetail />
+        <ChinaDetail theme={theme} setRoute={setRoute} />
       </div>
     </div>
   );

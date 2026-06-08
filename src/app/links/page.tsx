@@ -7,7 +7,7 @@ export default function LinksPage() {
   return (
     <PageShell
       section="SECTION G · LINKS"
-      catNo="file: links.idx"
+      catNo="REF. G-IDX"
       title="Links"
       subtitle="The contact index lives on About."
     >

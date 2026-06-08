@@ -19,19 +19,39 @@
 <script type="text/babel" src="design-canvas.jsx"></script>
 <script type="text/babel" src="china-detail-shared.jsx"></script>
 <script type="text/babel" src="china-detail.jsx"></script>
+<script type="text/babel" src="china-detail-explorations.jsx"></script>
 
 <script type="text/babel">
 function App() {
   return (
     <DesignCanvas>
       <DCSection
-        id="china-detail"
-        title="China '24 — detail page"
-        subtitle="V2 hero + V3 city collages · Chongqing flipped right-aligned for L-R-L rhythm · click any photo or cutout to enlarge"
+        id="chosen"
+        title="Chosen direction"
+        subtitle="V2 hero + V3 city collages · Chongqing right-aligned for L-R-L rhythm · click any photo or cutout to enlarge"
       >
-        <DCArtboard id="chosen" label="China '24 detail"
+        <DCArtboard id="chosen" label="China '24 detail — final"
           width={1280} height={3700}>
           <ChinaDetail />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="explorations"
+        title="Earlier explorations — kept for record"
+        subtitle="The three directions I considered before landing on the hybrid above. Saved here so the design process is visible."
+      >
+        <DCArtboard id="v1" label="V1 · Field Notes — rejected"
+          width={1280} height={4640}>
+          <ChinaV1 />
+        </DCArtboard>
+        <DCArtboard id="v2" label="V2 · Marginalia — partial inspiration"
+          width={1280} height={4120}>
+          <ChinaV2 />
+        </DCArtboard>
+        <DCArtboard id="v3" label="V3 · Open Album — partial inspiration"
+          width={1280} height={3200}>
+          <ChinaV3 />
         </DCArtboard>
       </DCSection>
     </DesignCanvas>

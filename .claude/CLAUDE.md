@@ -67,15 +67,25 @@ Layout direction:
 - Desktop page gutters: about `56px`
 - Mobile gutters: about `20px`
 - Use wide horizontal containers and generous whitespace.
-- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, file id, and last updated.
+- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, REF label, dotted leader, and tight-dot updated date on desktop. On small screens, show only the tab and REF label.
 - Page titles should be large serif type with one italicized word where appropriate.
 - Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
+
+Metadata strip rules:
+
+- Render dates with tight dots, for example `UPDATED 04·22·26`.
+- Home uses `REF. 00`.
+- Listing/index pages use `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`).
+- Detail pages use `REF. {letter}-{nn}` from the entry's archive position, such as `REF. B-01` for China.
+- Do not use `file:`/`FILE:` text in public metadata strips.
+- Detail page back links (`← Projects`, `← Travels`, `← Blog`) sit directly below the strip and above content.
+- Blog detail keeps `Also on Substack ↗` out of the strip; place it centered below the post title area near tags.
 
 Copy direction:
 
 - Quiet and considered, not chatty.
 - Prefer archival words such as "Cataloged", "Filed", and "Entry".
-- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `FILE: HOME.IDX`.
+- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `REF. C-IDX`.
 - Use italics for places and titles, not generic emphasis.
 
 ## Coding Conventions

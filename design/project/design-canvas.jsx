@@ -1,6 +1,9 @@
+// @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
 
+/* BEGIN USAGE */
 // DesignCanvas.jsx — Figma-ish design canvas wrapper
 // Warm gray grid bg + Sections + Artboards + PostIt notes.
+// Exports (to window): DesignCanvas, DCSection, DCArtboard, DCPostIt.
 // Artboards are reorderable (grip-drag), deletable, labels/titles are
 // inline-editable, and any artboard can be opened in a fullscreen focus
 // overlay (←/→/Esc). State persists to a .design-canvas.state.json sidecar
@@ -13,6 +16,11 @@
 //       <DCArtboard id="b" label="B · Minimal" width={260} height={480}>…</DCArtboard>
 //     </DCSection>
 //   </DesignCanvas>
+//
+// Artboards are static design frames, not scroll regions — never use
+// height: 100% + overflow: auto/scroll on inner elements; size each artboard
+// to fit its content (explicit pixel height, or let it grow).
+/* END USAGE */
 
 const DC = {
   bg: '#f0eee9',
@@ -759,7 +767,7 @@ function DCArtboardFrame({ sectionId, artboard, label, order, onRename, onReorde
 
   return (
     <div ref={ref} data-dc-slot={id} style={{ position: 'relative', flexShrink: 0 }}>
-      <div className="dc-header" style={{ color: DC.label }} onPointerDown={(e) => e.stopPropagation()}>
+      <div className="dc-header" data-omelette-chrome="" style={{ color: DC.label }} onPointerDown={(e) => e.stopPropagation()}>
         <div className="dc-labelrow">
           <div className="dc-grip" onPointerDown={onGripDown} title="Drag to reorder">
             <svg width="9" height="13" viewBox="0 0 9 13" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="7" cy="2" r="1.1"/><circle cx="2" cy="6.5" r="1.1"/><circle cx="7" cy="6.5" r="1.1"/><circle cx="2" cy="11" r="1.1"/><circle cx="7" cy="11" r="1.1"/></svg>

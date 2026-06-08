@@ -42,6 +42,11 @@ export function MetadataStrip({
   extra?: ReactNode;
   sx?: SxProps<Theme>;
 }) {
+  const normalizedUpdatedLabel =
+    typeof updatedLabel === "string"
+      ? updatedLabel.replace(/\s*·\s*/g, "·")
+      : updatedLabel;
+
   return (
     <PageContainer sx={sx}>
       <Box
@@ -51,12 +56,12 @@ export function MetadataStrip({
           alignItems: "center",
           gap: 2,
           fontFamily: tokens.mono,
-          fontSize: { xs: 9, md: 10 },
+          fontSize: 10,
           letterSpacing: "1.6px",
           color: tokens.ink60,
           textTransform: "uppercase",
           py: 1,
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
         }}
       >
         <Box
@@ -68,18 +73,45 @@ export function MetadataStrip({
             py: "4px",
             letterSpacing: "1.6px",
             alignSelf: "center",
+            whiteSpace: "nowrap",
           }}
         >
           {section}
         </Box>
         <Box
           component="span"
-          sx={{ display: "flex", gap: 3, flexWrap: "wrap", justifyContent: "flex-end" }}
+          sx={{
+            display: "flex",
+            gap: 1.5,
+            alignItems: "center",
+            justifyContent: "flex-end",
+            minWidth: 0,
+          }}
         >
-          {catNo && <Box component="span">{catNo}</Box>}
+          {catNo && (
+            <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+              {catNo}
+            </Box>
+          )}
+          {catNo && updatedLabel && (
+            <Box
+              component="span"
+              aria-hidden
+              sx={{
+                display: { xs: "none", md: "inline-block" },
+                width: 11,
+                borderBottom: `1px dotted ${tokens.hairStrong}`,
+                transform: "translateY(1px)",
+                flex: "0 0 auto",
+              }}
+            />
+          )}
           {updatedLabel && (
-            <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
-              {updatedLabel}
+            <Box
+              component="span"
+              sx={{ display: { xs: "none", md: "inline" }, whiteSpace: "nowrap" }}
+            >
+              {normalizedUpdatedLabel}
             </Box>
           )}
           {extra && <Box component="span">{extra}</Box>}

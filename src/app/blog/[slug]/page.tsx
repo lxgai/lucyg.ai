@@ -34,6 +34,7 @@ export default async function BlogPostRoute({
   return (
     <BlogPostArticle
       post={post}
+      refNo={`REF. D-${String(index + 1).padStart(2, "0")}`}
       older={entries[index + 1]}
       newer={entries[index - 1]}
       related={related}

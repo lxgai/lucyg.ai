@@ -28,7 +28,7 @@ export default function Home() {
 
       <MetadataStrip
         section="Personal archive · vol. 01"
-        catNo="file: home.idx"
+        catNo="REF. 00"
         updatedLabel={updatedLabel}
         sx={{ pt: { xs: 3, md: 4 } }}
       />

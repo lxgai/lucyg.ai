@@ -3,9 +3,11 @@
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import Image from "next/image";
+import NextLink from "next/link";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
+import { PageContainer } from "@/components/design/layout";
 import { tokens } from "@/components/design/tokens";
 import { TravelDetailSectionFrame, TravelDetailSurface, TravelDetailViewportContainer } from "@/components/travel/TravelDetailSectionFrame";
 import { resolveSiteImageSrc } from "@/lib/images";
@@ -617,11 +619,32 @@ function Lightbox({ image, onClose }: { image: LightboxImage | null; onClose: ()
 export default function TravelDetailPage({ data }: { data: TravelDetailData }) {
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
   const breakpoint = useActiveBreakpoint();
-  const detailMeta = useMemo(() => getTravelDetailIndexMeta(data), [data]);
 
   return (
     <Box id="top">
-      <PageShell section={data.section} catNo={detailMeta.catNo} contentPadding={false}>
+      <PageShell
+        section={data.section}
+        catNo={`REF. B-${String(Number(data.fileNo)).padStart(2, "0")}`}
+        contentPadding={false}
+      >
+        <PageContainer sx={{ pt: { xs: 2, md: 2.25 }, pb: { xs: 2, md: 1 } }}>
+          <Box
+            component={NextLink}
+            href="/travels"
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 11,
+              letterSpacing: "1.6px",
+              color: tokens.ink60,
+              textTransform: "uppercase",
+              textDecoration: "none",
+              display: "inline-flex",
+              "&:hover": { color: tokens.accent },
+            }}
+          >
+            &lt;- Travels
+          </Box>
+        </PageContainer>
         <TravelDetailSurface breakpoint={breakpoint} mode="fit-width" scaleMultiplier={0.94}>
           <Hero data={data} breakpoint={breakpoint} onOpen={setLightboxImage} />
           <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>

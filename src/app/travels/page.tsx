@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
@@ -35,6 +35,11 @@ const TRAVEL_INDEX_ENTRIES: TravelIndexEntry[] = TRIPS.map((trip) => {
   };
 });
 
+function travelDateValue(trip: TravelIndexEntry) {
+  const [month = "1", year = "0"] = trip.date.split("/").map((part) => part.trim());
+  return Number(year) * 12 + Number(month);
+}
+
 function travelTitle(trip: TravelIndexEntry) {
   const parts = trip.place
     .split(",")
@@ -47,27 +52,86 @@ function travelTitle(trip: TravelIndexEntry) {
 }
 
 export default function TravelsPage() {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  const [sortNewest, setSortNewest] = useState(true);
+  const trips = useMemo(
+    () =>
+      [...TRAVEL_INDEX_ENTRIES].sort((a, b) => {
+        const aIndex = TRAVEL_INDEX_ENTRIES.findIndex((trip) => trip.id === a.id);
+        const bIndex = TRAVEL_INDEX_ENTRIES.findIndex((trip) => trip.id === b.id);
+        const dateDiff = travelDateValue(b) - travelDateValue(a);
+        const newestOrder = dateDiff || aIndex - bIndex;
+
+        return sortNewest ? newestOrder : -newestOrder;
+      }),
+    [sortNewest],
   );
-  const visible = isMobile ? 1 : 3;
-  const hasCarousel = TRAVEL_INDEX_ENTRIES.length > visible;
-  const maxStart = Math.max(0, TRAVEL_INDEX_ENTRIES.length - visible);
-  const [start, setStart] = useState(0);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const [titleWidth, setTitleWidth] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
   const [colW, setColW] = useState(0);
   const gap = 36;
 
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 768);
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+  useLayoutEffect(() => {
+    const measureTitleWidth = () => {
+      const probe = document.createElement("span");
+      probe.style.cssText = [
+        "position:absolute",
+        "top:-9999px",
+        "left:-9999px",
+        "visibility:hidden",
+        "white-space:nowrap",
+        `font-family:${tokens.serif}`,
+        "font-size:52px",
+        "line-height:0.95",
+        "letter-spacing:-1.2px",
+        "font-weight:400",
+      ].join(";");
+      document.body.appendChild(probe);
+
+      const widest = TRAVEL_INDEX_ENTRIES.reduce((max, trip) => {
+        const { country, yy } = travelTitle(trip);
+        probe.textContent = `${country} '${yy}.`;
+        return Math.max(max, probe.getBoundingClientRect().width);
+      }, 0);
+
+      probe.remove();
+      setTitleWidth(Math.ceil(widest) + 8);
+    };
+
+    measureTitleWidth();
+    void document.fonts?.ready.then(measureTitleWidth);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!viewportRef.current) return;
+
+    const update = () => setContainerWidth(viewportRef.current?.offsetWidth ?? 0);
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(viewportRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const visible = useMemo(() => {
+    if (!containerWidth || !titleWidth) return 1;
+
+    for (const count of [3, 2, 1]) {
+      const columnWidth = (containerWidth - (count - 1) * gap) / count;
+      if (columnWidth >= titleWidth) return count;
+    }
+
+    return 1;
+  }, [containerWidth, titleWidth]);
+
+  const hasCarousel = trips.length > visible;
+  const maxStart = Math.max(0, trips.length - visible);
+  const [start, setStart] = useState(0);
 
   useEffect(() => {
     setStart((current) => Math.min(current, maxStart));
-  }, [maxStart]);
+  }, [maxStart, trips.length, visible]);
 
   useEffect(() => {
     if (!trackRef.current) return;
@@ -89,38 +153,66 @@ export default function TravelsPage() {
   return (
     <PageShell
       section="SECTION B · TRAVELS"
-      catNo="file: travels.idx"
+      catNo="REF. B-IDX"
       title={
         <>
           Places, <Box component="span" sx={{ fontStyle: "italic" }}>cataloged.</Box>
         </>
       }
-      subtitle={`${TRAVEL_INDEX_ENTRIES.length} entries · filed by date`}
+      subtitle={`${trips.length} entries · filed by date`}
     >
-      {hasCarousel && (
+      <Box
+        sx={{
+          mt: 1,
+          mb: 3,
+          pb: 1.5,
+          borderBottom: `1px solid ${tokens.hair}`,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          gap: 2,
+          fontFamily: tokens.mono,
+          fontSize: 10,
+          letterSpacing: "1.8px",
+          color: tokens.ink60,
+          textTransform: "uppercase",
+        }}
+      >
         <Box
+          component="button"
+          type="button"
+          onClick={() => {
+            setSortNewest((value) => !value);
+            setStart(0);
+          }}
           sx={{
-            mt: 1,
-            mb: 3,
-            pb: 1.75,
-            borderBottom: `1px solid ${tokens.hair}`,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 2,
-            fontFamily: tokens.mono,
-            fontSize: 10,
-            letterSpacing: "1.8px",
+            appearance: "none",
+            border: 0,
+            background: "transparent",
+            p: 0,
             color: tokens.ink60,
-            textTransform: "uppercase",
+            cursor: "pointer",
+            font: "inherit",
+            letterSpacing: "inherit",
+            textTransform: "inherit",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.875,
+            transition: "color 160ms",
+            "&:hover": { color: tokens.accent },
           }}
         >
-          <Box component="span">filed by date · newest first</Box>
+          <Box component="span">{sortNewest ? "newest first" : "oldest first"}</Box>
+          <Box component="span" aria-hidden sx={{ fontSize: 9, opacity: 0.7 }}>
+            ⇅
+          </Box>
+        </Box>
+        {hasCarousel && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2.25 }}>
             <Box component="span">
               {String(start + 1).padStart(2, "0")} -{" "}
-              {String(Math.min(start + visible, TRAVEL_INDEX_ENTRIES.length)).padStart(2, "0")} /{" "}
-              {String(TRAVEL_INDEX_ENTRIES.length).padStart(2, "0")}
+              {String(Math.min(start + visible, trips.length)).padStart(2, "0")} /{" "}
+              {String(trips.length).padStart(2, "0")}
             </Box>
             <TravelsArrow
               disabled={!canPrev}
@@ -137,10 +229,11 @@ export default function TravelsPage() {
               }}
             />
           </Box>
-        </Box>
-      )}
+        )}
+      </Box>
 
       <Box
+        ref={viewportRef}
         sx={{
           overflow: "hidden",
           width: "100%",
@@ -150,7 +243,7 @@ export default function TravelsPage() {
           ref={trackRef}
           sx={{
             display: "grid",
-            gridTemplateColumns: `repeat(${TRAVEL_INDEX_ENTRIES.length}, calc((100% - ${
+            gridTemplateColumns: `repeat(${trips.length}, calc((100% - ${
               (visible - 1) * gap
             }px) / ${visible}))`,
             gap: `${gap}px`,
@@ -162,8 +255,8 @@ export default function TravelsPage() {
             willChange: "transform",
           }}
         >
-          {TRAVEL_INDEX_ENTRIES.map((trip, i) => (
-            <Box key={trip.id} data-trip-col>
+          {trips.map((trip, i) => (
+            <Box key={trip.id} data-trip-col sx={{ height: "100%" }}>
               <TravelsColumn trip={trip} idx={i} />
             </Box>
           ))}
@@ -186,7 +279,7 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
         flexDirection: "column",
         color: tokens.ink,
         cursor: "pointer",
-        minHeight: "100%",
+        height: "100%",
         "&:hover .travel-image": {
           transform: "translateY(-6px)",
         },
@@ -246,11 +339,15 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
         component="h2"
         sx={{
           fontFamily: tokens.serif,
-          fontSize: { xs: 48, md: 52 },
+          fontSize: { xs: 52, md: 52 },
           fontWeight: 400,
           lineHeight: 0.95,
           letterSpacing: "-1.2px",
+          whiteSpace: "nowrap",
           m: 0,
+          "@media (max-width:430px)": {
+            fontSize: 40,
+          },
         }}
       >
         {country}{" "}
@@ -267,7 +364,6 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
           color: tokens.ink60,
           mt: 1.5,
           lineHeight: 1.45,
-          flex: 1,
         }}
       >
         {trip.sub}
@@ -275,7 +371,7 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
 
       <Box
         sx={{
-          mt: 2.75,
+          mt: "auto",
           pt: 1.75,
           borderTop: `1px solid ${tokens.hair}`,
           fontFamily: tokens.mono,
@@ -318,7 +414,7 @@ function TravelsArrow({
         alignItems: "center",
         justifyContent: "center",
         width: 36,
-        height: 36,
+        height: 26,
         border: `1px solid ${disabled ? tokens.hair : tokens.hairStrong}`,
         borderRadius: 0,
         background: "transparent",
@@ -336,6 +432,11 @@ function TravelsArrow({
               color: tokens.paper,
               borderColor: tokens.accent,
             },
+        "&:disabled, &:disabled:hover": {
+          background: "transparent",
+          color: tokens.ink40,
+          borderColor: tokens.hair,
+        },
       }}
     >
       {dir === "prev" ? "←" : "→"}

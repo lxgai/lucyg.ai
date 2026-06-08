@@ -1,39 +1,54 @@
 ---
 name: design-check
-description: Review code against the Memory Archive design system (colors, typography, layout/scroll rules, components, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift toward legacy scrapbook/VT323/Cooper/pink styling. Defaults to the current git diff; accepts file/dir paths.
+description: Review code against the Memory Archive design system (colors, typography, metadata strip, layout/scroll rules, components, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift toward legacy scrapbook/VT323/Cooper/pink styling. Defaults to the current git diff; accepts file/dir paths.
 ---
 
 # design-check
 
-Audit code against the **Memory Archive** design system for this site. This skill does **not** hunt for logic bugs (use `/code-review` for that). It checks one thing: does the UI follow the documented design system, or has it drifted?
+Audit code against the **Memory Archive** design system for this site. This skill does **not** hunt for logic bugs. It checks one thing: does the UI follow the documented design system, or has it drifted?
 
-## Sources of truth (read these first, every run)
+## Sources of truth
 
-The rules below are a summary. The live sources win if they disagree — read them at the start of each run so the skill never goes stale:
+Read these first, every run:
 
-1. `src/components/design/tokens.ts` — the actual token values in code.
-2. `docs/design.md` — the design system spec and section-by-section treatments.
-3. `.claude/CLAUDE.md` — the "Design Direction", "Page Layout And Scroll Rules", and copy rules.
+1. `src/components/design/tokens.ts` - actual token values in code.
+2. `docs/design.md` - current visual and copy source of truth.
+3. `AGENTS.md` - implementation rules for Codex, especially scroll, metadata, Substack, and verification.
+4. `.claude/CLAUDE.md` - still useful Claude-side implementation notes; treat `docs/design.md` and `AGENTS.md` as newer if they disagree.
 
-If `tokens.ts` and `docs/design.md` disagree on a value, **do not pick one silently** — report it as a `DESIGN-SYSTEM CONFLICT` finding so Lucy can resolve it.
+If `tokens.ts` and `docs/design.md` disagree on a design token, report a `DESIGN-SYSTEM CONFLICT` finding instead of choosing silently.
 
-The accent is **rose** `rgb(163, 91, 115)` — aligned across `tokens.ts`, `docs/design.md`, and `CLAUDE.md`. Flag any raw accent literal that isn't `tokens.accent` (or `var(--accent)` in CSS), and flag any reintroduced navy `oklch(0.38 0.08 250)` or retired rust `oklch(0.52 0.13 40)`.
+The accent is rose `rgb(163, 91, 115)`. Flag raw accent literals in public UI unless there is a deliberate local CSS variable wrapper. Flag reintroduced navy `oklch(0.38 0.08 250)`, retired rust `oklch(0.52 0.13 40)`, or old scrapbook pink styling.
 
 ## Scope
 
-- **Default:** the current working diff. Run `git status --porcelain` and `git diff --name-only HEAD` to get changed files; review added/modified `.tsx`, `.ts` (style-bearing), and `.css` files. Skip `src/app/admin/**` unless asked — those editors legitimately use Tailwind and dev-only styling.
-- **If the user passes a path** (file or directory), review that instead of the diff.
-- **Data JSON** (`src/data/travels/**`, `src/data/travel-details/**`) is layout coordinate data, not styled UI — only check it for color/copy literals if asked.
+- **Default:** current working diff. Run `git status --porcelain` and `git diff --name-only HEAD`; review added/modified `.tsx`, `.ts` files that carry UI, `.css`, and relevant docs.
+- **If the user passes a path:** review that file or directory instead.
+- Skip `src/app/admin/**` unless asked; admin editors legitimately use Tailwind and dev-only styling.
+- Data JSON under `src/data/travels/**` and `src/data/travel-details/**` is layout coordinate data. Only check it for color/copy literals when asked.
 
-Announce the scope you settled on in one line before reporting.
+Announce the scope in one line before reporting.
 
-## What to check
+## Report format
 
-Group every finding by severity: **BLOCKER** → **SHOULD-FIX** → **NOTE**. For each, give `file:line` (clickable markdown link), the rule, the current value, and the concrete fix (the exact token or replacement).
+Group findings by severity: **BLOCKER**, **SHOULD-FIX**, **NOTE**.
 
-### 1. Color → must use tokens (SHOULD-FIX; BLOCKER if it's a legacy palette color)
+For each finding include:
 
-Raw hex / `rgba()` / `oklch()` literals that match a token must use the token instead. Import from `@/components/design/tokens`.
+- clickable `file:line`
+- rule
+- current value
+- concrete fix, including the exact token or replacement
+
+If clean, say so plainly. End with `N blockers, M should-fix, K notes`.
+
+## Checks
+
+### 1. Color tokens
+
+Severity: **SHOULD-FIX**, or **BLOCKER** for legacy palette colors in public UI.
+
+Raw hex, `rgba()`, or `oklch()` literals that match a token should use the token from `@/components/design/tokens`.
 
 | Literal | Token |
 |---|---|
@@ -44,61 +59,133 @@ Raw hex / `rgba()` / `oklch()` literals that match a token must use the token in
 | `#5a4e43` | `tokens.ink60` |
 | `#8a7e70` | `tokens.ink40` |
 | `#c9bfae` | `tokens.ink20` |
-| `rgba(31, 26, 22, 0.2)` (any spacing) | `tokens.hair` |
+| `rgba(31, 26, 22, 0.2)` | `tokens.hair` |
 | `rgba(31, 26, 22, 0.55)` | `tokens.hairStrong` |
-| accent literal / navy `oklch(0.38 0.08 250)` / rust `oklch(0.52 0.13 40)` | `tokens.accent` (rose) |
+| rose accent literal | `tokens.accent` |
 
-**Legitimate one-offs — do NOT flag** (note at most once): white/black overlays and shadows over photos/gradients (`rgba(255,255,255,…)`, `rgba(0,0,0,…)`), texture gradients, and the photo-mount filter values. These aren't part of the paper/ink palette.
+Do not flag once-off white/black overlays, photo shadows, texture gradients, or photo filter values unless they become a dominant palette.
 
-**Legacy palette = BLOCKER:** any pink accent or other retired scrapbook color in new public UI.
+### 2. Typography
 
-### 2. Typography (SHOULD-FIX; legacy fonts = BLOCKER)
+Severity: **SHOULD-FIX**, or **BLOCKER** for legacy fonts in public UI.
 
-- `fontFamily` must reference `tokens.serif` / `tokens.mono` / `tokens.hand` — never a raw font stack string.
-- **Legacy fonts are a BLOCKER in public UI:** `VT323`, `Cooper`, `ChunkFive`. These are retired (`docs/design.md` line 49). Allowed only if the task explicitly says to preserve legacy styling.
-- **Serif vs mono role check** (SHOULD-FIX where confident):
-  - **Serif (`tokens.serif`)** → headings, page titles, place names, post titles, human/editorial prose. Italic for places/titles and the one-italicized-word title move.
-  - **Mono (`tokens.mono`)** → section labels, metadata, dates, catalog numbers, taxonomy. Should be small (`8–11px`), letter-spaced (`1.4–2`), often uppercase. Flag mono used at large display sizes, or a metadata label rendered in serif.
+- `fontFamily` should reference `tokens.serif`, `tokens.mono`, or `tokens.hand`, not a raw font stack.
+- Public UI must not reintroduce `VT323`, `Cooper`, or `ChunkFive` unless the task explicitly asks to preserve legacy styling.
+- Serif is for headings, page titles, place names, post titles, and editorial prose.
+- Mono is for metadata, section labels, dates, catalog numbers, taxonomy, and controls. Mono should usually be small (`8-11px`), letter-spaced (`1.4-2px`), and uppercase.
 
-### 3. Layout & scroll rules (BLOCKER — these are hard rules in CLAUDE.md)
+### 3. Metadata strip
 
-On root page wrappers:
-- Must use `minHeight: "100svh"`, `width: "100%"`, and `overflow: "clip"` when clipping is needed.
-- **`width: "100vw"` anywhere → BLOCKER.**
-- **`overflowX: "hidden"` on a root box → BLOCKER.**
-- **`overscroll-behavior` or `touch-action` set on `html`/`body` → BLOCKER.**
-- The document must remain the only vertical scroll container — flag nested scroll containers created on page roots.
+Severity: **SHOULD-FIX**, or **BLOCKER** when a public page reintroduces old `file:` strip text or hairline strip rules.
 
-Gutters (SHOULD-FIX): desktop side padding ≈ `56px`, mobile ≈ `20px`. Flag obviously off values on section page containers.
+All listing and detail pages should use the shared `MetadataStrip`/`PageShell` style:
 
-### 4. Component conventions (SHOULD-FIX)
+- Left field: section label in an accent-filled tab, with `tokens.paperCard` text.
+- Right fields: REF label, short dotted leader, updated date.
+- No top or bottom rules on the strip itself.
+- Font size stays at normal metadata scale on mobile; do not shrink the strip text just to fit.
+- Small screens (`<=768px`) show only the section tab and REF text. Hide the dotted leader and updated date.
 
-- **Section pages** should open with the shared metadata strip — section name in a filled accent "tab" (accent background, paper-card text), file id and last updated as plain mono, no top/bottom rules. Check new section pages use the shared `MetadataStrip` / `PageShell` rather than rolling their own.
-- **Page titles**: large serif, one italicized word.
-- **Photo mounts**: paper-card frame + filter `sepia(0.1–0.15) saturate(0.9)` + caption + catalog label.
-- **Tag chips**: mono uppercase, accent border, accent text on transparent.
-- Prefer existing primitives in `src/components/design/` (`Nav`, `PageShell`, `primitives`, `layout`) over re-implementing hairlines/labels/pills.
+REF labels:
 
-### 5. Mobile (SHOULD-FIX)
+- Home: `REF. 00`
+- Listing/index pages: `REF. {letter}-IDX`, with `A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`.
+- Detail pages: `REF. {letter}-{nn}` from archive position, for example China is `REF. B-01`.
+- Placeholder/secondary pages may use a clear REF variant, but never `file:`.
 
-Multi-column grids must collapse to a single column at `≤768px`. Flag responsive `sx` that keeps multiple columns at `xs`. Confirm display titles scale down on mobile.
+Dates:
 
-### 6. Copy & voice (NOTE)
+- Strip dates come from `src/data/page-updated.ts` via `scripts/generate-page-updated.mjs`.
+- Render tight dots: `UPDATED 04·22·26`, with no spaces around the dots.
 
-Only when the diff touches user-facing copy:
-- Prefer archival words: "Cataloged" not "shown", "Filed" not "sorted", "Entry" not "post".
-- Mono labels lean taxonomic (`SERIES C · TRAVELS`, `FILE: HOME.IDX`).
-- Italics for places and titles, never for generic emphasis.
-- Quiet and considered, not chatty.
+Detail pages:
+
+- Strip sits below nav as normal site chrome.
+- Back link (`<- Projects`, `<- Travels`, `<- Blog`) sits directly below the strip and above content.
+- Travel detail scaled surfaces must start after the strip/back link; nav and metadata must not be inside the scaled surface.
+- China detail's tab has no leading arrow.
+
+Blog detail exception:
+
+- `Also on Substack ↗` must not be in the strip.
+- It belongs centered below the post title/excerpt area, near the tags.
+
+### 4. Layout and scroll
+
+Severity: **BLOCKER**.
+
+Root page wrappers:
+
+- Use `minHeight: "100svh"`.
+- Use `width: "100%"`, not `width: "100vw"`.
+- Use `overflow: "clip"` when clipping is needed.
+- Do not use `overflowX: "hidden"` on root boxes.
+- Do not set `overscroll-behavior` or `touch-action` on `html` or `body`.
+- The document should remain the only vertical scroll container.
+
+Gutters are **SHOULD-FIX**: desktop side padding about `56px`; mobile about `20px`.
+
+### 5. Component conventions
+
+Severity: **SHOULD-FIX**.
+
+- New section pages should use `PageShell` and shared design primitives instead of recreating nav, strip, hairlines, labels, or pills.
+- Page titles should be large serif with one italicized word where appropriate.
+- Photo mounts should use paper-card frames, subtle sepia/saturation treatment, captions, and catalog labels.
+- Tag chips should be mono uppercase, transparent background, accent border, and accent text.
+- Public UI should be responsive at `<=768px`; multi-column layouts collapse or otherwise adapt cleanly.
+
+### 6. Travel index
+
+Severity: **SHOULD-FIX** for drift on `/travels`.
+
+- Sort label reads `newest first` or `oldest first`, not `filed by date · newest first`.
+- Sort label is clickable and toggles the trip order.
+- Carousel arrows are `36x26`; disabled arrows must not retain accent hover styling.
+- Travel cards should stretch to equal height with the footer pinned to the bottom so footer dividers align.
+- Travel titles use `white-space: nowrap`.
+- On very narrow phones (`<430px`), title size may reduce from `52px` to about `40px`.
+- Column count should be dynamic `3 / 2 / 1` based on measured title/container width, not hardcoded viewport breakpoints.
+
+### 7. Copy and voice
+
+Severity: **NOTE**, unless copy conflicts with metadata rules.
+
+- Prefer archival words: "Cataloged", "Filed", "Entry".
+- Mono labels should be taxonomic, for example `SERIES B · TRAVELS` or `REF. B-IDX`.
+- Avoid `FILE:`/`file:` labels in public metadata.
+- Use italics for places and titles, not generic emphasis.
+- Keep the voice quiet and considered, not chatty.
 
 ## Process
 
-1. Read the three sources of truth.
-2. Resolve scope (diff vs. passed path); state it.
-3. Scan with `Grep` for the literal patterns (`#[0-9a-fA-F]{3,6}`, `rgba?\(`, `oklch\(`, `fontFamily`, `VT323|Cooper|ChunkFive`, `100vw`, `overflowX`, `overscroll-behavior`, `touch-action`), then `Read` around each hit to judge intent — never flag from a grep line alone.
-4. Report findings grouped by severity, each with `file:line`, rule, and fix. If clean, say so plainly.
-5. End with a one-line summary: `N blockers, M should-fix, K notes`.
+1. Read the sources of truth.
+2. Resolve scope and state it.
+3. Search with `rg` for likely drift:
+   - colors: `#[0-9a-fA-F]{3,6}|rgba?\(|oklch\(`
+   - typography: `fontFamily|VT323|Cooper|ChunkFive`
+   - metadata: `file:|FILE:|MetadataStrip|catNo|updatedLabel|metadataExtra|Also on Substack`
+   - scroll: `100vw|overflowX|overscroll-behavior|touch-action`
+   - travel index: `newest first|oldest first|whiteSpace|ResizeObserver|TravelsArrow`
+4. Read context around each hit. Never flag from grep alone.
+5. Report findings grouped by severity.
 
 ## Fixing
 
-Report-only by default. If the user passes `--fix` (or asks you to apply), make the **safe, mechanical** fixes only — swap color literals for tokens, replace raw font stacks with `tokens.*`, add the `tokens` import if missing. Do **not** auto-resolve the accent CONFLICT, change layout/scroll architecture, or rewrite copy without confirming. After fixing, run the verification gate from CLAUDE.md: `npx tsc --noEmit` then `npm run lint`.
+Report-only by default. If the user passes `--fix` or asks you to apply fixes, make only safe mechanical fixes:
+
+- swap token-equivalent literals for `tokens.*`
+- replace raw font stacks with `tokens.*`
+- replace `file:` metadata labels with the correct `REF.` value when the route mapping is obvious
+- add missing token imports
+
+Do not auto-resolve design-system conflicts, rewrite layout architecture, or rewrite copy without confirming.
+
+After fixes, run the project verification gate:
+
+```bash
+npx tsc --noEmit
+npm run lint
+```
+
+On Windows PowerShell, use `npx.cmd`/`npm.cmd` if script execution policy blocks `npx` or `npm`.

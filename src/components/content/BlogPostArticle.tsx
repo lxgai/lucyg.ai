@@ -31,6 +31,7 @@ function compactDate(date: string) {
 
 export function BlogPostArticle({
   post,
+  refNo,
   older,
   newer,
   related,
@@ -38,6 +39,7 @@ export function BlogPostArticle({
   subscribeUrl,
 }: {
   post: BlogEntry;
+  refNo: string;
   older?: BlogEntry;
   newer?: BlogEntry;
   related: BlogEntry[];
@@ -51,27 +53,7 @@ export function BlogPostArticle({
   return (
     <PageShell
       section={`SECTION D · BLOG · ${post.slug}`}
-      catNo={`file: ${post.slug}.entry`}
-      updatedLabel={displayDate}
-      metadataExtra={
-        <Box
-          component={post.sourceUrl ? "a" : "span"}
-          href={post.sourceUrl}
-          target={post.sourceUrl ? "_blank" : undefined}
-          rel={post.sourceUrl ? "noopener noreferrer" : undefined}
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 0.75,
-            color: "inherit",
-            textDecoration: "none",
-            "&:hover": { color: post.sourceUrl ? tokens.accent : "inherit" },
-          }}
-        >
-          <Box component="span" sx={{ width: 6, height: 6, background: tokens.accent, borderRadius: "50%" }} />
-          <Box component="span">{post.source === "substack" ? "Also on Substack ->" : "Filed locally"}</Box>
-        </Box>
-      }
+      catNo={refNo}
     >
       <Box
         component={NextLink}
@@ -136,6 +118,30 @@ export function BlogPostArticle({
         >
           {post.excerpt}
         </Typography>
+
+        {post.sourceUrl && (
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+            <Box
+              component="a"
+              href={post.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.4px",
+                color: tokens.accent,
+                textTransform: "uppercase",
+                textDecoration: "none",
+                borderBottom: `1px solid ${tokens.accent}`,
+                pb: "1px",
+                "&:hover": { opacity: 0.8 },
+              }}
+            >
+              Also on Substack ↗
+            </Box>
+          </Box>
+        )}
 
         <TagRow tags={post.tags} centered />
 

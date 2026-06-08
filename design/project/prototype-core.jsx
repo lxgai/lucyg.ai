@@ -72,6 +72,13 @@ function Nav({ route, setRoute, theme }) {
     ["About", "about"],
   ];
   const activeKey = route.startsWith("travels") ? "travels" : route;
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  function go(key) {
+    setRoute(key);
+    setMenuOpen(false);
+  }
+
   return (
     <div className="m-nav" style={{
       position: "sticky", top: 0, zIndex: 50,
@@ -81,14 +88,28 @@ function Nav({ route, setRoute, theme }) {
       display: "flex", justifyContent: "space-between", alignItems: "baseline",
       fontFamily: A.mono,
     }}>
-      <div onClick={() => setRoute("home")} style={{ cursor: "pointer", display: "flex", alignItems: "baseline", gap: 10 }}>
+      <div onClick={() => go("home")} style={{ cursor: "pointer", display: "flex", alignItems: "baseline", gap: 10 }}>
         <span className="m-nav-brand" style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 22, color: A.ink, letterSpacing: -0.2 }}>Lucy Gai</span>
         <span className="m-nav-est" style={{ fontSize: 9, color: A.ink40, letterSpacing: 1.6, textTransform: "uppercase" }}>— EST. 2024</span>
       </div>
-      <div className="m-nav-links" style={{ display: "flex", gap: 28, fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase" }}>
+
+      {/* Hamburger toggle — hidden on desktop, shown on mobile via CSS */}
+      <button className="m-nav-toggle" aria-label="Menu" aria-expanded={menuOpen}
+        onClick={() => setMenuOpen(o => !o)}
+        style={{
+          display: "none", background: "none", border: "none", cursor: "pointer",
+          padding: 6, margin: 0, alignSelf: "center",
+          flexDirection: "column", gap: 5, width: 32,
+        }}>
+        <span style={{ display: "block", height: 1.5, width: 22, background: A.ink, transition: "transform 220ms, opacity 220ms", transform: menuOpen ? "translateY(6.5px) rotate(45deg)" : "none" }} />
+        <span style={{ display: "block", height: 1.5, width: 22, background: A.ink, transition: "opacity 160ms", opacity: menuOpen ? 0 : 1 }} />
+        <span style={{ display: "block", height: 1.5, width: 22, background: A.ink, transition: "transform 220ms, opacity 220ms", transform: menuOpen ? "translateY(-6.5px) rotate(-45deg)" : "none" }} />
+      </button>
+
+      <div className={"m-nav-links" + (menuOpen ? " is-open" : "")} style={{ display: "flex", gap: 28, fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase" }}>
         {links.map(([label, key]) => (
           <span key={key}
-            onClick={() => setRoute(key)}
+            onClick={() => go(key)}
             style={{
               color: activeKey === key ? theme.accent : A.ink,
               borderBottom: activeKey === key ? `1px solid ${theme.accent}` : "1px solid transparent",
@@ -143,7 +164,7 @@ function Pill({ children, onClick, filled, theme, style = {} }) {
 // switch via the "Meta strip" tweak.
 function MetaStrip({ section, catNo, theme }) {
   const v = theme.stripStyle || "bare";
-  const updated = "UPDATED 04 · 22 · 26";
+  const updated = "UPDATED 04·22·26";
   const base = {
     fontFamily: A.mono, fontSize: 10, letterSpacing: 1.6, color: A.ink60,
     textTransform: "uppercase", padding: "8px 0",
@@ -161,7 +182,7 @@ function MetaStrip({ section, catNo, theme }) {
         <Leader />
         <span>{catNo}</span>
         <Leader />
-        <span>{updated}</span>
+        <span className="m-strip-updated">{updated}</span>
       </div>
     );
   }
@@ -170,10 +191,11 @@ function MetaStrip({ section, catNo, theme }) {
   if (v === "tab") {
     return (
       <div className="m-strip" style={{ ...base, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ background: theme.accent, color: A.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>{section}</span>
-        <span style={{ display: "flex", gap: 24 }}>
-          <span>{catNo}</span>
-          <span>{updated}</span>
+        <span className="m-strip-tab" style={{ background: theme.accent, color: A.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>{section}</span>
+        <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          {catNo && <span className="m-strip-ref">{catNo}</span>}
+          {catNo && <span className="m-strip-leader" style={{ width: 11, borderBottom: `1px dotted ${A.hairStrong}`, transform: "translateY(1px)" }} />}
+          <span className="m-strip-updated">{updated}</span>
         </span>
       </div>
     );
@@ -188,7 +210,7 @@ function MetaStrip({ section, catNo, theme }) {
     <div className="m-strip" style={{ ...base, display: "flex", justifyContent: "space-between", ...borders }}>
       <span style={{ color: theme.accent }}>{section}</span>
       <span>{catNo}</span>
-      <span>{updated}</span>
+      <span className="m-strip-updated">{updated}</span>
     </div>
   );
 }

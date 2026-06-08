@@ -264,6 +264,7 @@ const PROJECTS = [
   {
     year: "2026", slug: "memory-archive", name: "Memory Archive",
     role: "Solo · design + build", kind: "Personal site", status: "shipping",
+    published: "Feb · 03 · 2026", updated: "May · 18 · 2026",
     stack: ["next.js","mdx","tailwind"], color: "#c94b62",
     tagline: "A room I keep returning to — built so I have somewhere to put the things I love.",
     started: "Jan · 2026", filed: "ongoing",
@@ -279,6 +280,7 @@ const PROJECTS = [
   {
     year: "2025", slug: "fieldnotes", name: "Fieldnotes",
     role: "Co-founder", kind: "iOS app", status: "live",
+    published: "Mar · 04 · 2025", updated: "Nov · 22 · 2025",
     stack: ["swift","supabase"], color: "#4a7ba8",
     tagline: "A quiet place for the things you notice on walks. Two of us, evenings and Saturdays.",
     started: "Apr · 2024", filed: "Mar · 2025",
@@ -294,6 +296,7 @@ const PROJECTS = [
   {
     year: "2025", slug: "margin-gutter", name: "Margin / Gutter",
     role: "Design", kind: "Indie zine, vol. 02", status: "printed",
+    published: "Feb · 22 · 2025", updated: "Mar · 14 · 2025",
     stack: ["indesign","risograph"], color: "#d08a3a",
     tagline: "A zine about the spaces between things — printed risograph in Oakland, 200 copies.",
     started: "Sep · 2024", filed: "Feb · 2025",
@@ -308,6 +311,7 @@ const PROJECTS = [
   {
     year: "2024", slug: "postcard-service", name: "Postcard Service",
     role: "Build", kind: "Side project", status: "beta",
+    published: "Sep · 09 · 2024", updated: "Feb · 11 · 2025",
     stack: ["rails","stripe"], color: "#4d8a58",
     tagline: "Type a note from your phone. We print it on a postcard. We mail it for you. $3.",
     started: "Jun · 2024", filed: "Sep · 2024",
@@ -322,6 +326,7 @@ const PROJECTS = [
   {
     year: "2024", slug: "pantry", name: "Pantry",
     role: "Solo", kind: "macOS widget", status: "archived",
+    published: "May · 30 · 2024", updated: "May · 30 · 2024",
     stack: ["swiftui"], color: "#7a6aa8",
     tagline: "A menu-bar widget that knew what was in my fridge. It worked for me. That was enough.",
     started: "Feb · 2024", filed: "May · 2024",
@@ -336,6 +341,7 @@ const PROJECTS = [
   {
     year: "2023", slug: "letters-the-site", name: "Letters (the site)",
     role: "Solo", kind: "Long-form blog", status: "archived",
+    published: "Jan · 02 · 2021", updated: "Dec · 18 · 2023",
     stack: ["astro"], color: "#a84a7a",
     tagline: "Three years of long writing, finally folded back into this archive. The good ones survive.",
     started: "Jan · 2021", filed: "Dec · 2023",

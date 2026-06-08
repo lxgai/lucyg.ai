@@ -8,7 +8,7 @@ export default function Netherlands25Page() {
   return (
     <PageShell
       section="SECTION B · TRAVELS / NETHERLANDS"
-      catNo="03 / 2025 · 7 days"
+      catNo="REF. B-03"
       title={
         <>
           Netherlands<Box component="span" sx={{ color: tokens.accent }}>.</Box>

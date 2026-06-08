@@ -23,7 +23,7 @@ const CURRENTLY: Array<[string, React.ReactNode]> = [
 
 export default function AboutPage() {
   return (
-    <PageShell section="SECTION E · ABOUT" catNo="file: about.idx">
+    <PageShell section="SECTION E · ABOUT" catNo="REF. E-IDX">
       <Box
         sx={{
           display: "grid",

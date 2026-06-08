@@ -65,11 +65,18 @@ The site reads like a personal **library card catalog** — an archival room whe
 
   * Mono-caps metadata row at the top of every section page (no top/bottom rules)
   * Section name sits in a filled accent "tab" (accent background, paper-card text); the rest is plain mono
-  * Fields:
+  * Desktop fields:
 
     * section name (accent tab)
-    * file id
-    * last updated
+    * REF label
+    * short dotted leader
+    * last updated, with tight dots (`UPDATED 04·22·26`)
+  * Small screens show only the section tab and REF label
+  * REF labels:
+
+    * home: `REF. 00`
+    * listing/index pages: `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`)
+    * detail pages: `REF. {letter}-{nn}` from archive position
 
 * **Page title**
 
@@ -148,8 +155,10 @@ The site reads like a personal **library card catalog** — an archival room whe
 
 * **Travels**
 
-  * Postcard grid
-  * 3 cards
+  * Postcard carousel
+  * Dynamic 3 / 2 / 1 columns based on measured title width and available container width
+  * Sort control toggles `newest first` / `oldest first`
+  * Trip titles stay on one line
   * Slight rotation
   * Hover flattens + lifts
   * Photo with sepia filter + corner stamp
@@ -187,6 +196,7 @@ The site reads like a personal **library card catalog** — an archival room whe
 * **Travel detail pages**
 
   * Public metadata strip remains normal site chrome, matching the scale of other section pages
+  * Back link sits directly below the metadata strip and above the scaled detail surface
   * Detail content below the strip is a fixed design canvas per breakpoint:
 
     * `large` `1440px`
@@ -218,7 +228,7 @@ The site reads like a personal **library card catalog** — an archival room whe
 * Mono labels lean taxonomic:
 
   * `"SERIES B · TRAVELS"`
-  * `"FILE: HOME.IDX"`
+  * `"REF. B-IDX"`
 * Italics used for places and titles, never for emphasis
 
 ---

@@ -70,22 +70,32 @@ Layout direction:
 - Desktop page gutters: about `56px`
 - Mobile gutters: about `20px`
 - Use wide horizontal containers and generous whitespace.
-- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, file id, and last updated.
+- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, REF label, dotted leader, and tight-dot updated date on desktop. On small screens, show only the tab and REF label.
 - Page titles should be large serif type with one italicized word where appropriate.
 - Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
 
 Metadata strip dates:
 
 - `UPDATED` labels are generated into `src/data/page-updated.ts` by `scripts/generate-page-updated.mjs`.
+- Render dates with tight dots, for example `UPDATED 04·22·26`.
 - The generator runs on `predev` and `prebuild`; run `npm run generate:page-updated` manually after date-source changes while a dev server is already running.
 - Each route has a source-file list in `scripts/generate-page-updated.mjs`. If any listed source is dirty in Git, that route uses today's date; otherwise it uses the latest committed date for those sources.
 - When moving section data, update the route source list so unrelated section edits do not bump each other's metadata dates.
+
+Metadata strip REF labels:
+
+- Home uses `REF. 00`.
+- Listing/index pages use `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`).
+- Detail pages use `REF. {letter}-{nn}` from the entry's archive position, such as `REF. B-01` for China.
+- Do not use `file:`/`FILE:` text in public metadata strips.
+- Detail page back links (`← Projects`, `← Travels`, `← Blog`) sit directly below the strip and above content.
+- Blog detail keeps `Also on Substack ↗` out of the strip; place it centered below the post title area near tags.
 
 Copy direction:
 
 - Quiet and considered, not chatty.
 - Prefer archival words such as "Cataloged", "Filed", and "Entry".
-- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `FILE: HOME.IDX`.
+- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `REF. C-IDX`.
 - Use italics for places and titles, not generic emphasis.
 
 ## Coding Conventions

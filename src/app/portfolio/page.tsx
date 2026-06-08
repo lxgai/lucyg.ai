@@ -7,7 +7,7 @@ export default function PortfolioPage() {
   return (
     <PageShell
       section="SECTION A · PORTFOLIO"
-      catNo="file: portfolio.idx"
+      catNo="REF. A-PORT"
       title={
         <>
           The <Box component="span" sx={{ fontStyle: "italic" }}>long</Box> version.

@@ -11,7 +11,7 @@ export default async function BlogPage() {
   return (
     <PageShell
       section="SECTION D · BLOG"
-      catNo="file: blog.idx"
+      catNo="REF. D-IDX"
       title={
         <>
           Notes, filed by <Box component="span" sx={{ fontStyle: "italic" }}>date.</Box>

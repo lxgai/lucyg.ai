@@ -10,7 +10,7 @@ export default function ProjectsPage() {
   return (
     <PageShell
       section="SECTION A · PROJECTS"
-      catNo="file: projects.idx"
+      catNo="REF. A-IDX"
       title={
         <>
           Things I&apos;ve <Box component="span" sx={{ fontStyle: "italic" }}>made.</Box>

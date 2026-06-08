@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Metadata Strip — Date & Divider</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const TOK = {
+  paper: "#f1e9df", paperCard: "#fbf6ee",
+  ink: "#1f1a16", ink60: "#5a4e43", ink40: "#8a7e70",
+  hair: "rgba(31, 26, 22, 0.2)", hairStrong: "rgba(31, 26, 22, 0.55)",
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  accent: "rgb(163, 91, 115)",
+};
+
+const AW = 980, AH = 88;
+
+// The accent section tab — constant across every variation.
+function Tab() {
+  return (
+    <span style={{ background: TOK.accent, color: TOK.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>
+      SECTION B · TRAVELS
+    </span>
+  );
+}
+
+// Page-context wrapper: paper bg + the mono-caps strip row.
+function Strip({ children }) {
+  return (
+    <div style={{
+      width: "100%", height: "100%", background: TOK.paper,
+      display: "flex", alignItems: "center", padding: "0 40px", boxSizing: "border-box",
+    }}>
+      <div style={{
+        width: "100%", fontFamily: TOK.mono, fontSize: 10, letterSpacing: 1.6,
+        color: TOK.ink60, textTransform: "uppercase", padding: "8px 0",
+        display: "flex", alignItems: "center",
+      }}>
+        <Tab />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// Shorthands
+const Ref = () => <span>REF. B-01</span>;
+const grpRight = { marginLeft: "auto", display: "flex", alignItems: "center" };
+
+// ====================================================================
+// SECTION 1 — how to DIVIDE "REF" from "UPDATED" (date held constant)
+// ====================================================================
+
+// 1A — empty space (current): the two fields share a small gap, set right.
+const D_Gap = () => (
+  <span style={{ ...grpRight, gap: 24 }}>
+    <Ref /><span>UPDATED 04 · 22 · 26</span>
+  </span>
+);
+
+// 1B — vertical hairline rule between the fields.
+const D_Pipe = () => (
+  <span style={{ ...grpRight, gap: 16 }}>
+    <Ref />
+    <span style={{ width: 1, height: 11, background: TOK.hairStrong }} />
+    <span>UPDATED 04 · 22 · 26</span>
+  </span>
+);
+
+// 1C — middot separator.
+const D_Dot = () => (
+  <span style={{ ...grpRight, gap: 11 }}>
+    <Ref /><span style={{ color: TOK.ink40 }}>·</span><span>UPDATED 04 · 22 · 26</span>
+  </span>
+);
+
+// 1D — slash separator.
+const D_Slash = () => (
+  <span style={{ ...grpRight, gap: 11 }}>
+    <Ref /><span style={{ color: TOK.ink40 }}>/</span><span>UPDATED 04 · 22 · 26</span>
+  </span>
+);
+
+// 1E — dotted catalog leader filling the gap (REF moves left, UPDATED far right).
+const D_Leader = () => (
+  <span style={{ flex: 1, marginLeft: 22, display: "flex", alignItems: "center" }}>
+    <Ref />
+    <span style={{ flex: 1, margin: "0 14px", borderBottom: `1px dotted ${TOK.hairStrong}`, transform: "translateY(2px)" }} />
+    <span>UPDATED 04 · 22 · 26</span>
+  </span>
+);
+
+// 1F — three even zones: tab / REF / UPDATED spread across the full width.
+const D_Zones = () => (
+  <React.Fragment>
+    <span style={{ margin: "0 auto" }}><Ref /></span>
+    <span>UPDATED 04 · 22 · 26</span>
+  </React.Fragment>
+);
+
+// ====================================================================
+// SECTION 2 — how to DISPLAY the updated date (divider held = gap)
+// ====================================================================
+const dateRow = (node) => (
+  <span style={{ ...grpRight, gap: 24 }}><Ref />{node}</span>
+);
+
+// 2A — current.
+const T_Current = () => dateRow(<span>UPDATED 04 · 22 · 26</span>);
+
+// 2B — abbreviated label, dot-delimited numerals.
+const T_Abbr = () => dateRow(<span>UPD. 04.22.26</span>);
+
+// 2C — "revised" framing, ISO-ish order.
+const T_Rev = () => dateRow(<span>REV. 2026 · 04 · 22</span>);
+
+// 2F — date de-emphasized (lighter) so REF reads as the primary field.
+const T_Muted = () => dateRow(
+  <span style={{ color: TOK.ink40 }}>UPDATED 04 · 22 · 26</span>
+);
+
+// 2G — tight numerals: no spaces around the middots.
+const T_Tight = () => dateRow(<span>UPDATED 04·22·26</span>);
+
+// ====================================================================
+// SECTION 3 — short dotted leader (just a few dots) + tight numerals
+// ====================================================================
+
+// 3A — a short run of dots between the fields, not a full-width fill.
+const D_FewDots = () => (
+  <span style={{ ...grpRight, gap: 12 }}>
+    <Ref />
+    <span style={{ width: 11, borderBottom: `1px dotted ${TOK.hairStrong}`, transform: "translateY(1px)" }} />
+    <span>UPDATED 04·22·26</span>
+  </span>
+);
+
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="dividers" title="Dividing REF from UPDATED"
+        subtitle="Date held constant — only the separation between the two fields changes.">
+        <DCArtboard id="d-gap"    label="1A · Empty space (current)" width={AW} height={AH}><Strip><D_Gap /></Strip></DCArtboard>
+        <DCArtboard id="d-pipe"   label="1B · Hairline rule"          width={AW} height={AH}><Strip><D_Pipe /></Strip></DCArtboard>
+        <DCArtboard id="d-dot"    label="1C · Middot"                 width={AW} height={AH}><Strip><D_Dot /></Strip></DCArtboard>
+        <DCArtboard id="d-slash"  label="1D · Slash"                  width={AW} height={AH}><Strip><D_Slash /></Strip></DCArtboard>
+        <DCArtboard id="d-leader" label="1E · Dotted catalog leader"  width={AW} height={AH}><Strip><D_Leader /></Strip></DCArtboard>
+        <DCArtboard id="d-zones"  label="1F · Three even zones"       width={AW} height={AH}><Strip><D_Zones /></Strip></DCArtboard>
+      </DCSection>
+
+      <DCSection id="dates" title="Displaying the updated date"
+        subtitle="Divider held constant (small gap) — only the date treatment changes.">
+        <DCArtboard id="t-cur"   label="2A · UPDATED 04 · 22 · 26 (current)" width={AW} height={AH}><Strip><T_Current /></Strip></DCArtboard>
+        <DCArtboard id="t-abbr"  label="2B · UPD. 04.22.26"                  width={AW} height={AH}><Strip><T_Abbr /></Strip></DCArtboard>
+        <DCArtboard id="t-rev"   label="2C · REV. 2026 · 04 · 22"           width={AW} height={AH}><Strip><T_Rev /></Strip></DCArtboard>
+        <DCArtboard id="t-muted" label="2F · Muted date"                    width={AW} height={AH}><Strip><T_Muted /></Strip></DCArtboard>
+        <DCArtboard id="t-tight" label="2G · Tight numerals · 04·22·26"     width={AW} height={AH}><Strip><T_Tight /></Strip></DCArtboard>
+      </DCSection>
+
+      <DCSection id="dots" title="Short dotted leader"
+        subtitle="A few dots between REF and UPDATED instead of a full-width leader — with tight numerals.">
+        <DCArtboard id="x-fewdots" label="3A · A few dots · 04·22·26" width={AW} height={AH}><Strip><D_FewDots /></Strip></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>One-track variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="design-canvas.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+// Tokens lifted from prototype-core so the mock matches Direction A exactly.
+const T = {
+  paper: "#f1e9df",
+  paperCard: "#fbf6ee",
+  ink: "#1f1a16",
+  ink60: "#5a4e43",
+  ink40: "#8a7e70",
+  ink20: "#c9bfae",
+  hair: "rgba(31, 26, 22, 0.2)",
+  hairStrong: "rgba(31, 26, 22, 0.55)",
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  serif: "'Newsreader', Georgia, serif",
+  accent: "oklch(0.38 0.08 250)", // navy default
+};
+
+// Sample data — Knock2 · nolimit, with "Dashstar*" as the featured cut.
+const ALBUM = { title: "nolimit,", artist: "Knock2", year: "2024", cover: "images/favorites/albums/nolimit.png" };
+const TRACKS = [
+  { n: 1, name: "Dashstar*", time: "2:51", featured: true },
+  { n: 2, name: "Not Ur Friend", time: "3:12" },
+  { n: 3, name: "Hunnids & Hunnids", time: "2:43" },
+  { n: 4, name: "no limit", time: "3:05" },
+  { n: 5, name: "go!", time: "2:38" },
+  { n: 6, name: "FEELS LIKE", time: "2:54" },
+  { n: 7, name: "Lights Down", time: "3:21" },
+  { n: 8, name: "RUNAWAY", time: "2:47" },
+  { n: 9, name: "drift", time: "3:08" },
+  { n: 10, name: "outro*", time: "2:12" },
+];
+
+// ─────────────────────────────────────────────────────────────────────
+// Shared header — title + CAT label so each artboard reads as a card
+// pulled out of the existing favorites page.
+// ─────────────────────────────────────────────────────────────────────
+function CardHeader({ ribbon }) {
+  return (
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+        <div>
+          <div style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 22, lineHeight: 1 }}>{ALBUM.title}</div>
+          <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>
+            {ALBUM.artist} · {ALBUM.year}
+          </div>
+        </div>
+        <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, textTransform: "uppercase", color: T.ink60, display: "flex", gap: 16 }}>
+          <span style={{ color: T.accent }}>CAT. D.M</span>
+          <span>N° 001</span>
+        </div>
+      </div>
+      <div style={{ height: 1, background: T.hair, marginBottom: 14 }} />
+      {ribbon}
+    </>
+  );
+}
+
+// Triangular play glyph in pure CSS — matches the editorial feel better
+// than a unicode ▶ which renders inconsistently across fonts.
+function PlayGlyph({ size = 14, color = T.accent, playing = false }) {
+  if (playing) {
+    return (
+      <span style={{ display: "inline-flex", gap: 2, width: size, height: size, alignItems: "center" }}>
+        <span style={{ width: size * 0.3, height: size, background: color }} />
+        <span style={{ width: size * 0.3, height: size, background: color }} />
+      </span>
+    );
+  }
+  return (
+    <span style={{
+      display: "inline-block",
+      width: 0, height: 0,
+      borderTop: `${size / 2}px solid transparent`,
+      borderBottom: `${size / 2}px solid transparent`,
+      borderLeft: `${size * 0.85}px solid ${color}`,
+    }} />
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// A · CURRENT — full tracklist, multiple "picks" w/ stars
+// (rendered to match prototype-pages.jsx TracklistView exactly so the
+// before/after read is honest)
+// ═════════════════════════════════════════════════════════════════════
+function VariantCurrent() {
+  // Pretend 4 are "picks" and #1 is current/playing, as in the live demo.
+  const picks = [1, 3, 4, 9];
+  const currentIdx = 0;
+  return (
+    <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18 }}>
+      <CardHeader ribbon={
+        <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 10 }}>
+          Tracklist · {picks.length} picks
+        </div>
+      }/>
+      {TRACKS.map((tr, i) => {
+        const isCurrent = i === currentIdx;
+        const isPicked = picks.includes(tr.n);
+        return (
+          <div key={tr.n} style={{
+            display: "grid", gridTemplateColumns: "26px 1fr auto", gap: 14, padding: "6px 0",
+            alignItems: "baseline", cursor: "pointer",
+            fontFamily: T.mono, fontSize: 11,
+            color: isCurrent ? T.accent : (!isPicked ? T.ink60 : T.ink),
+            borderLeft: isCurrent ? `2px solid ${T.accent}` : "2px solid transparent",
+            paddingLeft: 10, marginLeft: -12,
+            opacity: !isPicked ? 0.55 : 1,
+          }}>
+            <span style={{ color: T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
+            <span style={{ fontFamily: T.serif, fontSize: 15, fontStyle: isCurrent ? "italic" : "normal" }}>
+              {isCurrent && <span style={{ marginRight: 6, color: T.accent }}>♪</span>}
+              {isPicked && !isCurrent && <span style={{ marginRight: 6, color: T.accent }}>★</span>}
+              {tr.name}
+            </span>
+            <span style={{ color: T.ink60, fontSize: 10 }}>{tr.time}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// B · FEATURED CUT — the single playable track gets a large editorial
+// row at top; rest of tracklist follows as small mono liner notes.
+// ═════════════════════════════════════════════════════════════════════
+function VariantFeatured({ playing, setPlaying }) {
+  const featured = TRACKS.find(t => t.featured);
+  const rest = TRACKS.filter(t => !t.featured);
+  return (
+    <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18 }}>
+      <CardHeader ribbon={
+        <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14 }}>
+          Featured cut
+        </div>
+      }/>
+
+      {/* Featured row */}
+      <div onClick={() => setPlaying(p => !p)} style={{
+        display: "grid", gridTemplateColumns: "32px 1fr auto", gap: 14,
+        alignItems: "center", cursor: "pointer",
+        padding: "14px 12px", marginLeft: -12, marginRight: -12,
+        background: "rgba(31,26,22,0.04)",
+        borderLeft: `2px solid ${T.accent}`,
+      }}>
+        <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <PlayGlyph size={16} playing={playing} />
+        </span>
+        <div>
+          <div style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 24, lineHeight: 1.1, color: T.ink }}>
+            {featured.name}
+          </div>
+          <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink60, letterSpacing: 1.4, textTransform: "uppercase", marginTop: 4 }}>
+            Track 0{featured.n} · {featured.time} · {playing ? "now playing" : "press to play"}
+          </div>
+        </div>
+        <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: 1.4, textTransform: "uppercase", writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+          featured
+        </span>
+      </div>
+
+      {/* Faint progress bar so it reads as a single-track player, not a list row */}
+      <div style={{ height: 2, background: T.hair, margin: "0 -12px 18px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: playing ? "34%" : "0%", background: T.accent, transition: "width 300ms" }}/>
+      </div>
+
+      {/* Liner notes — context, not buttons */}
+      <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 8 }}>
+        Full tracklist
+      </div>
+      <div style={{ columnCount: 2, columnGap: 18 }}>
+        {rest.map(tr => (
+          <div key={tr.n} style={{
+            display: "grid", gridTemplateColumns: "20px 1fr auto", gap: 8,
+            padding: "3px 0",
+            fontFamily: T.mono, fontSize: 10.5, color: T.ink60,
+            breakInside: "avoid",
+          }}>
+            <span style={{ color: T.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
+            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{tr.name}</span>
+            <span style={{ fontSize: 9 }}>{tr.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// C · 45 RPM SINGLE — lean fully into single metaphor. No tracklist;
+// the card becomes a 7" sleeve. CAT label flips to "45 RPM / 7"".
+// ═════════════════════════════════════════════════════════════════════
+function Variant45({ playing, setPlaying }) {
+  const featured = TRACKS.find(t => t.featured);
+  return (
+    <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 18 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+        <div>
+          <div style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 22, lineHeight: 1 }}>{ALBUM.title}</div>
+          <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, marginTop: 3 }}>
+            {ALBUM.artist} · {ALBUM.year}
+          </div>
+        </div>
+        <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, textTransform: "uppercase", color: T.ink60, display: "flex", gap: 12 }}>
+          <span style={{ color: T.accent }}>45 RPM</span>
+          <span>7″ SINGLE</span>
+        </div>
+      </div>
+      <div style={{ height: 1, background: T.hair, marginBottom: 22 }} />
+
+      {/* Big editorial cut — labeled "A-SIDE" with a ruled hairline */}
+      <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 18, alignItems: "start", marginBottom: 18 }}>
+        <div style={{
+          fontFamily: T.mono, fontSize: 9, letterSpacing: 2, color: T.accent, textTransform: "uppercase",
+          writingMode: "vertical-rl", transform: "rotate(180deg)",
+          alignSelf: "stretch", display: "flex", alignItems: "center",
+          borderLeft: `1px solid ${T.hairStrong}`, paddingLeft: 4,
+        }}>
+          A-Side
+        </div>
+        <div>
+          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 6 }}>
+            Track 0{featured.n} · {featured.time}
+          </div>
+          <div style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 38, lineHeight: 1.05, letterSpacing: -0.6, marginBottom: 16 }}>
+            {featured.name}
+          </div>
+          <div onClick={() => setPlaying(p => !p)} style={{
+            display: "inline-flex", alignItems: "center", gap: 10, cursor: "pointer",
+            padding: "10px 18px",
+            border: `1px solid ${T.ink}`, background: playing ? T.ink : "transparent",
+            color: playing ? T.paper : T.ink,
+            fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, textTransform: "uppercase",
+            transition: "all 180ms",
+          }}>
+            <PlayGlyph size={11} color={playing ? T.paper : T.ink} playing={playing} />
+            {playing ? "playing" : "play single"}
+          </div>
+        </div>
+      </div>
+
+      {/* B-side, intentionally empty — visual rhyme with a real 45 */}
+      <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 18, alignItems: "start", opacity: 0.6 }}>
+        <div style={{
+          fontFamily: T.mono, fontSize: 9, letterSpacing: 2, color: T.ink40, textTransform: "uppercase",
+          writingMode: "vertical-rl", transform: "rotate(180deg)",
+          alignSelf: "stretch", display: "flex", alignItems: "center",
+          borderLeft: `1px solid ${T.hair}`, paddingLeft: 4,
+        }}>
+          B-Side
+        </div>
+        <div style={{ paddingTop: 6, paddingBottom: 6 }}>
+          <div style={{ fontFamily: T.serif, fontStyle: "italic", fontSize: 17, color: T.ink60, lineHeight: 1.4 }}>
+            Listen to the rest of <span style={{ fontStyle: "normal" }}>{ALBUM.title}</span> in full →
+          </div>
+          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink40, textTransform: "uppercase", marginTop: 8, display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <span>Spotify</span>
+            <span>·</span>
+            <span>Apple Music</span>
+            <span>·</span>
+            <span>Bandcamp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Vinyl thumbnail to the left of each card so the comparison shows the
+// card *in context* of the page, not floating. Static — same in all 3.
+// ─────────────────────────────────────────────────────────────────────
+function VinylThumb({ playing }) {
+  return (
+    <div style={{ position: "relative", width: 280, height: 280, margin: "0 auto" }}>
+      {/* Record */}
+      <div style={{
+        position: "absolute", left: 30, top: 0, width: 240, height: 240, borderRadius: "50%",
+        background: "radial-gradient(circle at center, #1a1512 0 78px, #2a221c 79px 100%)",
+        boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
+        animation: playing ? "spin 6s linear infinite" : "none",
+      }}>
+        <div style={{ position: "absolute", inset: 22, borderRadius: "50%", border: "1px solid rgba(241,233,223,0.06)" }}/>
+        <div style={{ position: "absolute", inset: 42, borderRadius: "50%", border: "1px solid rgba(241,233,223,0.05)" }}/>
+        {/* Label = album art */}
+        <div style={{
+          position: "absolute", left: "50%", top: "50%", width: 96, height: 96,
+          marginLeft: -48, marginTop: -48, borderRadius: "50%", overflow: "hidden",
+          border: `2px solid ${T.paper}`,
+        }}>
+          <img src={ALBUM.cover} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            onError={(e) => { e.currentTarget.style.display = "none"; }}/>
+          <div style={{ position: "absolute", inset: 0, background: T.accent, opacity: 0.15 }}/>
+        </div>
+        {/* Spindle */}
+        <div style={{ position: "absolute", left: "50%", top: "50%", width: 6, height: 6, marginLeft: -3, marginTop: -3, borderRadius: "50%", background: T.paper }}/>
+      </div>
+      <style>{`@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }`}</style>
+      <div style={{ position: "absolute", bottom: -22, left: 0, right: 0, textAlign: "center",
+        fontFamily: T.mono, fontSize: 9, color: T.ink40, letterSpacing: 1.6, textTransform: "uppercase" }}>
+        {playing ? "▶ Playing" : "Click to play"}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Artboard wrapper — paper bg + the vinyl + card in the same 2-col
+// layout used on the live favorites page, so each variant is a faithful
+// preview of the section, not an isolated component.
+// ─────────────────────────────────────────────────────────────────────
+function Stage({ children }) {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div style={{
+      width: "100%", height: "100%",
+      background: T.paper, color: T.ink,
+      fontFamily: T.serif,
+      padding: "36px 32px",
+      display: "grid", gridTemplateColumns: "1fr 1fr", gap: 36,
+      alignItems: "start",
+    }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18, paddingTop: 20 }}>
+        <VinylThumb playing={playing} />
+      </div>
+      <div>{typeof children === "function" ? children({ playing, setPlaying }) : children}</div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection
+        id="track-variants"
+        title="One playable track per album · three directions"
+        subtitle="Same vinyl player on the left, same album metadata. Only the card to the right changes.">
+
+        <DCArtboard id="current" label="A · Current — full tracklist, multi-pick" width={820} height={760}>
+          <Stage>{() => <VariantCurrent />}</Stage>
+        </DCArtboard>
+
+        <DCArtboard id="featured" label="B · Featured cut + liner notes (recommended)" width={820} height={760}>
+          <Stage>{({ playing, setPlaying }) => <VariantFeatured playing={playing} setPlaying={setPlaying} />}</Stage>
+        </DCArtboard>
+
+        <DCArtboard id="single" label='C · 45 RPM — single sleeve metaphor' width={820} height={760}>
+          <Stage>{({ playing, setPlaying }) => <Variant45 playing={playing} setPlaying={setPlaying} />}</Stage>
+        </DCArtboard>
+
+        <DCPostIt top={-80} left={1700} rotate={-3} width={220}>
+          B is my pick. C is the boldest move — works great IF you commit to the single language across the whole records section (rack subtitle, vinyl label, etc).
+        </DCPostIt>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

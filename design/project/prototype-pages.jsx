@@ -17,7 +17,7 @@ function PageHome({ route, setRoute, theme }) {
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
       <div className="m-page-pad" style={{ padding: "32px 56px 0" }}>
-        <MetaStrip section="Personal archive · vol. 01" catNo="file: home.idx" theme={theme} />
+        <MetaStrip section="Personal archive · vol. 01" catNo="REF. 00" theme={theme} />
       </div>
 
       <div className="m-intro m-page-pad" style={{ padding: "72px 56px 80px" }}>
@@ -96,7 +96,7 @@ function PageBlog({ route, setRoute, theme }) {
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION D · BLOG" catNo="file: blog.idx"
+      section="SECTION D · BLOG" catNo="REF. D-IDX"
       title={<>Notes, filed by <span style={{ fontStyle: "italic" }}>date.</span></>}
       subtitle={`${window.POSTS.length} entries · most recent first`}>
 
@@ -227,7 +227,7 @@ function StatusDot({ project, theme }) {
 function PageProjects({ route, setRoute, theme }) {
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION A · PROJECTS" catNo="file: projects.idx"
+      section="SECTION A · PROJECTS" catNo="REF. A-IDX"
       title={<>Things I've <span style={{ fontStyle: "italic" }}>made.</span></>}
       subtitle={`${window.PROJECTS.length} entries · solo + collab`}>
 
@@ -490,7 +490,7 @@ function PageFavorites({ route, setRoute, theme }) {
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION C · FAVORITES" catNo="file: favorites.idx"
+      section="SECTION C · FAVORITES" catNo="REF. C-IDX"
       title={<>Personal favorites, <span style={{ fontStyle: "italic" }}>hand-picked</span>.</>}>
 
       <div style={{ display: "flex", gap: 4, marginBottom: 40 }}>
@@ -588,6 +588,7 @@ function MoviesBlock({ theme }) {
 // ABOUT
 // ============================================================
 function PageAbout({ route, setRoute, theme }) {
+  const [hoverSocial, setHoverSocial] = React.useState(null);
   const socials = [
     { l: "Instagram", h: "@lucy.gai", url: "instagram.com/lucy.gai" },
     { l: "Letterboxd", h: "lucy_gai", url: "letterboxd.com/lucy_gai" },
@@ -597,7 +598,7 @@ function PageAbout({ route, setRoute, theme }) {
   ];
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION E · ABOUT" catNo="file: about.idx">
+      section="SECTION E · ABOUT" catNo="REF. E-IDX">
 
       <div className="m-about-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 56, paddingTop: 32 }}>
         <div>
@@ -629,15 +630,24 @@ function PageAbout({ route, setRoute, theme }) {
           <img src="images/home/selfie2_dithered.png" alt="" style={{ display: "block", width: 350, maxWidth: "100%", marginTop: 18, imageRendering: "pixelated" }}/>
 
           <Hair style={{ margin: "22px 0" }}/>
-          {socials.map((s, i) => (
-            <div key={s.l} style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", padding: "12px 0", borderBottom: i < socials.length - 1 ? `1px dashed ${T.hair}` : "none", alignItems: "baseline", cursor: "pointer" }}>
-              <span style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>{s.l}</span>
+          <div style={{ fontFamily: theme.serif, fontSize: 16, lineHeight: 1.5, marginBottom: 6 }}>
+            Feel free to reach out — I'm also <span style={{ fontStyle: "italic" }}>on</span>:
+          </div>
+          {socials.map((s, i) => {
+            const hovered = hoverSocial === i;
+            return (
+            <div key={s.l}
+              onMouseEnter={() => setHoverSocial(i)}
+              onMouseLeave={() => setHoverSocial(null)}
+              style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", padding: "12px 0", borderBottom: i < socials.length - 1 ? `1px dashed ${T.hair}` : "none", alignItems: "baseline", cursor: "pointer" }}>
+              <span style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: hovered ? theme.accent : T.ink60, textTransform: "uppercase", transition: "color 0.18s ease" }}>{s.l}</span>
               <div>
-                <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic" }}>{s.h}</div>
+                <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", color: hovered ? theme.accent : T.ink, transition: "color 0.18s ease" }}>{s.h}</div>
               </div>
               <span style={{ fontFamily: T.mono, fontSize: 11, color: theme.accent }}>↗</span>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </PageShell>
@@ -659,14 +669,52 @@ function travelsTitle(trip) {
 }
 
 function PageTravels({ route, setRoute, theme }) {
-  const trips = window.TRIPS;
-  const [isMobile, setIsMobile] = uS(typeof window !== "undefined" && window.innerWidth <= 768);
-  uE(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+  const [sortNewest, setSortNewest] = uS(true);
+  const trips = React.useMemo(
+    () => sortNewest ? window.TRIPS : [...window.TRIPS].reverse(),
+    [sortNewest]
+  );
+  const gap = 36;
+
+  // ── Dynamic column count ───────────────────────────────────────────────
+  // Instead of hand-tuned pixel breakpoints, measure the widest title at its
+  // real rendered size and the available container width, then pick the most
+  // columns (3 → 2 → 1) whose column width still fits that title on one line.
+  // This self-adjusts to any title length or font change — no magic numbers.
+  const [titleW, setTitleW] = uS(0);
+  React.useLayoutEffect(() => {
+    const probe = document.createElement("span");
+    probe.style.cssText = `position:absolute;top:-9999px;left:-9999px;visibility:hidden;white-space:nowrap;font-family:${theme.serif};font-size:52px;line-height:0.95;letter-spacing:-1.2px;font-weight:400;`;
+    document.body.appendChild(probe);
+    let max = 0;
+    window.TRIPS.forEach(t => {
+      const { country, yy } = travelsTitle(t);
+      probe.textContent = `${country} ’${yy}.`;
+      max = Math.max(max, probe.getBoundingClientRect().width);
+    });
+    probe.remove();
+    setTitleW(Math.ceil(max) + 8); // small safety buffer
+  }, [theme.serif]);
+
+  const viewportRef = React.useRef(null);
+  const [containerW, setContainerW] = uS(0);
+  React.useLayoutEffect(() => {
+    if (!viewportRef.current) return;
+    const update = () => setContainerW(viewportRef.current.offsetWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(viewportRef.current);
+    return () => ro.disconnect();
   }, []);
-  const visible = isMobile ? 1 : 3;
+
+  const visible = React.useMemo(() => {
+    if (!containerW || !titleW) return 1;
+    for (const v of [3, 2, 1]) {
+      if ((containerW - (v - 1) * gap) / v >= titleW) return v;
+    }
+    return 1;
+  }, [containerW, titleW, gap]);
+
   const hasCarousel = trips.length > visible;
   const maxStart = Math.max(0, trips.length - visible);
 
@@ -696,7 +744,6 @@ function PageTravels({ route, setRoute, theme }) {
 
   // Measure rendered column width in design-space px (offsetWidth ignores
   // ancestor transforms) so the translateX shift matches the grid layout.
-  const gap = 36;
   const trackRef = React.useRef(null);
   const [colW, setColW] = uS(0);
   uE(() => {
@@ -713,19 +760,31 @@ function PageTravels({ route, setRoute, theme }) {
 
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
-      section="SECTION B · TRAVELS" catNo="file: travels.idx"
+      section="SECTION B · TRAVELS" catNo="REF. B-IDX"
       title={<>Places, <span style={{ fontStyle: "italic" }}>cataloged.</span></>}
       subtitle={`${trips.length} entries · filed by date`}>
 
       {/* Carousel toolbar — counter + arrows only when there's more than fits */}
       {hasCarousel && (
-        <div className="m-page-pad" style={{
+        <div style={{
           margin: "8px 0 24px",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
+          display: "flex", justifyContent: "space-between", alignItems: "flex-end",
           fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, color: T.ink60, textTransform: "uppercase",
-          paddingBottom: 14, borderBottom: `1px solid ${T.hair}`,
+          paddingBottom: 12, borderBottom: `1px solid ${T.hair}`,
         }}>
-          <span>filed by date · newest first</span>
+          <span
+            role="button"
+            onClick={() => { setSortNewest(v => !v); setStart(0); }}
+            style={{
+              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 7,
+              color: T.ink60, transition: "color 160ms",
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = theme.accent}
+            onMouseLeave={e => e.currentTarget.style.color = T.ink60}
+            title="Toggle sort order">
+            {sortNewest ? "newest first" : "oldest first"}
+            <span aria-hidden="true" style={{ fontSize: 9, opacity: 0.7 }}>⇅</span>
+          </span>
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
             <span>{String(start + 1).padStart(2, "0")} — {String(Math.min(start + visible, trips.length)).padStart(2, "0")} / {String(trips.length).padStart(2, "0")}</span>
             <TravelsArrow disabled={!canPrev} dir="prev" theme={theme} onClick={() => canPrev && setStart(start - 1)} />
@@ -735,7 +794,7 @@ function PageTravels({ route, setRoute, theme }) {
       )}
 
       {/* Viewport — clips off-frame columns */}
-      <div style={{ overflow: "hidden", width: "100%" }}>
+      <div ref={viewportRef} style={{ overflow: "hidden", width: "100%" }}>
         <div
           ref={trackRef}
           className="m-trav-track"
@@ -748,7 +807,7 @@ function PageTravels({ route, setRoute, theme }) {
             willChange: "transform",
           }}>
           {trips.map((t, i) => (
-            <div key={t.id} data-trip-col>
+            <div key={t.id} data-trip-col style={{ height: "100%" }}>
               <TravelsColumn trip={t} idx={i} cutouts={cutouts} setRoute={setRoute} theme={theme} />
             </div>
           ))}
@@ -770,7 +829,7 @@ function TravelsColumn({ trip, idx, cutouts, setRoute, theme }) {
   return (
     <div onClick={() => setRoute(`travels/${trip.id}`)}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{ display: "flex", flexDirection: "column", cursor: "pointer" }}>
+      style={{ display: "flex", flexDirection: "column", cursor: "pointer", height: "100%" }}>
 
       {/* Number + stamp + date */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.8, color: T.ink60, textTransform: "uppercase", marginBottom: 18 }}>
@@ -788,8 +847,8 @@ function TravelsColumn({ trip, idx, cutouts, setRoute, theme }) {
         <img src={src} alt="" style={imgStyle}/>
       </div>
 
-      {/* Title — Country 'YY. */}
-      <div style={{ fontFamily: theme.serif, fontSize: 52, lineHeight: 0.95, letterSpacing: -1.2, fontWeight: 400 }}>
+      {/* Title — Country 'YY. — never wrap to a second line */}
+      <div className="m-trav-title" style={{ fontFamily: theme.serif, fontSize: 52, lineHeight: 0.95, letterSpacing: -1.2, fontWeight: 400, whiteSpace: "nowrap" }}>
         {country} <span style={{ fontStyle: "italic", color: theme.accent }}>’{yy}.</span>
       </div>
 
@@ -808,18 +867,22 @@ function TravelsColumn({ trip, idx, cutouts, setRoute, theme }) {
 }
 
 function TravelsArrow({ dir, onClick, disabled, theme }) {
+  const [hover, setHover] = uS(false);
+  const active = hover && !disabled;
   return (
     <span onClick={disabled ? undefined : onClick} style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
-      width: 36, height: 36, border: `1px solid ${disabled ? T.hair : T.hairStrong}`,
-      color: disabled ? T.ink40 : T.ink,
+      width: 36, height: 26,
+      border: `1px solid ${disabled ? T.hair : (active ? theme.accent : T.hairStrong)}`,
+      background: active ? theme.accent : "transparent",
+      color: disabled ? T.ink40 : (active ? T.paper : T.ink),
       cursor: disabled ? "not-allowed" : "pointer",
       fontFamily: T.mono, fontSize: 14,
       transition: "background 180ms, color 180ms, border-color 180ms",
       userSelect: "none",
     }}
-    onMouseEnter={(e) => { if (!disabled) { e.currentTarget.style.background = theme.accent; e.currentTarget.style.color = T.paper; e.currentTarget.style.borderColor = theme.accent; } }}
-    onMouseLeave={(e) => { if (!disabled) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = T.ink; e.currentTarget.style.borderColor = T.hairStrong; } }}
+    onMouseEnter={() => setHover(true)}
+    onMouseLeave={() => setHover(false)}
     >
       {dir === "prev" ? "←" : "→"}
     </span>
@@ -880,15 +943,18 @@ function PageTrip({ tripId, route, setRoute, theme }) {
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
       {/* Archive header strip */}
-      <div className="m-page-pad" style={{ padding: "32px 56px 0" }}>
+      <div className="m-page-pad" style={{ padding: "36px 56px 0" }}>
         <div className="m-strip" style={{
-          display: "flex", justifyContent: "space-between",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
           fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase",
-          padding: "8px 0", borderTop: `1px solid ${T.hairStrong}`, borderBottom: `1px solid ${T.hairStrong}`,
+          padding: "8px 0",
         }}>
-          <span style={{ color: theme.accent }}>← TRAVELS · {trip.place.toUpperCase()}</span>
-          <span>{trip.date}</span>
-          <span>{trip.duration}</span>
+          <span className="m-strip-tab" style={{ background: theme.accent, color: T.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>← TRAVELS · {trip.place.toUpperCase()}</span>
+          <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <span className="m-strip-ref">REF. B-{String(window.TRIPS.indexOf(trip) + 1).padStart(2, "0")}</span>
+            <span className="m-strip-leader" style={{ width: 11, borderBottom: `1px dotted ${T.hairStrong}`, transform: "translateY(1px)" }} />
+            <span className="m-strip-updated">UPDATED 04·22·26</span>
+          </span>
         </div>
         <div style={{ marginTop: 12 }}>
           <span onClick={() => setRoute("travels")} style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, letterSpacing: 1.4, textTransform: "uppercase", cursor: "pointer" }}>
@@ -1029,17 +1095,18 @@ function PageProject({ slug, route, setRoute, theme }) {
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
       {/* Strip */}
-      <div className="m-page-pad" style={{ padding: "0 56px" }}>
+      <div className="m-page-pad" style={{ padding: "36px 56px 0" }}>
         <div className="m-strip" style={{
-          display: "flex", justifyContent: "space-between",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
           fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60,
           padding: "8px 0", textTransform: "uppercase",
-          borderTop: `1px solid ${T.hairStrong}`,
-          borderBottom: `1px solid ${T.hairStrong}`,
         }}>
-          <span style={{ color: theme.accent }}>SECTION A · PROJECTS · {p.slug}</span>
-          <span>file: {p.slug}.entry</span>
-          <span>{p.year}</span>
+          <span className="m-strip-tab" style={{ background: theme.accent, color: T.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>SECTION A · PROJECTS · {p.slug}</span>
+          <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <span className="m-strip-ref">REF. A-{String(idx + 1).padStart(2, "0")}</span>
+            <span className="m-strip-leader" style={{ width: 11, borderBottom: `1px dotted ${T.hairStrong}`, transform: "translateY(1px)" }} />
+            <span className="m-strip-updated">UPDATED 04·22·26</span>
+          </span>
         </div>
       </div>
 
@@ -1288,20 +1355,17 @@ function PageBlogPost({ slug, route, setRoute, theme }) {
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
       {/* Strip */}
-      <div className="m-page-pad" style={{ padding: "0 56px" }}>
+      <div className="m-page-pad" style={{ padding: "36px 56px 0" }}>
         <div className="m-strip" style={{
-          display: "flex", justifyContent: "space-between",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
           fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60,
           padding: "8px 0", textTransform: "uppercase",
-          borderTop: `1px solid ${T.hairStrong}`,
-          borderBottom: `1px solid ${T.hairStrong}`,
         }}>
-          <span style={{ color: theme.accent }}>SECTION D · BLOG · {p.slug}</span>
-          <span>file: {p.slug}.entry</span>
-          <span>{p.date}</span>
-          <span className="m-strip-syndication" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <span style={{ width: 6, height: 6, background: theme.accent, borderRadius: "50%" }} />
-            <span>Also on substack ↗</span>
+          <span className="m-strip-tab" style={{ background: theme.accent, color: T.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>SECTION D · BLOG · {p.slug}</span>
+          <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <span className="m-strip-ref">REF. D-{String(idx + 1).padStart(2, "0")}</span>
+            <span className="m-strip-leader" style={{ width: 11, borderBottom: `1px dotted ${T.hairStrong}`, transform: "translateY(1px)" }} />
+            <span className="m-strip-updated">UPDATED 04·22·26</span>
           </span>
         </div>
       </div>
@@ -1488,7 +1552,7 @@ function PostLetter({ p, theme, readMin, words }) {
 
       <div style={{
         display: "flex", justifyContent: "center", gap: 8,
-        marginBottom: p.hero ? 36 : 56, flexWrap: "wrap",
+        marginBottom: 16, flexWrap: "wrap",
       }}>
         {p.tags.map(t => (
           <span key={t} style={{
@@ -1496,6 +1560,20 @@ function PostLetter({ p, theme, readMin, words }) {
             border: `1px solid ${theme.accent}`, padding: "2px 8px", textTransform: "uppercase",
           }}>{t}</span>
         ))}
+      </div>
+
+      {/* Syndication — relocated out of the metadata strip to sit under the header */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: p.hero ? 36 : 56 }}>
+        <span style={{
+          fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, textTransform: "uppercase",
+          color: T.ink60, display: "inline-flex", alignItems: "center", gap: 7, cursor: "pointer",
+        }}
+          onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
+          onMouseLeave={(e) => e.currentTarget.style.color = T.ink60}
+        >
+          <span style={{ width: 6, height: 6, background: theme.accent, borderRadius: "50%" }} />
+          Also on Substack ↗
+        </span>
       </div>
 
       {/* Hero image breaks out wider than the body column */}

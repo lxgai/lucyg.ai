@@ -195,7 +195,7 @@ export default function FavoritesPage() {
   return (
     <PageShell
       section="SECTION C · FAVORITES"
-      catNo="file: favorites.idx"
+      catNo="REF. C-IDX"
       title={
         <>
           Personal favorites,{" "}
