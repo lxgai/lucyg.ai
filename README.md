@@ -22,7 +22,7 @@ The current visual direction is called **Memory Archive**. It combines the struc
 - serif display type for titles and names
 - mono metadata labels for dates, file IDs, and taxonomy
 - hairline borders and archival strips
-- restrained rust accents
+- restrained rose accents
 - photo mounts, stamps, and collage details on travel pages
 
 ## Technology

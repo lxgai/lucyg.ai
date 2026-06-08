@@ -17,82 +17,64 @@ function PageHome({ route, setRoute, theme }) {
       <Nav route={route} setRoute={setRoute} theme={theme} />
 
       <div className="m-page-pad" style={{ padding: "32px 56px 0" }}>
-        <div className="m-strip" style={{
-          display: "flex", justifyContent: "space-between",
-          fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase",
-          padding: "8px 0", borderTop: `1px solid ${T.hairStrong}`, borderBottom: `1px solid ${T.hairStrong}`,
-        }}>
-          <span>Personal archive · vol. 01</span>
-          <span>file: home.idx</span>
-          <span>last updated 04 · 22 · 26</span>
-        </div>
+        <MetaStrip section="Personal archive · vol. 01" catNo="file: home.idx" theme={theme} />
       </div>
 
-      <div className="m-2col m-page-pad" style={{ padding: "72px 56px 80px", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 72 }}>
-        <div>
-          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 28 }}>
-            ENTRY 001 ·····  A COLLECTION
-          </div>
-          <div className="m-hero-title" style={{ fontFamily: theme.serif, fontSize: 128, lineHeight: 0.92, letterSpacing: -3, fontWeight: 400 }}>
-            Hi,<br/>
-            <span style={{ fontStyle: "italic" }}>I'm Lucy.</span>
-          </div>
-          <div style={{ marginTop: 40, maxWidth: 480, fontSize: 19, lineHeight: 1.55 }}>
-            A software engineer cataloging the things I love — trips, records, films, and the small projects in between. This site is a room I keep returning to.
-          </div>
-          <div style={{ marginTop: 44, display: "flex", gap: 20, alignItems: "center" }}>
-            <span onClick={() => setRoute("about")} style={{
-              padding: "14px 28px", background: T.ink, color: T.paper, cursor: "pointer",
-              fontFamily: T.mono, fontSize: 11, letterSpacing: 1.6, textTransform: "uppercase",
-            }}>More about me →</span>
-            <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, letterSpacing: 1.4, textTransform: "uppercase" }}>
-              5 sections · updated weekly
-            </span>
-          </div>
+      <div className="m-intro m-page-pad" style={{ padding: "72px 56px 80px" }}>
+        <div className="m-intro-text" style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase" }}>
+          ENTRY 001 ·····  A COLLECTION
+        </div>
+        <div className="m-intro-text m-hero-title" style={{ fontFamily: theme.serif, fontSize: 128, lineHeight: 0.92, letterSpacing: -3, fontWeight: 400, marginTop: 28 }}>
+          Hi,<br/>
+          <span>I'm Lucy.</span>
+        </div>
+        <div className="m-intro-text" style={{ marginTop: 16, maxWidth: 480, fontSize: 19, lineHeight: 1.55 }}>
+          A software engineer cataloging the things I love — trips, records, films, and the small projects in between. This site is a room I keep returning to.
+        </div>
 
-          {/* Quick links */}
-          <div style={{ marginTop: 64 }}>
-            <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 16 }}>
-              ━━ Lately
+        {/* Frameless photo — direct grid child: sits at right on desktop (spans rows), above the CTA on mobile */}
+        <div className="m-home-photo" style={{ position: "relative", paddingTop: 40, alignSelf: "start", maxWidth: 700, justifySelf: "center" }}>
+          <div className="m-photo-card" style={{ position: "relative", zIndex: 1, margin: "0 auto" }}>
+            <div className="m-photo-imgwrap" style={{ width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: T.paperDeep }}>
+              <img src="images/home/selfie_dithered.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 42%", imageRendering: "pixelated" }}/>
             </div>
-            <div>
-              {quickLinks.map((q, i) => (
-                <div key={q.to} onClick={() => setRoute(q.to)} style={{
-                  display: "grid", gridTemplateColumns: "1fr auto",
-                  padding: "14px 0", borderBottom: `1px solid ${T.hair}`,
-                  cursor: "pointer", alignItems: "baseline",
-                  transition: "color 180ms",
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(201, 100, 66, 0.04)"}
-                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-                >
-                  <div>
-                    <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic" }}>{q.label}</div>
-                    <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, marginTop: 3, letterSpacing: 1 }}>{q.sub}</div>
-                  </div>
-                  <span style={{ fontFamily: T.mono, fontSize: 12, color: theme.accent }}>↗</span>
-                </div>
-              ))}
+            <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <div style={window.capStyle(theme, 17)}>Archivist.png, 8x8 Bayer Dither</div>
+              <CardLabel cat="A" no="001" accent={theme.accent} />
             </div>
           </div>
         </div>
 
-        {/* Stacked photo */}
-        <div className="m-home-photo" style={{ position: "relative", paddingTop: 40, minHeight: 560 }}>
-          <div style={{ position: "absolute", top: 40, left: 50, right: 20, bottom: 60, background: T.paperDeep, transform: "rotate(-1.8deg)", border: `1px solid ${T.hairStrong}` }}/>
-          <div style={{ position: "absolute", top: 30, left: 20, right: 40, bottom: 80, background: "#eae1d2", transform: "rotate(1.4deg)", border: `1px solid ${T.hairStrong}` }}/>
-          <div style={{
-            position: "absolute", top: 10, left: 30, right: 10, bottom: 40,
-            background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 16,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-          }}>
-            <div style={{ width: "100%", height: "calc(100% - 56px)", overflow: "hidden", background: T.paperDeep }}>
-              <img src="images/home/selfie1.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "sepia(0.15) saturate(0.9)" }}/>
-            </div>
-            <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 17 }}>Self-portrait, spring</div>
-              <CardLabel cat="A" no="001" accent={theme.accent} />
-            </div>
+        <div className="m-intro-text" style={{ marginTop: 40, display: "flex", gap: 20, alignItems: "center" }}>
+          <span onClick={() => setRoute("about")} style={{
+            padding: "14px 28px", background: T.ink, color: T.paper, cursor: "pointer",
+            fontFamily: T.mono, fontSize: 11, letterSpacing: 1.6, textTransform: "uppercase",
+          }}>More about me →</span>
+        </div>
+
+        {/* Quick links */}
+        <div className="m-intro-text" style={{ marginTop: 56 }}>
+          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 16 }}>
+            ━━ Lately
+          </div>
+          <div style={{ maxWidth: 620 }}>
+            {quickLinks.map((q, i) => (
+              <div key={q.to} onClick={() => setRoute(q.to)} style={{
+                display: "grid", gridTemplateColumns: "1fr auto",
+                padding: "14px 0", borderBottom: `1px solid ${T.hair}`,
+                cursor: "pointer", alignItems: "baseline",
+                transition: "color 180ms",
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(201, 100, 66, 0.04)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+              >
+                <div>
+                  <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic" }}>{q.label}</div>
+                  <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, marginTop: 3, letterSpacing: 1 }}>{q.sub}</div>
+                </div>
+                <span style={{ fontFamily: T.mono, fontSize: 12, color: theme.accent }}>↗</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -644,8 +626,7 @@ function PageAbout({ route, setRoute, theme }) {
             Contact index
           </div>
           <CardLabel cat="E" no="001" date="04 · 22 · 26" accent={theme.accent} />
-          <div style={{ fontFamily: theme.serif, fontSize: 34, fontStyle: "italic", marginTop: 18 }}>Gai, Lucy</div>
-          <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, letterSpacing: 0.8, textTransform: "uppercase", marginTop: 4 }}>Engineer / amateur archivist</div>
+          <img src="images/home/selfie2_dithered.png" alt="" style={{ display: "block", width: 350, maxWidth: "100%", marginTop: 18, imageRendering: "pixelated" }}/>
 
           <Hair style={{ margin: "22px 0" }}/>
           {socials.map((s, i) => (
@@ -653,7 +634,6 @@ function PageAbout({ route, setRoute, theme }) {
               <span style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>{s.l}</span>
               <div>
                 <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic" }}>{s.h}</div>
-                <div style={{ fontFamily: T.mono, fontSize: 9, color: T.ink40, marginTop: 2 }}>{s.url}</div>
               </div>
               <span style={{ fontFamily: T.mono, fontSize: 11, color: theme.accent }}>↗</span>
             </div>
@@ -980,7 +960,7 @@ function ScrapEntry({ entry, theme }) {
           <img src={entry.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "sepia(0.12) saturate(0.92)" }}/>
         </div>
         <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <div style={{ fontFamily: theme.serif, fontStyle: "italic", fontSize: 13 }}>{entry.caption}</div>
+          <div style={window.capStyle(theme, 15)}>{entry.caption}</div>
           <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink60, letterSpacing: 1 }}>IMG</div>
         </div>
       </div>

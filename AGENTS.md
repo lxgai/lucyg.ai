@@ -57,7 +57,7 @@ Follow these defaults for new or refreshed public-facing UI:
 - Metadata ink: `#8a7e70`
 - Hairline: `rgba(31, 26, 22, 0.2)`
 - Strong hairline: `rgba(31, 26, 22, 0.55)`
-- Accent rust: `oklch(0.52 0.13 40)`, used sparingly
+- Accent rose: `rgb(163, 91, 115)`, used sparingly
 
 Typography direction:
 
@@ -70,7 +70,7 @@ Layout direction:
 - Desktop page gutters: about `56px`
 - Mobile gutters: about `20px`
 - Use wide horizontal containers and generous whitespace.
-- Section pages should use a hairline-bordered metadata strip with section name, file id, and last updated.
+- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, file id, and last updated.
 - Page titles should be large serif type with one italicized word where appropriate.
 - Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
 

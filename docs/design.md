@@ -18,9 +18,9 @@ The site reads like a personal **library card catalog** — an archival room whe
 * **Ink 40%** `#8a7e70` — tertiary / metadata
 * **Hairline** `rgba(31, 26, 22, 0.2)` — dividers
 * **Strong hairline** `rgba(31, 26, 22, 0.55)` — section breaks
-* **Accent — Rust** `oklch(0.52 0.13 40)` — used sparingly for active states, taxonomy labels, “now playing”, call-to-action
+* **Accent — Rose** `rgb(163, 91, 115)` — used sparingly for active states, taxonomy labels, “now playing”, call-to-action
 
-> Alternate accents available as tweaks: forest, navy, plum. Default is rust.
+> Alternate accents available as tweaks: forest, navy, rust. Default is rose.
 
 ---
 
@@ -63,10 +63,11 @@ The site reads like a personal **library card catalog** — an archival room whe
 
 * **Section header strip**
 
-  * Horizontal hairline-bordered band at the top of every section page
-  * Contains 3 columns of mono metadata:
+  * Mono-caps metadata row at the top of every section page (no top/bottom rules)
+  * Section name sits in a filled accent "tab" (accent background, paper-card text); the rest is plain mono
+  * Fields:
 
-    * section name
+    * section name (accent tab)
     * file id
     * last updated
 

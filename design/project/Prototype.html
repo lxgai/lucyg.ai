@@ -27,6 +27,13 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .page-fade { opacity: 1; animation: fadeIn 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
+  /* Home intro: text column + photo column on desktop. The photo is a direct
+     grid child (placed in column 2, spanning the text rows) so that on mobile
+     it collapses into source order — landing the selfie above the CTA button. */
+  .m-intro { display: grid; grid-template-columns: 620px 1fr; column-gap: 72px; align-items: start; }
+  .m-intro > .m-intro-text { grid-column: 1; min-width: 0; }
+  .m-intro > .m-home-photo { grid-column: 2; grid-row: 1 / span 6; align-self: start; }
+
   /* ============================================================
      MOBILE — <=768px
      Inline styles get overridden via !important on targeted classes
@@ -53,14 +60,24 @@
 
     /* Grids collapse */
     .m-2col, .m-3col, .m-5col { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .m-intro { grid-template-columns: 1fr !important; column-gap: 0 !important; }
+    .m-intro > .m-intro-text, .m-intro > .m-home-photo { grid-column: 1 !important; grid-row: auto !important; }
     .m-blog-row { grid-template-columns: 1fr !important; gap: 8px !important; }
     .m-blog-row > div:nth-child(3) { justify-content: flex-start !important; }
     .m-proj-row { grid-template-columns: 1fr !important; gap: 6px !important; }
     .m-proj-head { display: none !important; }
     .m-about-grid { grid-template-columns: 1fr !important; gap: 56px !important; padding-top: 28px !important; }
 
-    /* Home-specific */
-    .m-home-photo { min-height: 360px !important; margin-top: 20px !important; }
+    /* Home-specific — the photo is now image-driven with a fixed 1:1 crop, so
+       the selfie keeps identical proportions at any width. Just constrain and
+       center the composition on mobile. */
+    .m-home-photo {
+      margin: 24px auto 0 !important;
+      padding-top: 26px !important;
+      width: 100% !important;
+      max-width: 360px !important;
+    }
+    .m-photo-card { margin: 0 12px 0 26px !important; }
 
     /* Favorites */
     .m-fav-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
@@ -84,36 +101,32 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" src="direction-data.jsx?v=24"></script>
-<script type="text/babel" src="prototype-core.jsx?v=24"></script>
-<script type="text/babel" src="prototype-pages.jsx?v=24"></script>
-<script type="text/babel" src="china-detail-shared.jsx?v=24"></script>
-<script type="text/babel" src="china-detail.jsx?v=24"></script>
+<script type="text/babel" src="direction-data.jsx?v=30"></script>
+<script type="text/babel" src="prototype-core.jsx?v=31"></script>
+<script type="text/babel" src="prototype-pages.jsx?v=49"></script>
+<script type="text/babel" src="china-detail-shared.jsx?v=30"></script>
+<script type="text/babel" src="china-detail.jsx?v=30"></script>
 
 <script type="text/babel">
 const { useState, useEffect } = React;
 
 // ==== Tweakable defaults ====
 const TWEAKS = /*EDITMODE-BEGIN*/{
-  "accentColor": "navy",
   "serifStyle": "newsreader",
+  "captionStyle": "mono-caps",
   "showMetrics": true
 }/*EDITMODE-END*/;
 
-const ACCENTS = {
-  rust:    "oklch(0.52 0.13 40)",
-  forest:  "oklch(0.45 0.08 155)",
-  navy:    "oklch(0.38 0.08 250)",
-  plum:    "oklch(0.42 0.1 340)",
-};
+// Accent locked in — RGB(163, 91, 115)
+const ACCENT = "rgb(163, 91, 115)";
 
 function App() {
   // Route: "home" | "blog" | "travels" | "travels/china-24" | "projects" | "favorites" | "about"
   const [route, setRoute] = useState(() => {
     try { return localStorage.getItem("route") || "home"; } catch { return "home"; }
   });
-  const [accentColor, setAccent] = useState(TWEAKS.accentColor);
   const [serifStyle, setSerifStyle] = useState(TWEAKS.serifStyle);
+  const [captionStyle, setCaptionStyle] = useState(TWEAKS.captionStyle);
   const [showMetrics, setShowMetrics] = useState(TWEAKS.showMetrics);
   const [editMode, setEditMode] = useState(false);
 
@@ -136,8 +149,10 @@ function App() {
   }
 
   const theme = {
-    accent: ACCENTS[accentColor] || ACCENTS.rust,
+    accent: ACCENT,
+    stripStyle: "tab", // locked in
     serif: serifStyle === "fraunces" ? "'Fraunces', Georgia, serif" : "'Newsreader', Georgia, serif",
+    captionStyle,
     showMetrics,
   };
 
@@ -160,17 +175,6 @@ function App() {
           <div style={{ fontSize: 9, letterSpacing: 2.2, opacity: 0.55, textTransform: "uppercase", marginBottom: 18, borderBottom: "1px solid rgba(241,233,223,0.15)", paddingBottom: 10 }}>
             TWEAKS · DIRECTION A
           </div>
-
-          <TweakRow label="Accent">
-            {Object.entries(ACCENTS).map(([k, v]) => (
-              <div key={k} onClick={() => { setAccent(k); persist("accentColor", k); }}
-                style={{
-                  width: 26, height: 26, background: v, cursor: "pointer",
-                  border: `2px solid ${accentColor === k ? "#f1e9df" : "transparent"}`,
-                  boxShadow: accentColor === k ? `0 0 0 1px ${v}` : "none",
-                }} title={k} />
-            ))}
-          </TweakRow>
 
           <TweakRow label="Serif">
             {[["newsreader", "Newsreader"], ["fraunces", "Fraunces"]].map(([k, lbl]) => (

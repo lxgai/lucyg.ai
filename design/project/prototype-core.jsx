@@ -14,6 +14,55 @@ const A = {
   mono: "'JetBrains Mono', ui-monospace, monospace",
 };
 
+// ── Photo-frame caption styles ────────────────────────────────
+// Each preset samples a different point in font × size × case space.
+// `build(theme, base)` returns a style object; `base` is the call
+// site's reference size so presets scale relative to it.
+window.CAPTION_STYLES = {
+  "serif-italic": {
+    label: "Serif italic",
+    build: (theme, base) => ({
+      fontFamily: theme.serif, fontStyle: "italic", fontWeight: 400,
+      fontSize: base, letterSpacing: 0, textTransform: "none",
+      lineHeight: 1.2, color: A.ink,
+    }),
+  },
+  "serif-roman": {
+    label: "Serif roman",
+    build: (theme, base) => ({
+      fontFamily: theme.serif, fontStyle: "normal", fontWeight: 400,
+      fontSize: base, letterSpacing: 0.1, textTransform: "none",
+      lineHeight: 1.25, color: A.ink,
+    }),
+  },
+  "serif-caps": {
+    label: "Serif caps",
+    build: (theme, base) => ({
+      fontFamily: theme.serif, fontStyle: "normal", fontWeight: 500,
+      fontSize: Math.round(base * 0.82), letterSpacing: 2, textTransform: "uppercase",
+      lineHeight: 1.3, color: A.ink,
+    }),
+  },
+  "mono-caps": {
+    label: "Mono caps",
+    build: (theme, base) => ({
+      fontFamily: A.mono, fontStyle: "normal", fontWeight: 500,
+      fontSize: Math.round(base * 0.6), letterSpacing: 1.5, textTransform: "uppercase",
+      lineHeight: 1.4, color: A.ink60,
+    }),
+  },
+  "mono-lower": {
+    label: "Mono lower",
+    build: (theme, base) => ({
+      fontFamily: A.mono, fontStyle: "normal", fontWeight: 400,
+      fontSize: Math.round(base * 0.7), letterSpacing: 0.2, textTransform: "lowercase",
+      lineHeight: 1.35, color: A.ink,
+    }),
+  },
+};
+window.capStyle = (theme, base) =>
+  (window.CAPTION_STYLES[theme && theme.captionStyle] || window.CAPTION_STYLES["serif-italic"]).build(theme, base);
+
 function Nav({ route, setRoute, theme }) {
   const links = [
     ["Projects", "projects"],
@@ -89,23 +138,68 @@ function Pill({ children, onClick, filled, theme, style = {} }) {
   );
 }
 
+// ── Metadata strip ───────────────────────────────────────────
+// The mono-caps row under the nav. Several explorable treatments —
+// switch via the "Meta strip" tweak.
+function MetaStrip({ section, catNo, theme }) {
+  const v = theme.stripStyle || "bare";
+  const updated = "UPDATED 04 · 22 · 26";
+  const base = {
+    fontFamily: A.mono, fontSize: 10, letterSpacing: 1.6, color: A.ink60,
+    textTransform: "uppercase", padding: "8px 0",
+  };
+
+  // Dotted catalog leaders between each field
+  if (v === "leaders") {
+    const Leader = () => (
+      <span style={{ flex: 1, margin: "0 16px", alignSelf: "center",
+        borderBottom: `1px dotted ${A.hairStrong}` }} />
+    );
+    return (
+      <div className="m-strip" style={{ ...base, display: "flex", alignItems: "baseline" }}>
+        <span style={{ color: theme.accent }}>{section}</span>
+        <Leader />
+        <span>{catNo}</span>
+        <Leader />
+        <span>{updated}</span>
+      </div>
+    );
+  }
+
+  // Section as a filled accent tab, rest plain
+  if (v === "tab") {
+    return (
+      <div className="m-strip" style={{ ...base, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ background: theme.accent, color: A.paperCard, padding: "4px 11px", letterSpacing: 1.6 }}>{section}</span>
+        <span style={{ display: "flex", gap: 24 }}>
+          <span>{catNo}</span>
+          <span>{updated}</span>
+        </span>
+      </div>
+    );
+  }
+
+  const borders =
+    v === "rules"     ? { borderTop: `1px solid ${A.hairStrong}`, borderBottom: `1px solid ${A.hairStrong}` } :
+    v === "underline" ? { borderBottom: `1px solid ${A.hair}` } :
+    {}; // "bare" — no rules
+
+  return (
+    <div className="m-strip" style={{ ...base, display: "flex", justifyContent: "space-between", ...borders }}>
+      <span style={{ color: theme.accent }}>{section}</span>
+      <span>{catNo}</span>
+      <span>{updated}</span>
+    </div>
+  );
+}
+
 function PageShell({ children, route, setRoute, theme, section, catNo, title, subtitle, children2 }) {
   return (
     <div className="page-fade" style={{ color: A.ink, fontFamily: theme.serif, minHeight: "100vh", background: A.paper }}>
       <Nav route={route} setRoute={setRoute} theme={theme} />
       {section && (
         <div className="m-page-pad" style={{ padding: "36px 56px 0" }}>
-          <div className="m-strip" style={{
-            display: "flex", justifyContent: "space-between",
-            fontFamily: A.mono, fontSize: 10, letterSpacing: 1.6, color: A.ink60,
-            padding: "8px 0", textTransform: "uppercase",
-            borderTop: `1px solid ${A.hairStrong}`,
-            borderBottom: `1px solid ${A.hairStrong}`,
-          }}>
-            <span style={{ color: theme.accent }}>{section}</span>
-            <span>{catNo}</span>
-            <span>UPDATED 04 · 22 · 26</span>
-          </div>
+          <MetaStrip section={section} catNo={catNo} theme={theme} />
         </div>
       )}
       {(title || subtitle) && (
@@ -180,4 +274,4 @@ function VinylPlayer({ album, playing, setPlaying, theme }) {
   );
 }
 
-Object.assign(window, { A_TOKENS: A, Nav, Hair, CardLabel, Pill, PageShell, VinylPlayer });
+Object.assign(window, { A_TOKENS: A, Nav, Hair, CardLabel, Pill, MetaStrip, PageShell, VinylPlayer });

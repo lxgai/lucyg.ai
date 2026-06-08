@@ -8,7 +8,7 @@ export const tokens = {
   ink20: "#c9bfae",
   hair: "rgba(31, 26, 22, 0.2)",
   hairStrong: "rgba(31, 26, 22, 0.55)",
-  accent: "oklch(0.38 0.08 250)",
+  accent: "rgb(163, 91, 115)",
   serif: "var(--font-newsreader), Georgia, serif",
   mono: "var(--font-jetbrains-mono), ui-monospace, monospace",
   hand: "var(--font-caveat), cursive",

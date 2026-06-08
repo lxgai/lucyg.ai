@@ -48,6 +48,7 @@ export function MetadataStrip({
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           gap: 2,
           fontFamily: tokens.mono,
           fontSize: { xs: 9, md: 10 },
@@ -55,21 +56,34 @@ export function MetadataStrip({
           color: tokens.ink60,
           textTransform: "uppercase",
           py: 1,
-          borderTop: `1px solid ${tokens.hairStrong}`,
-          borderBottom: `1px solid ${tokens.hairStrong}`,
           flexWrap: "wrap",
         }}
       >
-        <Box component="span" sx={{ color: tokens.accent }}>
+        <Box
+          component="span"
+          sx={{
+            background: tokens.accent,
+            color: tokens.paperCard,
+            px: "11px",
+            py: "4px",
+            letterSpacing: "1.6px",
+            alignSelf: "center",
+          }}
+        >
           {section}
         </Box>
-        {catNo && <Box component="span">{catNo}</Box>}
-        {updatedLabel && (
-          <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
-            {updatedLabel}
-          </Box>
-        )}
-        {extra && <Box component="span">{extra}</Box>}
+        <Box
+          component="span"
+          sx={{ display: "flex", gap: 3, flexWrap: "wrap", justifyContent: "flex-end" }}
+        >
+          {catNo && <Box component="span">{catNo}</Box>}
+          {updatedLabel && (
+            <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+              {updatedLabel}
+            </Box>
+          )}
+          {extra && <Box component="span">{extra}</Box>}
+        </Box>
       </Box>
     </PageContainer>
   );
