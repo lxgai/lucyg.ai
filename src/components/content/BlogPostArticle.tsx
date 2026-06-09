@@ -56,21 +56,64 @@ export function BlogPostArticle({
       catNo={refNo}
     >
       <Box
-        component={NextLink}
-        href="/blog"
         sx={{
-          fontFamily: tokens.mono,
-          fontSize: 11,
-          letterSpacing: "1.6px",
-          color: tokens.ink60,
-          textTransform: "uppercase",
-          textDecoration: "none",
-          display: "inline-flex",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
           mb: 2,
-          "&:hover": { color: tokens.accent },
         }}
       >
-        ← Blog
+        <Box
+          component={NextLink}
+          href="/blog"
+          sx={{
+            fontFamily: tokens.mono,
+            fontSize: 11,
+            letterSpacing: "1.6px",
+            color: tokens.ink60,
+            textTransform: "uppercase",
+            textDecoration: "none",
+            display: "inline-flex",
+            "&:hover": { color: tokens.accent },
+          }}
+        >
+          ← Blog
+        </Box>
+
+        {post.sourceUrl && (
+          <Box
+            component="a"
+            href={post.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              fontFamily: tokens.mono,
+              fontSize: 11,
+              letterSpacing: "1.6px",
+              color: tokens.accent,
+              textTransform: "uppercase",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.875,
+              "&:hover": { opacity: 0.7 },
+            }}
+          >
+            <Box
+              component="span"
+              sx={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: tokens.accent,
+                flex: "0 0 auto",
+              }}
+            />
+            Also on Substack ↗
+          </Box>
+        )}
       </Box>
 
       <Box component="article" sx={{ maxWidth: 640, mx: "auto", mt: 2 }}>
@@ -119,29 +162,6 @@ export function BlogPostArticle({
           {post.excerpt}
         </Typography>
 
-        {post.sourceUrl && (
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-            <Box
-              component="a"
-              href={post.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              sx={{
-                fontFamily: tokens.mono,
-                fontSize: 10,
-                letterSpacing: "1.4px",
-                color: tokens.accent,
-                textTransform: "uppercase",
-                textDecoration: "none",
-                borderBottom: `1px solid ${tokens.accent}`,
-                pb: "1px",
-                "&:hover": { opacity: 0.8 },
-              }}
-            >
-              Also on Substack ↗
-            </Box>
-          </Box>
-        )}
 
         <TagRow tags={post.tags} centered />
 

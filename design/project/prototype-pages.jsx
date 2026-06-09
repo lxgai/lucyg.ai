@@ -621,64 +621,93 @@ function MoviesBlock({ theme }) {
 function PageAbout({ route, setRoute, theme }) {
   const [hoverSocial, setHoverSocial] = React.useState(null);
   const socials = [
-    { l: "Instagram", h: "@lucy.gai", url: "instagram.com/lucy.gai" },
-    { l: "Letterboxd", h: "lucy_gai", url: "letterboxd.com/lucy_gai" },
-    { l: "Spotify", h: "charlottefour", url: "open.spotify.com/user/charlottefour" },
-    { l: "Twitch", h: "88lucie", url: "twitch.tv/88lucie" },
-    { l: "Email", h: "hello@lucygai.com", url: "mailto:hello@lucygai.com" },
+    { l: "Instagram", url: "instagram.com/lucy.gai", logo: "images/logos/instagram-logo.png" },
+    { l: "Letterboxd", url: "letterboxd.com/lucy_gai", logo: "images/logos/letterboxd-logo.png" },
+    { l: "Spotify", url: "open.spotify.com/user/charlottefour", logo: "images/logos/spotify-logo.png" },
+    { l: "GitHub", url: "github.com/lxgai", logo: "images/logos/github-logo.png" },
+    { l: "Email", url: "mailto:hello@lucygai.com", icon: "ph-envelope-simple" },
   ];
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
       section="SECTION E · ABOUT" catNo="REF. E-IDX">
 
-      <div className="m-about-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 56, paddingTop: 32 }}>
-        <div>
-          <div className="m-about-intro" style={{ fontFamily: theme.serif, fontSize: 48, lineHeight: 1.2, letterSpacing: -0.6, fontWeight: 400 }}>
-            Hi! I'm <span style={{ fontStyle: "italic" }}>Lucy</span> — a software engineer in <span style={{ fontStyle: "italic" }}>San Francisco</span>, currently building tools at a small startup and cataloging the things I love here.
+      <div className="m-about-grid" style={{ display: "grid", gridTemplateColumns: "3fr minmax(420px, 1fr)", columnGap: 56, rowGap: 40, paddingTop: 32 }}>
+        <div className="m-about-left">
+          <div className="m-about-intro-block">
+            <div className="m-about-intro" style={{ fontFamily: theme.serif, fontSize: 48, lineHeight: 1.2, letterSpacing: -0.6, fontWeight: 400 }}>
+              Hi! I'm <span style={{ fontStyle: "italic" }}>Lucy</span> — a software engineer based in the <span style={{ fontStyle: "italic" }}>US</span>.
+            </div>
+            <div className="m-about-intro-sub" style={{ fontFamily: theme.serif, fontSize: 30, lineHeight: 1.35, letterSpacing: -0.3, fontWeight: 400, marginTop: 24, color: T.ink }}>
+              This is my corner of the internet where I share and document the projects I'm building, things I'm learning, and a collection of the media and experiences I enjoy, in an effort to keep track of it all.
+            </div>
           </div>
-          <Hair style={{ margin: "40px 0" }}/>
-          <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: 1.2, color: T.ink60, textTransform: "uppercase", marginBottom: 14 }}>Currently</div>
-          <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: "12px 28px", fontSize: 15, lineHeight: 1.5 }}>
-            {[
-              ["Reading", <><em>A Little Life</em> — Hanya Yanagihara</>],
-              ["Listening", "nolimit, — Knock2 (on repeat, regrettably)"],
-              ["Building", "this site, and a quiet tool for keeping lists"],
-              ["Planning", "Tokyo in September, Lisbon in November"],
-            ].map(([k,v]) => (
-              <React.Fragment key={k}>
-                <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>{k}</span>
-                <span>{v}</span>
-              </React.Fragment>
-            ))}
+
+          <div className="m-about-currently">
+            <Hair style={{ margin: "40px 0" }}/>
+            <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: 1.2, color: T.ink60, textTransform: "uppercase", marginBottom: 14 }}>Currently</div>
+            <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: "12px 28px", fontSize: 15, lineHeight: 1.5 }}>
+              {[
+                ["Reading", <><em>Sample book title</em> — sample author</>],
+                ["Dreaming", "moving to New York City"],
+                ["Building", "this site, and some other project here"],
+                ["Planning", "Place in Time, Place in Time"],
+              ].map(([k,v]) => (
+                <React.Fragment key={k}>
+                  <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>{k}</span>
+                  <span>{v}</span>
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 32, position: "relative", height: "fit-content" }}>
+        <div className="m-about-card" style={{ justifySelf: "center", background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 32, position: "relative", height: "fit-content" }}>
           <div style={{ position: "absolute", top: -12, left: 20, background: T.paper, padding: "2px 12px", fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", border: `1px solid ${T.hairStrong}` }}>
             Contact index
           </div>
-          <CardLabel cat="E" no="001" date="04 · 22 · 26" accent={theme.accent} />
+          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, display: "flex", gap: 10, textTransform: "uppercase" }}>
+            <span style={{ color: T.ink }}>REF. E-001</span>
+            <span>Likeness.png</span>
+          </div>
           <img src="images/home/selfie2_dithered.png" alt="" style={{ display: "block", width: 350, maxWidth: "100%", marginTop: 18, imageRendering: "pixelated" }}/>
 
           <Hair style={{ margin: "22px 0" }}/>
-          <div style={{ fontFamily: theme.serif, fontSize: 16, lineHeight: 1.5, marginBottom: 6 }}>
-            Feel free to reach out — I'm also <span style={{ fontStyle: "italic" }}>on</span>:
+          <div style={{ fontFamily: theme.serif, fontSize: 16, lineHeight: 1.5, marginBottom: 16 }}>
+            Feel free to reach out — I'm also on:
           </div>
-          {socials.map((s, i) => {
-            const hovered = hoverSocial === i;
-            return (
-            <div key={s.l}
-              onMouseEnter={() => setHoverSocial(i)}
-              onMouseLeave={() => setHoverSocial(null)}
-              style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", padding: "12px 0", borderBottom: i < socials.length - 1 ? `1px dashed ${T.hair}` : "none", alignItems: "baseline", cursor: "pointer" }}>
-              <span style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: hovered ? theme.accent : T.ink60, textTransform: "uppercase", transition: "color 0.18s ease" }}>{s.l}</span>
-              <div>
-                <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", color: hovered ? theme.accent : T.ink, transition: "color 0.18s ease" }}>{s.h}</div>
-              </div>
-              <span style={{ fontFamily: T.mono, fontSize: 11, color: theme.accent }}>↗</span>
-            </div>
-            );
-          })}
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {socials.map((s, i) => {
+              const hovered = hoverSocial === i;
+              return (
+                <span key={s.l}
+                  title={s.l}
+                  onMouseEnter={() => setHoverSocial(i)}
+                  onMouseLeave={() => setHoverSocial(null)}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 13,
+                    padding: "7px 0", cursor: "pointer",
+                  }}>
+                  <span style={{
+                    width: 22, height: 22, flex: "0 0 auto",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    {s.icon ? (
+                      <svg viewBox="0 0 256 256" width="22" height="22" fill={T.ink} style={{ display: "block" }}>
+                        <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"></path>
+                      </svg>
+                    ) : (
+                      <img src={s.logo} alt={s.l} style={{ width: 22, height: 22, objectFit: "contain", display: "block" }} />
+                    )}
+                  </span>
+                  <span style={{
+                    fontFamily: T.mono, fontSize: 11, letterSpacing: 1.4, textTransform: "uppercase",
+                    color: hovered ? theme.accent : T.ink,
+                    transition: "color 0.18s ease",
+                  }}>{s.l}</span>
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
     </PageShell>
@@ -1411,8 +1440,11 @@ function PageBlogPost({ slug, route, setRoute, theme }) {
         </div>
       </div>
 
-      {/* Back link */}
-      <div className="m-page-pad" style={{ padding: "20px 56px 0" }}>
+      {/* Back link + syndication — utility row */}
+      <div className="m-page-pad" style={{
+        padding: "20px 56px 0",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+      }}>
         <span onClick={() => setRoute("blog")} style={{
           fontFamily: T.mono, fontSize: 11, letterSpacing: 1.6, color: T.ink60,
           textTransform: "uppercase", cursor: "pointer",
@@ -1420,6 +1452,17 @@ function PageBlogPost({ slug, route, setRoute, theme }) {
           onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
           onMouseLeave={(e) => e.currentTarget.style.color = T.ink60}
         >← Blog</span>
+        <span style={{
+          fontFamily: T.mono, fontSize: 11, letterSpacing: 1.6, textTransform: "uppercase",
+          color: theme.accent, textDecoration: "underline", textUnderlineOffset: 3,
+          display: "inline-flex", alignItems: "center", gap: 7, cursor: "pointer",
+        }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = 0.7}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = 1}
+        >
+          <span style={{ width: 6, height: 6, background: theme.accent, borderRadius: "50%" }} />
+          Also on Substack ↗
+        </span>
       </div>
 
       {/* Body */}
@@ -1601,20 +1644,6 @@ function PostLetter({ p, theme, readMin, words }) {
             border: `1px solid ${theme.accent}`, padding: "2px 8px", textTransform: "uppercase",
           }}>{t}</span>
         ))}
-      </div>
-
-      {/* Syndication — relocated out of the metadata strip to sit under the header */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: p.hero ? 36 : 56 }}>
-        <span style={{
-          fontFamily: T.mono, fontSize: 10, letterSpacing: 1.4, textTransform: "uppercase",
-          color: T.ink60, display: "inline-flex", alignItems: "center", gap: 7, cursor: "pointer",
-        }}
-          onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
-          onMouseLeave={(e) => e.currentTarget.style.color = T.ink60}
-        >
-          <span style={{ width: 6, height: 6, background: theme.accent, borderRadius: "50%" }} />
-          Also on Substack ↗
-        </span>
       </div>
 
       {/* Hero image breaks out wider than the body column */}

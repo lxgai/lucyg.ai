@@ -18,6 +18,9 @@
       "Bash(exiftool selfie_blacknwhite.jpg)",
       "Bash(identify -format \"quality=%Q sampling=%[jpeg:sampling-factor] colorspace=%[colorspace] depth=%z\\\\n\" selfie_blacknwhite.jpg)",
       "Bash(grep -iEA2 \"quality|formats|remotePatterns|images|deviceSizes|imageSizes\")"
+    ],
+    "deny": [
+      "Read(./.env.local)"
     ]
   }
 }

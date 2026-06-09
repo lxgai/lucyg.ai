@@ -109,7 +109,8 @@ Detail pages:
 Blog detail exception:
 
 - `Also on Substack ↗` must not be in the strip.
-- It belongs centered below the post title/excerpt area, near the tags.
+- It belongs in the top utility row beside the `← Blog` back link, right-aligned.
+- Style it as uppercase mono text in `tokens.accent`, underlined, with the external-link arrow glyph.
 
 ### 4. Layout and scroll
 
@@ -135,6 +136,14 @@ Severity: **SHOULD-FIX**.
 - Photo mounts should use paper-card frames, subtle sepia/saturation treatment, captions, and catalog labels.
 - Tag chips should be mono uppercase, transparent background, accent border, and accent text.
 - Public UI should be responsive at `<=768px`; multi-column layouts collapse or otherwise adapt cleanly.
+
+About page:
+
+- Intro splits into a 48px serif headline and a smaller body paragraph; on small screens the headline is about 28px and the body about 19px.
+- The contact card image fills the card width with equal padding, and the card column hugs the image instead of stretching wide.
+- The contact card label is `REF. E-001 LIKENESS.PNG`, all uppercase mono black text.
+- Contact links are minimal rows with logo/icon plus uppercase mono network name; do not show text handles or boxed tiles.
+- Small-screen order is intro, contact card, then Currently.
 
 ### 6. Travel index
 

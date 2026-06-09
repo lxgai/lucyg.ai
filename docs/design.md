@@ -212,6 +212,8 @@ The site reads like a personal **library card catalog** — an archival room whe
     * `№ / date`
     * `title + excerpt`
     * `tags`
+  * Blog detail utility row pairs `← Blog` on the left with `Also on Substack ↗` on the right when a source URL exists
+  * `Also on Substack ↗` is uppercase mono, underlined, and uses the rose accent
 
 * **Travel detail pages**
 
@@ -232,9 +234,12 @@ The site reads like a personal **library card catalog** — an archival room whe
 
 * **About**
 
-  * Big serif intro
+  * Big serif intro split into a 48px headline and smaller paragraph body; mobile uses about 28px headline and 19px body
   * `"Currently"` metadata grid
-  * Contact Index card on the right
+  * Contact Index card on the right, sized to hug the image column and centered within that column
+  * Contact card label reads `REF. E-001 LIKENESS.PNG` in uppercase mono black
+  * Contact links are minimal logo/icon rows with uppercase mono network names, no handles or boxed tiles
+  * Mobile order is intro, contact card, then Currently
   * Tab label hangs off the top-left border
 
 ---

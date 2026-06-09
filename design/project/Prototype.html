@@ -77,6 +77,7 @@
     .m-hero-title { font-size: 68px !important; letter-spacing: -1.2px !important; }
     .m-page-title { font-size: 46px !important; letter-spacing: -1px !important; }
     .m-about-intro { font-size: 28px !important; }
+    .m-about-intro-sub { font-size: 19px !important; margin-top: 16px !important; }
 
     /* Grids collapse */
     .m-2col, .m-3col, .m-5col { grid-template-columns: 1fr !important; gap: 28px !important; }
@@ -88,7 +89,11 @@
     .m-proj-row > div:nth-child(1) { order: 2 !important; }
     .m-proj-row > div:nth-child(2) { order: 1 !important; margin-bottom: 18px !important; }
     .m-proj-head { display: none !important; }
-    .m-about-grid { grid-template-columns: 1fr !important; gap: 56px !important; padding-top: 28px !important; }
+    .m-about-grid { grid-template-columns: 1fr !important; gap: 40px !important; padding-top: 28px !important; }
+    .m-about-grid > .m-about-left { display: contents !important; }
+    .m-about-grid > .m-about-left > .m-about-intro-block { order: 1 !important; }
+    .m-about-grid > .m-about-card { order: 2 !important; }
+    .m-about-grid > .m-about-left > .m-about-currently { order: 3 !important; }
 
     /* Home-specific — the photo is now image-driven with a fixed 1:1 crop, so
        the selfie keeps identical proportions at any width. Just constrain and
