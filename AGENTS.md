@@ -89,6 +89,7 @@ Metadata strip REF labels:
 - Detail pages use `REF. {letter}-{nn}` from the entry's archive position, such as `REF. B-01` for China.
 - Do not use `file:`/`FILE:` text in public metadata strips.
 - Detail page back links (`← Projects`, `← Travels`, `← Blog`) sit directly below the strip and above content.
+- Use actual arrow glyphs in visible public UI (`←`, `→`, `↗`); never use ASCII substitutes such as `<-` or `->`.
 - Blog detail keeps `Also on Substack ↗` out of the strip; place it centered below the post title area near tags.
 
 Copy direction:

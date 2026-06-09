@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import PageShell from "@/components/design/PageShell";
 import BlogIndexClient from "./BlogIndexClient";
 import { getBlogEntries } from "@/lib/substack";
@@ -12,11 +11,7 @@ export default async function BlogPage() {
     <PageShell
       section="SECTION D · BLOG"
       catNo="REF. D-IDX"
-      title={
-        <>
-          Notes, filed by <Box component="span" sx={{ fontStyle: "italic" }}>date.</Box>
-        </>
-      }
+      title={<>Notes, filed by date.</>}
       subtitle={`${entries.length} entries · most recent first`}
     >
       <BlogIndexClient entries={entries} />

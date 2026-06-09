@@ -101,7 +101,8 @@ Dates:
 Detail pages:
 
 - Strip sits below nav as normal site chrome.
-- Back link (`<- Projects`, `<- Travels`, `<- Blog`) sits directly below the strip and above content.
+- Back link (`← Projects`, `← Travels`, `← Blog`) sits directly below the strip and above content.
+- Use actual arrow glyphs (`←`, `→`, `↗`) in public UI. Never use ASCII substitutes such as `<-`, `->`, or `=>` for visible arrows.
 - Travel detail scaled surfaces must start after the strip/back link; nav and metadata must not be inside the scaled surface.
 - China detail's tab has no leading arrow.
 
@@ -147,7 +148,36 @@ Severity: **SHOULD-FIX** for drift on `/travels`.
 - On very narrow phones (`<430px`), title size may reduce from `52px` to about `40px`.
 - Column count should be dynamic `3 / 2 / 1` based on measured title/container width, not hardcoded viewport breakpoints.
 
-### 7. Copy and voice
+### 7. Projects index and detail
+
+Severity: **SHOULD-FIX** for drift on `/projects` or `/projects/[slug]`.
+
+Projects index:
+
+- Preserve the current spread-entry layout: generated thumbnail plus text block on desktop, text/info first and image second on small screens.
+- Title is `Things I've made.` with no italicized word.
+- Subtitle is only the entry count, for example `1 entry`; do not append `solo`, `collab`, or view-mode text.
+- Each entry's mono line under the title is the tech stack, not role text such as `Solo` or `Co-founder`.
+- Do not render a second tech-stack line in the footer row; the footer row keeps status, spacer, and `open file →`.
+- Sort controls are `newest` / `oldest` above a full-width hairline divider.
+- Entry numbers remain fixed chronologically: oldest project is `Entry 01` even when sorted newest-first.
+- Use the normal hairline for the first-entry divider; do not use a strong rule above the first entry.
+
+Project detail:
+
+- Header order is back link, hero image, italic serif title, specs strip. Do not render a kicker/status row above the title.
+- Do not render the project `tagline` between the title and specs strip; the prototype detail page intentionally omits it.
+- Specs strip is minimal: no top/bottom rules, width `min(100%, max(50%, 620px))`, left-aligned.
+- Specs labels stack above values at all widths. Values are JetBrains Mono.
+- Field labels are `First published`, `Updated`, `Stack`, `Status`.
+- Dates use tight dots with no spaces, for example `Feb·03·2026`.
+- Desktop fields are separated by small circular dot separators, not borders or slash marks.
+- Phone fields reflow into a 2x2 grid with separators hidden.
+- Status value includes the accent live/shipping circle.
+- "By the numbers" remains horizontal at all widths; values shrink with `clamp()` rather than stacking.
+- Links are unboxed accent text; no divider line appears between links and prev/next nav.
+
+### 8. Copy and voice
 
 Severity: **NOTE**, unless copy conflicts with metadata rules.
 
@@ -167,6 +197,7 @@ Severity: **NOTE**, unless copy conflicts with metadata rules.
    - metadata: `file:|FILE:|MetadataStrip|catNo|updatedLabel|metadataExtra|Also on Substack`
    - scroll: `100vw|overflowX|overscroll-behavior|touch-action`
    - travel index: `newest first|oldest first|whiteSpace|ResizeObserver|TravelsArrow`
+   - visible ASCII arrows: `<-|->|&lt;-|-&gt;`
 4. Read context around each hit. Never flag from grep alone.
 5. Report findings grouped by severity.
 

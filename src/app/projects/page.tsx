@@ -1,5 +1,5 @@
 "use client";
-import { Box } from "@mui/material";
+
 import { ProjectsSpreadList } from "@/components/content/ProjectArchive";
 import PageShell from "@/components/design/PageShell";
 import { PROJECTS } from "@/data/projects";
@@ -11,14 +11,9 @@ export default function ProjectsPage() {
     <PageShell
       section="SECTION A · PROJECTS"
       catNo="REF. A-IDX"
-      title={
-        <>
-          Things I&apos;ve <Box component="span" sx={{ fontStyle: "italic" }}>made.</Box>
-        </>
-      }
-      subtitle={`${entryLabel} · solo · view: spread`}
+      title={<>Things I&apos;ve made.</>}
+      subtitle={entryLabel}
     >
-      <Box sx={{ height: 24 }} />
       <ProjectsSpreadList projects={PROJECTS} />
     </PageShell>
   );

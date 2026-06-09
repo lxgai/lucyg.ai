@@ -70,7 +70,7 @@ export function BlogPostArticle({
           "&:hover": { color: tokens.accent },
         }}
       >
-        &lt;- Blog
+        ← Blog
       </Box>
 
       <Box component="article" sx={{ maxWidth: 640, mx: "auto", mt: 2 }}>
@@ -650,7 +650,7 @@ function SubscribeAndDiscussion({
               },
             }}
           >
-            Subscribe on Substack -&gt;
+            Subscribe on Substack →
           </Button>
         )}
         <Box
@@ -669,7 +669,7 @@ function SubscribeAndDiscussion({
           }}
         >
           <span>Free · weekly-ish · unsubscribe anytime</span>
-          <span>Delivery via Substack -&gt;</span>
+          <span>Delivery via Substack →</span>
         </Box>
       </Box>
 
@@ -711,7 +711,7 @@ function SubscribeAndDiscussion({
                 textDecoration: "none",
               }}
             >
-              Discuss on Substack -&gt;
+              Discuss on Substack →
             </Button>
           </Box>
         </Box>
@@ -758,7 +758,7 @@ function PostPrevNext({ older, newer }: { older?: BlogEntry; newer?: BlogEntry }
       {older ? (
         <Box component={NextLink} href={`/blog/${older.slug}`} sx={{ color: tokens.ink, textDecoration: "none" }}>
           <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            &lt;- Older
+            ← Older
           </Box>
           <Box sx={{ fontFamily: tokens.serif, fontSize: 20, fontStyle: "italic", mt: 0.5, lineHeight: 1.15 }}>{older.title}</Box>
         </Box>
@@ -772,7 +772,7 @@ function PostPrevNext({ older, newer }: { older?: BlogEntry; newer?: BlogEntry }
           sx={{ color: tokens.ink, textDecoration: "none", textAlign: { xs: "left", md: "right" } }}
         >
           <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            Newer -&gt;
+            Newer →
           </Box>
           <Box sx={{ fontFamily: tokens.serif, fontSize: 20, fontStyle: "italic", mt: 0.5, lineHeight: 1.15 }}>{newer.title}</Box>
         </Box>

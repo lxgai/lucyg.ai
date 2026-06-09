@@ -30,8 +30,8 @@ type LetterboxdMovie = {
 };
 
 const SORT_OPTIONS: { value: AlbumSort; label: string }[] = [
-  { value: "new", label: "new -> old" },
-  { value: "old", label: "old -> new" },
+  { value: "new", label: "new → old" },
+  { value: "old", label: "old → new" },
   { value: "title", label: "title (a-z)" },
 ];
 

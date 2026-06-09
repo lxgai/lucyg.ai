@@ -642,7 +642,7 @@ export default function TravelDetailPage({ data }: { data: TravelDetailData }) {
               "&:hover": { color: tokens.accent },
             }}
           >
-            &lt;- Travels
+            ← Travels
           </Box>
         </PageContainer>
         <TravelDetailSurface breakpoint={breakpoint} mode="fit-width" scaleMultiplier={0.94}>

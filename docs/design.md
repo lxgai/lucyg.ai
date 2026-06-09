@@ -144,14 +144,34 @@ The site reads like a personal **library card catalog** — an archival room whe
 
 * **Projects**
 
-  * Spreadsheet-style table:
+  * Spread-entry archive list:
 
-    * year
-    * title / role
-    * kind
-    * stack
-    * status
+    * generated thumbnail
+    * `Entry nn · year`
+    * plain serif project title
+    * tech stack under the title
+    * kind sentence
   * `● shipping/live` displayed in accent color
+
+  * status plus `open file →`
+  * Index title is `Things I've made.` with no italicized word
+  * Sort control toggles `newest` / `oldest`; entry numbers stay fixed chronologically, with the oldest project as `Entry 01`
+  * Small screens show entry text/info first, then image
+
+* **Project detail pages**
+
+  * Header order is back link, hero image, italic serif title, specs strip
+  * Back links use real arrow glyphs, for example `← Projects`; never visible ASCII `<-`
+  * Do not render a kicker/status row above the title
+  * Do not render the project tagline between the title and specs strip
+  * Specs strip is minimal: no top/bottom rules, left-aligned, fluid width `min(100%, max(50%, 620px))`
+  * Specs labels stack above mono values at all widths
+  * Labels are `First published`, `Updated`, `Stack`, and `Status`
+  * Dates use tight dots, for example `Feb·03·2026`
+  * Desktop specs use small circular dot separators; phone specs reflow into a 2x2 grid with separators hidden
+  * Status value includes the accent live/shipping circle
+  * "By the numbers" remains horizontal at all widths, with fluid number sizing
+  * Detail links are unboxed accent text; no divider sits between links and prev/next nav
 
 * **Travels**
 

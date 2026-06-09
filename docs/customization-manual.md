@@ -4,7 +4,7 @@
 
 Project index metadata lives in `src/data/projects.ts`.
 
-The `PROJECTS` array controls the `/projects` index, the detail page hero, the specs strip, metrics, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
+The `PROJECTS` array controls the `/projects` index, the detail page hero image/title, the specs strip, metrics, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
 
 ```ts
 export const PROJECTS: Project[] = [
@@ -34,18 +34,24 @@ The `/projects` index uses:
 
 - `year` for the small year label on the thumbnail and entry metadata
 - `name` for the project title
-- `role` for the mono metadata line under the title
+- `stack` for the mono metadata line under the title
 - `kind` for the short description sentence
 - `status` for the status dot label
-- `stack` for the technology list
 - `color` for the generated thumbnail color
+
+The index intentionally does not render role text under each title. It also does not render a second tech-stack line in the footer row. The footer row keeps status, spacer, and `open file →`.
+
+The index sort control toggles `newest` / `oldest`. Entry numbers stay fixed chronologically: the oldest project is always `Entry 01`, even when the list is sorted newest-first. On small screens, each entry leads with text/info first and image second.
 
 The detail page uses the same metadata fields, plus:
 
-- `tagline` for the opening summary under the hero title
-- `started`, `filed`, `stack`, and `status` for the specs strip
+- `started`, `published`, `updated`, `stack`, and `status` for the specs strip
 - `metrics`, when present, for the "By the numbers" section
 - `links`, when present, for the "Where to find it" section
+
+The detail page intentionally does not render `tagline` between the title and specs strip. Keep the header order as back link, hero image, italic serif title, then specs strip. Back links use real arrow glyphs, such as `← Projects`; do not render visible ASCII arrows such as `<- Projects`.
+
+The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes the accent live/shipping circle.
 
 The detail page body comes from a Markdown file whose filename matches the project `slug`:
 
@@ -104,7 +110,7 @@ To add a project:
 1. Copy an existing object in `src/data/projects.ts`.
 2. Paste it into the `PROJECTS` array where it should appear.
 3. Change the `slug` to a unique kebab-case value, for example `reading-room`.
-4. Update the visible fields: `year`, `name`, `role`, `kind`, `status`, `stack`, `color`, and `tagline`.
+4. Update the visible fields: `year`, `name`, `kind`, `status`, `stack`, and `color`. Keep `role` and `tagline` as archival/fallback data unless a future design explicitly uses them.
 5. Create a matching Markdown file, for example `src/content/projects/reading-room.md`.
 6. Keep `metrics` and `links` only if the project needs those sections; otherwise remove those properties.
 

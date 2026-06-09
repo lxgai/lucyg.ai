@@ -97,7 +97,7 @@ function PageBlog({ route, setRoute, theme }) {
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
       section="SECTION D · BLOG" catNo="REF. D-IDX"
-      title={<>Notes, filed by <span style={{ fontStyle: "italic" }}>date.</span></>}
+      title={<>Notes, filed by date.</>}
       subtitle={`${window.POSTS.length} entries · most recent first`}>
 
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 32 }}>
@@ -228,8 +228,8 @@ function PageProjects({ route, setRoute, theme }) {
   return (
     <PageShell route={route} setRoute={setRoute} theme={theme}
       section="SECTION A · PROJECTS" catNo="REF. A-IDX"
-      title={<>Things I've <span style={{ fontStyle: "italic" }}>made.</span></>}
-      subtitle={`${window.PROJECTS.length} entries · solo + collab`}>
+      title={<>Things I've made.</>}
+      subtitle={`${window.PROJECTS.length} entries`}>
 
       <div style={{ height: 24 }}/>
 
@@ -240,9 +240,44 @@ function PageProjects({ route, setRoute, theme }) {
 
 // ---- SPREAD: magazine-style alternating image+text rows ----
 function ProjectsSpread({ theme, setRoute }) {
+  const [sortNewest, setSortNewest] = uS(true);
+  // Stable entry numbers: oldest project is always Entry 01, regardless of sort.
+  const entryNo = uM(() => {
+    const chrono = [...window.PROJECTS].sort((a, b) => Number(a.year) - Number(b.year));
+    const m = {};
+    chrono.forEach((p, i) => { m[p.slug] = i + 1; });
+    return m;
+  }, []);
+  const projects = uM(() => {
+    const arr = [...window.PROJECTS];
+    arr.sort((a, b) => sortNewest ? Number(b.year) - Number(a.year) : Number(a.year) - Number(b.year));
+    return arr;
+  }, [sortNewest]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      {window.PROJECTS.map((p, i) => {
+      {/* Sort toggle above a full-width divider line */}
+      <div>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+          <span
+            role="button"
+            onClick={() => setSortNewest(v => !v)}
+            title="Toggle sort order"
+            style={{
+              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 7,
+              fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, textTransform: "uppercase",
+              color: T.ink60, transition: "color 160ms",
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = theme.accent}
+            onMouseLeave={e => e.currentTarget.style.color = T.ink60}>
+            {sortNewest ? "newest first" : "oldest first"}
+            <span aria-hidden="true" style={{ fontSize: 9, opacity: 0.7 }}>⇅</span>
+          </span>
+        </div>
+        <span style={{ display: "block", height: 1, background: T.hair }} />
+      </div>
+
+      {projects.map((p, i) => {
         const reverse = i % 2 === 1;
         return (
           <div key={p.name} className="m-proj-row"
@@ -252,8 +287,8 @@ function ProjectsSpread({ theme, setRoute }) {
               gridTemplateColumns: reverse ? "1fr 1.1fr" : "1.1fr 1fr",
               gap: 56, alignItems: "center",
               padding: "44px 0",
-              borderTop: i === 0 ? `1px solid ${T.hairStrong}` : `1px solid ${T.hair}`,
-              borderBottom: i === window.PROJECTS.length - 1 ? `1px solid ${T.hairStrong}` : "none",
+              borderTop: i === 0 ? "none" : `1px solid ${T.hair}`,
+              borderBottom: i === projects.length - 1 ? `1px solid ${T.hairStrong}` : "none",
               cursor: "pointer",
               transition: "background 200ms",
           }}
@@ -265,23 +300,19 @@ function ProjectsSpread({ theme, setRoute }) {
             </div>
             <div style={{ order: reverse ? 1 : 2 }}>
               <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, textTransform: "uppercase", color: theme.accent, marginBottom: 12 }}>
-                Entry {String(i + 1).padStart(2, "0")} · {p.year}
+                Entry {String(entryNo[p.slug]).padStart(2, "0")} · {p.year}
               </div>
               <div style={{ fontFamily: theme.serif, fontSize: 52, lineHeight: 0.98, letterSpacing: -1, fontStyle: "italic" }}>
                 {p.name}
               </div>
               <div style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1.4, marginTop: 14 }}>
-                {p.role}
+                {p.stack.join(" · ")}
               </div>
               <div style={{ fontFamily: theme.serif, fontSize: 18, color: T.ink, marginTop: 22, lineHeight: 1.5, maxWidth: 420 }}>
                 {p.kind}.
               </div>
               <div style={{ display: "flex", gap: 24, alignItems: "center", marginTop: 28, flexWrap: "wrap" }}>
                 <StatusDot project={p} theme={theme} />
-                <span style={{ width: 1, height: 14, background: T.hair }}/>
-                <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, letterSpacing: 1.2 }}>
-                  {p.stack.join(" · ")}
-                </span>
                 <span style={{ flex: 1 }}/>
                 <span style={{ fontFamily: T.mono, fontSize: 10, color: theme.accent, letterSpacing: 1.4, textTransform: "uppercase" }}>
                   open file →
@@ -1111,7 +1142,7 @@ function PageProject({ slug, route, setRoute, theme }) {
       </div>
 
       {/* Back link */}
-      <div className="m-page-pad" style={{ padding: "20px 56px 0" }}>
+      <div className="m-page-pad" style={{ padding: "48px 56px 0" }}>
         <span onClick={() => setRoute("projects")} style={{
           fontFamily: T.mono, fontSize: 11, letterSpacing: 1.6, color: T.ink60,
           textTransform: "uppercase", cursor: "pointer", display: "inline-flex", gap: 8, alignItems: "center",
@@ -1122,11 +1153,11 @@ function PageProject({ slug, route, setRoute, theme }) {
       </div>
 
       {/* Variant-specific body */}
-      <div className="m-page-pad" style={{ padding: "28px 56px 80px" }}>
+      <div className="m-page-pad" style={{ padding: "12px 56px 80px" }}>
         <DetailReport p={p} theme={theme} />
 
         {/* Prev / next nav */}
-        <div style={{ marginTop: 72, paddingTop: 24, borderTop: `1px solid ${T.hairStrong}`,
+        <div style={{ marginTop: 72,
           display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }} className="m-2col">
           {prev ? (
             <div onClick={() => setRoute(`projects/${prev.slug}`)} style={{ cursor: "pointer" }}>
@@ -1149,19 +1180,12 @@ function PageProject({ slug, route, setRoute, theme }) {
 // ----- Shared hero (header style 1: big image block, title below) -----
 function ProjectHero({ p, theme, aspect = "21/9" }) {
   return (
-    <div style={{ marginTop: 24 }}>
+    <div style={{ marginTop: 0 }}>
       <ProjectThumb project={p} theme={theme} aspect={aspect} />
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 28, gap: 32, flexWrap: "wrap" }}>
-        <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.8, color: theme.accent, textTransform: "uppercase" }}>
-          {p.kind} · {p.role}
-        </div>
-        <StatusDot project={p} theme={theme} />
-      </div>
 
       <div className="m-page-title" style={{
         fontFamily: theme.serif, fontSize: 92, lineHeight: 0.95, letterSpacing: -2.4,
-        fontWeight: 400, marginTop: 14,
+        fontWeight: 400, marginTop: 28,
       }}>
         <span style={{ fontStyle: "italic" }}>{p.name}.</span>
       </div>
@@ -1171,11 +1195,13 @@ function ProjectHero({ p, theme, aspect = "21/9" }) {
 
 // ----- Shared spec strip (published / updated / stack / status) -----
 function ProjectSpecs({ p, theme, layout = "row" }) {
+  const isLive = p.status === "live" || p.status === "shipping";
+  const fmtDate = (d) => (d || "").replace(/\s*·\s*/g, "·");
   const cells = [
-    ["Published",    p.published || p.started],
-    ["Last updated", (p.updated && p.updated !== p.published) ? p.updated : "—"],
-    ["Stack",        p.stack.join(" · ")],
-    ["Status",       p.status],
+    ["First published", fmtDate(p.published || p.started)],
+    ["Updated",         (p.updated && p.updated !== p.published) ? fmtDate(p.updated) : "—"],
+    ["Stack",           p.stack.join(" · ")],
+    ["Status",          p.status],
   ];
   if (layout === "stack") {
     return (
@@ -1202,21 +1228,39 @@ function ProjectSpecs({ p, theme, layout = "row" }) {
       </div>
     );
   }
+  // ROW — full-width: labeled fields separated by flex-grow slash dividers
   return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: `repeat(${cells.length}, 1fr)`,
-      gap: 24,
-      padding: "20px 0",
-      borderTop: `1px solid ${T.hairStrong}`,
-      borderBottom: `1px solid ${T.hair}`,
-    }}>
-      {cells.map(([k, v]) => (
-        <div key={k}>
-          <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>{k}</div>
-          <div style={{ fontFamily: theme.serif, fontSize: 16, marginTop: 4 }}>{v}</div>
-        </div>
-      ))}
+    <div className="m-spec-strip" style={{ display: "flex", alignItems: "stretch", width: "min(100%, max(50%, 620px))", marginRight: "auto" }}>
+      {cells.map(([k, v], idx) => {
+        const isStatus = k === "Status";
+        return (
+          <React.Fragment key={k}>
+            {idx > 0 && (
+              <div className="m-spec-div" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 22px", minWidth: 22 }}>
+                <span style={{ width: 4, height: 4, borderRadius: "50%", background: T.ink20, display: "block" }} />
+              </div>
+            )}
+            <div className="m-spec-field" style={{ display: "flex", flexDirection: "column", gap: 9, minWidth: 0 }}>
+              <div style={{
+                fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6,
+                color: T.ink40 || T.ink60, textTransform: "uppercase",
+              }}>{k}</div>
+              {isStatus ? (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <span style={{
+                    width: 7, height: 7, borderRadius: "50%",
+                    background: isLive ? theme.accent : T.ink40 || T.ink60,
+                    boxShadow: isLive ? `0 0 0 3px ${theme.accent}22` : "none",
+                  }} />
+                  <span style={{ fontFamily: T.mono, fontSize: 12, color: T.ink, lineHeight: 1, textTransform: "uppercase", letterSpacing: 0.4 }}>{v}</span>
+                </span>
+              ) : (
+                <div style={{ fontFamily: T.mono, fontSize: 12, color: T.ink, lineHeight: 1.4, letterSpacing: 0.3 }}>{v}</div>
+              )}
+            </div>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }
@@ -1284,14 +1328,15 @@ function DetailReport({ p, theme }) {
           padding: "32px 0",
           borderTop: `1px solid ${T.hairStrong}`,
           borderBottom: `1px solid ${T.hairStrong}`,
+          textAlign: "center",
         }}>
-          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 24 }}>
+          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 2, color: theme.accent, textTransform: "uppercase", marginBottom: 24, textAlign: "left" }}>
             By the numbers
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${p.metrics.length}, 1fr)`, gap: 32 }} className="m-3col">
+          <div style={{ display: "grid", gridTemplateColumns: `repeat(${p.metrics.length}, 1fr)`, gap: "clamp(12px, 3vw, 32px)" }} className="m-metrics">
             {p.metrics.map(([k, v]) => (
               <div key={k}>
-                <div style={{ fontFamily: theme.serif, fontSize: 64, lineHeight: 1, letterSpacing: -2, fontStyle: "italic" }}>
+                <div style={{ fontFamily: theme.serif, fontSize: "clamp(30px, 7vw, 64px)", lineHeight: 1, letterSpacing: -2, fontStyle: "italic" }}>
                   {v}
                 </div>
                 <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase", marginTop: 10 }}>
@@ -1309,15 +1354,11 @@ function DetailReport({ p, theme }) {
           <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase", marginBottom: 14 }}>
             Where to find it
           </div>
-          <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
             {p.links.map(([k, v]) => (
-              <div key={k} style={{
-                padding: "12px 18px",
-                border: `1px solid ${T.hairStrong}`,
-                cursor: "pointer",
-              }}>
+              <div key={k} style={{ cursor: "pointer" }}>
                 <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.4, color: T.ink60, textTransform: "uppercase" }}>{k}</div>
-                <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", marginTop: 4 }}>{v} ↗</div>
+                <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", marginTop: 4, color: theme.accent }}>{v} ↗</div>
               </div>
             ))}
           </div>

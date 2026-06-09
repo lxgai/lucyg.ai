@@ -104,10 +104,63 @@ export function StatusDot({ project }: { project: Project }) {
 }
 
 export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
+  const [sortOrder, setSortOrder] = React.useState<"newest" | "oldest">("newest");
+  const chronologicalProjects = React.useMemo(
+    () => [...projects].sort((a, b) => getProjectSortValue(a) - getProjectSortValue(b)),
+    [projects],
+  );
+  const entryNumbers = React.useMemo(
+    () => new Map(chronologicalProjects.map((project, index) => [project.slug, index + 1])),
+    [chronologicalProjects],
+  );
+  const sortedProjects = React.useMemo(
+    () => (sortOrder === "oldest" ? chronologicalProjects : [...chronologicalProjects].reverse()),
+    [chronologicalProjects, sortOrder],
+  );
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      {projects.map((project, index) => {
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: 1,
+          pb: 2,
+          borderBottom: `1px solid ${tokens.hair}`,
+        }}
+      >
+        {(["newest", "oldest"] as const).map((order) => {
+          const active = sortOrder === order;
+
+          return (
+            <Box
+              key={order}
+              component="button"
+              type="button"
+              onClick={() => setSortOrder(order)}
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 9,
+                letterSpacing: "1.4px",
+                textTransform: "uppercase",
+                color: active ? tokens.paperCard : tokens.ink60,
+                background: active ? tokens.accent : "transparent",
+                border: `1px solid ${active ? tokens.accent : tokens.hair}`,
+                px: 1.25,
+                py: 0.75,
+                cursor: "pointer",
+              }}
+            >
+              {order}
+            </Box>
+          );
+        })}
+      </Box>
+
+      {sortedProjects.map((project, index) => {
         const reverse = index % 2 === 1;
+        const entryNumber = entryNumbers.get(project.slug) ?? index + 1;
 
         return (
           <Box
@@ -120,18 +173,18 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
               gap: { xs: 3, md: 7 },
               alignItems: "center",
               py: { xs: 4, md: 5.5 },
-              borderTop: index === 0 ? `1px solid ${tokens.hairStrong}` : `1px solid ${tokens.hair}`,
-              borderBottom: index === projects.length - 1 ? `1px solid ${tokens.hairStrong}` : "none",
+              borderTop: index === 0 ? "none" : `1px solid ${tokens.hair}`,
+              borderBottom: index === sortedProjects.length - 1 ? `1px solid ${tokens.hair}` : "none",
               color: tokens.ink,
               textDecoration: "none",
               transition: "background 200ms",
               "&:hover": { background: "rgba(31,26,22,0.02)" },
             }}
           >
-            <Box sx={{ order: { xs: 1, md: reverse ? 2 : 1 }, width: "100%" }}>
+            <Box sx={{ order: { xs: 2, md: reverse ? 2 : 1 }, width: "100%" }}>
               <ProjectThumb project={project} />
             </Box>
-            <Box sx={{ order: { xs: 2, md: reverse ? 1 : 2 } }}>
+            <Box sx={{ order: { xs: 1, md: reverse ? 1 : 2 } }}>
               <Box
                 sx={{
                   fontFamily: tokens.mono,
@@ -142,7 +195,7 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
                   mb: 1.5,
                 }}
               >
-                Entry {String(index + 1).padStart(2, "0")} · {project.year}
+                Entry {String(entryNumber).padStart(2, "0")} · {project.year}
               </Box>
               <Typography
                 component="h2"
@@ -152,7 +205,6 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
                   fontSize: { xs: 42, md: 52 },
                   lineHeight: 0.98,
                   letterSpacing: "-1px",
-                  fontStyle: "italic",
                   m: 0,
                 }}
               >
@@ -168,7 +220,7 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
                   mt: 1.75,
                 }}
               >
-                {project.role}
+                {project.stack.join(" · ")}
               </Box>
               <Typography
                 component="div"
@@ -185,17 +237,6 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
               </Typography>
               <Box sx={{ display: "flex", gap: 3, alignItems: "center", mt: 3.5, flexWrap: "wrap" }}>
                 <StatusDot project={project} />
-                <Box
-                  component="span"
-                  sx={{
-                    fontFamily: tokens.mono,
-                    fontSize: 10,
-                    color: tokens.ink60,
-                    letterSpacing: "1.2px",
-                  }}
-                >
-                  {project.stack.join(" · ")}
-                </Box>
                 <Box component="span" sx={{ flex: 1, display: { xs: "none", md: "block" } }} />
                 <Box
                   component="span"
@@ -207,7 +248,7 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
                     textTransform: "uppercase",
                   }}
                 >
-                  open file -&gt;
+                  open file →
                 </Box>
               </Box>
             </Box>
@@ -218,33 +259,24 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
   );
 }
 
+function getProjectSortValue(project: Project) {
+  const dateSource = project.published ?? project.started ?? project.year;
+  const yearMatch = dateSource.match(/\d{4}/);
+  const monthMatch = dateSource.match(/[A-Za-z]{3,}/);
+  const monthIndex = monthMatch
+    ? ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].indexOf(
+        monthMatch[0].slice(0, 3).toLowerCase(),
+      )
+    : -1;
+  const year = yearMatch ? Number(yearMatch[0]) : Number(project.year) || 0;
+
+  return year * 12 + Math.max(monthIndex, 0);
+}
+
 function ProjectHero({ project }: { project: Project }) {
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 1.5 }}>
       <ProjectThumb project={project} aspect="21 / 9" />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          mt: 3.5,
-          gap: 4,
-          flexWrap: "wrap",
-        }}
-      >
-        <Box
-          sx={{
-            fontFamily: tokens.mono,
-            fontSize: 10,
-            letterSpacing: "1.8px",
-            color: tokens.accent,
-            textTransform: "uppercase",
-          }}
-        >
-          {project.kind} · {project.role}
-        </Box>
-        <StatusDot project={project} />
-      </Box>
       <Typography
         component="h1"
         sx={{
@@ -254,24 +286,11 @@ function ProjectHero({ project }: { project: Project }) {
           fontSize: { xs: 56, md: 92 },
           lineHeight: 0.95,
           letterSpacing: { xs: "-1.2px", md: "-2.4px" },
-          mt: 1.75,
+          mt: 3.5,
           mb: 0,
         }}
       >
         {project.name}.
-      </Typography>
-      <Typography
-        component="div"
-        sx={{
-          fontFamily: tokens.serif,
-          fontSize: { xs: 19, md: 22 },
-          lineHeight: 1.45,
-          mt: 2.75,
-          maxWidth: 680,
-          color: tokens.ink,
-        }}
-      >
-        {project.tagline}
       </Typography>
     </Box>
   );
@@ -280,9 +299,10 @@ function ProjectHero({ project }: { project: Project }) {
 function ProjectSpecs({ project }: { project: Project }) {
   const published = project.published ?? project.started;
   const lastUpdated = project.updated && project.updated !== published ? project.updated : "—";
+  const isLive = project.status === "live" || project.status === "shipping";
   const cells = [
-    ["Published", published],
-    ["Last updated", lastUpdated],
+    ["First published", compactProjectDate(published)],
+    ["Updated", compactProjectDate(lastUpdated)],
     ["Stack", project.stack.join(" · ")],
     ["Status", project.status],
   ];
@@ -290,32 +310,115 @@ function ProjectSpecs({ project }: { project: Project }) {
   return (
     <Box
       sx={{
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr 1fr", md: `repeat(${cells.length}, 1fr)` },
-        gap: { xs: 2.5, md: 3 },
-        py: 2.5,
-        borderTop: `1px solid ${tokens.hairStrong}`,
-        borderBottom: `1px solid ${tokens.hair}`,
+        display: "flex",
+        alignItems: "stretch",
+        width: "min(100%, max(50%, 620px))",
+        maxWidth: "100%",
+        mr: "auto",
+        py: 1,
+        "@media (max-width: 560px)": {
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "26px 28px",
+          width: "100%",
+          alignItems: "start",
+        },
       }}
     >
-      {cells.map(([label, value]) => (
-        <Box key={label}>
-          <Box
-            sx={{
-              fontFamily: tokens.mono,
-              fontSize: 9,
-              letterSpacing: "1.4px",
-              color: tokens.ink60,
-              textTransform: "uppercase",
-            }}
-          >
-            {label}
-          </Box>
-          <Box sx={{ fontFamily: tokens.serif, fontSize: 16, mt: 0.5 }}>{value}</Box>
-        </Box>
-      ))}
+      {cells.map(([label, value], index) => {
+        const isStatus = label === "Status";
+
+        return (
+          <React.Fragment key={label}>
+            {index > 0 && (
+              <Box
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minWidth: 22,
+                  px: 2.75,
+                  "@media (max-width: 560px)": { display: "none" },
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    display: "block",
+                    width: 4,
+                    height: 4,
+                    borderRadius: "50%",
+                    background: tokens.ink20,
+                  }}
+                />
+              </Box>
+            )}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1.125, minWidth: 0 }}>
+              <Box
+                sx={{
+                  fontFamily: tokens.mono,
+                  fontSize: 9,
+                  letterSpacing: "1.6px",
+                  color: tokens.ink40,
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {label}
+              </Box>
+              {isStatus ? (
+                <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 1, minWidth: 0 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: "50%",
+                      flex: "0 0 auto",
+                      background: isLive ? tokens.accent : tokens.ink40,
+                      boxShadow: isLive ? `0 0 0 3px color-mix(in srgb, ${tokens.accent} 15%, transparent)` : "none",
+                    }}
+                  />
+                  <Box
+                    component="span"
+                    sx={{
+                      fontFamily: tokens.mono,
+                      fontSize: 12,
+                      letterSpacing: "0.4px",
+                      lineHeight: 1,
+                      color: tokens.ink,
+                      textTransform: "uppercase",
+                      overflowWrap: "anywhere",
+                    }}
+                  >
+                    {value}
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    fontFamily: tokens.mono,
+                    fontSize: 12,
+                    letterSpacing: "0.3px",
+                    lineHeight: 1.4,
+                    color: tokens.ink,
+                    overflowWrap: "anywhere",
+                  }}
+                >
+                  {value}
+                </Box>
+              )}
+            </Box>
+          </React.Fragment>
+        );
+      })}
     </Box>
   );
+}
+
+function compactProjectDate(date: string) {
+  return date.replace(/\s*(?:Â·|·|\/|,)\s*/g, "·").replace(/\s+/g, "·");
 }
 
 function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
@@ -622,7 +725,7 @@ function ProjectMarkdown({ markdown }: { markdown: string }) {
 }
 
 function ProjectLegacyEntries({ project }: { project: Project }) {
-  const opening = project.entries?.[0]?.b.split(".")[0] ?? project.tagline;
+  const opening = project.entries?.[0]?.b.split(".")[0];
 
   return (
     <>
@@ -736,11 +839,12 @@ export function ProjectDetailReport({
           display: "inline-flex",
           gap: 1,
           alignItems: "center",
-          mb: 1,
+          mt: { xs: 2, md: 3 },
+          mb: 0.5,
           "&:hover": { color: tokens.accent },
         }}
       >
-        &lt;- Projects
+        ← Projects
       </Box>
 
       <ProjectHero project={project} />
@@ -772,13 +876,20 @@ export function ProjectDetailReport({
           >
             By the numbers
           </Box>
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: `repeat(${project.metrics.length}, 1fr)` }, gap: 4 }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${project.metrics.length}, minmax(0, 1fr))`,
+              gap: { xs: 2, md: 4 },
+              textAlign: "center",
+            }}
+          >
             {project.metrics.map(([label, value]) => (
               <Box key={label}>
                 <Box
                   sx={{
                     fontFamily: tokens.serif,
-                    fontSize: { xs: 48, md: 64 },
+                    fontSize: "clamp(30px, 10vw, 64px)",
                     lineHeight: 1,
                     letterSpacing: "-2px",
                     fontStyle: "italic",
@@ -820,12 +931,12 @@ export function ProjectDetailReport({
           </Box>
           <Box sx={{ display: "flex", gap: 2.25, flexWrap: "wrap" }}>
             {project.links.map(([label, value]) => (
-              <Box key={label} sx={{ px: 2.25, py: 1.5, border: `1px solid ${tokens.hairStrong}` }}>
+              <Box key={label}>
                 <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
                   {label}
                 </Box>
-                <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic", mt: 0.5 }}>
-                  {value} -&gt;
+                <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic", mt: 0.5, color: tokens.accent }}>
+                  {value} →
                 </Box>
               </Box>
             ))}
@@ -843,8 +954,6 @@ function ProjectPrevNext({ previous, next }: { previous?: Project; next?: Projec
     <Box
       sx={{
         mt: 9,
-        pt: 3,
-        borderTop: `1px solid ${tokens.hairStrong}`,
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
         gap: 4,
@@ -853,7 +962,7 @@ function ProjectPrevNext({ previous, next }: { previous?: Project; next?: Projec
       {previous ? (
         <Box component={NextLink} href={`/projects/${previous.slug}`} sx={{ color: tokens.ink, textDecoration: "none" }}>
           <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            &lt;- Previous
+            ← Previous
           </Box>
           <Box sx={{ fontFamily: tokens.serif, fontSize: 22, fontStyle: "italic", mt: 0.5 }}>{previous.name}</Box>
         </Box>
@@ -867,7 +976,7 @@ function ProjectPrevNext({ previous, next }: { previous?: Project; next?: Projec
           sx={{ color: tokens.ink, textDecoration: "none", textAlign: { xs: "left", md: "right" } }}
         >
           <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            Next -&gt;
+            Next →
           </Box>
           <Box sx={{ fontFamily: tokens.serif, fontSize: 22, fontStyle: "italic", mt: 0.5 }}>{next.name}</Box>
         </Box>
