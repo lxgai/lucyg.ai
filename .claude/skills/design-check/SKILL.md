@@ -1,6 +1,6 @@
 ---
 name: design-check
-description: Review code against the Memory Archive design system (colors, typography, metadata strip, layout/scroll rules, components, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift toward legacy scrapbook/VT323/Cooper/pink styling. Defaults to the current git diff; accepts file/dir paths.
+description: Review code against the Memory Archive design system (colors, typography, metadata strip, layout/scroll rules, components, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift toward legacy scrapbook styling. Defaults to the current git diff; accepts file/dir paths.
 ---
 
 # design-check
@@ -67,10 +67,10 @@ Do not flag once-off white/black overlays, photo shadows, texture gradients, or 
 
 ### 2. Typography
 
-Severity: **SHOULD-FIX**, or **BLOCKER** for legacy fonts in public UI.
+Severity: **SHOULD-FIX**, or **BLOCKER** for non-approved fonts in public UI.
 
 - `fontFamily` should reference `tokens.serif`, `tokens.mono`, or `tokens.hand`, not a raw font stack.
-- Public UI must not reintroduce `VT323`, `Cooper`, or `ChunkFive` unless the task explicitly asks to preserve legacy styling.
+- Newsreader (serif) and JetBrains Mono (mono) are the only typefaces; public UI must not introduce any other font.
 - Serif is for headings, page titles, place names, post titles, and editorial prose.
 - Mono is for metadata, section labels, dates, catalog numbers, taxonomy, and controls. Mono should usually be small (`8-11px`), letter-spaced (`1.4-2px`), and uppercase.
 
@@ -202,7 +202,7 @@ Severity: **NOTE**, unless copy conflicts with metadata rules.
 2. Resolve scope and state it.
 3. Search with `rg` for likely drift:
    - colors: `#[0-9a-fA-F]{3,6}|rgba?\(|oklch\(`
-   - typography: `fontFamily|VT323|Cooper|ChunkFive`
+   - typography: `fontFamily`
    - metadata: `file:|FILE:|MetadataStrip|catNo|updatedLabel|metadataExtra|Also on Substack`
    - scroll: `100vw|overflowX|overscroll-behavior|touch-action`
    - travel index: `newest first|oldest first|whiteSpace|ResizeObserver|TravelsArrow`

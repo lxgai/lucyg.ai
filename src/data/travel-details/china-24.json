@@ -9,7 +9,7 @@
   "hero": {
     "title": "China,",
     "italicTitle": "summer '24.",
-    "intro": "Two summer weeks across three very different Chinas. Hangzhou for lotus ponds and slow lake mornings; Chongqing for hot pots, river lights, and noodles that left me sweating into my soup; Wulong for cliffs that swallowed everything human-sized. I traveled with my parents - first time in a while - and ate constantly.",
+    "intro": "Two summer weeks across three very different Chinas. Hangzhou for my mom's wontons and slow lake evenings; Chongqing for cyberpunk dreams, river lights, and noodles that left me sweating into my soup; Wulong for cliffs that swallowed everything human-sized. I traveled with my parents - first time in a while - and admired how things had changed since the last time I visited.",
     "canvasHeight": {
       "large": 570,
       "medium": 520,
@@ -22,17 +22,17 @@
     },
     "copyLayout": {
       "large": {
-        "x": 61,
-        "y": 6,
+        "x": 60.59415584415584,
+        "y": 25,
         "width": 40.3636403269582,
         "rotation": 0,
         "zIndex": 2,
         "visible": true
       },
       "medium": {
-        "x": 60,
-        "y": 4,
-        "width": 40,
+        "x": 54.270833333333336,
+        "y": 18,
+        "width": 46.66666666666667,
         "rotation": 0,
         "zIndex": 2,
         "visible": true
@@ -60,15 +60,15 @@
         "layout": {
           "large": {
             "x": 44.922070986264714,
-            "y": 414.3999938964844,
+            "y": 423.3999938964844,
             "width": 9.337663328492797,
             "rotation": -6.1,
             "zIndex": 20,
             "visible": true
           },
           "medium": {
-            "x": 12,
-            "y": 20,
+            "x": 16.791666666666664,
+            "y": 88,
             "width": 12,
             "rotation": 0,
             "zIndex": 20,
@@ -94,17 +94,17 @@
       "aspect": "1280 / 960",
       "layout": {
         "large": {
-          "x": -1.2986963445490054,
-          "y": -29.59991455078125,
+          "x": -2.0292158250684857,
+          "y": -19.59991455078125,
           "width": 60.922077922077925,
           "rotation": -0.6,
           "zIndex": 1,
           "visible": true
         },
         "medium": {
-          "x": 0,
-          "y": 0,
-          "width": 58,
+          "x": -1.3541666666666672,
+          "y": 34,
+          "width": 55.916666666666664,
           "rotation": -0.6,
           "zIndex": 1,
           "visible": true
@@ -123,7 +123,7 @@
     "metadataFields": [
       {
         "label": "12 DAYS",
-        "description": "Hangzhou · Chongqing"
+        "description": "Hangzhou · Chongqing · Wulong"
       },
       {
         "label": "Weather",
@@ -152,7 +152,7 @@
         "smallWidth": 390,
         "smallHeight": 760
       },
-      "blurb": "Mornings on West Lake before the heat. Lotus the size of a dinner plate. Dumplings that disappeared faster than I can describe them. The kind of quiet that makes you talk softer.",
+      "blurb": "",
       "blocks": [
         {
           "id": "hangzhou-lake",
@@ -163,16 +163,16 @@
           "aspect": "4032 / 2683",
           "layout": {
             "large": {
-              "x": -7.011914934430813,
-              "y": 180.5333251953125,
+              "x": -7.3690577915736695,
+              "y": 232.5333251953125,
               "width": 49.43124959513338,
               "rotation": 0,
               "zIndex": 1,
               "visible": true
             },
             "medium": {
-              "x": 2.0861984574005916,
-              "y": 208.00006103515625,
+              "x": 5.10945427135408,
+              "y": 300.00006103515625,
               "width": 39.1693651782807,
               "rotation": -1.8,
               "zIndex": 1,
@@ -207,9 +207,9 @@
               "visible": true
             },
             "medium": {
-              "x": 40.692560756406984,
-              "y": 0,
-              "width": 58.2421126975653,
+              "x": 56.971630523848845,
+              "y": 79,
+              "width": 32.77699641849553,
               "rotation": 5,
               "zIndex": 2,
               "visible": true
@@ -227,20 +227,20 @@
         {
           "id": "hangzhou-note",
           "type": "text",
-          "text": "Mornings on West Lake before the heat. Lotus the size of a dinner plate. Dumplings that disappeared faster than I can describe them. The kind of quiet that makes you talk softer.",
+          "text": "Every time I visit, I'm amazed at how much this city has changed - in a way, Hangzhou is my first-hand experience feeling the country's dramatic urbanization over decades. But there are some things that never change - afternoon strolls around West Lake and some really awesome homemade dumplings.",
           "tone": "caption",
           "layout": {
             "large": {
-              "x": -6.357143947056375,
-              "y": 35.200042724609375,
+              "x": -5.285715375627804,
+              "y": 24.200042724609375,
               "width": 45.38549548596276,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "medium": {
-              "x": 2.4940948950033666,
-              "y": 66.39999389648438,
+              "x": -2.971021384066401,
+              "y": 29.399993896484375,
               "width": 37.59979100947,
               "rotation": 0,
               "zIndex": 3,
@@ -278,9 +278,9 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 4.162790697674419,
+              "y": 611,
+              "width": 5.837209302325583,
               "rotation": 0,
               "zIndex": 5,
               "visible": true
@@ -313,9 +313,9 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 41.13953488372093,
+              "y": 321,
+              "width": 17.348837209302324,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
@@ -348,9 +348,9 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 56.255813953488364,
+              "y": 171,
+              "width": 18.627906976744185,
               "rotation": 0,
               "zIndex": 8,
               "visible": true
@@ -380,16 +380,16 @@
           },
           "layout": {
             "large": {
-              "x": 8.220602321895031,
-              "y": 161.33343505859375,
+              "x": 7.863459464752174,
+              "y": 217.33343505859375,
               "width": 13.968708887031605,
               "rotation": -3.4,
               "zIndex": 20,
               "visible": true
             },
             "medium": {
-              "x": 15.45868520763722,
-              "y": 192.800048828125,
+              "x": 14.644731719265128,
+              "y": 290.800048828125,
               "width": 13.968708887031605,
               "rotation": -5,
               "zIndex": 20,
@@ -413,16 +413,16 @@
       "name": "Chongqing",
       "nativeName": "重庆",
       "romanizedName": "Chongqing",
-      "dayLabel": "Days 7 - 12",
-      "coordinates": "29.56°N · 106.55°E",
+      "dayLabel": "Days 7 - 10",
+      "coordinates": "29.55°N · 106.57°E",
       "align": "right",
       "canvas": {
         "largeWidth": 1120,
-        "largeHeight": 1500,
+        "largeHeight": 1100,
         "mediumWidth": 860,
-        "mediumHeight": 1500,
+        "mediumHeight": 1100,
         "smallWidth": 390,
-        "smallHeight": 1760
+        "smallHeight": 1360
       },
       "blurb": "A vertical city - bridges over bridges, escalators that climb six floors at once. We ate hot pot until we couldn't, then walked it off along the river while Hongyadong lit up gold. My favorite chaos of the trip.",
       "blocks": [
@@ -435,8 +435,8 @@
           "aspect": "1848 / 2182",
           "layout": {
             "large": {
-              "x": 57.92993950062048,
-              "y": -8.800018310546875,
+              "x": 58.28708235776333,
+              "y": -2.800018310546875,
               "width": 47.914421467299434,
               "rotation": 0,
               "zIndex": 2,
@@ -471,8 +471,8 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": -3.928571428571437,
-              "y": 515.5998840332031,
+              "x": 22.58928571428571,
+              "y": 624.5998840332031,
               "width": 12.923201778336653,
               "rotation": -10.1,
               "zIndex": 12,
@@ -499,13 +499,13 @@
         {
           "id": "chongqing-note",
           "type": "text",
-          "text": "A vertical city - bridges over bridges, escalators that climb six floors at once. We ate hot pot until we couldn't, then walked it off along the river while Hongyadong lit up gold. My favorite chaos of the trip.",
+          "text": "The moment the sun disappears along the horizon, this urban, \"8-D\" city comes to life.  Despite it being ruthlessly hot, my cyberpunk dream of experiencing the vertical landscape of this city became a reality. From neon city views to spicy eats to being dropped off at the wrong elevation, I could only wish I had more evenings to just walk by the river and watch.",
           "tone": "caption",
           "layout": {
             "large": {
-              "x": -3.8618740691086857,
-              "y": -37.399932861328125,
-              "width": 53.78571973528181,
+              "x": -3.4154454976801043,
+              "y": 421.6000671386719,
+              "width": 45.5714340209961,
               "rotation": 0,
               "zIndex": 4,
               "visible": true
@@ -542,8 +542,8 @@
           "aspect": "4032 / 2786",
           "layout": {
             "large": {
-              "x": -3.4285714285714275,
-              "y": 87.20001220703125,
+              "x": -4.142857142857141,
+              "y": -32.79998779296875,
               "width": 54.00000217982701,
               "rotation": 0,
               "zIndex": 4,
@@ -577,8 +577,8 @@
           "aspect": "3024 / 4032",
           "layout": {
             "large": {
-              "x": -1.9285779680524573,
-              "y": 549.6000366210938,
+              "x": -4.0714351109096,
+              "y": 629.6000366210938,
               "width": 30.428573608398438,
               "rotation": 0,
               "zIndex": 5,
@@ -612,10 +612,10 @@
           "aspect": "737 / 1122",
           "layout": {
             "large": {
-              "x": 32.21427045549666,
-              "y": 575.2001342773438,
-              "width": 22.2142824445452,
-              "rotation": 0,
+              "x": 74.80355616978237,
+              "y": 671.2001342773438,
+              "width": 24.7142824445452,
+              "rotation": -1.6,
               "zIndex": 6,
               "visible": true
             },
@@ -636,7 +636,7 @@
               "visible": true
             }
           },
-          "cutout": true
+          "cutout": false
         },
         {
           "id": "image-mpa9tqqk",
@@ -647,9 +647,9 @@
           "aspect": "1000 / 1680",
           "layout": {
             "large": {
-              "x": 60.78572627476284,
-              "y": 676.8001098632812,
-              "width": 40.357151576450896,
+              "x": 66.94644056047711,
+              "y": 1305.8001098632812,
+              "width": 38.303580147879465,
               "rotation": 0,
               "zIndex": 7,
               "visible": true
@@ -678,13 +678,13 @@
           "type": "image",
           "src": "/images/travels/china-24/jiuli-city.jpg",
           "alt": "jiuli-city",
-          "caption": "Jiuli city",
+          "caption": "Jiuli city - in a neighboring district",
           "aspect": "4032 / 3024",
           "layout": {
             "large": {
-              "x": 24.00002288818359,
-              "y": 1085.6000061035156,
-              "width": 33.857147216796875,
+              "x": -3.589262826102135,
+              "y": 1704.6000061035156,
+              "width": 33.232147216796875,
               "rotation": 0,
               "zIndex": 8,
               "visible": true
@@ -716,8 +716,8 @@
           "aspect": "1880 / 2228",
           "layout": {
             "large": {
-              "x": 77.00001525878906,
-              "y": 592.7999877929688,
+              "x": 83.33930097307477,
+              "y": 1175.7999877929688,
               "width": 20.928549630301337,
               "rotation": 0,
               "zIndex": 9,
@@ -743,41 +743,39 @@
           "cutout": true
         },
         {
-          "id": "text-mpa9ywi6",
-          "type": "text",
-          "text": "We also traveled to Jiuli City",
-          "tone": "body",
-          "fontSize": {
-            "large": 18,
-            "medium": 18,
-            "small": 17
-          },
+          "id": "image-mq7jvr94",
+          "type": "image",
+          "src": "/images/travels/china-24/chongqing-highways.jpeg",
+          "alt": "chongqing-highways.jpeg",
+          "caption": "",
+          "aspect": "3636 / 2727",
           "layout": {
             "large": {
-              "x": -1.6428516932896198,
-              "y": 1084.7999877929688,
-              "width": 34,
+              "x": 33.80357142857143,
+              "y": 766,
+              "width": 37.982142857142854,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
             },
             "medium": {
               "x": 8,
-              "y": 120,
-              "width": 34,
+              "y": 40,
+              "width": 42,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
             },
             "small": {
               "x": 6,
-              "y": 120,
-              "width": 54.400000000000006,
+              "y": 40,
+              "width": 67.2,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
             }
-          }
+          },
+          "cutout": true
         }
       ],
       "decorations": [
@@ -793,8 +791,8 @@
           },
           "layout": {
             "large": {
-              "x": 15.032586424989892,
-              "y": 77.99981689453125,
+              "x": 13.961157853561321,
+              "y": -46.00018310546875,
               "width": 14,
               "rotation": 5,
               "zIndex": 20,
@@ -830,9 +828,9 @@
           },
           "layout": {
             "large": {
-              "x": 29.714293343680247,
-              "y": 591.9999694824219,
-              "width": 5.50000762939453,
+              "x": 95.87500762939453,
+              "y": 672.9999694824219,
+              "width": 5.9464362008231015,
               "rotation": 90,
               "zIndex": 20,
               "visible": true
@@ -854,11 +852,211 @@
               "visible": true
             }
           }
+        }
+      ]
+    },
+    {
+      "id": "section-mq7hsan5",
+      "no": "03",
+      "name": "Wulong",
+      "nativeName": "武隆",
+      "romanizedName": "New section",
+      "dayLabel": "Days 10-12",
+      "coordinates": "29.39° N · 107.78°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 760,
+        "mediumWidth": 860,
+        "mediumHeight": 760,
+        "smallWidth": 390,
+        "smallHeight": 1080
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "auto-wulong-2",
+          "type": "image",
+          "src": "/images/travels/china-24/wulong-2.jpeg",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 31.053571428571423,
+              "y": 66,
+              "width": 38.14285714285714,
+              "rotation": 3,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 400,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            }
+          }
         },
         {
-          "id": "tape-mpa9xndp",
+          "id": "text-mq7k15vc",
+          "type": "text",
+          "text": "If you ever find yourself willing to take a rough, 3 hour bus ride from the city of Chongqing, I do highly recommend you check out the Three Natural Bridges.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": -5.482142857142859,
+              "y": 65,
+              "width": 36.232142857142854,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-bus-sticker",
+          "type": "image",
+          "src": "/images/travels/china-24/bus-sticker.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": -2.0714285714285774,
+              "y": 295,
+              "width": 11.089285714285714,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 40,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-plant-sticker",
+          "type": "image",
+          "src": "/images/travels/china-24/plant-sticker.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 37.83928571428571,
+              "y": 531,
+              "width": 18.32142857142857,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 400,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-sketch-arrow",
+          "type": "image",
+          "src": "/images/travels/china-24/sketch-arrow.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 17.660714285714285,
+              "y": 146,
+              "width": 13.857142857142858,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 40,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            }
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "tape-mq7jzi8z",
           "type": "tape",
-          "color": "rgba(243, 215, 158, 0.65)",
+          "color": "rgba(123, 35, 108, 0.65)",
           "opacity": 0.88,
           "height": {
             "large": 24,
@@ -867,8 +1065,8 @@
           },
           "layout": {
             "large": {
-              "x": 35.42857905796596,
-              "y": 1068.800033569336,
+              "x": 43.25,
+              "y": 50,
               "width": 16,
               "rotation": 0,
               "zIndex": 20,

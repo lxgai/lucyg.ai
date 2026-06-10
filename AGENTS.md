@@ -2,9 +2,9 @@
 
 ## Project
 
-Personal site for Lucy Gai. This is a design-focused Next.js portfolio with sections for home, blog, travels, projects, favorites, about, links, and a development-only collage editor.
+Personal site for Lucy Gai. This is a design-focused Next.js portfolio with sections for home, blog, travels, projects, favorites, about, links, and a development-only travel-detail editor.
 
-Use `docs/design.md` as the current visual source of truth. Some older code and `.claude/CLAUDE.md` still reflect the previous scrapbook/retro system; when making new design work, migrate toward the Memory Archive direction in `docs/design.md` rather than preserving older VT323/Cooper/pink styling by default.
+Use `docs/design.md` as the visual source of truth for the site's Memory Archive design system.
 
 ## Stack
 
@@ -31,15 +31,13 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 ## Important Paths
 
 - `src/app/` - App Router pages and API routes
-- `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`, `CollageLayout`, `CollageCanvas`
-- `src/data/travels/` - JSON collage layouts for trip pages
+- `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`
 - `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
 - `src/data/blog-tags.ts` - local tag mapping for Substack-imported blog entries
 - `src/data/substack/sample-feed.xml` - fixture RSS feed for local Substack integration testing
 - `src/lib/substack.ts` - server-only Substack RSS importer and sanitizer
 - `src/types/` - shared TypeScript types
 - `src/styles/globals.css` - global CSS, Tailwind import, font variables
-- `public/fonts/` - local fonts currently registered in `src/app/layout.tsx`
 - `docs/design.md` - current design system and copy guidance
 - `.claude/CLAUDE.md` - older but still useful implementation notes, especially scroll and admin-editor details
 
@@ -63,7 +61,7 @@ Typography direction:
 
 - Display serif should be Newsreader for headings, page titles, place names, post titles, and other human/editorial content.
 - Mono should be JetBrains Mono for metadata, section labels, catalog numbers, dates, and taxonomy.
-- Older VT323, Cooper Light, ChunkFive, and pink accent styling are legacy unless the task explicitly asks to preserve them.
+- Newsreader and JetBrains Mono are the only typefaces; do not introduce others.
 
 Layout direction:
 
@@ -135,15 +133,6 @@ The public blog uses Substack as the primary source when configured.
 - Imported article HTML must remain sanitized in `src/lib/substack.ts`; do not render raw feed HTML directly.
 - Keep RSS images rendered through sanitized HTML/CSS instead of `next/image`, unless a deliberate remote image policy is added.
 
-## Collage System
-
-Trip pages use responsive collage layout JSON from `src/data/travels/`.
-
-- `CollageLayout` selects `large`, `medium`, or `small` based on `window.innerWidth`.
-- `CollageCanvas` renders items with percentage-based absolute positioning.
-- Keep layout JSON structured and formatted; avoid ad hoc string manipulation.
-- When changing collage item types, update `src/types/collage.ts`, renderer logic, and the admin editor together.
-
 ## Travel Detail System
 
 Detailed trip pages, such as `/travels/china-24`, use travel detail JSON from `src/data/travel-details/`.
@@ -157,19 +146,12 @@ Detailed trip pages, such as `/travels/china-24`, use travel detail JSON from `s
 - Section canvas widths define the horizontal coordinate system. Do not expose editable section width controls in the editor; only section heights should be editable per breakpoint.
 - Drag and resize math should continue to use unscaled design coordinates.
 
-## Admin Collage Editor
-
-The editor at `/admin/collage-editor` is development-only.
-
-- It must call `notFound()` in production.
-- All `/api/admin/*` routes must return 404 in production before doing any file or request work.
-- The API routes read/write JSON files under `src/data/travels/`.
-- Be careful when touching save/load path handling; do not broaden write access beyond the project data files.
-
 ## Admin Travel Detail Editor
 
 The editor at `/admin/travel-detail-editor` is development-only.
 
+- It must call `notFound()` in production, and all `/api/admin/*` routes must return 404 in production before doing any file or request work.
+- Be careful when touching save/load path handling; do not broaden write access beyond the project data files.
 - It edits travel detail JSON under `src/data/travel-details/`.
 - It should render the same detail components as the public page where practical, but in fixed preview mode at scale `1`.
 - The hero can be visually edited by selecting and dragging its image frame, copy block, and tape pieces in the preview.

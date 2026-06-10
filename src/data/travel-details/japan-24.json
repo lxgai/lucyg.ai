@@ -1,0 +1,928 @@
+{
+  "fileNo": "002",
+  "section": "SECTION B · TRAVELS / JAPAN",
+  "metadata": {
+    "place": "Japan",
+    "dateRange": "JUL 2024",
+    "duration": "10 days"
+  },
+  "hero": {
+    "title": "Japan,",
+    "italicTitle": "summer '24.",
+    "intro": "Ten days mostly in Tokyo, with a quiet detour to a Hakone ryokan. Digital light at teamLab, the long pull of Shibuya Crossing at night, figurine shopping in Akihabara, and an embarrassing amount of convenience-store food between it all. The ryokan kaiseki was an experience I'm glad I had once.",
+    "canvasHeight": {
+      "large": 570,
+      "medium": 520,
+      "small": 700
+    },
+    "titleTopMargin": {
+      "large": 22,
+      "medium": 20,
+      "small": 20
+    },
+    "copyLayout": {
+      "large": {
+        "x": 61,
+        "y": 6,
+        "width": 40.3636403269582,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "medium": {
+        "x": 60,
+        "y": 4,
+        "width": 40,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "small": {
+        "x": 6,
+        "y": 330,
+        "width": 88,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      }
+    },
+    "decorations": [
+      {
+        "id": "hero-tape-japan",
+        "type": "tape",
+        "color": "rgba(163, 91, 115, 0.6)",
+        "opacity": 0.88,
+        "height": {
+          "large": 24,
+          "medium": 24,
+          "small": 18
+        },
+        "layout": {
+          "large": {
+            "x": 45,
+            "y": 414,
+            "width": 9.3,
+            "rotation": -6.1,
+            "zIndex": 20,
+            "visible": true
+          },
+          "medium": {
+            "x": 12,
+            "y": 20,
+            "width": 12,
+            "rotation": 0,
+            "zIndex": 20,
+            "visible": true
+          },
+          "small": {
+            "x": 6,
+            "y": 20,
+            "width": 36,
+            "rotation": 0,
+            "zIndex": 20,
+            "visible": true
+          }
+        }
+      }
+    ],
+    "image": {
+      "id": "hero-shibuya-crossing",
+      "type": "image",
+      "src": "/images/travels/japan-24/shibuya-crossing.jpg",
+      "alt": "Shibuya Crossing at night",
+      "caption": "",
+      "aspect": "600 / 900",
+      "layout": {
+        "large": {
+          "x": 0,
+          "y": -20,
+          "width": 50,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "medium": {
+          "x": 0,
+          "y": 0,
+          "width": 52,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "small": {
+          "x": 0,
+          "y": 0,
+          "width": 80,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        }
+      },
+      "cutout": true
+    },
+    "metadataFields": [
+      {
+        "label": "7 DAYS",
+        "description": "Tokyo · Hakone"
+      },
+      {
+        "label": "Weather",
+        "description": "Humid, warm nights - 32°C avg"
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "End of file - Japan '24"
+  },
+  "sections": [
+    {
+      "id": "tokyo",
+      "no": "01",
+      "name": "Tokyo",
+      "nativeName": "東京",
+      "romanizedName": "Tokyo",
+      "dayLabel": "Days 1 - 8",
+      "coordinates": "35.68°N · 139.69°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 1700,
+        "mediumWidth": 860,
+        "mediumHeight": 1700,
+        "smallWidth": 390,
+        "smallHeight": 2200
+      },
+      "blurb": "The tourist run: teamLab Planets and Borderless, tea tasting and wagashi, Meiji Shrine, the long crush of Shibuya Crossing. Figurine shopping in Akihabara, a little Harajuku fashion, and far too much convenience-store food.",
+      "blocks": [
+        {
+          "id": "tokyo-note",
+          "type": "text",
+          "text": "The tourist run: teamLab Planets and Borderless, tea tasting and wagashi, Meiji Shrine, the long crush of Shibuya Crossing. Figurine shopping in Akihabara, a little Harajuku fashion, and far too much convenience-store food.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 20,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 6,
+              "y": 20,
+              "width": 40,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-teamlabs",
+          "type": "image",
+          "src": "/images/travels/japan-24/teamlabs.jpg",
+          "alt": "teamLab digital art",
+          "caption": "",
+          "aspect": "600 / 450",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 2,
+              "y": 200,
+              "width": 44,
+              "rotation": -1,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 6,
+              "y": 200,
+              "width": 44,
+              "rotation": -1,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 260,
+              "width": 86,
+              "rotation": -1,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-teamlabs2",
+          "type": "image",
+          "src": "/images/travels/japan-24/teamlabs2.jpg",
+          "alt": "teamLab digital art",
+          "caption": "",
+          "aspect": "600 / 450",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 50,
+              "y": 260,
+              "width": 34,
+              "rotation": 2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 480,
+              "width": 42,
+              "rotation": 2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 86,
+              "rotation": 2,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-akihabara",
+          "type": "image",
+          "src": "/images/travels/japan-24/akihabara.jpg",
+          "alt": "Akihabara district",
+          "caption": "",
+          "aspect": "600 / 800",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 70,
+              "y": 40,
+              "width": 28,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "medium": {
+              "x": 52,
+              "y": 200,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 860,
+              "width": 70,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-harajuku",
+          "type": "image",
+          "src": "/images/travels/japan-24/harajuku-ish.jpg",
+          "alt": "Harajuku street",
+          "caption": "",
+          "aspect": "600 / 450",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 6,
+              "y": 540,
+              "width": 40,
+              "rotation": -1,
+              "zIndex": 5,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 740,
+              "width": 42,
+              "rotation": -1,
+              "zIndex": 5,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1140,
+              "width": 86,
+              "rotation": -1,
+              "zIndex": 5,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-tea-tasting",
+          "type": "image",
+          "src": "/images/travels/japan-24/tea-tasting.png",
+          "alt": "Tea tasting",
+          "caption": "",
+          "aspect": "400 / 400",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 50,
+              "y": 560,
+              "width": 22,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 54,
+              "y": 740,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1440,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-mini-sushi",
+          "type": "image",
+          "src": "/images/travels/japan-24/mini-sushi.jpg",
+          "alt": "Mini sushi at kaitenzushi",
+          "caption": "miniature edible menu",
+          "aspect": "400 / 400",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 6,
+              "y": 980,
+              "width": 28,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 1040,
+              "width": 40,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 52,
+              "y": 1440,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-onigiri",
+          "type": "image",
+          "src": "/images/travels/japan-24/onigiri.png",
+          "alt": "Onigiri",
+          "caption": "",
+          "aspect": "300 / 300",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 38,
+              "y": 1020,
+              "width": 16,
+              "rotation": -4,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 52,
+              "y": 1040,
+              "width": 22,
+              "rotation": -4,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1720,
+              "width": 38,
+              "rotation": -4,
+              "zIndex": 8,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-soba",
+          "type": "image",
+          "src": "/images/travels/japan-24/soba.png",
+          "alt": "Soba noodles",
+          "caption": "",
+          "aspect": "300 / 300",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 56,
+              "y": 1040,
+              "width": 22,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 1320,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 50,
+              "y": 1720,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-maid-cafe-curry",
+          "type": "image",
+          "src": "/images/travels/japan-24/maid-cafe-curry.png",
+          "alt": "Maid cafe curry",
+          "caption": "mostly for the cuteness",
+          "aspect": "400 / 400",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 80,
+              "y": 1020,
+              "width": 16,
+              "rotation": 6,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 54,
+              "y": 1320,
+              "width": 26,
+              "rotation": 6,
+              "zIndex": 10,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2000,
+              "width": 42,
+              "rotation": 6,
+              "zIndex": 10,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tokyo-receipt",
+          "type": "image",
+          "src": "/images/travels/japan-24/receipt1.png",
+          "alt": "Receipt",
+          "caption": "",
+          "aspect": "200 / 400",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 88,
+              "y": 1340,
+              "width": 8,
+              "rotation": -8,
+              "zIndex": 11,
+              "visible": true
+            },
+            "medium": {
+              "x": 84,
+              "y": 1320,
+              "width": 12,
+              "rotation": -8,
+              "zIndex": 11,
+              "visible": true
+            },
+            "small": {
+              "x": 54,
+              "y": 2000,
+              "width": 20,
+              "rotation": -8,
+              "zIndex": 11,
+              "visible": true
+            }
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "tokyo-primary-tape",
+          "type": "tape",
+          "color": "rgba(163, 91, 115, 0.55)",
+          "opacity": 0.86,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 8,
+              "y": 188,
+              "width": 14,
+              "rotation": -3.4,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 14,
+              "y": 188,
+              "width": 14,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 18,
+              "y": 248,
+              "width": 24,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "hakone",
+      "no": "02",
+      "name": "Hakone",
+      "nativeName": "箱根",
+      "romanizedName": "Hakone",
+      "dayLabel": "Days 9 - 10",
+      "coordinates": "35.23°N · 139.10°E",
+      "align": "right",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 2200,
+        "mediumWidth": 860,
+        "mediumHeight": 2200,
+        "smallWidth": 390,
+        "smallHeight": 3160
+      },
+      "blurb": "A quiet detour to a Hakone ryokan. Tatami, an onsen, and a full kaiseki dinner - an interesting experience I'm glad I had once, even if traditional Japanese food isn't my favorite.",
+      "blocks": [
+        {
+          "id": "hakone-ryokan",
+          "type": "image",
+          "src": "/images/travels/japan-24/ryokan.jpg",
+          "alt": "Hakone ryokan",
+          "caption": "",
+          "aspect": "600 / 450",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 52,
+              "y": 40,
+              "width": 46,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 50,
+              "y": 40,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hakone-note",
+          "type": "text",
+          "text": "A quiet detour to a Hakone ryokan. Tatami, an onsen, and a full kaiseki dinner - an interesting experience I'm glad I had once, even if traditional Japanese food isn't my favorite.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 60,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 6,
+              "y": 60,
+              "width": 40,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 420,
+              "width": 86,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-japan-index",
+          "type": "image",
+          "src": "/images/travels/japan-24/japan-index.jpeg",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 40,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 40,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-kaiseki-full",
+          "type": "image",
+          "src": "/images/travels/japan-24/kaiseki-full.jpeg",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 400,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 400,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-kaiseki-sticker1",
+          "type": "image",
+          "src": "/images/travels/japan-24/kaiseki-sticker1.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 760,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 760,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1080,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-kaiseki-sticker2",
+          "type": "image",
+          "src": "/images/travels/japan-24/kaiseki-sticker2.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 1120,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 1120,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1600,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-rooftop",
+          "type": "image",
+          "src": "/images/travels/japan-24/rooftop.jpeg",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 1480,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 1480,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2120,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-shinjuku-hero",
+          "type": "image",
+          "src": "/images/travels/japan-24/shinjuku-hero.jpeg",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 4,
+              "y": 1840,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 35,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 1840,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 35,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2640,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 35,
+              "visible": true
+            }
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "hakone-tape",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 22,
+            "medium": 22,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 58,
+              "y": 28,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 56,
+              "y": 28,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 18,
+              "y": 24,
+              "width": 24,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

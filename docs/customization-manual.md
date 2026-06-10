@@ -80,7 +80,7 @@ I wanted somewhere with rooms.
 
 ## The editor
 
-The collage editor started as a small internal tool.
+The travel-detail editor started as a small internal tool.
 
 > A useful pull quote can go here.
 

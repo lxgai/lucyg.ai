@@ -5,7 +5,6 @@ export type Trip = {
   date: string;
   duration: string;
   cover: string;
-  stamp: string;
 };
 
 export const TRIPS: Trip[] = [
@@ -16,7 +15,6 @@ export const TRIPS: Trip[] = [
     date: "07 / 2024",
     duration: "14 days",
     cover: "/images/travels/china-24/west-lake.jpg",
-    stamp: "CN",
   },
   {
     id: "japan-24",
@@ -25,7 +23,6 @@ export const TRIPS: Trip[] = [
     date: "07 / 2024",
     duration: "10 days",
     cover: "/images/travels/japan-24/akihabara.jpg",
-    stamp: "JP",
   },
   {
     id: "netherlands-25",
@@ -34,6 +31,5 @@ export const TRIPS: Trip[] = [
     date: "03 / 2025",
     duration: "7 days",
     cover: "/images/travels/netherlands-25/canal-cruise.jpg",
-    stamp: "NL",
   },
 ];

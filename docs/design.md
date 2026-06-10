@@ -46,9 +46,9 @@ The site reads like a personal **library card catalog** — an archival room whe
   * Letter-spaced (`1.4–2`)
   * Often uppercase
 
-* **No pixel font, no Cooper Light**
+* **Only these two typefaces**
 
-  * The original VT323 / Cooper combo is retired
+  * No other fonts are part of the system
 
 ---
 
@@ -104,12 +104,6 @@ The site reads like a personal **library card catalog** — an archival room whe
     * photo mounts
     * contact card
     * contact-index tab
-
-* **Stamps**
-
-  * Dashed-border rectangular postage stamps for trips
-  * Country code in italic serif
-  * `"POSTED"` + date in mono
 
 * **Hairline dividers**
 
@@ -181,7 +175,7 @@ The site reads like a personal **library card catalog** — an archival room whe
   * Trip titles stay on one line
   * Slight rotation
   * Hover flattens + lifts
-  * Photo with sepia filter + corner stamp
+  * Photo with sepia filter
 
 * **Favorites — albums**
 
@@ -280,5 +274,4 @@ The site reads like a personal **library card catalog** — an archival room whe
 * Section strip wraps to 2 rows
 * `56px` side padding → `20px`
 * Vinyl scales to ~`78%`
-* Stamp moves below trip title
 * Tweaks panel becomes full-width along the bottom

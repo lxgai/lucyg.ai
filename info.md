@@ -17,7 +17,7 @@
 - **Styling**: MUI `sx` props + Tailwind CSS v4 (available globally)
 - **Language**: TypeScript (strict mode)
 - **Maps**: Leaflet + react-leaflet
-- **Fonts**: VT323 (Google) + Cooper Light (local in `public/fonts`)
+- **Fonts**: Newsreader + JetBrains Mono + Caveat (Google)
 
 ### Project Structure
 ```
@@ -43,7 +43,6 @@ src/
   types/
     photo.ts
 public/
-  fonts/Cooper/
   images/
 ```
 
@@ -57,7 +56,7 @@ public/
 ### Styling Notes
 - Global styles live in `src/styles/globals.css`.
 - `body` margin is reset to `0` and uses `100svh` on key containers for stable mobile sizing.
-- Fonts are applied via CSS variables: `--font-vt323` and `--font-cooper-light`.
+- Fonts are applied via CSS variables: `--font-newsreader` and `--font-jetbrains-mono`.
 
 ### Current State / Gaps
 - No test framework configured yet.

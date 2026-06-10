@@ -5,6 +5,8 @@
   "scripts": {
     "generate:page-updated": "node scripts/generate-page-updated.mjs",
     "sync:spotify-albums": "node scripts/sync-spotify-albums.mjs",
+    "list:travel-bucket": "node scripts/list-travel-bucket.mjs",
+    "refresh:travel-bucket": "node scripts/refresh-travel-bucket.mjs",
     "predev": "npm run generate:page-updated",
     "dev": "next dev",
     "prebuild": "npm run generate:page-updated",

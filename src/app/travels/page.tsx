@@ -303,7 +303,7 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
         }}
       >
         <Box component="span">
-          № {String(idx + 1).padStart(3, "0")} · {trip.stamp}
+          № {String(idx + 1).padStart(3, "0")}
         </Box>
         <Box component="span" sx={{ color: tokens.accent }}>
           {trip.date}

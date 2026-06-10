@@ -9,7 +9,7 @@ The site is designed as a quiet personal archive, closer to a library card catal
 - **Home** - a current snapshot of Lucy's work, interests, and recent updates.
 - **Projects** - a portfolio archive with selected software, design, and creative work.
 - **Blog** - writing imported from Substack when configured, with local fallback entries.
-- **Travels** - visual travel pages with collage layouts, maps, and detailed trip archives.
+- **Travels** - visual travel pages with maps and detailed trip archives.
 - **Favorites** - albums, films, and other saved references.
 - **About** - background, current notes, and contact information.
 - **Links** - a small directory of places to find Lucy elsewhere.
@@ -23,7 +23,7 @@ The current visual direction is called **Memory Archive**. It combines the struc
 - mono metadata labels for dates, file IDs, and taxonomy
 - hairline borders and archival strips
 - restrained rose accents
-- photo mounts, stamps, and collage details on travel pages
+- photo mounts, cutouts, and tape accents on travel pages
 
 ## Technology
 
@@ -54,7 +54,7 @@ npx tsc --noEmit
 npm run lint
 ```
 
-The project also includes development-only editors for maintaining collage and travel-detail layouts. These admin routes are disabled in production.
+The project also includes a development-only editor for maintaining travel-detail layouts. These admin routes are disabled in production.
 
 ## License
 
