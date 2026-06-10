@@ -8,9 +8,9 @@ export const PAGE_UPDATED = {
   "/links": "UPDATED 06 · 08 · 26",
   "/portfolio": "UPDATED 06 · 08 · 26",
   "/projects": "UPDATED 06 · 08 · 26",
-  "/travels": "UPDATED 06 · 08 · 26",
-  "/travels/china-24": "UPDATED 06 · 08 · 26",
-  "/travels/japan-24": "UPDATED 05 · 20 · 26",
+  "/travels": "UPDATED 06 · 09 · 26",
+  "/travels/china-24": "UPDATED 06 · 10 · 26",
+  "/travels/japan-24": "UPDATED 06 · 09 · 26",
   "/travels/netherlands-25": "UPDATED 06 · 08 · 26"
 } as const;
 
