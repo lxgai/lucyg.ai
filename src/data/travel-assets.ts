@@ -38,7 +38,7 @@ export const TRAVEL_ASSETS: Record<string, string[]> = {
     "/images/travels/japan-24/rooftop.jpeg",
     "/images/travels/japan-24/ryokan.jpg",
     "/images/travels/japan-24/shibuya-crossing.jpg",
-    "/images/travels/japan-24/shinjuku-hero.jpeg",
+    "/images/travels/japan-24/shinjuku-hero.png",
     "/images/travels/japan-24/soba.png",
     "/images/travels/japan-24/tea-tasting.png",
     "/images/travels/japan-24/teamlabs.jpg",

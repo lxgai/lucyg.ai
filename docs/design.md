@@ -71,7 +71,8 @@ The site reads like a personal **library card catalog** — an archival room whe
     * REF label
     * short dotted leader
     * last updated, with tight dots (`UPDATED 04·22·26`)
-  * Small screens show only the section tab and REF label
+  * Small screens show only the section tab; the REF label, dotted leader, and updated date are hidden
+  * Section tab separators on detail pages follow the pattern `SECTION {letter} · {SERIES} / {ENTRY}`: a middot `·` separates the series prefix and a forward slash `/` precedes the specific entry name (e.g. `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`). Do not use middots all the way through.
   * REF labels:
 
     * home: `REF. 00`

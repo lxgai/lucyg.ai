@@ -216,18 +216,32 @@ function getSelected(data: TravelDetailData, selection: Selection | null) {
 function PreviewBlock({ block, breakpoint, selected, onSelect, onPointerDown }: { block: TravelDetailBlock; breakpoint: TravelDetailBreakpoint; selected: boolean; onSelect: () => void; onPointerDown: (event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => void }) {
   const layout = block.layout[breakpoint];
   if (!layout.visible) return null;
+  const isSmall = breakpoint === "small";
 
   return (
     <div className={`absolute outline-offset-2 ${selected ? "outline outline-2 outline-stone-900" : ""}`} draggable={false} style={{ left: `${layout.x}%`, top: layout.y, width: `${layout.width}%`, zIndex: layout.zIndex, transform: `rotate(${layout.rotation}deg)` }} onDragStart={(event) => event.preventDefault()} onPointerDown={(event) => onPointerDown(event, "move")} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+      {/* Mirrors the public PhotoFrame / BlockView metrics so preview spacing matches the live page. */}
       {block.type === "image" ? (
-        <figure draggable={false} className={block.cutout ? "" : "border border-stone-500 bg-[#fbf6ee] p-2 shadow-sm"}>
-          <div className="relative w-full" style={{ aspectRatio: block.aspect }}>
-            {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className={block.cutout ? "object-contain" : "object-cover"} />}
-          </div>
-          <figcaption className="mt-1 leading-tight text-stone-700" style={{ fontFamily: tokens.hand, fontSize: 21, fontWeight: 500 }}>{block.caption}</figcaption>
-        </figure>
+        block.cutout ? (
+          <figure draggable={false} style={{ margin: 0 }}>
+            <div className="relative w-full" style={{ aspectRatio: block.aspect }}>
+              {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className="object-contain" />}
+            </div>
+            <figcaption style={{ marginTop: 4, fontFamily: tokens.hand, fontSize: isSmall ? 17 : 20, fontWeight: 500, lineHeight: 1.1, color: tokens.accent, textAlign: "center" }}>{block.caption}</figcaption>
+          </figure>
+        ) : (
+          <figure draggable={false} style={{ margin: 0, position: "relative", background: tokens.paperCard, border: `1px solid ${tokens.hairStrong}`, padding: isSmall ? 8 : 12, boxShadow: "0 14px 30px rgba(31, 26, 22, 0.12)" }}>
+            <div className="relative w-full" style={{ aspectRatio: block.aspect, overflow: "hidden", background: tokens.paperDeep }}>
+              {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className="object-cover" />}
+            </div>
+            <div style={{ marginTop: 8.8, display: "flex", justifyContent: "space-between", gap: 16, alignItems: "baseline" }}>
+              <span style={{ fontFamily: tokens.hand, fontSize: isSmall ? 18 : 21, fontWeight: 500, lineHeight: 1.05 }}>{block.caption}</span>
+              <span style={{ flex: "0 0 auto", fontFamily: tokens.mono, fontSize: 9, color: tokens.ink40, letterSpacing: "1.2px", textTransform: "uppercase" }}>Filed</span>
+            </div>
+          </figure>
+        )
       ) : (
-        <p className="font-serif italic leading-snug text-stone-700" style={{ fontSize: block.fontSize[breakpoint] }}>{block.text}</p>
+        <p className="italic" style={{ margin: 0, fontFamily: tokens.serif, fontSize: block.fontSize[breakpoint], lineHeight: block.tone === "annotation" ? 1.15 : 1.5, color: block.tone === "annotation" ? tokens.accent : tokens.ink60 }}>{block.text}</p>
       )}
       <button type="button" aria-label="Resize" className="absolute -bottom-2 -right-2 h-4 w-4 border border-stone-900 bg-[#e6dccb]" onPointerDown={(event) => onPointerDown(event, "resize")} />
     </div>
@@ -550,6 +564,18 @@ export default function TravelDetailEditorPage() {
     });
   };
 
+  const setHeroImage = async (src: string) => {
+    const imageSrc = normalizeAssetSrc(src);
+    if (!imageSrc) return;
+    const aspect = await originalImageAspect(imageSrc);
+
+    updateData("Set hero image", (draft) => {
+      draft.hero.image.src = imageSrc;
+      draft.hero.image.aspect = aspect;
+    });
+    setSelection({ kind: "heroImage" });
+  };
+
   const addText = (sectionId: string) => updateData("Add text", (draft) => {
     const section = draft.sections.find((item) => item.id === sectionId);
     if (!section) return;
@@ -623,6 +649,7 @@ export default function TravelDetailEditorPage() {
   const selectedSection = data?.sections.find((section) => section.id === selectedSectionId) ?? null;
   const sectionItem = selected?.item && "blocks" in selected.item ? selected.item : null;
   const layoutItem = selected?.item && "layout" in selected.item ? selected.item : null;
+  const heroImageTarget = selection?.kind === "hero" || selection?.kind === "heroImage";
   const heroSelected = data && selection?.kind === "hero" ? data.hero : null;
   const heroImageItem = data && selection?.kind === "heroImage" ? data.hero.image : null;
   const heroCopyLayout = data && selection?.kind === "heroCopy" ? data.hero.copyLayout : null;
@@ -650,7 +677,7 @@ export default function TravelDetailEditorPage() {
       </div>
 
       <div className="grid gap-5 p-5 xl:grid-cols-[280px_minmax(0,1fr)_280px] 2xl:grid-cols-[300px_minmax(0,1fr)_300px]">
-        <aside className="grid content-start gap-5">
+        <aside className="grid content-start gap-5 xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)] xl:overflow-auto xl:pr-1">
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">
             <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Sections</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={addSection}>Add section</button></div>
             <div className="mt-3 grid gap-2">
@@ -662,7 +689,8 @@ export default function TravelDetailEditorPage() {
 
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">
             <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Image library</h2>
-            <div className="mt-3 grid grid-cols-2 gap-2">{assets.map((asset) => <button key={asset} draggable onDragStart={(event) => { event.dataTransfer.setData(assetDragType, asset); event.dataTransfer.setData("text/plain", asset); }} onClick={() => selectedSection && addImage(selectedSection.id, asset)} className="border border-stone-300 bg-[#f1e9df] p-1 text-left"><div className="relative aspect-square bg-stone-200">{asset && <Image src={resolveSiteImageSrc(asset)} alt="" fill sizes="140px" className="object-cover" draggable={false} />}</div><div className="mt-1 truncate font-mono text-[10px] text-stone-600">{imageName(asset)}</div></button>)}</div>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-400">{heroImageTarget ? "Click to set hero image" : selectedSection ? `Click to add to ${selectedSection.name}` : "Select hero or a section first"}</p>
+            <div className="mt-3 grid grid-cols-2 gap-2">{assets.map((asset) => <button key={asset} draggable onDragStart={(event) => { event.dataTransfer.setData(assetDragType, asset); event.dataTransfer.setData("text/plain", asset); }} onClick={() => { if (heroImageTarget) void setHeroImage(asset); else if (selectedSection) void addImage(selectedSection.id, asset); }} className="border border-stone-300 bg-[#f1e9df] p-1 text-left"><div className="relative aspect-square bg-stone-200">{asset && <Image src={resolveSiteImageSrc(asset)} alt="" fill sizes="140px" className="object-cover" draggable={false} />}</div><div className="mt-1 truncate font-mono text-[10px] text-stone-600">{imageName(asset)}</div></button>)}</div>
           </div>
 
           <div className="border border-stone-400 bg-[#fbf6ee] p-4">

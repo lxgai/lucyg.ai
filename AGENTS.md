@@ -68,7 +68,7 @@ Layout direction:
 - Desktop page gutters: about `56px`
 - Mobile gutters: about `20px`
 - Use wide horizontal containers and generous whitespace.
-- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, REF label, dotted leader, and tight-dot updated date on desktop. On small screens, show only the tab and REF label.
+- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, REF label, dotted leader, and tight-dot updated date on desktop. On small screens, show only the tab; hide the REF label, dotted leader, and updated date.
 - Page titles should be large serif type with one italicized word where appropriate.
 - Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
 
@@ -85,6 +85,7 @@ Metadata strip REF labels:
 - Home uses `REF. 00`.
 - Listing/index pages use `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`).
 - Detail pages use `REF. {letter}-{nn}` from the entry's archive position, such as `REF. B-01` for China.
+- Detail page section tabs follow `SECTION {letter} · {SERIES} / {ENTRY}`: middot `·` for the series prefix, forward slash `/` before the specific entry name (e.g. `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`). Do not separate the entry name with a middot.
 - Do not use `file:`/`FILE:` text in public metadata strips.
 - Detail page back links (`← Projects`, `← Travels`, `← Blog`) sit directly below the strip and above content.
 - Use actual arrow glyphs in visible public UI (`←`, `→`, `↗`); never use ASCII substitutes such as `<-` or `->`.

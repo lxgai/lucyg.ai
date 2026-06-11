@@ -11,7 +11,7 @@
     "italicTitle": "summer '24.",
     "intro": "Ten days mostly in Tokyo, with a quiet detour to a Hakone ryokan. Digital light at teamLab, the long pull of Shibuya Crossing at night, figurine shopping in Akihabara, and an embarrassing amount of convenience-store food between it all. The ryokan kaiseki was an experience I'm glad I had once.",
     "canvasHeight": {
-      "large": 570,
+      "large": 600,
       "medium": 520,
       "small": 700
     },
@@ -22,9 +22,9 @@
     },
     "copyLayout": {
       "large": {
-        "x": 61,
-        "y": 6,
-        "width": 40.3636403269582,
+        "x": 55.399350649350644,
+        "y": 64,
+        "width": 41.98701695033482,
         "rotation": 0,
         "zIndex": 2,
         "visible": true
@@ -59,10 +59,10 @@
         },
         "layout": {
           "large": {
-            "x": 45,
-            "y": 414,
+            "x": 21.785714285714285,
+            "y": 36,
             "width": 9.3,
-            "rotation": -6.1,
+            "rotation": 0,
             "zIndex": 20,
             "visible": true
           },
@@ -88,15 +88,15 @@
     "image": {
       "id": "hero-shibuya-crossing",
       "type": "image",
-      "src": "/images/travels/japan-24/shibuya-crossing.jpg",
+      "src": "/images/travels/japan-24/shinjuku-hero.png",
       "alt": "Shibuya Crossing at night",
       "caption": "",
-      "aspect": "600 / 900",
+      "aspect": "1080 / 1080",
       "layout": {
         "large": {
-          "x": 0,
-          "y": -20,
-          "width": 50,
+          "x": -3.0844155844155843,
+          "y": -44,
+          "width": 54.54545454545455,
           "rotation": -0.6,
           "zIndex": 1,
           "visible": true
@@ -141,12 +141,12 @@
       "name": "Tokyo",
       "nativeName": "東京",
       "romanizedName": "Tokyo",
-      "dayLabel": "Days 1 - 8",
+      "dayLabel": "6 days",
       "coordinates": "35.68°N · 139.69°E",
       "align": "left",
       "canvas": {
         "largeWidth": 1120,
-        "largeHeight": 1700,
+        "largeHeight": 2000,
         "mediumWidth": 860,
         "mediumHeight": 1700,
         "smallWidth": 390,
@@ -166,8 +166,8 @@
           },
           "layout": {
             "large": {
-              "x": 4,
-              "y": 20,
+              "x": -3.946428571428571,
+              "y": 34,
               "width": 44,
               "rotation": 0,
               "zIndex": 3,
@@ -201,11 +201,11 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 2,
-              "y": 200,
-              "width": 44,
-              "rotation": -1,
-              "zIndex": 1,
+              "x": -5.499999999999991,
+              "y": 224,
+              "width": 47.92857142857143,
+              "rotation": 0,
+              "zIndex": 3,
               "visible": true
             },
             "medium": {
@@ -236,9 +236,9 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 50,
-              "y": 260,
-              "width": 34,
+              "x": 46.785714285714285,
+              "y": -3,
+              "width": 52.03571428571428,
               "rotation": 2,
               "zIndex": 2,
               "visible": true
@@ -271,9 +271,9 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 70,
-              "y": 40,
-              "width": 28,
+              "x": 56.87499999999998,
+              "y": 493,
+              "width": 33.625,
               "rotation": 0,
               "zIndex": 4,
               "visible": true
@@ -306,9 +306,9 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 6,
-              "y": 540,
-              "width": 40,
+              "x": -1.5892857142857155,
+              "y": 1457,
+              "width": 47.32142857142858,
               "rotation": -1,
               "zIndex": 5,
               "visible": true
@@ -341,9 +341,9 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 50,
-              "y": 560,
-              "width": 22,
+              "x": 49.10714285714287,
+              "y": 389,
+              "width": 14.232142857142858,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
@@ -370,15 +370,15 @@
           "id": "tokyo-mini-sushi",
           "type": "image",
           "src": "/images/travels/japan-24/mini-sushi.jpg",
-          "alt": "Mini sushi at kaitenzushi",
-          "caption": "miniature edible menu",
+          "alt": "",
+          "caption": "",
           "aspect": "400 / 400",
           "cutout": true,
           "layout": {
             "large": {
-              "x": 6,
-              "y": 980,
-              "width": 28,
+              "x": 50.375,
+              "y": 1049,
+              "width": 35.767857142857146,
               "rotation": 0,
               "zIndex": 7,
               "visible": true
@@ -411,10 +411,10 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 38,
-              "y": 1020,
+              "x": 87.82142857142858,
+              "y": 1131,
               "width": 16,
-              "rotation": -4,
+              "rotation": -6.2,
               "zIndex": 8,
               "visible": true
             },
@@ -446,10 +446,10 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 56,
-              "y": 1040,
-              "width": 22,
-              "rotation": 0,
+              "x": 56.17857142857143,
+              "y": 1441,
+              "width": 30.392857142857142,
+              "rotation": 10,
               "zIndex": 9,
               "visible": true
             },
@@ -476,15 +476,15 @@
           "type": "image",
           "src": "/images/travels/japan-24/maid-cafe-curry.png",
           "alt": "Maid cafe curry",
-          "caption": "mostly for the cuteness",
+          "caption": "",
           "aspect": "400 / 400",
           "cutout": true,
           "layout": {
             "large": {
-              "x": 80,
-              "y": 1020,
+              "x": 86.60714285714285,
+              "y": 1380,
               "width": 16,
-              "rotation": 6,
+              "rotation": 7.9,
               "zIndex": 10,
               "visible": true
             },
@@ -516,8 +516,8 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 88,
-              "y": 1340,
+              "x": 92.19642857142857,
+              "y": 430,
               "width": 8,
               "rotation": -8,
               "zIndex": 11,
@@ -540,6 +540,185 @@
               "visible": true
             }
           }
+        },
+        {
+          "id": "image-mq95ktuo",
+          "type": "image",
+          "src": "/images/travels/japan-24/blue_paper.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1220 / 2000",
+          "layout": {
+            "large": {
+              "x": 46.392857142857146,
+              "y": -122,
+              "width": 56.64285714285714,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mq95lno8",
+          "type": "image",
+          "src": "/images/travels/japan-24/rooftop.jpeg",
+          "alt": "",
+          "caption": "Love me a rooftop dinner",
+          "aspect": "3024 / 4032",
+          "layout": {
+            "large": {
+              "x": 21.660714285714285,
+              "y": 681,
+              "width": 23.428571428571427,
+              "rotation": -1.2,
+              "zIndex": 13,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 13,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 13,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "image-mq95lxsw",
+          "type": "image",
+          "src": "/images/travels/japan-24/shibuya-crossing.jpg",
+          "alt": "",
+          "caption": "Shibuya crossing",
+          "aspect": "900 / 1200",
+          "layout": {
+            "large": {
+              "x": -5.839285714285709,
+              "y": 708,
+              "width": 23.25,
+              "rotation": 1.3,
+              "zIndex": 14,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 14,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 14,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "text-mq95tes8",
+          "type": "text",
+          "text": "Food!fds\n+ff",
+          "tone": "body",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 1.2142857142857149,
+              "y": 1159,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 16,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 16,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 16,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "text-mq95v5lw",
+          "type": "text",
+          "text": "My foray into some harajuku-esque fashion, up at the Shibuya tower...",
+          "tone": "caption",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 46.83928571428571,
+              "y": 1748,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 17,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 17,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 17,
+              "visible": true
+            }
+          }
         }
       ],
       "decorations": [
@@ -555,8 +734,8 @@
           },
           "layout": {
             "large": {
-              "x": 8,
-              "y": 188,
+              "x": 25.58928571428573,
+              "y": 667,
               "width": 14,
               "rotation": -3.4,
               "zIndex": 20,
@@ -579,6 +758,43 @@
               "visible": true
             }
           }
+        },
+        {
+          "id": "tape-mq95qe6y",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 0.0357142857142847,
+              "y": 691,
+              "width": 12.339285714285714,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
         }
       ]
     },
@@ -588,12 +804,12 @@
       "name": "Hakone",
       "nativeName": "箱根",
       "romanizedName": "Hakone",
-      "dayLabel": "Days 9 - 10",
+      "dayLabel": "1 day",
       "coordinates": "35.23°N · 139.10°E",
       "align": "right",
       "canvas": {
         "largeWidth": 1120,
-        "largeHeight": 2200,
+        "largeHeight": 1000,
         "mediumWidth": 860,
         "mediumHeight": 2200,
         "smallWidth": 390,
@@ -611,10 +827,10 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 52,
-              "y": 40,
-              "width": 46,
-              "rotation": 0,
+              "x": -0.7678571428571468,
+              "y": -23,
+              "width": 58.142857142857146,
+              "rotation": -0.7,
               "zIndex": 2,
               "visible": true
             },
@@ -648,9 +864,9 @@
           },
           "layout": {
             "large": {
-              "x": 4,
-              "y": 60,
-              "width": 42,
+              "x": 1.8571428571428577,
+              "y": 528,
+              "width": 56.82142857142858,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
@@ -674,41 +890,6 @@
           }
         },
         {
-          "id": "auto-japan-index",
-          "type": "image",
-          "src": "/images/travels/japan-24/japan-index.jpeg",
-          "alt": "",
-          "caption": "",
-          "aspect": "1 / 1",
-          "cutout": true,
-          "layout": {
-            "large": {
-              "x": 4,
-              "y": 40,
-              "width": 26,
-              "rotation": 0,
-              "zIndex": 30,
-              "visible": true
-            },
-            "medium": {
-              "x": 4,
-              "y": 40,
-              "width": 32,
-              "rotation": 0,
-              "zIndex": 30,
-              "visible": true
-            },
-            "small": {
-              "x": 6,
-              "y": 40,
-              "width": 60,
-              "rotation": 0,
-              "zIndex": 30,
-              "visible": true
-            }
-          }
-        },
-        {
           "id": "auto-kaiseki-full",
           "type": "image",
           "src": "/images/travels/japan-24/kaiseki-full.jpeg",
@@ -718,11 +899,11 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 4,
-              "y": 400,
-              "width": 26,
-              "rotation": 0,
-              "zIndex": 31,
+              "x": 62.83928571428573,
+              "y": 15,
+              "width": 41.44642857142857,
+              "rotation": 0.7,
+              "zIndex": 2,
               "visible": true
             },
             "medium": {
@@ -753,8 +934,8 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 4,
-              "y": 760,
+              "x": 75.16071428571429,
+              "y": 665,
               "width": 26,
               "rotation": 0,
               "zIndex": 32,
@@ -788,9 +969,9 @@
           "cutout": true,
           "layout": {
             "large": {
-              "x": 4,
-              "y": 1120,
-              "width": 26,
+              "x": 66.4107142857143,
+              "y": 506,
+              "width": 18.767857142857142,
               "rotation": 0,
               "zIndex": 33,
               "visible": true
@@ -814,74 +995,39 @@
           }
         },
         {
-          "id": "auto-rooftop",
+          "id": "image-mq9612x3",
           "type": "image",
-          "src": "/images/travels/japan-24/rooftop.jpeg",
+          "src": "/images/travels/japan-24/green_paper.png",
           "alt": "",
           "caption": "",
-          "aspect": "1 / 1",
-          "cutout": true,
+          "aspect": "800 / 800",
           "layout": {
             "large": {
-              "x": 4,
-              "y": 1480,
-              "width": 26,
-              "rotation": 0,
-              "zIndex": 34,
+              "x": 64.33928571428572,
+              "y": 391,
+              "width": 42,
+              "rotation": 270,
+              "zIndex": 1,
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 1480,
-              "width": 32,
+              "x": 8,
+              "y": 40,
+              "width": 42,
               "rotation": 0,
-              "zIndex": 34,
+              "zIndex": 6,
               "visible": true
             },
             "small": {
               "x": 6,
-              "y": 2120,
-              "width": 60,
+              "y": 40,
+              "width": 67.2,
               "rotation": 0,
-              "zIndex": 34,
+              "zIndex": 6,
               "visible": true
             }
-          }
-        },
-        {
-          "id": "auto-shinjuku-hero",
-          "type": "image",
-          "src": "/images/travels/japan-24/shinjuku-hero.jpeg",
-          "alt": "",
-          "caption": "",
-          "aspect": "1 / 1",
-          "cutout": true,
-          "layout": {
-            "large": {
-              "x": 4,
-              "y": 1840,
-              "width": 26,
-              "rotation": 0,
-              "zIndex": 35,
-              "visible": true
-            },
-            "medium": {
-              "x": 4,
-              "y": 1840,
-              "width": 32,
-              "rotation": 0,
-              "zIndex": 35,
-              "visible": true
-            },
-            "small": {
-              "x": 6,
-              "y": 2640,
-              "width": 60,
-              "rotation": 0,
-              "zIndex": 35,
-              "visible": true
-            }
-          }
+          },
+          "cutout": true
         }
       ],
       "decorations": [
@@ -889,7 +1035,7 @@
           "id": "hakone-tape",
           "type": "tape",
           "color": "rgba(243, 215, 158, 0.65)",
-          "opacity": 0.88,
+          "opacity": 0.9,
           "height": {
             "large": 22,
             "medium": 22,
@@ -897,10 +1043,10 @@
           },
           "layout": {
             "large": {
-              "x": 58,
-              "y": 28,
+              "x": 78.62499999999999,
+              "y": 68,
               "width": 14,
-              "rotation": 5,
+              "rotation": 2,
               "zIndex": 20,
               "visible": true
             },

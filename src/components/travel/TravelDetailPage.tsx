@@ -8,10 +8,9 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import PageShell from "@/components/design/PageShell";
 import { PageContainer } from "@/components/design/layout";
-import { tokens } from "@/components/design/tokens";
+import { LAST_UPDATED, tokens } from "@/components/design/tokens";
 import { TravelDetailSectionFrame, TravelDetailSurface, TravelDetailViewportContainer } from "@/components/travel/TravelDetailSectionFrame";
 import { resolveSiteImageSrc } from "@/lib/images";
-import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
 import type {
   TravelDetailBlock,
   TravelDetailBreakpoint,
@@ -365,8 +364,12 @@ function HeroTape({
   );
 }
 
+// Mirrors the live MetadataStrip (components/design/layout) so the editor preview
+// matches site chrome: filled accent tab, REF catalog number, dotted leader, updated date.
 export function TravelMetadataStrip({ data, breakpoint }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint }) {
-  const detailMeta = getTravelDetailIndexMeta(data);
+  const catNo = `REF. B-${String(Number(data.fileNo)).padStart(2, "0")}`;
+  const updatedLabel = `UPDATED ${LAST_UPDATED}`.replace(/\s*·\s*/g, "·");
+  const showDetails = breakpoint !== "small";
 
   return (
     <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 3 : 4.5 }}>
@@ -374,22 +377,42 @@ export function TravelMetadataStrip({ data, breakpoint }: { data: TravelDetailDa
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           gap: 2,
           fontFamily: tokens.mono,
-          fontSize: breakpoint === "small" ? 9 : 10,
+          fontSize: 10,
           letterSpacing: "1.6px",
           color: tokens.ink60,
           textTransform: "uppercase",
           py: 1,
-          borderTop: `1px solid ${tokens.hairStrong}`,
-          borderBottom: `1px solid ${tokens.hairStrong}`,
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
         }}
       >
-        <Box component="span" sx={{ color: tokens.accent }}>
+        <Box
+          component="span"
+          sx={{
+            background: tokens.accent,
+            color: tokens.paperCard,
+            px: "11px",
+            py: "4px",
+            letterSpacing: "1.6px",
+            alignSelf: "center",
+            whiteSpace: "nowrap",
+          }}
+        >
           {data.section}
         </Box>
-        {detailMeta.catNo && <Box component="span">{detailMeta.catNo}</Box>}
+        {showDetails && (
+          <Box component="span" sx={{ display: "flex", gap: 1.5, alignItems: "center", justifyContent: "flex-end", minWidth: 0 }}>
+            <Box component="span" sx={{ whiteSpace: "nowrap" }}>{catNo}</Box>
+            <Box
+              component="span"
+              aria-hidden
+              sx={{ width: 11, borderBottom: `1px dotted ${tokens.hairStrong}`, transform: "translateY(1px)", flex: "0 0 auto" }}
+            />
+            <Box component="span" sx={{ whiteSpace: "nowrap" }}>{updatedLabel}</Box>
+          </Box>
+        )}
       </Box>
     </TravelDetailViewportContainer>
   );
@@ -474,30 +497,46 @@ export function Hero({
                 letterSpacing: "2.4px",
                 color: tokens.ink60,
                 textTransform: "uppercase",
-                ...(heroMetadataFields.length > 0
+                ...(heroMetadataFields.length === 0
                   ? {
-                      display: "grid",
-                      gridTemplateColumns: breakpoint === "small" ? "minmax(76px, auto) 14px minmax(0, 1fr)" : "minmax(116px, auto) 18px minmax(0, 1fr)",
-                      gap: "8px 12px",
-                    }
-                  : {
                       display: "flex",
                       gap: "8px 18px",
                       flexWrap: "wrap",
+                    }
+                  : breakpoint === "small"
+                  ? {
+                      // Small: enforce description stacked under its label.
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "14px",
+                    }
+                  : {
+                      display: "grid",
+                      gridTemplateColumns: "minmax(116px, auto) 18px minmax(0, 1fr)",
+                      gap: "8px 12px",
                     }),
               }}
             >
-              {heroMetadataFields.map((field, index) => (
-                <Fragment key={`${field.label}-${field.description}-${index}`}>
-                  <Box component="span">{field.label}</Box>
-                  <Box component="span" sx={{ color: tokens.ink }}>
-                    ·
-                  </Box>
-                  <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere" }}>
-                    {field.description}
-                  </Box>
-                </Fragment>
-              ))}
+              {breakpoint === "small"
+                ? heroMetadataFields.map((field, index) => (
+                    <Box key={`${field.label}-${field.description}-${index}`} sx={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <Box component="span">{field.label}</Box>
+                      <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere", color: tokens.ink }}>
+                        {field.description}
+                      </Box>
+                    </Box>
+                  ))
+                : heroMetadataFields.map((field, index) => (
+                    <Fragment key={`${field.label}-${field.description}-${index}`}>
+                      <Box component="span">{field.label}</Box>
+                      <Box component="span" sx={{ color: tokens.ink }}>
+                        ·
+                      </Box>
+                      <Box component="span" sx={{ minWidth: 0, overflowWrap: "anywhere" }}>
+                        {field.description}
+                      </Box>
+                    </Fragment>
+                  ))}
             </Box>
           </Box>
         </HeroEditableFrame>

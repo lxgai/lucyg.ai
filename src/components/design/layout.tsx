@@ -89,7 +89,10 @@ export function MetadataStrip({
           }}
         >
           {catNo && (
-            <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+            <Box
+              component="span"
+              sx={{ display: { xs: "none", md: "inline" }, whiteSpace: "nowrap" }}
+            >
               {catNo}
             </Box>
           )}

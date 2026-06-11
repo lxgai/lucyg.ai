@@ -45,9 +45,11 @@ const SMALL = {
   bottomMargin: 32, // px of canvas below the last block
   gap: 28, // px between stacked blocks
   flattenRotation: true, // zero out rotation for a clean column
-  textLineHeightRatio: 1.5, // px line height = fontSize * this
+  textLineHeightRatio: 1.5, // px line height = fontSize * this (matches public BlockView)
   textCharWidthRatio: 0.52, // avg glyph advance = fontSize * this (for wrap estimate)
   textPadding: 12, // px padding added to each estimated text block
+  imageChromePx: 46, // px the framed PhotoFrame adds below the image (padding + border + caption row)
+  imageCutoutChromePx: 24, // px a cutout image adds below the image (caption only)
   heroCopyHeight: 300, // px reserved for hero title + intro + metadata
 };
 
@@ -153,7 +155,8 @@ function readingOrder(blocks) {
 
 function smallBlockHeight(block, canvasWidth) {
   if (block.type === "image") {
-    return imageHeightPx(SMALL.contentWidth, canvasWidth, block.aspect);
+    const chrome = block.cutout ? SMALL.imageCutoutChromePx : SMALL.imageChromePx;
+    return imageHeightPx(SMALL.contentWidth, canvasWidth, block.aspect) + chrome;
   }
   if (block.type === "text") {
     const fs = block.fontSize?.small ?? 17;

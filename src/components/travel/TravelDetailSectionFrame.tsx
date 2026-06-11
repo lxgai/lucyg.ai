@@ -206,16 +206,17 @@ export function TravelDetailSectionFrame({
       <Typography
         aria-hidden
         sx={{
-          display: isSmall ? "none" : "block",
+          display: "block",
           position: "absolute",
-          top: -28,
-          left: isRight ? "auto" : -1,
-          right: isRight ? -1 : "auto",
+          top: isSmall ? -14 : -28,
+          // Small is a single left-aligned column, so the numeral always sits left.
+          left: isSmall || !isRight ? -1 : "auto",
+          right: isSmall || !isRight ? "auto" : -1,
           fontFamily: tokens.serif,
-          fontSize: 220,
+          fontSize: isSmall ? 140 : 220,
           lineHeight: 0.85,
           color: "rgba(31, 26, 22, 0.06)",
-          letterSpacing: "-8px",
+          letterSpacing: isSmall ? "-5px" : "-8px",
           pointerEvents: "none",
         }}
       >

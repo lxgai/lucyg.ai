@@ -822,7 +822,7 @@ export function ProjectDetailReport({
 
   return (
     <PageShell
-      section={`SECTION A · PROJECTS · ${project.slug}`}
+      section={`SECTION A · PROJECTS / ${project.slug}`}
       catNo={refNo}
       contentSx={{ width: "100%" }}
     >

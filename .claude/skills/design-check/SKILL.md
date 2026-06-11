@@ -84,7 +84,12 @@ All listing and detail pages should use the shared `MetadataStrip`/`PageShell` s
 - Right fields: REF label, short dotted leader, updated date.
 - No top or bottom rules on the strip itself.
 - Font size stays at normal metadata scale on mobile; do not shrink the strip text just to fit.
-- Small screens (`<=768px`) show only the section tab and REF text. Hide the dotted leader and updated date.
+- Small screens (`<=768px`) show only the section tab. Hide the REF label, dotted leader, and updated date.
+
+Section tab separators (BLOCKER on detail pages when wrong):
+
+- Detail pages use the pattern `SECTION {letter} · {SERIES} / {ENTRY}`: a middot `·` separates the series prefix, and a forward slash `/` separates the specific entry name. Example: `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`.
+- Do not use middots all the way through (e.g. `SECTION A · PROJECTS · {slug}` is wrong). The final separator before the entry name must be a slash, following the travel detail convention.
 
 REF labels:
 
