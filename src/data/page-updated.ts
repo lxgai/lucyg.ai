@@ -7,11 +7,11 @@ export const PAGE_UPDATED = {
   "/favorites": "UPDATED 06 · 08 · 26",
   "/links": "UPDATED 06 · 08 · 26",
   "/portfolio": "UPDATED 06 · 08 · 26",
-  "/projects": "UPDATED 06 · 08 · 26",
+  "/projects": "UPDATED 06 · 11 · 26",
   "/travels": "UPDATED 06 · 09 · 26",
-  "/travels/china-24": "UPDATED 06 · 10 · 26",
-  "/travels/japan-24": "UPDATED 06 · 09 · 26",
-  "/travels/netherlands-25": "UPDATED 06 · 08 · 26"
+  "/travels/china-24": "UPDATED 06 · 12 · 26",
+  "/travels/japan-24": "UPDATED 06 · 12 · 26",
+  "/travels/netherlands-25": "UPDATED 06 · 12 · 26"
 } as const;
 
 export type PageUpdatedRoute = keyof typeof PAGE_UPDATED;

@@ -1,0 +1,928 @@
+{
+  "fileNo": "003",
+  "section": "SECTION B · TRAVELS / NETHERLANDS",
+  "metadata": {
+    "place": "Netherlands",
+    "dateRange": "MAR 2025",
+    "duration": "7 days"
+  },
+  "hero": {
+    "title": "Netherlands,",
+    "italicTitle": "spring '25.",
+    "intro": "A week of canals and bikes across the Randstad. Amsterdam for the museums, the bitterballen, and long evenings on the water; Utrecht for the quieter canal wharves, a Miffy pilgrimage, and stroopwafels pressed fresh. Placeholder intro - refine in the editor.",
+    "canvasHeight": {
+      "large": 570,
+      "medium": 500,
+      "small": 800
+    },
+    "titleTopMargin": {
+      "large": 22,
+      "medium": 20,
+      "small": 20
+    },
+    "copyLayout": {
+      "large": {
+        "x": 54.8051948051948,
+        "y": 57,
+        "width": 40,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "medium": {
+        "x": 54,
+        "y": 18,
+        "width": 46,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "small": {
+        "x": 4,
+        "y": 294,
+        "width": 88,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      }
+    },
+    "decorations": [
+      {
+        "id": "hero-tape-nl25",
+        "type": "tape",
+        "color": "rgba(251, 21, 45, 0.65)",
+        "opacity": 0.88,
+        "height": {
+          "large": 24,
+          "medium": 24,
+          "small": 18
+        },
+        "layout": {
+          "large": {
+            "x": 8.47402597402598,
+            "y": 20,
+            "width": 9,
+            "rotation": -6.1,
+            "zIndex": 20,
+            "visible": true
+          },
+          "medium": {
+            "x": 16,
+            "y": 88,
+            "width": 12,
+            "rotation": 0,
+            "zIndex": 20,
+            "visible": true
+          },
+          "small": {
+            "x": 31,
+            "y": 16,
+            "width": 29,
+            "rotation": 0,
+            "zIndex": 20,
+            "visible": true
+          }
+        }
+      }
+    ],
+    "image": {
+      "id": "hero-canal-cruise",
+      "type": "image",
+      "src": "/images/travels/netherlands-25/amsterdam-hero.png",
+      "alt": "Canal cruise through Amsterdam",
+      "caption": "",
+      "aspect": "1033 / 872",
+      "layout": {
+        "large": {
+          "x": -1.350649350649351,
+          "y": -16,
+          "width": 52.288961038961034,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "medium": {
+          "x": -1,
+          "y": 34,
+          "width": 56,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "small": {
+          "x": 1,
+          "y": -25,
+          "width": 100,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        }
+      },
+      "cutout": true
+    },
+    "metadataFields": [
+      {
+        "label": "7 DAYS",
+        "description": "Amsterdam · Utrecht"
+      },
+      {
+        "label": "Weather",
+        "description": "Windy, fair, decent sun - 18°C avg"
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "End of file - Netherlands '25"
+  },
+  "sections": [
+    {
+      "id": "amsterdam",
+      "no": "01",
+      "name": "Amsterdam",
+      "nativeName": "",
+      "romanizedName": "Amsterdam",
+      "dayLabel": "(most of the trip)",
+      "coordinates": "52.37°N · 4.90°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 1340,
+        "mediumWidth": 860,
+        "mediumHeight": 820,
+        "smallWidth": 390,
+        "smallHeight": 1600
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "amsterdam-canal",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/amsterdam1.jpg",
+          "alt": "Amsterdam canal houses",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": -3.660714285714286,
+              "y": 37,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 0,
+              "y": 40,
+              "width": 48,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 4,
+              "y": 40,
+              "width": 90,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "amsterdam-note",
+          "type": "text",
+          "text": "Placeholder note for Amsterdam - canals by bike, the Rijksmuseum, and a slow afternoon on the water. Refine in the editor.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 75.30357142857144,
+              "y": 590,
+              "width": 22.125,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 52,
+              "y": 60,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 4,
+              "y": 420,
+              "width": 90,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "amsterdam-bitterballen",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/bitterballen.png",
+          "alt": "Bitterballen",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 52.30357142857143,
+              "y": 566,
+              "width": 14.142857142857142,
+              "rotation": -6,
+              "zIndex": 5,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 520,
+              "width": 24,
+              "rotation": -6,
+              "zIndex": 5,
+              "visible": true
+            },
+            "small": {
+              "x": 4,
+              "y": 920,
+              "width": 40,
+              "rotation": -6,
+              "zIndex": 5,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "amsterdam-surprise-bar",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/suprise-bar.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 29.999999999999996,
+              "y": 509,
+              "width": 21.375,
+              "rotation": 4,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 30,
+              "y": 540,
+              "width": 24,
+              "rotation": 4,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 50,
+              "y": 920,
+              "width": 40,
+              "rotation": 4,
+              "zIndex": 6,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "amsterdam-text-bg",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/amsterdam-text-background.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 59.10714285714286,
+              "y": 425,
+              "width": 55.464285714285715,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 60,
+              "y": 540,
+              "width": 38,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 4,
+              "y": 1180,
+              "width": 90,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mqam6o59",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/canal-cruise.jpg",
+          "alt": "canal-cruise.jpg",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "layout": {
+            "large": {
+              "x": 30.58928571428571,
+              "y": 36,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqam7nr5",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/miffy-store.jpg",
+          "alt": "",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "layout": {
+            "large": {
+              "x": 67.64285714285712,
+              "y": 37,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqam8mi0",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/vincent-van-gogh.jpg",
+          "alt": "",
+          "caption": "",
+          "aspect": "3024 / 3045",
+          "layout": {
+            "large": {
+              "x": -4.232142857142856,
+              "y": 918,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqam91qd",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/room-s.jpg",
+          "alt": "",
+          "caption": "",
+          "aspect": "3024 / 3044",
+          "layout": {
+            "large": {
+              "x": -3.874999999999985,
+              "y": 536,
+              "width": 30,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqam9xy3",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/mushroom.png",
+          "alt": "mushroom.png",
+          "caption": "",
+          "aspect": "1220 / 913",
+          "layout": {
+            "large": {
+              "x": 60.5,
+              "y": 12,
+              "width": 13.160714285714288,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqamcubl",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/chocolate-clogs.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1554 / 1647",
+          "layout": {
+            "large": {
+              "x": 29.33928571428572,
+              "y": 1006,
+              "width": 9.232142857142854,
+              "rotation": 0,
+              "zIndex": 11,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 11,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 11,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mqamdlpq",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/miffy-chair.jpg",
+          "alt": "miffy-chair.jpg",
+          "caption": "Miffy relaxing after the Anne Frank House",
+          "aspect": "3024 / 4032",
+          "layout": {
+            "large": {
+              "x": 46.39285714285713,
+              "y": 813,
+              "width": 24.94642857142857,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mqamee2h",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/stroopwafel.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "2192 / 2032",
+          "layout": {
+            "large": {
+              "x": 30.321428571428577,
+              "y": 774,
+              "width": 12.535714285714285,
+              "rotation": 0,
+              "zIndex": 13,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 13,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 13,
+              "visible": true
+            }
+          },
+          "cutout": true
+        }
+      ],
+      "decorations": [
+        {
+          "id": "amsterdam-tape",
+          "type": "tape",
+          "color": "rgba(61, 109, 161, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 2.821428571428571,
+              "y": 24,
+              "width": 14,
+              "rotation": -3.4,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 10,
+              "y": 28,
+              "width": 14,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 33,
+              "y": 28,
+              "width": 24,
+              "rotation": -5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "utrecht",
+      "no": "02",
+      "name": "Utrecht",
+      "nativeName": "& Rotterdam",
+      "romanizedName": "Utrecht",
+      "dayLabel": "daytrips",
+      "coordinates": "52.09°N · 5.12°E",
+      "align": "right",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 700,
+        "mediumWidth": 860,
+        "mediumHeight": 1120,
+        "smallWidth": 390,
+        "smallHeight": 1600
+      },
+      "blurb": "Placeholder blurb for Utrecht - quieter canal wharves, a Miffy pilgrimage, and stroopwafels pressed fresh. Refine in the editor.",
+      "blocks": [
+        {
+          "id": "utrecht-note",
+          "type": "text",
+          "text": "Rotterdam was mostly for meeting a family friend, but we did get to see a side of the Netherlands that featured more modern architecture in this major port city. \n\nIn Utrecht we completed the infamous \"Dome\" escape room at Mama Bazooka's. If you're an escape room fanatic, the Netherlands will certainly not disappoint. (My phone remained feebly charged, so pictures were sparse on these quick trips.)",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 60.87500000000002,
+              "y": 5,
+              "width": 40.16071428571429,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 60,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 4,
+              "y": 420,
+              "width": 90,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-blueaccent",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/blueaccent.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 43.107142857142854,
+              "y": 178,
+              "width": 11.535714285714285,
+              "rotation": -50,
+              "zIndex": 30,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 40,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-bluestar",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/bluestar.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 43.464285714285715,
+              "y": -15,
+              "width": 11.178571428571429,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 400,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mqan78dt",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/utrecht.jpg",
+          "alt": "",
+          "caption": "Mama Bazooka lobby",
+          "aspect": "3024 / 3047",
+          "layout": {
+            "large": {
+              "x": 47.55357142857143,
+              "y": 341,
+              "width": 24.410714285714285,
+              "rotation": 1.9,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "image-mqan8dkn",
+          "type": "image",
+          "src": "/images/travels/netherlands-25/rotterdam.jpeg",
+          "alt": "R",
+          "caption": "A side of the Nieuwe Maas",
+          "aspect": "3024 / 4032",
+          "layout": {
+            "large": {
+              "x": -1.910714285714286,
+              "y": -67,
+              "width": 42,
+              "rotation": -1.6,
+              "zIndex": 7,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          }
+        }
+      ],
+      "decorations": [
+        {
+          "id": "utrecht-tape",
+          "type": "tape",
+          "color": "rgba(51, 110, 204, 0.6)",
+          "opacity": 0.86,
+          "height": {
+            "large": 22,
+            "medium": 22,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 10.53571428571429,
+              "y": -78,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 60,
+              "y": 28,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 33,
+              "y": 28,
+              "width": 24,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mqanb0u5",
+          "type": "tape",
+          "color": "rgba(51, 110, 204, 0.6)",
+          "opacity": 0.88,
+          "height": {
+            "large": 12,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 55.57142857142857,
+              "y": 333,
+              "width": 10.553571428571429,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

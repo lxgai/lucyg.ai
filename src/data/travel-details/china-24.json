@@ -163,8 +163,8 @@
           "aspect": "4032 / 2683",
           "layout": {
             "large": {
-              "x": -7.3690577915736695,
-              "y": 232.5333251953125,
+              "x": -7.547629220145098,
+              "y": 244.5333251953125,
               "width": 49.43124959513338,
               "rotation": 0,
               "zIndex": 1,
@@ -380,8 +380,8 @@
           },
           "layout": {
             "large": {
-              "x": 7.863459464752174,
-              "y": 217.33343505859375,
+              "x": 8.131316607609318,
+              "y": 231.33343505859375,
               "width": 13.968708887031605,
               "rotation": -3.4,
               "zIndex": 20,
@@ -499,12 +499,12 @@
         {
           "id": "chongqing-note",
           "type": "text",
-          "text": "The moment the sun disappears along the horizon, this urban, \"8-D\" city comes to life.  Despite it being ruthlessly hot, my cyberpunk dream of experiencing the vertical landscape of this city became a reality. From neon city views to spicy eats to being dropped off at the wrong elevation, I could only wish I had more evenings to just walk by the river and watch.",
+          "text": "The moment the sun disappears along the horizon, this urban, \"8-D\" city comes to life.  Despite it being ruthlessly hot, my cyberpunk dream of experiencing the vertical landscape of this city became a reality. From neon views to spicy eats to being dropped off at the wrong elevation, I could only wish I had more evenings to just walk by the river and watch.",
           "tone": "caption",
           "layout": {
             "large": {
-              "x": -3.4154454976801043,
-              "y": 421.6000671386719,
+              "x": -3.1475883548229615,
+              "y": 416.6000671386719,
               "width": 45.5714340209961,
               "rotation": 0,
               "zIndex": 4,
@@ -912,7 +912,7 @@
         {
           "id": "text-mq7k15vc",
           "type": "text",
-          "text": "If you ever find yourself willing to take a rough, 3 hour bus ride from the city of Chongqing, I do highly recommend you check out the Three Natural Bridges.",
+          "text": "If you ever find yourself willing to take a rough, 3 hour bus ride headed southwest from Chongqing's center, I do highly recommend you check out the Three Natural Bridges.",
           "tone": "caption",
           "fontSize": {
             "large": 18,

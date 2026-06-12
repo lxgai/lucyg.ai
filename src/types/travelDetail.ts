@@ -1,6 +1,7 @@
 export type TravelDetailBreakpoint = "large" | "medium" | "small";
 export type TravelDetailAlign = "left" | "right";
 export type TravelDetailTextTone = "body" | "caption" | "annotation";
+export type TravelDetailTextFont = "serif" | "mono";
 
 export type TravelDetailFreeformLayout = {
   x: number;
@@ -39,6 +40,7 @@ export type TravelDetailTextBlock = {
   type: "text";
   text: string;
   tone?: TravelDetailTextTone;
+  font?: TravelDetailTextFont;
   fontSize: TravelDetailResponsiveNumber;
   layout: TravelDetailResponsiveLayout;
 };

@@ -244,11 +244,12 @@ function BlockView({
       ) : (
         <Typography
           sx={{
-            fontFamily: tokens.serif,
+            fontFamily: block.font === "mono" ? tokens.mono : tokens.serif,
             fontSize: block.fontSize[breakpoint],
             lineHeight: block.tone === "annotation" ? 1.15 : 1.5,
             color: block.tone === "annotation" ? tokens.accent : tokens.ink60,
-            fontStyle: "italic",
+            fontStyle: block.font === "mono" ? "normal" : "italic",
+            whiteSpace: "pre-wrap",
           }}
         >
           {block.text}

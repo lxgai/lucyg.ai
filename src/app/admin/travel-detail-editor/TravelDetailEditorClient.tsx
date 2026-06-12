@@ -26,6 +26,7 @@ import type {
   TravelDetailSection,
   TravelDetailTapeDecoration,
   TravelDetailTextBlock,
+  TravelDetailTextFont,
   TravelDetailTextTone,
 } from "@/types/travelDetail";
 
@@ -70,6 +71,7 @@ const breakpointLabels: Record<TravelDetailBreakpoint, string> = {
   small: "Small",
 };
 const tones: TravelDetailTextTone[] = ["body", "caption", "annotation"];
+const textFonts: TravelDetailTextFont[] = ["serif", "mono"];
 const paper = "#fbf6ee";
 const background = "#f1e9df";
 const secondaryPaper = "#e6dccb";
@@ -241,7 +243,7 @@ function PreviewBlock({ block, breakpoint, selected, onSelect, onPointerDown }: 
           </figure>
         )
       ) : (
-        <p className="italic" style={{ margin: 0, fontFamily: tokens.serif, fontSize: block.fontSize[breakpoint], lineHeight: block.tone === "annotation" ? 1.15 : 1.5, color: block.tone === "annotation" ? tokens.accent : tokens.ink60 }}>{block.text}</p>
+        <p style={{ margin: 0, fontFamily: block.font === "mono" ? tokens.mono : tokens.serif, fontStyle: block.font === "mono" ? "normal" : "italic", fontSize: block.fontSize[breakpoint], lineHeight: block.tone === "annotation" ? 1.15 : 1.5, color: block.tone === "annotation" ? tokens.accent : tokens.ink60, whiteSpace: "pre-wrap" }}>{block.text}</p>
       )}
       <button type="button" aria-label="Resize" className="absolute -bottom-2 -right-2 h-4 w-4 border border-stone-900 bg-[#e6dccb]" onPointerDown={(event) => onPointerDown(event, "resize")} />
     </div>
@@ -814,6 +816,7 @@ export default function TravelDetailEditorPage() {
                 <>
                   <Field label="Text" value={layoutItem.text} multiline onChange={(text) => updateData("Edit text", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.text = text; })} />
                   <SelectField label="Tone" value={layoutItem.tone ?? "caption"} options={tones} onChange={(tone) => updateData("Edit tone", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.tone = tone; })} />
+                  <SelectField label="Font" value={layoutItem.font ?? "serif"} options={textFonts} onChange={(font) => updateData("Edit font", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.font = font; })} />
                   <NumberField label="Font size" value={layoutItem.fontSize[breakpoint]} min={8} max={80} onChange={(fontSize) => updateData("Edit font size", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.fontSize[breakpoint] = fontSize; })} />
                 </>
               )}
