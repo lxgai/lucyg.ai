@@ -78,6 +78,7 @@ function PageHome({ route, setRoute, theme }) {
           </div>
         </div>
       </div>
+      <Footer theme={theme} setRoute={setRoute} />
     </div>
   );
 }
@@ -1066,6 +1067,7 @@ function PageTrip({ tripId, route, setRoute, theme }) {
       <div className="m-page-pad" style={{ padding: "0 56px 60px", borderTop: `1px solid ${T.hair}`, marginTop: 20, paddingTop: 32 }}>
         <TripNav tripId={tripId} setRoute={setRoute} theme={theme} />
       </div>
+      <Footer theme={theme} setRoute={setRoute} />
     </div>
   );
 }
@@ -1185,23 +1187,17 @@ function PageProject({ slug, route, setRoute, theme }) {
       <div className="m-page-pad" style={{ padding: "12px 56px 80px" }}>
         <DetailReport p={p} theme={theme} />
 
-        {/* Prev / next nav */}
-        <div style={{ marginTop: 72,
-          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }} className="m-2col">
-          {prev ? (
-            <div onClick={() => setRoute(`projects/${prev.slug}`)} style={{ cursor: "pointer" }}>
+        {/* Prev nav */}
+        {prev && (
+          <div style={{ marginTop: 72 }}>
+            <div onClick={() => setRoute(`projects/${prev.slug}`)} style={{ cursor: "pointer", display: "inline-block" }}>
               <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase" }}>← Previous</div>
               <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic", marginTop: 4 }}>{prev.name}</div>
             </div>
-          ) : <div />}
-          {next ? (
-            <div onClick={() => setRoute(`projects/${next.slug}`)} style={{ cursor: "pointer", textAlign: "right" }}>
-              <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase" }}>Next →</div>
-              <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic", marginTop: 4 }}>{next.name}</div>
-            </div>
-          ) : <div />}
-        </div>
+          </div>
+        )}
       </div>
+      <Footer theme={theme} setRoute={setRoute} />
     </div>
   );
 }
@@ -1390,6 +1386,9 @@ function DetailReport({ p, theme }) {
                 <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", marginTop: 4, color: theme.accent }}>{v} ↗</div>
               </div>
             ))}
+            <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ cursor: "pointer", marginLeft: "auto", alignSelf: "flex-end" }}>
+              <div style={{ fontFamily: theme.serif, fontSize: 16, fontStyle: "italic", color: T.ink }}>Back to top ↑</div>
+            </div>
           </div>
         </div>
       )}
@@ -1522,6 +1521,7 @@ function PageBlogPost({ slug, route, setRoute, theme }) {
           ) : <div />}
         </div>
       </div>
+      <Footer theme={theme} setRoute={setRoute} />
     </div>
   );
 }

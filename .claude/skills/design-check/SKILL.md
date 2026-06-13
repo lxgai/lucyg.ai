@@ -189,7 +189,8 @@ Project detail:
 - Phone fields reflow into a 2x2 grid with separators hidden.
 - Status value includes the accent live/shipping circle.
 - "By the numbers" remains horizontal at all widths; values shrink with `clamp()` rather than stacking.
-- Links are unboxed accent text; no divider line appears between links and prev/next nav.
+- Links are unboxed accent text with no divider line above them.
+- Do **not** render previous/next project navigation at the foot of the page. The detail page ends with the "Where to find it" links row and the right-aligned `Back to top ↑` control; there is no prev/next pager. Flag any reintroduced `← Previous` / `Next →` project nav as **SHOULD-FIX**.
 
 ### 8. Copy and voice
 

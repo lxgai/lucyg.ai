@@ -809,14 +809,10 @@ export function ProjectDetailReport({
   project,
   projectMarkdown,
   refNo,
-  previous,
-  next,
 }: {
   project: Project;
   projectMarkdown?: string;
   refNo: string;
-  previous?: Project;
-  next?: Project;
 }) {
   const hasMarkdown = Boolean(projectMarkdown?.trim());
 
@@ -824,6 +820,7 @@ export function ProjectDetailReport({
     <PageShell
       section={`SECTION A · PROJECTS / ${project.slug}`}
       catNo={refNo}
+      contentPb={{ xs: 3, md: 4 }}
       contentSx={{ width: "100%" }}
     >
       <Box
@@ -915,8 +912,8 @@ export function ProjectDetailReport({
         </Box>
       )}
 
-      {project.links && (
-        <Box sx={{ mt: 5 }}>
+      <Box sx={{ mt: 5 }}>
+        {project.links && (
           <Box
             sx={{
               fontFamily: tokens.mono,
@@ -929,60 +926,48 @@ export function ProjectDetailReport({
           >
             Where to find it
           </Box>
-          <Box sx={{ display: "flex", gap: 2.25, flexWrap: "wrap" }}>
-            {project.links.map(([label, value]) => (
-              <Box key={label}>
-                <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
-                  {label}
-                </Box>
-                <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic", mt: 0.5, color: tokens.accent }}>
-                  {value} →
-                </Box>
+        )}
+        <Box sx={{ display: "flex", gap: 2.25, flexWrap: "wrap", alignItems: "flex-end" }}>
+          {project.links?.map(([label, value]) => (
+            <Box key={label}>
+              <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
+                {label}
               </Box>
-            ))}
-          </Box>
+              <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic", mt: 0.5, color: tokens.accent }}>
+                {value} →
+              </Box>
+            </Box>
+          ))}
+          <BackToTop />
         </Box>
-      )}
-
-      <ProjectPrevNext previous={previous} next={next} />
+      </Box>
     </PageShell>
   );
 }
 
-function ProjectPrevNext({ previous, next }: { previous?: Project; next?: Project }) {
+function BackToTop() {
   return (
     <Box
+      component="button"
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       sx={{
-        mt: 9,
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-        gap: 4,
+        ml: "auto",
+        alignSelf: "flex-end",
+        background: "transparent",
+        border: "none",
+        p: 0,
+        cursor: "pointer",
+        fontFamily: tokens.serif,
+        fontSize: 16,
+        fontStyle: "italic",
+        color: tokens.ink,
+        transition: "color 180ms",
+        "&:hover": { color: tokens.accent },
       }}
     >
-      {previous ? (
-        <Box component={NextLink} href={`/projects/${previous.slug}`} sx={{ color: tokens.ink, textDecoration: "none" }}>
-          <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            ← Previous
-          </Box>
-          <Box sx={{ fontFamily: tokens.serif, fontSize: 22, fontStyle: "italic", mt: 0.5 }}>{previous.name}</Box>
-        </Box>
-      ) : (
-        <Box />
-      )}
-      {next ? (
-        <Box
-          component={NextLink}
-          href={`/projects/${next.slug}`}
-          sx={{ color: tokens.ink, textDecoration: "none", textAlign: { xs: "left", md: "right" } }}
-        >
-          <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.6px", color: tokens.ink60, textTransform: "uppercase" }}>
-            Next →
-          </Box>
-          <Box sx={{ fontFamily: tokens.serif, fontSize: 22, fontStyle: "italic", mt: 0.5 }}>{next.name}</Box>
-        </Box>
-      ) : (
-        <Box />
-      )}
+      Back to top ↑
     </Box>
   );
 }
+

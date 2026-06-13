@@ -233,7 +233,23 @@ function PageShell({ children, route, setRoute, theme, section, catNo, title, su
       <div className="m-page-pad" style={{ padding: `${(title || subtitle) ? 0 : 24}px 56px 80px` }}>
         {children}
       </div>
+      <Footer theme={theme} setRoute={setRoute} />
     </div>
+  );
+}
+
+// ============================================================
+// Footer — minimal copyright line closing every page
+// ============================================================
+function Footer({ theme, setRoute }) {
+  const year = new Date().getFullYear();
+  return (
+    <footer className="m-footer m-page-pad" style={{
+      padding: "36px 56px 44px",
+      fontFamily: A.mono, fontSize: 10, letterSpacing: 1.2, color: A.ink60, textAlign: "right",
+    }}>
+      © {year} Lucy Gai · All rights reserved
+    </footer>
   );
 }
 
@@ -296,4 +312,4 @@ function VinylPlayer({ album, playing, setPlaying, theme }) {
   );
 }
 
-Object.assign(window, { A_TOKENS: A, Nav, Hair, CardLabel, Pill, MetaStrip, PageShell, VinylPlayer });
+Object.assign(window, { A_TOKENS: A, Nav, Hair, CardLabel, Pill, MetaStrip, PageShell, Footer, VinylPlayer });

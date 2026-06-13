@@ -26,8 +26,6 @@ export default async function ProjectDetailRoute({
       project={PROJECTS[index]}
       projectMarkdown={projectMarkdown}
       refNo={`REF. A-${String(index + 1).padStart(2, "0")}`}
-      previous={PROJECTS[index - 1]}
-      next={PROJECTS[index + 1]}
     />
   );
 }

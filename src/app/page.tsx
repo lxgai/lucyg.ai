@@ -1,6 +1,7 @@
 import { Box, Typography, Link as MuiLink } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
+import Footer from "@/components/design/Footer";
 import Nav from "@/components/design/Nav";
 import { MetadataStrip } from "@/components/design/layout";
 import { getPageUpdatedLabel } from "@/data/page-updated";
@@ -294,6 +295,8 @@ export default async function Home() {
           </Box>
         </Box>
       </Box>
+
+      <Footer />
     </Box>
   );
 }

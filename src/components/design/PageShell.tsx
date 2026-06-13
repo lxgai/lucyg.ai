@@ -4,6 +4,7 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { getPageUpdatedLabel } from "@/data/page-updated";
+import Footer from "./Footer";
 import Nav from "./Nav";
 import { MetadataStrip, PageContainer } from "./layout";
 import { tokens } from "./tokens";
@@ -17,6 +18,7 @@ type PageShellProps = {
   updatedLabel?: string;
   metadataExtra?: ReactNode;
   contentPadding?: boolean;
+  contentPb?: number | Partial<Record<"xs" | "sm" | "md" | "lg" | "xl", number>>;
   contentSx?: SxProps<Theme>;
 };
 
@@ -29,6 +31,7 @@ export default function PageShell({
   updatedLabel,
   metadataExtra,
   contentPadding = true,
+  contentPb = { xs: 8, md: 10 },
   contentSx,
 }: PageShellProps) {
   const pathname = usePathname();
@@ -95,7 +98,7 @@ export default function PageShell({
           <PageContainer
             sx={{
               pt: title || subtitle ? 0 : { xs: 3, md: 3 },
-              pb: { xs: 8, md: 10 },
+              pb: contentPb,
             }}
           >
             {children}
@@ -104,6 +107,8 @@ export default function PageShell({
           children
         )}
       </Box>
+
+      <Footer />
     </Box>
   );
 }
