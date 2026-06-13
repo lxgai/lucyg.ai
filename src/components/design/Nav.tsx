@@ -76,19 +76,7 @@ export default function Nav() {
         >
           Lucy Gai
         </Typography>
-        <Typography
-          component="span"
-          sx={{
-            display: { xs: "none", sm: "inline" },
-            fontFamily: tokens.mono,
-            fontSize: 9,
-            color: tokens.ink40,
-            letterSpacing: "1.6px",
-            textTransform: "uppercase",
-          }}
-        >
-          — EST. 2024
-        </Typography>
+
       </MuiLink>
 
       <Stack

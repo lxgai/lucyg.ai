@@ -17,7 +17,7 @@ import {
 } from "@/data/favorites";
 
 type Tab = "music" | "films";
-type AlbumSort = "new" | "old" | "title";
+type AlbumSort = "new" | "old" | "title" | "added";
 type SyncedMovie = Movie & {
   sourceUrl?: string;
 };
@@ -33,11 +33,12 @@ const SORT_OPTIONS: { value: AlbumSort; label: string }[] = [
   { value: "new", label: "new → old" },
   { value: "old", label: "old → new" },
   { value: "title", label: "title (a-z)" },
+  { value: "added", label: "custom order" },
 ];
 
 export default function FavoritesPage() {
   const [tab, setTab] = useState<Tab>("music");
-  const [sort, setSort] = useState<AlbumSort>("old");
+  const [sort, setSort] = useState<AlbumSort>("added");
   const [sortOpen, setSortOpen] = useState(false);
   const [selectedSrc, setSelectedSrc] = useState(ALBUMS[0].src);
   const [playing, setPlaying] = useState(false);
@@ -49,6 +50,7 @@ export default function FavoritesPage() {
     return [...ALBUMS].sort((a, b) => {
       if (sort === "new") return Number(b.year) - Number(a.year);
       if (sort === "old") return Number(a.year) - Number(b.year);
+      if (sort === "added") return b.customorder - a.customorder;
       return a.title.localeCompare(b.title);
     });
   }, [sort]);
@@ -301,8 +303,8 @@ export default function FavoritesPage() {
                   </Box>
                 </Box>
                 <CardLabel
-                  cat="C.M"
-                  no={String(selectedIdx + 1).padStart(3, "0")}
+                  cat="C"
+                  no={String(selectedAlbum.customorder).padStart(2, "0")}
                 />
               </Box>
               <Hair />

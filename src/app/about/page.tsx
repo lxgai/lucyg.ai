@@ -24,7 +24,11 @@ const CURRENTLY: Array<[string, React.ReactNode]> = [
 
 export default function AboutPage() {
   return (
-    <PageShell section="SECTION E · ABOUT" catNo="REF. E-IDX">
+    <PageShell
+      section="SECTION E · ABOUT"
+      catNo="REF. E-IDX"
+      updatedLabel="UPDATED 06 · 12 · 26"
+    >
       <Box
         sx={{
           display: "grid",

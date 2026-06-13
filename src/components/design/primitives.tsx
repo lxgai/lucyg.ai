@@ -48,9 +48,8 @@ export function CardLabel({
       }}
     >
       <Box component="span" sx={{ color: tokens.accent }}>
-        CAT. {cat}
+        REF. {cat}-{no}
       </Box>
-      <Box component="span">№ {no}</Box>
       {date && <Box component="span">{date}</Box>}
     </Box>
   );
