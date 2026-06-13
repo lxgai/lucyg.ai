@@ -4,43 +4,20 @@ import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
 import PageShell from "@/components/design/PageShell";
-import china24 from "@/data/travel-details/china-24.json";
 import { tokens } from "@/components/design/tokens";
-import { TRIPS, type Trip } from "@/data/travels";
+import { TRAVEL_ENTRIES, type ResolvedTravelEntry } from "@/data/travelEntries";
 import { resolveSiteImageSrc } from "@/lib/images";
-import { getTravelDetailIndexMeta } from "@/lib/travelDetailIndex";
-import type { TravelDetailData } from "@/types/travelDetail";
 
-const TRAVEL_DETAILS: Partial<Record<string, TravelDetailData>> = {
-  "china-24": china24 as TravelDetailData,
-};
-
-type TravelIndexEntry = Trip & {
-  detail?: TravelDetailData;
-};
-
-const TRAVEL_INDEX_ENTRIES: TravelIndexEntry[] = TRIPS.map((trip) => {
-  const detail = TRAVEL_DETAILS[trip.id];
-  if (!detail) return trip;
-
-  const detailMeta = getTravelDetailIndexMeta(detail);
-
-  return {
-    ...trip,
-    place: detail.metadata.place || trip.place,
-    sub: detailMeta.citySummary || trip.sub,
-    date: detailMeta.date || trip.date,
-    duration: detailMeta.duration || trip.duration,
-    detail,
-  };
-});
-
-function travelDateValue(trip: TravelIndexEntry) {
-  const [month = "1", year = "0"] = trip.date.split("/").map((part) => part.trim());
-  return Number(year) * 12 + Number(month);
+// Dates are full start dates ("MM / DD / YYYY"); older "MM / YYYY" values still
+// sort correctly with day 0. Returns a comparable YYYYMMDD integer.
+function travelDateValue(trip: ResolvedTravelEntry) {
+  const parts = trip.date.split("/").map((part) => part.trim());
+  const [month = "0", day = "0", year = "0"] =
+    parts.length === 3 ? parts : [parts[0] ?? "0", "0", parts[1] ?? "0"];
+  return Number(year) * 10000 + Number(month) * 100 + Number(day);
 }
 
-function travelTitle(trip: TravelIndexEntry) {
+function travelTitle(trip: ResolvedTravelEntry) {
   const parts = trip.place
     .split(",")
     .map((part) => part.trim())
@@ -55,9 +32,9 @@ export default function TravelsPage() {
   const [sortNewest, setSortNewest] = useState(true);
   const trips = useMemo(
     () =>
-      [...TRAVEL_INDEX_ENTRIES].sort((a, b) => {
-        const aIndex = TRAVEL_INDEX_ENTRIES.findIndex((trip) => trip.id === a.id);
-        const bIndex = TRAVEL_INDEX_ENTRIES.findIndex((trip) => trip.id === b.id);
+      [...TRAVEL_ENTRIES].sort((a, b) => {
+        const aIndex = TRAVEL_ENTRIES.findIndex((trip) => trip.id === a.id);
+        const bIndex = TRAVEL_ENTRIES.findIndex((trip) => trip.id === b.id);
         const dateDiff = travelDateValue(b) - travelDateValue(a);
         const newestOrder = dateDiff || aIndex - bIndex;
 
@@ -89,7 +66,7 @@ export default function TravelsPage() {
       ].join(";");
       document.body.appendChild(probe);
 
-      const widest = TRAVEL_INDEX_ENTRIES.reduce((max, trip) => {
+      const widest = TRAVEL_ENTRIES.reduce((max, trip) => {
         const { country, yy } = travelTitle(trip);
         probe.textContent = `${country} '${yy}.`;
         return Math.max(max, probe.getBoundingClientRect().width);
@@ -266,7 +243,7 @@ export default function TravelsPage() {
   );
 }
 
-function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
+function TravelsColumn({ trip, idx }: { trip: ResolvedTravelEntry; idx: number }) {
   const { country, yy } = travelTitle(trip);
 
   return (
@@ -363,6 +340,7 @@ function TravelsColumn({ trip, idx }: { trip: TravelIndexEntry; idx: number }) {
           fontStyle: "italic",
           color: tokens.ink60,
           mt: 1.5,
+          mb: 2.5,
           lineHeight: 1.45,
         }}
       >

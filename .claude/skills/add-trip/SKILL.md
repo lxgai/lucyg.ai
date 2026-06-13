@@ -41,7 +41,8 @@ This prints the logical paths (`/images/travels/<slug>/<file>`) for every image 
 Create `src/data/travel-details/<slug>.json`. **Read `src/data/travel-details/china-24.json` first** and mirror its schema: `fileNo`, `section`, `metadata` (`place`, `dateRange`, `duration`), `hero` (per-breakpoint title/intro/image layouts), and `sections[]` (each with per-breakpoint `canvas`, `blocks`, and `decorations`). Fill metadata from the inputs and distribute the listed images across hero + section blocks as placeholders. Do **not** add editable section-width controls; section widths stay as in the template (see CLAUDE.md travel-detail rules). Keep the JSON structured and formatted; do not hand-concatenate strings.
 
 ### 4. Register the trip
-- Add a `TRIPS` entry in `src/data/travels.ts` with `id`/`place`/`sub`/`date`/`duration`/`cover`. Use the chosen `cover` logical path.
+- Add a `TRIPS` entry in `src/data/travels.ts` with **only** `id` and `cover` (the chosen `cover` logical path). Do **not** add `place`/`sub`/`date`/`duration` — those are the detail JSON's job and are derived for the index/home page via `resolveTravelEntry` in `src/data/travelEntries.ts`. Duplicating them here would let them drift.
+- Register the trip's detail in `TRAVEL_DETAILS` in `src/data/travelEntries.ts` (`"<slug>": <slug>Json as TravelDetailData`) so the index, home page, and cover editor pick it up.
 - Add a `TRAVEL_ASSETS["<slug>"]` array in `src/data/travel-assets.ts` containing **all** listed paths, sorted, matching the existing formatting.
 
 ### 5. Create the route page

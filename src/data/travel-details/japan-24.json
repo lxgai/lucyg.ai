@@ -3,8 +3,8 @@
   "section": "SECTION B · TRAVELS / JAPAN",
   "metadata": {
     "place": "Japan",
-    "dateRange": "JUL 2024",
-    "duration": "10 days"
+    "dateRange": "JUL 22 - JUL 28, 2024",
+    "duration": "7 days"
   },
   "hero": {
     "title": "Japan,",
@@ -729,23 +729,23 @@
           "text": "2. (ᵔ◡ᵔ) One of several convenience store snacks that got devoured. The price, taste, and ease of it all was just as everyone had said. Salmon onigiri, 10/10\n\n3. (・ω・) Had to try a maid cafe. My bear curry smiled at me as I ate his face off. Didn't expect much taste-wise, but the maids were fun and the presentation cute. 7/10\n\n4.(⌒▽⌒)☆ Cold soba. Always a treat, especially in the hot weather, 8.5/10",
           "tone": "caption",
           "fontSize": {
-            "large": 18,
-            "medium": 18,
+            "large": 14,
+            "medium": 13,
             "small": 14
           },
           "layout": {
             "large": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": -3.517857142857143,
+              "y": 1267.2000427246094,
+              "width": 49.21429334368025,
               "rotation": 0,
               "zIndex": 17,
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": -4.099395348837209,
+              "y": 1114.4000244140625,
+              "width": 49.089,
               "rotation": 0,
               "zIndex": 17,
               "visible": true

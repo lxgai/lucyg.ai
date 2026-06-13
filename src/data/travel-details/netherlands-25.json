@@ -3,7 +3,7 @@
   "section": "SECTION B · TRAVELS / NETHERLANDS",
   "metadata": {
     "place": "Netherlands",
-    "dateRange": "MAR 2025",
+    "dateRange": "MAY 25 - MAY 31, 2025",
     "duration": "7 days"
   },
   "hero": {
@@ -38,8 +38,8 @@
         "visible": true
       },
       "small": {
-        "x": 4,
-        "y": 294,
+        "x": 4.591108951662561,
+        "y": 355.5999755859375,
         "width": 88,
         "rotation": 0,
         "zIndex": 2,

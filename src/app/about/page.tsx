@@ -28,7 +28,7 @@ export default function AboutPage() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "minmax(0, 3fr) minmax(420px, 1fr)",
+          gridTemplateColumns: "minmax(0, 3fr) minmax(clamp(420px, 40vw, 800px), 1fr)",
           columnGap: 7,
           rowGap: 5,
           pt: { xs: 3.5, md: 4 },
@@ -63,16 +63,14 @@ export default function AboutPage() {
                 color: tokens.ink,
               }}
             >
-              Hi! I&apos;m <Box component="span" sx={{ fontStyle: "italic" }}>Lucy</Box> — a
-              software engineer based in the{" "}
-              <Box component="span" sx={{ fontStyle: "italic" }}>US</Box>.
+              Hi! My name is <Box component="span" sx={{ fontStyle: "italic" }}>Lucy Gai</Box>.
             </Typography>
 
             <Typography
               component="p"
               sx={{
                 fontFamily: tokens.serif,
-                fontSize: { xs: 19, md: 30 },
+                fontSize: { xs: 18, md: 28 },
                 lineHeight: { xs: 1.45, md: 1.35 },
                 letterSpacing: { xs: 0, md: "-0.3px" },
                 fontWeight: 400,
@@ -81,10 +79,12 @@ export default function AboutPage() {
                 mb: 0,
               }}
             >
-              This is my corner of the internet where I share and document the
-              projects I&apos;m building, things I&apos;m learning, and a collection of
-              the media and experiences I enjoy, in an effort to keep track of
-              it all.
+              I&apos;m currently a software engineer working in financial services, 
+              but recently have started building and writing outside that.
+               Previously, I was at the <Box component="span" sx={{ fontStyle: "italic" }}>University of California, San Diego</Box>.
+               <br></br>
+               <br></br>
+               Consider this is an archive for a mind that wanders frequently, a fun external memory for the thoughts, trips, and projects I find noteworthy and want to write to disk.
             </Typography>
           </Box>
 

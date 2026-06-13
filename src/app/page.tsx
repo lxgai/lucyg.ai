@@ -1,23 +1,56 @@
-"use client";
 import { Box, Typography, Link as MuiLink } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
 import Nav from "@/components/design/Nav";
 import { MetadataStrip } from "@/components/design/layout";
-import { CardLabel } from "@/components/design/primitives";
 import { getPageUpdatedLabel } from "@/data/page-updated";
 import { tokens } from "@/components/design/tokens";
 import { resolveSiteImageSrc } from "@/lib/images";
+import { getBlogEntries } from "@/lib/substack";
+import { TRAVEL_ENTRIES, type ResolvedTravelEntry } from "@/data/travelEntries";
+import { PROJECTS } from "@/data/projects";
 
-const QUICK_LINKS = [
-  { label: "Latest writing", sub: "on keeping a slow internet", to: "/blog" },
-  { label: "Recently played", sub: "nolimit, — Knock2", to: "/favorites" },
-  { label: "Where I've been", sub: "Amsterdam, Mar 2025", to: "/travels" },
-  { label: "What I'm making", sub: "this site, Fieldnotes", to: "/projects" },
+export const revalidate = 3600;
+
+const MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-export default function Home() {
+// Parses the site's "MM / DD / YY(YY)" date strings into a sortable timestamp.
+function parseEntryDate(d: string): number {
+  const [mm, dd, yy] = d.split("/").map((s) => parseInt(s.trim(), 10));
+  const year = yy < 100 ? 2000 + yy : yy;
+  return new Date(year, mm - 1, dd).getTime();
+}
+
+function travelLabel(t: ResolvedTravelEntry): string {
+  const [mm, , yy] = t.date.split("/").map((s) => parseInt(s.trim(), 10));
+  const year = yy < 100 ? 2000 + yy : yy;
+  return `${t.place}, ${MONTHS[mm - 1]} ${year}`;
+}
+
+const latestTrip = [...TRAVEL_ENTRIES].sort(
+  (a, b) => parseEntryDate(b.date) - parseEntryDate(a.date),
+)[0];
+const latestProject = [...PROJECTS].sort(
+  (a, b) => parseInt(b.year, 10) - parseInt(a.year, 10),
+)[0];
+
+export default async function Home() {
   const updatedLabel = getPageUpdatedLabel("/");
+
+  // Latest writing comes from the Substack feed (most recent first), same
+  // source as the blog index. Falls back gracefully when the feed is empty.
+  const blogEntries = await getBlogEntries();
+  const latestWriting = blogEntries[0]?.title ?? "";
+
+  const QUICK_LINKS = [
+    { label: "Latest writing", sub: latestWriting, to: "/blog" },
+    { label: "Recently played", sub: "nolimit, — Knock2", to: "/favorites" },
+    { label: "Where I've been", sub: latestTrip ? travelLabel(latestTrip) : "", to: "/travels" },
+    { label: "What I'm making", sub: latestProject?.name ?? "", to: "/projects" },
+  ];
 
   return (
     <Box
@@ -86,8 +119,8 @@ export default function Home() {
               color: tokens.ink,
             }}
           >
-            A software engineer cataloging the things I love — trips, records, films, and
-            the small projects in between. This site is a room I keep returning to.
+            Here you&apos;ll find what is essentially my collective space & digital scrapbook on the things
+            I love and things I&apos;m working on, in an effort to keep track of it all.
           </Typography>
         </Box>
 
@@ -149,7 +182,17 @@ export default function Home() {
             >
               Archivist.png, 8x8 Bayer Dither
             </Box>
-            <CardLabel cat="A" no="001" />
+            <Box
+              sx={{
+                fontFamily: tokens.mono,
+                fontSize: 9,
+                letterSpacing: "1.6px",
+                textTransform: "uppercase",
+                color: tokens.accent,
+              }}
+            >
+              REF. 00-01
+            </Box>
           </Box>
         </Box>
 
