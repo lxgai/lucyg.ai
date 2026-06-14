@@ -8,11 +8,11 @@ import { tokens } from "@/components/design/tokens";
 import { resolveSiteImageSrc } from "@/lib/images";
 
 const SOCIALS = [
-  { label: "Instagram", url: "https://instagram.com/lucy.gai", logo: "/images/about/instagram-logo.png" },
-  { label: "Letterboxd", url: "https://letterboxd.com/lucy_gai/", logo: "/images/about/letterboxd-logo.png" },
-  { label: "Spotify", url: "https://open.spotify.com/user/charlottefour", logo: "/images/about/spotify-logo.png" },
-  { label: "GitHub", url: "https://github.com/lxgai", icon: "github" },
-  { label: "Email", url: "mailto:hello@lucygai.com", icon: "email" },
+  { label: "Instagram", handle: "lucy.gai", url: "https://instagram.com/lucy.gai", logo: "/images/about/instagram-logo.png" },
+  { label: "Letterboxd", handle: "lucy_gai", url: "https://letterboxd.com/lucy_gai/", logo: "/images/about/letterboxd-logo.png" },
+  { label: "Spotify", handle: "lucy", url: "https://open.spotify.com/user/charlottefour", logo: "/images/about/spotify-logo.png" },
+  { label: "GitHub", handle: "lxgai", url: "https://github.com/lxgai", icon: "github" },
+  { label: "Email", handle: "mail@lucyg.ai", url: "mailto:mail@lucyg.ai", icon: "email" },
 ] as const;
 
 const CURRENTLY: Array<[string, React.ReactNode]> = [
@@ -276,17 +276,41 @@ export default function AboutPage() {
                 )}
               </Box>
               <Box
-                className="network"
                 sx={{
-                  fontFamily: tokens.mono,
-                  fontSize: 11,
-                  letterSpacing: "1.4px",
-                  textTransform: "uppercase",
-                  color: tokens.ink,
-                  transition: "color 180ms ease",
+                  flex: 1,
+                  minWidth: 0,
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                  gap: 1.25,
                 }}
               >
-                {social.label}
+                <Box
+                  className="network"
+                  sx={{
+                    fontFamily: tokens.mono,
+                    fontSize: 11,
+                    letterSpacing: "1.4px",
+                    textTransform: "uppercase",
+                    color: tokens.ink,
+                    transition: "color 180ms ease",
+                  }}
+                >
+                  {social.label}
+                </Box>
+                <Box
+                  sx={{
+                    fontFamily: tokens.mono,
+                    fontSize: 11,
+                    letterSpacing: "0.6px",
+                    color: tokens.ink60,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {social.handle}
+                </Box>
               </Box>
             </MuiLink>
           ))}
