@@ -12,14 +12,12 @@ export const PROJECTS: Project[] = [
     year: "2026",
     slug: "memory-archive",
     name: "Memory Archive",
-    role: "Solo · design + build",
     kind: "Personal site",
     status: "shipping",
     stack: ["next.js", "mui", "tailwind"],
     color: "#c94b62",
-    tagline: "A room I keep returning to - built so I have somewhere to put the things I love.",
-    started: "Jan · 2026",
-    filed: "ongoing",
+    image: "/images/projects/memory-archive/hero.jpg",
+    first_published: "Jan · 2026",
     metrics: [["entries", "44"]],
     links: [["live", "lucygai.com"]],
   },
@@ -37,21 +35,26 @@ The `/projects` index uses:
 - `stack` for the mono metadata line under the title
 - `kind` for the short description sentence
 - `status` for the status dot label
-- `color` for the generated thumbnail color
+- `image` for the thumbnail photo
+- `color` for the frame background behind the image (shown while it loads / as letterbox fill)
 
-The index intentionally does not render role text under each title. It also does not render a second tech-stack line in the footer row. The footer row keeps status, spacer, and `open file →`.
+The index intentionally does not render a second tech-stack line in the footer row. The footer row keeps status, spacer, and `open file →`.
 
 The index sort control toggles `newest` / `oldest`. Entry numbers stay fixed chronologically: the oldest project is always `Entry 01`, even when the list is sorted newest-first. On small screens, each entry leads with text/info first and image second.
 
 The detail page uses the same metadata fields, plus:
 
-- `started`, `published`, `updated`, `stack`, and `status` for the specs strip
+- `first_published`, `updated`, `stack`, and `status` for the specs strip
 - `metrics`, when present, for the "By the numbers" section
 - `links`, when present, for the "Where to find it" section
 
-The detail page intentionally does not render `tagline` between the title and specs strip. Keep the header order as back link, hero image, italic serif title, then specs strip. Back links use real arrow glyphs, such as `← Projects`; do not render visible ASCII arrows such as `<- Projects`.
+The detail-page hero uses the same `image` field as the index thumbnail — there is one shared image per project, just cropped to each frame's aspect ratio (a wide `21 / 9` hero, a `16 / 10` index thumbnail). Setting `image` updates both; they cannot diverge. See the image-sourcing notes below for where the file lives.
 
-The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes the accent live/shipping circle.
+Keep the header order as back link, hero image, italic serif title, then specs strip. Back links use real arrow glyphs, such as `← Projects`; do not render visible ASCII arrows such as `<- Projects`.
+
+The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; the `First published` value comes from `first_published` and `Updated` comes from `updated`. Dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes the accent live/shipping circle.
+
+`status` is a free-form string, not a fixed enum. The values `live` and `shipping` are treated as "active" and render the accent rose dot/label; any other value (such as `archived` or `paused`) renders a muted dot but still displays verbatim. `updated` is a manual field — it is not derived from file or git timestamps. The `Updated` cell shows `—` unless `updated` is present and differs from `first_published`.
 
 The detail page body comes from a Markdown file whose filename matches the project `slug`:
 
@@ -89,19 +92,26 @@ The travel-detail editor started as a small internal tool.
 
 When a Markdown file starts with `# Overview`, that first section is rendered as the special project lede from the prototype: a small mono `¶ Overview` label followed by larger serif text. Content after the next heading, such as `## The editor`, returns to the normal detail-page section styling.
 
-Images should live in `public/images/projects/<slug>/`:
+Project images — both the hero/thumbnail `image` field in `projects.ts` and any images embedded in the Markdown body — are served from Supabase storage, the same way travel and home images are. Upload them to the bucket under `projects/<slug>/`:
 
 ```text
-public/images/projects/memory-archive/editor-view.jpg
+projects/memory-archive/hero.jpg
+projects/memory-archive/editor-view.jpg
 ```
 
-Reference them from Markdown with a root-relative path:
+Reference them with a logical root-relative path under `/images/projects/<slug>/` — in the `image` field for the hero/thumbnail, and in Markdown for body images:
+
+```ts
+image: "/images/projects/memory-archive/hero.jpg"
+```
 
 ```md
 ![The admin editor with draggable image frames.](/images/projects/memory-archive/editor-view.jpg)
 ```
 
-The image alt text is also rendered as the visible caption. Keep it short and descriptive.
+At render, `src/lib/images.ts` rewrites `/images/projects/<slug>/<file>` to the Supabase object URL (`{NEXT_PUBLIC_SITE_IMAGE_BASE_URL}/projects/<slug>/<file>`). You do not commit project images to the repo or `public/`; only the logical `/images/projects/...` path appears in the data and Markdown. The filename in the path must match the file uploaded to the bucket exactly.
+
+For Markdown body images, the alt text is also rendered as the visible caption. Keep it short and descriptive. The hero/thumbnail `image` is decorative, so it has no caption.
 
 ## Creating A New Project
 
@@ -110,7 +120,7 @@ To add a project:
 1. Copy an existing object in `src/data/projects.ts`.
 2. Paste it into the `PROJECTS` array where it should appear.
 3. Change the `slug` to a unique kebab-case value, for example `reading-room`.
-4. Update the visible fields: `year`, `name`, `kind`, `status`, `stack`, and `color`. Keep `role` and `tagline` as archival/fallback data unless a future design explicitly uses them.
+4. Update the fields: `year`, `name`, `kind`, `status`, `stack`, `color`, `image`, and `first_published` (plus `updated` if it has been revised since). The `image` path points at the shared hero/thumbnail file in Supabase under `projects/<slug>/` (see image sourcing above).
 5. Create a matching Markdown file, for example `src/content/projects/reading-room.md`.
 6. Keep `metrics` and `links` only if the project needs those sections; otherwise remove those properties.
 

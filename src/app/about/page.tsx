@@ -12,7 +12,7 @@ const SOCIALS = [
   { label: "Letterboxd", url: "https://letterboxd.com/lucy_gai/", logo: "/images/about/letterboxd-logo.png" },
   { label: "Spotify", url: "https://open.spotify.com/user/charlottefour", logo: "/images/about/spotify-logo.png" },
   { label: "GitHub", url: "https://github.com/lxgai", icon: "github" },
-  { label: "Email", url: "mailto:hello@lucygai.com", icon: "email" },
+  { label: "Email", url: "mailto:mail@lucyg.ai", icon: "email" },
 ] as const;
 
 const CURRENTLY: Array<[string, React.ReactNode]> = [

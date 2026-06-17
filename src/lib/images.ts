@@ -1,4 +1,4 @@
-const siteImagePrefixes = ["/images/home/", "/images/travels/"] as const;
+const siteImagePrefixes = ["/images/home/", "/images/travels/", "/images/projects/"] as const;
 
 function siteImageBaseUrl() {
   return process.env.NEXT_PUBLIC_SITE_IMAGE_BASE_URL?.replace(/\/+$/, "") ?? "";
@@ -11,6 +11,7 @@ function isSiteImagePath(src: string) {
 function storagePathFromSitePath(src: string) {
   if (src.startsWith("/images/home/")) return src.replace("/images/", "");
   if (src.startsWith("/images/travels/")) return src.replace("/images/", "");
+  if (src.startsWith("/images/projects/")) return src.replace("/images/", "");
   return "";
 }
 
@@ -47,7 +48,11 @@ export function normalizeSiteImagePath(src: string) {
   if (!baseUrl || !candidate.startsWith(`${baseUrl}/`)) return "";
 
   const storagePath = candidate.slice(baseUrl.length + 1);
-  if (storagePath.startsWith("home/") || storagePath.startsWith("travels/")) {
+  if (
+    storagePath.startsWith("home/") ||
+    storagePath.startsWith("travels/") ||
+    storagePath.startsWith("projects/")
+  ) {
     return `/images/${storagePath}`;
   }
 

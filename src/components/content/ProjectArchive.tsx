@@ -6,6 +6,7 @@ import React from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
+import { resolveSiteImageSrc } from "@/lib/images";
 import type { Project } from "@/data/projects";
 
 export function ProjectThumb({
@@ -22,32 +23,22 @@ export function ProjectThumb({
         width: "100%",
         aspectRatio: aspect,
         overflow: "hidden",
-        background:
-          "linear-gradient(135deg, rgba(0,0,0,0.18), rgba(255,255,255,0.08)), " +
-          "repeating-linear-gradient(135deg, rgba(255,255,255,0.07) 0 10px, rgba(0,0,0,0.04) 10px 22px), " +
-          project.color,
-        filter: "sepia(0.08) saturate(0.92)",
+        background: project.color,
       }}
       aria-hidden
     >
-      <Typography
-        component="div"
+      <Box
+        component="img"
+        src={resolveSiteImageSrc(project.image)}
+        alt=""
         sx={{
           position: "absolute",
           inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: tokens.serif,
-          fontStyle: "italic",
-          fontSize: { xs: 92, md: 150 },
-          lineHeight: 1,
-          color: "rgba(255,255,255,0.9)",
-          textShadow: "0 2px 12px rgba(0,0,0,0.18)",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
         }}
-      >
-        {project.name[0]}
-      </Typography>
+      />
       <Box
         sx={{
           position: "absolute",
@@ -260,7 +251,7 @@ export function ProjectsSpreadList({ projects }: { projects: Project[] }) {
 }
 
 function getProjectSortValue(project: Project) {
-  const dateSource = project.published ?? project.started ?? project.year;
+  const dateSource = project.first_published ?? project.year;
   const yearMatch = dateSource.match(/\d{4}/);
   const monthMatch = dateSource.match(/[A-Za-z]{3,}/);
   const monthIndex = monthMatch
@@ -297,8 +288,8 @@ function ProjectHero({ project }: { project: Project }) {
 }
 
 function ProjectSpecs({ project }: { project: Project }) {
-  const published = project.published ?? project.started;
-  const lastUpdated = project.updated && project.updated !== published ? project.updated : "—";
+  const published = project.first_published;
+  const lastUpdated = project.updated && project.updated !== published ? project.updated : "-";
   const isLive = project.status === "live" || project.status === "shipping";
   const cells = [
     ["First published", compactProjectDate(published)],
@@ -430,14 +421,12 @@ function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
     <Box component="figure" sx={{ my: { xs: 4, md: 5.5 }, mx: 0 }}>
       <Box
         component="img"
-        src={src}
+        src={resolveSiteImageSrc(src)}
         alt={alt ?? ""}
         sx={{
           display: "block",
           width: "100%",
           height: "auto",
-          border: `1px solid ${tokens.hair}`,
-          filter: "sepia(0.08) saturate(0.92)",
         }}
       />
       {alt && (
@@ -457,6 +446,13 @@ function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
       )}
     </Box>
   );
+}
+
+// Stable identity for the Markdown <img> renderer so paragraph handlers below can
+// detect image-only paragraphs and unwrap them (a <figure>/<figcaption> cannot be
+// nested inside the <p> that Markdown would otherwise wrap a lone image in).
+function MarkdownImageRenderer({ src, alt }: { src?: string | Blob; alt?: string }) {
+  return <MarkdownImage src={typeof src === "string" ? src : undefined} alt={alt} />;
 }
 
 const markdownComponents: Components = {
@@ -524,7 +520,7 @@ const markdownComponents: Components = {
     if (
       childArray.length === 1 &&
       React.isValidElement(childArray[0]) &&
-      childArray[0].type === MarkdownImage
+      childArray[0].type === MarkdownImageRenderer
     ) {
       return childArray[0];
     }
@@ -625,9 +621,7 @@ const markdownComponents: Components = {
       </Box>
     );
   },
-  img({ src, alt }) {
-    return <MarkdownImage src={typeof src === "string" ? src : undefined} alt={alt} />;
-  },
+  img: MarkdownImageRenderer,
 };
 
 const overviewMarkdownComponents: Components = {
@@ -638,7 +632,7 @@ const overviewMarkdownComponents: Components = {
     if (
       childArray.length === 1 &&
       React.isValidElement(childArray[0]) &&
-      childArray[0].type === MarkdownImage
+      childArray[0].type === MarkdownImageRenderer
     ) {
       return childArray[0];
     }
