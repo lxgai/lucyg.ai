@@ -49,11 +49,16 @@ export function BlogPostArticle({
   const words = countPostWords(post);
   const readMin = Math.max(1, Math.round(words / 220));
   const displayDate = compactDate(post.date);
+  const updatedLabel =
+    displayDate === "undated"
+      ? undefined
+      : `UPDATED ${displayDate.replace(/\//g, " · ")}`;
 
   return (
     <PageShell
       section={`SECTION D · BLOG · ${post.slug}`}
       catNo={refNo}
+      updatedLabel={updatedLabel}
     >
       <Box
         sx={{

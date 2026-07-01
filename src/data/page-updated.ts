@@ -7,7 +7,7 @@ export const PAGE_UPDATED = {
   "/favorites": "UPDATED 06 · 13 · 26",
   "/links": "UPDATED 06 · 08 · 26",
   "/portfolio": "UPDATED 06 · 08 · 26",
-  "/projects": "UPDATED 06 · 14 · 26",
+  "/projects": "UPDATED 06 · 30 · 26",
   "/travels": "UPDATED 06 · 12 · 26",
   "/travels/china-24": "UPDATED 06 · 12 · 26",
   "/travels/japan-24": "UPDATED 06 · 13 · 26",

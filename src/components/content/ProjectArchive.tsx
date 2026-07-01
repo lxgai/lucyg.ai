@@ -502,7 +502,7 @@ const markdownComponents: Components = {
         component="h3"
         sx={{
           fontFamily: tokens.mono,
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: "1.8px",
           textTransform: "uppercase",
           color: tokens.accent,

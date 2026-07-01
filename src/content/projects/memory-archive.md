@@ -1,17 +1,35 @@
 # Overview
 
-With the perpetual need to record the Notes app, google docs, tumblr's scattered and forgotten  
+Write Overview content. With the perpetual need to record the Notes app, google docs, tumblr's scattered and forgotten  
 
-## The wrong way first
+## Motivation
 
-Spent a week on a moodboard before writing any code, which I always pretend I won't do. Newsreader for the body. A paper background I sampled off a 1972 Penguin paperback. The accent color changed every other day until I gave up and made it a knob.
+Explain why I made this
 
-## First post
+## Design Process
 
-Wrote about reading more in small apartments. It took two evenings, mostly because I kept reading what I'd written and finding it embarrassing. Hit publish anyway. Refreshed the homepage maybe forty times to look at the date stamp.
+Explain initial manual design in Canva, then Claude design, then tweaking various elements
 
-![The admin editor with draggable image frames.](/images/projects/memory-archive/music-infostrip-variations.png)
+Result: Design system
 
-## What it became
+![Debating various details.](/images/projects/memory-archive/music-infostrip-variations.png)
 
-Not a portfolio, not a blog, not really a journal - something between all three. The thing I keep coming back to is the section dividers. Tiny monospace labels. SECTION A - PROJECTS. They make it feel filed, which is what I wanted.
+## Some Brief Technical Details
+
+Explain the tech stack, the storage buckets (no CMS), 
+
+## Notable Features
+
+### Travel Page Layout
+Mention how the travel pages are laid out, 
+
+### Specific Travel Page Editor
+mention the travel editor, 
+
+### Metadata Strip
+automatic metadata strip via build hook, and the content pipeline, and the custom skills?
+
+## What's Next
+
+Mention my hope for wanting to upkeep this space, for it to be something i actually enjoy referring to, mention wanting to make a really cool dark mode, mention possibly looking into animations
+

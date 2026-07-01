@@ -255,6 +255,16 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+// Substack pubDate is UTC; render it in local time
+const DISPLAY_TIME_ZONE = "America/Phoenix";
+
+const displayDateFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: DISPLAY_TIME_ZONE,
+  year: "2-digit",
+  month: "2-digit",
+  day: "2-digit",
+});
+
 function formatDisplayDate(value: string) {
   const date = new Date(value);
 
@@ -262,11 +272,11 @@ function formatDisplayDate(value: string) {
     return "undated";
   }
 
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const year = String(date.getUTCFullYear()).slice(-2);
+  const parts = displayDateFormatter.formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? "";
 
-  return `${month}/${day}/${year}`;
+  return `${part("month")}/${part("day")}/${part("year")}`;
 }
 
 function htmlToText(html: string) {
