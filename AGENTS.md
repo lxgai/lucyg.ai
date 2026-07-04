@@ -13,7 +13,6 @@ Use `docs/design.md` as the visual source of truth for the site's Memory Archive
 - TypeScript with `strict: true`
 - MUI v7 / Joy UI available; most UI is currently MUI `sx`
 - Tailwind CSS v4 is configured and used in the admin editor
-- Leaflet / react-leaflet for travel maps
 - Static JSON data under `src/data/`; no database
 
 ## Commands
@@ -31,7 +30,7 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 ## Important Paths
 
 - `src/app/` - App Router pages and API routes
-- `src/components/` - shared components such as `Header`, `PhotoGallery`, `TravelMap`
+- `src/components/` - shared components such as `Header`, `PhotoGallery`
 - `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
 - `src/data/blog-tags.ts` - local tag mapping for Substack-imported blog entries
 - `src/data/substack/sample-feed.xml` - fixture RSS feed for local Substack integration testing

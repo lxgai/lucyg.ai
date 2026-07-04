@@ -16,7 +16,6 @@
 - **UI Libraries**: Material UI (MUI) v7, Joy UI (installed)
 - **Styling**: MUI `sx` props + Tailwind CSS v4 (available globally)
 - **Language**: TypeScript (strict mode)
-- **Maps**: Leaflet + react-leaflet
 - **Fonts**: Newsreader + JetBrains Mono + Caveat (Google)
 
 ### Project Structure
@@ -37,7 +36,6 @@ src/
   components/
     Header.tsx        # Nav + mobile drawer
     PhotoGallery.tsx  # Polaroid grid + location filters
-    TravelMap.tsx     # Leaflet map + markers
   styles/
     globals.css       # Tailwind import + base body styles
   types/
@@ -51,7 +49,6 @@ public/
 - **Absolute positioning**: Decorations and hero text are placed with absolute `%` positions; update those values to move elements.
 - **Responsive scaling**: Canvas scale is `min(100vw / canvasWidth, 1)` per breakpoint; vertical overflow scrolls.
 - **Header behavior**: Mobile hamburger uses a `Portal` so it stays fixed to the viewport; Drawer paper is forced flush left.
-- **Maps**: `TravelMap.tsx` includes Leaflet marker asset overrides and a size fix hook.
 
 ### Styling Notes
 - Global styles live in `src/styles/globals.css`.
