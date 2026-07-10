@@ -9,6 +9,7 @@ export const tokens = {
   hair: "rgba(31, 26, 22, 0.2)",
   hairStrong: "rgba(31, 26, 22, 0.55)",
   accent: "rgb(163, 91, 115)",
+  live: "#71a37e",
   serif: "var(--font-newsreader), Georgia, serif",
   mono: "var(--font-jetbrains-mono), ui-monospace, monospace",
   hand: "var(--font-caveat), cursive",

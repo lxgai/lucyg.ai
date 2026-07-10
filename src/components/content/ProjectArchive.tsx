@@ -3,7 +3,9 @@
 import { Box, Typography } from "@mui/material";
 import NextLink from "next/link";
 import React from "react";
+import ReactDOM from "react-dom";
 import ReactMarkdown, { type Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 import PageShell from "@/components/design/PageShell";
 import { tokens } from "@/components/design/tokens";
 import { resolveSiteImageSrc } from "@/lib/images";
@@ -61,8 +63,14 @@ export function ProjectThumb({
   );
 }
 
+function getStatusColor(status: string) {
+  if (status === "live") return tokens.live;
+  if (status === "shipping") return tokens.accent;
+  return null;
+}
+
 export function StatusDot({ project }: { project: Project }) {
-  const active = project.status === "live" || project.status === "shipping";
+  const statusColor = getStatusColor(project.status);
 
   return (
     <Box
@@ -72,7 +80,7 @@ export function StatusDot({ project }: { project: Project }) {
         fontSize: 9,
         letterSpacing: "1.4px",
         textTransform: "uppercase",
-        color: active ? tokens.accent : tokens.ink60,
+        color: statusColor ?? tokens.ink60,
         display: "inline-flex",
         alignItems: "center",
         gap: 0.75,
@@ -85,8 +93,8 @@ export function StatusDot({ project }: { project: Project }) {
           width: 7,
           height: 7,
           borderRadius: "50%",
-          background: active ? tokens.accent : tokens.ink40,
-          boxShadow: active ? `0 0 0 3px color-mix(in srgb, ${tokens.accent} 15%, transparent)` : "none",
+          background: statusColor ?? tokens.ink40,
+          boxShadow: statusColor ? `0 0 0 3px color-mix(in srgb, ${statusColor} 15%, transparent)` : "none",
         }}
       />
       {project.status}
@@ -290,7 +298,7 @@ function ProjectHero({ project }: { project: Project }) {
 function ProjectSpecs({ project }: { project: Project }) {
   const published = project.first_published;
   const lastUpdated = project.updated && project.updated !== published ? project.updated : "-";
-  const isLive = project.status === "live" || project.status === "shipping";
+  const statusColor = getStatusColor(project.status);
   const cells = [
     ["First published", compactProjectDate(published)],
     ["Updated", compactProjectDate(lastUpdated)],
@@ -367,8 +375,8 @@ function ProjectSpecs({ project }: { project: Project }) {
                       height: 7,
                       borderRadius: "50%",
                       flex: "0 0 auto",
-                      background: isLive ? tokens.accent : tokens.ink40,
-                      boxShadow: isLive ? `0 0 0 3px color-mix(in srgb, ${tokens.accent} 15%, transparent)` : "none",
+                      background: statusColor ?? tokens.ink40,
+                      boxShadow: statusColor ? `0 0 0 3px color-mix(in srgb, ${statusColor} 15%, transparent)` : "none",
                     }}
                   />
                   <Box
@@ -412,23 +420,183 @@ function compactProjectDate(date: string) {
   return date.replace(/\s*(?:Â·|·|\/|,)\s*/g, "·").replace(/\s+/g, "·");
 }
 
+type LightboxImage = { src: string; alt: string };
+
+const LightboxContext = React.createContext<((image: LightboxImage) => void) | null>(null);
+
+function useLightbox() {
+  return React.useContext(LightboxContext);
+}
+
+function LightboxProvider({ children }: { children: React.ReactNode }) {
+  const [active, setActive] = React.useState<LightboxImage | null>(null);
+  const [mounted, setMounted] = React.useState(false);
+  const close = React.useCallback(() => setActive(null), []);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (!active) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [active, close]);
+
+  return (
+    <LightboxContext.Provider value={setActive}>
+      {children}
+      {mounted &&
+        active &&
+        ReactDOM.createPortal(
+          <Box
+          role="dialog"
+          aria-modal="true"
+          aria-label={active.alt || "Expanded image"}
+          onClick={close}
+          sx={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 2000,
+            background: "rgba(15, 12, 10, 0.92)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: { xs: 3, md: 6 },
+            cursor: "zoom-out",
+          }}
+        >
+          <Box
+            component="img"
+            src={active.src}
+            alt={active.alt}
+            onClick={(event) => event.stopPropagation()}
+            sx={{
+              display: "block",
+              maxWidth: "100%",
+              maxHeight: "100%",
+              width: "auto",
+              height: "auto",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+              cursor: "default",
+            }}
+          />
+          <Box
+            component="button"
+            type="button"
+            onClick={close}
+            aria-label="Close expanded image"
+            sx={{
+              position: "fixed",
+              top: { xs: 16, md: 28 },
+              right: { xs: 16, md: 28 },
+              fontFamily: tokens.mono,
+              fontSize: 11,
+              letterSpacing: "1.6px",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.85)",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              px: 1.5,
+              py: 0.75,
+              cursor: "pointer",
+              "&:hover": { color: "#fff", borderColor: "rgba(255,255,255,0.6)" },
+            }}
+          >
+            Close ✕
+          </Box>
+          {active.alt && (
+            <Box
+              sx={{
+                position: "fixed",
+                left: 0,
+                right: 0,
+                bottom: { xs: 16, md: 28 },
+                textAlign: "center",
+                fontFamily: tokens.mono,
+                fontSize: 10,
+                letterSpacing: "1.4px",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.7)",
+                px: 3,
+              }}
+            >
+              {active.alt}
+            </Box>
+          )}
+          </Box>,
+          document.body,
+        )}
+    </LightboxContext.Provider>
+  );
+}
+
 function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
+  const openLightbox = useLightbox();
+
   if (!src) {
     return null;
   }
 
+  const resolvedSrc = resolveSiteImageSrc(src);
+
   return (
     <Box component="figure" sx={{ my: { xs: 4, md: 5.5 }, mx: 0 }}>
       <Box
-        component="img"
-        src={resolveSiteImageSrc(src)}
-        alt={alt ?? ""}
+        component="button"
+        type="button"
+        onClick={() => openLightbox?.({ src: resolvedSrc, alt: alt ?? "" })}
+        aria-label={alt ? `Expand image: ${alt}` : "Expand image"}
         sx={{
+          position: "relative",
           display: "block",
           width: "100%",
-          height: "auto",
+          m: 0,
+          p: 0,
+          border: "none",
+          background: "none",
+          cursor: "zoom-in",
+          "&:hover .expand-indicator": { opacity: 1 },
         }}
-      />
+      >
+        <Box
+          component="img"
+          src={resolvedSrc}
+          alt={alt ?? ""}
+          sx={{
+            display: "block",
+            width: "100%",
+            height: "auto",
+          }}
+        />
+        <Box
+          className="expand-indicator"
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: "flex",
+            alignItems: "center",
+            gap: 0.6,
+            fontFamily: tokens.mono,
+            fontSize: 9,
+            letterSpacing: "1.4px",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.9)",
+            px: 0.9,
+            py: 0.4,
+            background: "rgba(0,0,0,0.45)",
+            backdropFilter: "blur(2px)",
+            opacity: { xs: 1, md: 0 },
+            transition: "opacity 180ms",
+          }}
+        >
+          ⤢ Expand
+        </Box>
+      </Box>
       {alt && (
         <Box
           component="figcaption"
@@ -578,6 +746,9 @@ const markdownComponents: Components = {
           mt: 0,
           mb: 3,
           pl: 3,
+          listStyleType: "disc",
+          listStylePosition: "outside",
+          "& li::marker": { color: tokens.ink40 },
         }}
       >
         {children}
@@ -596,6 +767,9 @@ const markdownComponents: Components = {
           mt: 0,
           mb: 3,
           pl: 3,
+          listStyleType: "decimal",
+          listStylePosition: "outside",
+          "& li::marker": { color: tokens.ink40 },
         }}
       >
         {children}
@@ -615,6 +789,105 @@ const markdownComponents: Components = {
           textDecorationColor: "color-mix(in srgb, currentColor 45%, transparent)",
           textUnderlineOffset: "0.18em",
           "&:hover": { textDecorationColor: "currentColor" },
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  code({ children }) {
+    return (
+      <Box
+        component="code"
+        sx={{
+          fontFamily: tokens.mono,
+          fontSize: "0.85em",
+          color: tokens.ink,
+          background: tokens.paperDeep,
+          border: `1px solid ${tokens.hair}`,
+          px: 0.6,
+          py: 0.1,
+          borderRadius: "3px",
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  table({ children }) {
+    return (
+      <Box
+        sx={{
+          overflowX: "auto",
+          my: { xs: 4, md: 5 },
+          border: `1px solid ${tokens.hair}`,
+        }}
+      >
+        <Box
+          component="table"
+          sx={{
+            width: "100%",
+            minWidth: 460,
+            borderCollapse: "collapse",
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    );
+  },
+  thead({ children }) {
+    return (
+      <Box component="thead" sx={{ borderBottom: `1px solid ${tokens.hairStrong}` }}>
+        {children}
+      </Box>
+    );
+  },
+  tbody({ children }) {
+    return <Box component="tbody">{children}</Box>;
+  },
+  tr({ children }) {
+    return (
+      <Box
+        component="tr"
+        sx={{ "&:not(:last-of-type)": { borderBottom: `1px solid ${tokens.hair}` } }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  th({ children }) {
+    return (
+      <Box
+        component="th"
+        sx={{
+          textAlign: "left",
+          fontFamily: tokens.mono,
+          fontSize: 10,
+          letterSpacing: "1.4px",
+          textTransform: "uppercase",
+          color: tokens.ink60,
+          px: { xs: 1.75, md: 2.5 },
+          py: 1.5,
+          whiteSpace: "nowrap",
+        }}
+      >
+        {children}
+      </Box>
+    );
+  },
+  td({ children }) {
+    return (
+      <Box
+        component="td"
+        sx={{
+          fontFamily: tokens.serif,
+          fontSize: { xs: 15, md: 16 },
+          lineHeight: 1.5,
+          color: tokens.ink,
+          px: { xs: 1.75, md: 2.5 },
+          py: 1.5,
+          verticalAlign: "top",
         }}
       >
         {children}
@@ -699,7 +972,9 @@ function ProjectMarkdown({ markdown }: { markdown: string }) {
           >
             ¶ Overview
           </Box>
-          <ReactMarkdown components={overviewMarkdownComponents}>{overviewMarkdown}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={overviewMarkdownComponents}>
+            {overviewMarkdown}
+          </ReactMarkdown>
         </Box>
       )}
 
@@ -711,7 +986,9 @@ function ProjectMarkdown({ markdown }: { markdown: string }) {
             mt: overviewMarkdown ? 0 : { xs: 6, md: 8 },
           }}
         >
-          <ReactMarkdown components={markdownComponents}>{bodyMarkdown}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {bodyMarkdown}
+          </ReactMarkdown>
         </Box>
       )}
     </>
@@ -844,91 +1121,51 @@ export function ProjectDetailReport({
         <ProjectSpecs project={project} />
       </Box>
 
-      {hasMarkdown ? <ProjectMarkdown markdown={projectMarkdown ?? ""} /> : <ProjectLegacyEntries project={project} />}
-
-      {project.metrics && (
-        <Box
-          sx={{
-            mt: { xs: 6, md: 9 },
-            py: 4,
-            borderTop: `1px solid ${tokens.hairStrong}`,
-            borderBottom: `1px solid ${tokens.hairStrong}`,
-          }}
-        >
-          <Box
-            sx={{
-              fontFamily: tokens.mono,
-              fontSize: 10,
-              letterSpacing: "2px",
-              color: tokens.accent,
-              textTransform: "uppercase",
-              mb: 3,
-            }}
-          >
-            By the numbers
-          </Box>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${project.metrics.length}, minmax(0, 1fr))`,
-              gap: { xs: 2, md: 4 },
-              textAlign: "center",
-            }}
-          >
-            {project.metrics.map(([label, value]) => (
-              <Box key={label}>
-                <Box
-                  sx={{
-                    fontFamily: tokens.serif,
-                    fontSize: "clamp(30px, 10vw, 64px)",
-                    lineHeight: 1,
-                    letterSpacing: "-2px",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {value}
-                </Box>
-                <Box
-                  sx={{
-                    fontFamily: tokens.mono,
-                    fontSize: 9,
-                    letterSpacing: "1.4px",
-                    color: tokens.ink60,
-                    textTransform: "uppercase",
-                    mt: 1.25,
-                  }}
-                >
-                  {label}
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </Box>
+      {hasMarkdown ? (
+        <LightboxProvider>
+          <ProjectMarkdown markdown={projectMarkdown ?? ""} />
+        </LightboxProvider>
+      ) : (
+        <ProjectLegacyEntries project={project} />
       )}
 
-      <Box sx={{ mt: 5 }}>
+      <Box sx={{ mt: { xs: 6, md: 9 } }}>
         {project.links && (
           <Box
             sx={{
               fontFamily: tokens.mono,
-              fontSize: 10,
+              fontSize: 11,
               letterSpacing: "1.6px",
               color: tokens.ink60,
               textTransform: "uppercase",
-              mb: 1.75,
+              mb: 2.25,
             }}
           >
             Where to find it
           </Box>
         )}
-        <Box sx={{ display: "flex", gap: 2.25, flexWrap: "wrap", alignItems: "flex-end" }}>
+        <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", alignItems: "flex-end" }}>
           {project.links?.map(([label, value]) => (
             <Box key={label}>
-              <Box sx={{ fontFamily: tokens.mono, fontSize: 9, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
+              <Box sx={{ fontFamily: tokens.mono, fontSize: 10, letterSpacing: "1.4px", color: tokens.ink60, textTransform: "uppercase" }}>
                 {label}
               </Box>
-              <Box sx={{ fontFamily: tokens.serif, fontSize: 16, fontStyle: "italic", mt: 0.5, color: tokens.accent }}>
-                {value} →
+              <Box
+                component="a"
+                href={/^https?:\/\//.test(value) ? value : `https://${value}`}
+                target="_blank"
+                rel="noreferrer"
+                sx={{
+                  display: "inline-block",
+                  fontFamily: tokens.serif,
+                  fontSize: 19,
+                  fontStyle: "italic",
+                  mt: 0.75,
+                  color: tokens.accent,
+                  textDecoration: "none",
+                }}
+              >
+                {value.replace(/^https?:\/\//, "")} →
               </Box>
             </Box>
           ))}
@@ -953,7 +1190,7 @@ function BackToTop() {
         p: 0,
         cursor: "pointer",
         fontFamily: tokens.serif,
-        fontSize: 16,
+        fontSize: 19,
         fontStyle: "italic",
         color: tokens.ink,
         transition: "color 180ms",

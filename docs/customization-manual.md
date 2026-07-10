@@ -4,7 +4,7 @@
 
 Project index metadata lives in `src/data/projects.ts`.
 
-The `PROJECTS` array controls the `/projects` index, the detail page hero image/title, the specs strip, metrics, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
+The `PROJECTS` array controls the `/projects` index, the detail page hero image/title, the specs strip, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
 
 ```ts
 export const PROJECTS: Project[] = [
@@ -13,12 +13,11 @@ export const PROJECTS: Project[] = [
     slug: "memory-archive",
     name: "Memory Archive",
     kind: "Personal site",
-    status: "shipping",
+    status: "live",
     stack: ["next.js", "mui", "tailwind"],
     color: "#c94b62",
     image: "/images/projects/memory-archive/hero.jpg",
     first_published: "Jan · 2026",
-    metrics: [["entries", "44"]],
     links: [["live", "lucygai.com"]],
   },
 ];
@@ -45,14 +44,13 @@ The index sort control toggles `newest` / `oldest`. Entry numbers stay fixed chr
 The detail page uses the same metadata fields, plus:
 
 - `first_published`, `updated`, `stack`, and `status` for the specs strip
-- `metrics`, when present, for the "By the numbers" section
 - `links`, when present, for the "Where to find it" section
 
 The detail-page hero uses the same `image` field as the index thumbnail — there is one shared image per project, just cropped to each frame's aspect ratio (a wide `21 / 9` hero, a `16 / 10` index thumbnail). Setting `image` updates both; they cannot diverge. See the image-sourcing notes below for where the file lives.
 
 Keep the header order as back link, hero image, italic serif title, then specs strip. Back links use real arrow glyphs, such as `← Projects`; do not render visible ASCII arrows such as `<- Projects`.
 
-The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; the `First published` value comes from `first_published` and `Updated` comes from `updated`. Dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes the accent live/shipping circle.
+The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; the `First published` value comes from `first_published` and `Updated` comes from `updated`. Dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes a colored dot: `live` renders green (`#71a37e`), `shipping` renders the accent rose.
 
 `status` is a free-form string, not a fixed enum. The values `live` and `shipping` are treated as "active" and render the accent rose dot/label; any other value (such as `archived` or `paused`) renders a muted dot but still displays verbatim. `updated` is a manual field — it is not derived from file or git timestamps. The `Updated` cell shows `—` unless `updated` is present and differs from `first_published`.
 
@@ -122,7 +120,7 @@ To add a project:
 3. Change the `slug` to a unique kebab-case value, for example `reading-room`.
 4. Update the fields: `year`, `name`, `kind`, `status`, `stack`, `color`, `image`, and `first_published` (plus `updated` if it has been revised since). The `image` path points at the shared hero/thumbnail file in Supabase under `projects/<slug>/` (see image sourcing above).
 5. Create a matching Markdown file, for example `src/content/projects/reading-room.md`.
-6. Keep `metrics` and `links` only if the project needs those sections; otherwise remove those properties.
+6. Keep `links` only if the project needs that section; otherwise remove the property.
 
 The project URL is generated from `slug`. For example:
 

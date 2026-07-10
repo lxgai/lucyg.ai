@@ -19,6 +19,7 @@ The site reads like a personal **library card catalog** — an archival room whe
 * **Hairline** `rgba(31, 26, 22, 0.2)` — dividers
 * **Strong hairline** `rgba(31, 26, 22, 0.55)` — section breaks
 * **Accent — Rose** `rgb(163, 91, 115)` — used sparingly for active states, taxonomy labels, “now playing”, call-to-action
+* **Live — Green** `#71a37e` — project status color for entries marked `live`; `shipping` status continues to use the accent rose
 
 > Alternate accents available as tweaks: forest, navy, rust. Default is rose.
 
@@ -146,7 +147,7 @@ The site reads like a personal **library card catalog** — an archival room whe
     * plain serif project title
     * tech stack under the title
     * kind sentence
-  * `● shipping/live` displayed in accent color
+  * `● shipping` displayed in accent color; `● live` displayed in green `#71a37e`
 
   * status plus `open file →`
   * Index title is `Things I've made.` with no italicized word
@@ -164,9 +165,10 @@ The site reads like a personal **library card catalog** — an archival room whe
   * Labels are `First published`, `Updated`, `Stack`, and `Status`
   * Dates use tight dots, for example `Feb·03·2026`
   * Desktop specs use small circular dot separators; phone specs reflow into a 2x2 grid with separators hidden
-  * Status value includes the accent live/shipping circle
-  * "By the numbers" remains horizontal at all widths, with fluid number sizing
+  * Status value includes a colored dot: `live` status uses green `#71a37e`; `shipping` status continues to use the accent color
   * Detail links are unboxed accent text; no divider sits between links and prev/next nav
+  * Body markdown images are click-to-expand: a mono uppercase `⤢ Expand` tag sits top-right in a translucent black box (same treatment as the thumbnail year tag); visible on hover on desktop, always visible on mobile
+  * Clicking an image opens a full-screen lightbox on a dark scrim, closable via the `✕` button, Escape, or clicking outside the image
 
 * **Travels**
 

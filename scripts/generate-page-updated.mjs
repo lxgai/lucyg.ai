@@ -1,9 +1,15 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import path from "node:path";
 
 const ROOT = process.cwd();
 const OUTPUT_PATH = path.join(ROOT, "src/data/page-updated.ts");
+const PROJECTS_DATA_PATH = path.join(ROOT, "src/data/projects.ts");
+
+function projectSlugs() {
+  const source = readFileSync(PROJECTS_DATA_PATH, "utf8");
+  return [...source.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
+}
 
 const ROUTES = [
   { route: "/", sources: ["src/app/page.tsx"] },
@@ -13,6 +19,14 @@ const ROUTES = [
   { route: "/links", sources: ["src/app/links/page.tsx"] },
   { route: "/portfolio", sources: ["src/app/portfolio/page.tsx"] },
   { route: "/projects", sources: ["src/app/projects/page.tsx", "src/components/content/ProjectArchive.tsx", "src/data/projects.ts"] },
+  ...projectSlugs().map((slug) => {
+    const markdownPath = `src/content/projects/${slug}.md`;
+    const sources = ["src/app/projects/[slug]/page.tsx", "src/components/content/ProjectArchive.tsx", "src/data/projects.ts"];
+    if (existsSync(path.join(ROOT, markdownPath))) {
+      sources.push(markdownPath);
+    }
+    return { route: `/projects/${slug}`, sources };
+  }),
   { route: "/travels", sources: ["src/app/travels/page.tsx", "src/data/travels.ts"] },
   { route: "/travels/china-24", sources: ["src/app/travels/china-24/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/china-24.json"] },
   { route: "/travels/japan-24", sources: ["src/app/travels/japan-24/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/japan-24.json"] },

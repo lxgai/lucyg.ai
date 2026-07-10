@@ -187,8 +187,7 @@ Project detail:
 - Dates use tight dots with no spaces, for example `Feb·03·2026`.
 - Desktop fields are separated by small circular dot separators, not borders or slash marks.
 - Phone fields reflow into a 2x2 grid with separators hidden.
-- Status value includes the accent live/shipping circle.
-- "By the numbers" remains horizontal at all widths; values shrink with `clamp()` rather than stacking.
+- Status value includes a colored circle: `live` renders green `#71a37e`; `shipping` renders the accent rose.
 - Links are unboxed accent text with no divider line above them.
 - Do **not** render previous/next project navigation at the foot of the page. The detail page ends with the "Where to find it" links row and the right-aligned `Back to top ↑` control; there is no prev/next pager. Flag any reintroduced `← Previous` / `Next →` project nav as **SHOULD-FIX**.
 
