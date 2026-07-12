@@ -504,8 +504,9 @@ function SubstackArticleHtml({ html }: { html: string }) {
           color: tokens.ink,
         },
         "& blockquote p": { m: 0 },
-        "& ul, & ol": { my: 3, pl: 3 },
-        "& li": { mb: 1 },
+        "& ul": { my: 3, pl: 3, listStyle: "disc" },
+        "& ol": { my: 3, pl: 3, listStyle: "decimal" },
+        "& li": { mb: 1, display: "list-item" },
         "& figure": { my: 6, mx: 0 },
         "& img": {
           display: "block",

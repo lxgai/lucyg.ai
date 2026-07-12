@@ -8,7 +8,7 @@ The site is designed as a quiet personal archive, closer to a library card catal
 
 - **Home** - a current snapshot of Lucy's work, interests, and recent updates.
 - **Projects** - a portfolio archive with selected software, design, and creative work.
-- **Blog** - writing imported from Substack when configured, with local fallback entries.
+- **Blog** - writing imported from Substack 
 - **Travels** - visual travel pages with maps and detailed trip archives.
 - **Favorites** - albums, films, and other saved references.
 - **About** - background, current notes, and contact information.
