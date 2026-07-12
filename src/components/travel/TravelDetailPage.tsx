@@ -439,6 +439,9 @@ export function Hero({
 
   const heroMetadataFields = data.hero.metadataFields?.filter((field) => field.label.trim() || field.description.trim()) ?? [];
   const heroTitleTopMargin = data.hero.titleTopMargin?.[breakpoint] ?? 11.6;
+  const heroTitleFontSize =
+    data.hero.titleFontSize?.[breakpoint] ?? (breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56);
+  const heroIntroFontSize = data.hero.introFontSize?.[breakpoint] ?? (breakpoint === "small" ? 17 : 18);
 
   return (
     <TravelDetailViewportContainer
@@ -470,7 +473,7 @@ export function Hero({
                 mt: `${heroTitleTopMargin}px`,
                 fontFamily: tokens.serif,
                 fontWeight: 400,
-                fontSize: breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56,
+                fontSize: heroTitleFontSize,
                 lineHeight: 0.86,
                 letterSpacing: breakpoint === "small" ? "-1.2px" : "-2px",
                 color: tokens.ink,
@@ -485,7 +488,7 @@ export function Hero({
               </Box>
             </Typography>
 
-            <Typography sx={{ mt: 2.75, fontFamily: tokens.serif, fontSize: breakpoint === "small" ? 17 : 18, lineHeight: 1.55, color: tokens.ink60 }}>
+            <Typography sx={{ mt: 2.75, fontFamily: tokens.serif, fontSize: heroIntroFontSize, lineHeight: 1.55, color: tokens.ink60 }}>
               {data.hero.intro}
             </Typography>
 

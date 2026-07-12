@@ -67,6 +67,8 @@ export type TravelDetailHero = {
   image: TravelDetailImageBlock;
   intro: string;
   metadataFields?: TravelDetailHeroMetadataField[];
+  titleFontSize?: TravelDetailResponsiveNumber;
+  introFontSize?: TravelDetailResponsiveNumber;
   titleTopMargin?: TravelDetailResponsiveNumber;
   canvasHeight: TravelDetailResponsiveNumber;
   copyLayout: TravelDetailResponsiveLayout;

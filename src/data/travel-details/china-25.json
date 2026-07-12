@@ -12,8 +12,8 @@
     "intro": "While the summer heat seeped into autumn, I spent my days moving around Eastern China. Hangzhou's lakesides rippled into Wenzhou's sweeping mountains. Nanjing's imperial history rolled into Shanghai's neon nightlife. There was a constant sense of movement. It's admirable, in a way. Even when at peace walking amongst more rural mountains, or the juxtaposing city-center lights, the current never really stopped — it just changed shape.",
     "canvasHeight": {
       "large": 600,
-      "medium": 467,
-      "small": 660
+      "medium": 550,
+      "small": 860
     },
     "titleTopMargin": {
       "large": 22,
@@ -30,9 +30,9 @@
         "visible": true
       },
       "medium": {
-        "x": 58,
-        "y": 23.333,
-        "width": 38,
+        "x": 57.25000508626302,
+        "y": 32.133048828125,
+        "width": 46.29733841959635,
         "rotation": 0,
         "zIndex": 2,
         "visible": true
@@ -67,17 +67,17 @@
             "visible": true
           },
           "medium": {
-            "x": 45,
-            "y": 334.444,
-            "width": 9,
+            "x": 44.56499491373697,
+            "y": 419.5110244140625,
+            "width": 8.166666666666666,
             "rotation": -6.1,
             "zIndex": 20,
             "visible": true
           },
           "small": {
-            "x": 45,
-            "y": 140.347,
-            "width": 9,
+            "x": 82.89750630195505,
+            "y": 272.7310183105469,
+            "width": 16.684717037407637,
             "rotation": -6.1,
             "zIndex": 20,
             "visible": true
@@ -102,17 +102,17 @@
           "visible": true
         },
         "medium": {
-          "x": -3,
-          "y": -11.667,
-          "width": 58,
+          "x": -4.796666666666667,
+          "y": 68.466951171875,
+          "width": 59.25,
           "rotation": -0.6,
           "zIndex": 1,
           "visible": true
         },
         "small": {
-          "x": 6,
-          "y": 24,
-          "width": 88,
+          "x": -4.83743842364532,
+          "y": -5.5999755859375,
+          "width": 110,
           "rotation": 0,
           "zIndex": 1,
           "visible": true
@@ -129,7 +129,17 @@
         "label": "Weather",
         "description": "SUMMER HUMIDITY CONTINUES- 32°C avg"
       }
-    ]
+    ],
+    "introFontSize": {
+      "large": 18,
+      "medium": 16,
+      "small": 16
+    },
+    "titleFontSize": {
+      "large": 88,
+      "medium": 68,
+      "small": 56
+    }
   },
   "closing": {
     "eyebrow": "End of file - China '25"
@@ -148,9 +158,9 @@
         "largeWidth": 1120,
         "largeHeight": 1200,
         "mediumWidth": 860,
-        "mediumHeight": 691,
+        "mediumHeight": 960,
         "smallWidth": 390,
-        "smallHeight": 2649
+        "smallHeight": 1890
       },
       "blurb": "",
       "blocks": [
@@ -172,19 +182,19 @@
               "visible": true
             },
             "medium": {
-              "x": -6,
-              "y": 15.357,
-              "width": 50,
+              "x": 54.857,
+              "y": -45.457,
+              "width": 50.357,
               "rotation": 0,
-              "zIndex": 1,
+              "zIndex": 5,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 533.6,
-              "width": 88,
+              "x": -0.35898687900641113,
+              "y": 1037.6001281738281,
+              "width": 100,
               "rotation": 0,
-              "zIndex": 1,
+              "zIndex": 5,
               "visible": true
             }
           }
@@ -207,17 +217,17 @@
               "visible": true
             },
             "medium": {
-              "x": 48,
-              "y": -7.679,
-              "width": 30,
-              "rotation": 1,
+              "x": 54,
+              "y": 247.864,
+              "width": 51,
+              "rotation": 0,
               "zIndex": 2,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 24,
-              "width": 88,
+              "x": -0.9743464543269225,
+              "y": 1284.9840854492188,
+              "width": 100,
               "rotation": 0,
               "zIndex": 2,
               "visible": true
@@ -242,18 +252,18 @@
               "visible": true
             },
             "medium": {
-              "x": -4,
-              "y": 322.5,
-              "width": 46,
-              "rotation": 0,
+              "x": 31.353520689498545,
+              "y": 625.9708413085938,
+              "width": 32.22908734556686,
+              "rotation": 3,
               "zIndex": 4,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1352.6,
-              "width": 88,
-              "rotation": 0,
+              "x": 2.717967497996793,
+              "y": 1613.9837802734373,
+              "width": 58.46155098157051,
+              "rotation": -5,
               "zIndex": 4,
               "visible": true
             }
@@ -277,17 +287,17 @@
               "visible": true
             },
             "medium": {
-              "x": 70,
-              "y": 330.179,
-              "width": 9,
+              "x": 45.515075990188954,
+              "y": 233.207,
+              "width": 11.143,
               "rotation": 8,
               "zIndex": 8,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1662,
-              "width": 88,
+              "x": 71.02561911558493,
+              "y": 593.7840244140625,
+              "width": 27.282070062099358,
               "rotation": 0,
               "zIndex": 8,
               "visible": true
@@ -314,16 +324,16 @@
               "visible": true
             },
             "medium": {
-              "x": 2,
-              "y": 499.107,
-              "width": 44,
+              "x": 69.31743279887354,
+              "y": 603.821,
+              "width": 35.865162790697674,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2452.4,
+              "x": 6.615390875400642,
+              "y": 799.9838229980469,
               "width": 88,
               "rotation": 0,
               "zIndex": 3,
@@ -348,18 +358,18 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
+              "x": 32.34537493186774,
+              "y": 347.1429755859375,
+              "width": 18.77906125090843,
+              "rotation": 4,
               "zIndex": 8,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
+              "x": 68.3589618389423,
+              "y": 356.7837741699218,
+              "width": 30.358993139022438,
+              "rotation": 5,
               "zIndex": 8,
               "visible": true
             }
@@ -383,18 +393,18 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
+              "x": -6.556908396166424,
+              "y": 607.1288657226562,
+              "width": 32.0465087890625,
+              "rotation": -4.1,
               "zIndex": 8,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
+              "x": -1.3845653044871782,
+              "y": 523.7839114990234,
+              "width": 63.38461538461539,
+              "rotation": -5,
               "zIndex": 8,
               "visible": true
             }
@@ -418,17 +428,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 36.46041860465117,
+              "y": 29.586006103515626,
+              "width": 18.330276230922962,
               "rotation": 0,
               "zIndex": 9,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 57.897410857371796,
+              "y": 1627.3289053955077,
+              "width": 35.89744841746795,
               "rotation": 0,
               "zIndex": 9,
               "visible": true
@@ -453,19 +463,19 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": -10.786,
+              "y": 7.371,
+              "width": 54.071,
               "rotation": 0,
-              "zIndex": 9,
+              "zIndex": 1,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": -8.769193209134617,
+              "y": -1.7999816894531477,
+              "width": 110,
               "rotation": 0,
-              "zIndex": 9,
+              "zIndex": 1,
               "visible": true
             }
           },
@@ -493,18 +503,18 @@
               "visible": true
             },
             "medium": {
-              "x": 10,
-              "y": 291.786,
-              "width": 14,
-              "rotation": -3.4,
+              "x": 38.39189791515261,
+              "y": 336.75701220703127,
+              "width": 8.643,
+              "rotation": 3,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 10,
-              "y": 132.321,
-              "width": 14,
-              "rotation": -3.4,
+              "x": 9.72876983173077,
+              "y": 522.4640122070313,
+              "width": 17.668628505608975,
+              "rotation": -3,
               "zIndex": 20,
               "visible": true
             }
@@ -518,7 +528,7 @@
           "height": {
             "large": 18,
             "medium": 24,
-            "small": 18
+            "small": 14
           },
           "layout": {
             "large": {
@@ -530,18 +540,18 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
-              "rotation": 0,
+              "x": 2.531418604651163,
+              "y": 587.7569877929687,
+              "width": 12,
+              "rotation": -3.1,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
-              "rotation": 0,
+              "x": 80.54926387219552,
+              "y": 351.5638596191406,
+              "width": 13.641000600961538,
+              "rotation": 5,
               "zIndex": 20,
               "visible": true
             }
@@ -567,18 +577,18 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
-              "rotation": 0,
+              "x": 42.47550595021802,
+              "y": 607.028853515625,
+              "width": 12,
+              "rotation": 3,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
-              "rotation": 0,
+              "x": 16.736661007612177,
+              "y": 1610.6572014160156,
+              "width": 18.153846153846153,
+              "rotation": -3,
               "zIndex": 20,
               "visible": true
             }
@@ -599,9 +609,9 @@
         "largeWidth": 1120,
         "largeHeight": 1400,
         "mediumWidth": 860,
-        "mediumHeight": 729,
+        "mediumHeight": 1075,
         "smallWidth": 390,
-        "smallHeight": 2203
+        "smallHeight": 1830
       },
       "blurb": "",
       "blocks": [
@@ -623,19 +633,19 @@
               "visible": true
             },
             "medium": {
-              "x": 56,
-              "y": -7.679,
-              "width": 48,
+              "x": -3.36046511627907,
+              "y": 116.27901220703124,
+              "width": 55.786,
               "rotation": 0,
               "zIndex": 1,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 24,
+              "x": 4.769249549278846,
+              "y": 729.877819946289,
               "width": 88,
               "rotation": 0,
-              "zIndex": 1,
+              "zIndex": 10,
               "visible": true
             }
           }
@@ -658,16 +668,16 @@
               "visible": true
             },
             "medium": {
-              "x": 6,
-              "y": 30.714,
-              "width": 28,
-              "rotation": -2,
+              "x": 0.38495632721656964,
+              "y": 512.371,
+              "width": 40.929,
+              "rotation": 0,
               "zIndex": 2,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 333.4,
+              "x": 4.974327674278846,
+              "y": 1020.8780701904298,
               "width": 88,
               "rotation": 0,
               "zIndex": 2,
@@ -693,16 +703,16 @@
               "visible": true
             },
             "medium": {
-              "x": 40,
-              "y": 322.5,
+              "x": 58.05691265443314,
+              "y": 43.3999755859375,
               "width": 44,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1238.2,
+              "x": 5.3846091245993595,
+              "y": 237.87802441406257,
               "width": 88,
               "rotation": 0,
               "zIndex": 3,
@@ -728,17 +738,17 @@
               "visible": true
             },
             "medium": {
-              "x": 2,
-              "y": 368.571,
-              "width": 26,
-              "rotation": 2,
+              "x": 50,
+              "y": 617.386,
+              "width": 49.286,
+              "rotation": 0,
               "zIndex": 4,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1547.6,
-              "width": 88,
+              "x": 2.923108223157048,
+              "y": 1522.191905395508,
+              "width": 93.12820512820512,
               "rotation": 0,
               "zIndex": 4,
               "visible": true
@@ -765,17 +775,17 @@
               "visible": true
             },
             "medium": {
-              "x": 58,
-              "y": 491.429,
-              "width": 36,
+              "x": -3.295395348837209,
+              "y": 8.400067138671876,
+              "width": 54.01855813953489,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2057.2,
-              "width": 88,
+              "x": 3.128186348157052,
+              "y": 105.57794506835944,
+              "width": 93.53845527844551,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
@@ -799,17 +809,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": -0.3708533680050876,
+              "y": -61.24300305175781,
+              "width": 5,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 37.794887444911865,
+              "y": 4.79998779296875,
+              "width": 15,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
@@ -834,17 +844,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 93.29192739371366,
+              "y": 569.5860122070312,
+              "width": 8.929,
               "rotation": 0,
               "zIndex": 7,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 74.51280799278847,
+              "y": 1483.8279908447266,
+              "width": 26.256397736378197,
               "rotation": 0,
               "zIndex": 7,
               "visible": true
@@ -869,19 +879,19 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
-              "zIndex": 8,
+              "x": 39.17095632721657,
+              "y": 507.0710244140625,
+              "width": 21.071,
+              "rotation": 9,
+              "zIndex": 1,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
-              "zIndex": 8,
+              "x": -7.128161308092947,
+              "y": 747.2778901367187,
+              "width": 100.82051908052885,
+              "rotation": -90,
+              "zIndex": 1,
               "visible": true
             }
           },
@@ -904,17 +914,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 17.41860749000727,
+              "y": -63.885868774414064,
+              "width": 5,
               "rotation": 0,
               "zIndex": 9,
               "visible": true
             },
             "small": {
               "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "y": 1.5999755859375,
+              "width": 15,
               "rotation": 0,
               "zIndex": 9,
               "visible": true
@@ -939,17 +949,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 35.35576318359375,
+              "y": -66.22894812011718,
+              "width": 5,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 71.43590056590546,
+              "y": 1.5999755859375,
+              "width": 15,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
@@ -979,17 +989,17 @@
               "visible": true
             },
             "medium": {
-              "x": 46,
-              "y": -23.036,
-              "width": 14,
+              "x": 89.22092739371367,
+              "y": 619.3500122070312,
+              "width": 12,
               "rotation": 5,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 46,
-              "y": -10.446,
-              "width": 14,
+              "x": 71.24363356370192,
+              "y": 1545.1750732421874,
+              "width": 21.84616010616987,
               "rotation": 5,
               "zIndex": 20,
               "visible": true
@@ -1011,9 +1021,9 @@
         "largeWidth": 1120,
         "largeHeight": 1250,
         "mediumWidth": 860,
-        "mediumHeight": 691,
+        "mediumHeight": 960,
         "smallWidth": 390,
-        "smallHeight": 2203
+        "smallHeight": 1960
       },
       "blurb": "",
       "blocks": [
@@ -1035,16 +1045,16 @@
               "visible": true
             },
             "medium": {
-              "x": 48,
-              "y": -15.357,
-              "width": 28,
-              "rotation": 2,
+              "x": 49.643,
+              "y": -14.743,
+              "width": 37.929,
+              "rotation": 0,
               "zIndex": 2,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 24,
+              "x": 4.564077524038462,
+              "y": 14.70983520507815,
               "width": 88,
               "rotation": 0,
               "zIndex": 2,
@@ -1070,16 +1080,16 @@
               "visible": true
             },
             "medium": {
-              "x": 80,
-              "y": 61.429,
-              "width": 24,
-              "rotation": -2,
+              "x": -4.143,
+              "y": 25.8,
+              "width": 49.071,
+              "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 843,
+              "x": 4.153858673878205,
+              "y": 797.9090244140625,
               "width": 88,
               "rotation": 0,
               "zIndex": 3,
@@ -1105,16 +1115,16 @@
               "visible": true
             },
             "medium": {
-              "x": -2,
-              "y": 337.857,
-              "width": 46,
+              "x": 47,
+              "y": 463.786,
+              "width": 53.071,
               "rotation": 0,
               "zIndex": 4,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1352.6,
+              "x": 4.358968098958333,
+              "y": 1285.109,
               "width": 88,
               "rotation": 0,
               "zIndex": 4,
@@ -1129,7 +1139,7 @@
           "tone": "caption",
           "fontSize": {
             "large": 18,
-            "medium": 18,
+            "medium": 16,
             "small": 17
           },
           "layout": {
@@ -1142,16 +1152,16 @@
               "visible": true
             },
             "medium": {
-              "x": 50,
-              "y": 460.714,
-              "width": 38,
+              "x": 70.94654962300145,
+              "y": -35.98494506835937,
+              "width": 32.6895087890625,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2057.2,
+              "x": 8.256422776442307,
+              "y": 573.0099755859376,
               "width": 88,
               "rotation": 0,
               "zIndex": 3,
@@ -1177,17 +1187,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": -2.143,
+              "y": 518.457,
+              "width": 30.289467955123545,
               "rotation": 0,
               "zIndex": 5,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 3.5384677984775643,
+              "y": 1585.7100122070312,
+              "width": 59.07694185697115,
               "rotation": 0,
               "zIndex": 5,
               "visible": true
@@ -1212,17 +1222,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
+              "x": 28.179116279069767,
+              "y": 676.0710244140625,
+              "width": 15.571,
+              "rotation": 20,
               "zIndex": 6,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 55.43587865584935,
+              "y": 1746.4939633789063,
+              "width": 38.153839893830124,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
@@ -1247,19 +1257,19 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 65.63830232558139,
+              "y": -79.05698168945312,
+              "width": 43.42330800327034,
               "rotation": 0,
-              "zIndex": 7,
+              "zIndex": 2,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": -1.7949093549679498,
+              "y": 530.3999633789062,
+              "width": 100,
               "rotation": 0,
-              "zIndex": 7,
+              "zIndex": 2,
               "visible": true
             }
           },
@@ -1287,16 +1297,16 @@
               "visible": true
             },
             "medium": {
-              "x": 42,
-              "y": 30.714,
+              "x": 51.344128179505816,
+              "y": -21.742993896484375,
               "width": 16,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 42,
-              "y": 13.929,
+              "x": 32.016788010817315,
+              "y": 540.6140122070312,
               "width": 16,
               "rotation": 0,
               "zIndex": 20,
@@ -1319,9 +1329,9 @@
         "largeWidth": 1120,
         "largeHeight": 3700,
         "mediumWidth": 860,
-        "mediumHeight": 1840,
+        "mediumHeight": 3000,
         "smallWidth": 390,
-        "smallHeight": 4427
+        "smallHeight": 5400
       },
       "blurb": "",
       "blocks": [
@@ -1343,19 +1353,19 @@
               "visible": true
             },
             "medium": {
-              "x": 52,
-              "y": -7.679,
-              "width": 50,
+              "x": 1.929,
+              "y": 15.357,
+              "width": 46.929,
               "rotation": 0,
-              "zIndex": 1,
+              "zIndex": 14,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 24,
-              "width": 88,
+              "x": 2.512858072916668,
+              "y": 88.800048828125,
+              "width": 95.076904296875,
               "rotation": 0,
-              "zIndex": 1,
+              "zIndex": 14,
               "visible": true
             }
           }
@@ -1378,19 +1388,19 @@
               "visible": true
             },
             "medium": {
-              "x": 2,
-              "y": 23.036,
-              "width": 44,
-              "rotation": -1,
-              "zIndex": 2,
+              "x": -2.5,
+              "y": -61.121,
+              "width": 24.52325439453125,
+              "rotation": 0,
+              "zIndex": 15,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 333.4,
-              "width": 88,
+              "x": -1.5897373297275634,
+              "y": 7.2000915527344205,
+              "width": 54.56409630408655,
               "rotation": 0,
-              "zIndex": 2,
+              "zIndex": 15,
               "visible": true
             }
           }
@@ -1413,17 +1423,17 @@
               "visible": true
             },
             "medium": {
-              "x": 6,
-              "y": 322.5,
-              "width": 26,
-              "rotation": 2,
+              "x": 0.3057963753633721,
+              "y": 1385.8859633789064,
+              "width": 50,
+              "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1152.4,
-              "width": 88,
+              "x": 2.1025453225160238,
+              "y": 2757.4828893737795,
+              "width": 100,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
@@ -1448,17 +1458,17 @@
               "visible": true
             },
             "medium": {
-              "x": 36,
-              "y": 399.286,
-              "width": 34,
+              "x": 58.02672376907704,
+              "y": 1802.6430122070312,
+              "width": 26.571,
               "rotation": 0,
               "zIndex": 5,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1662,
-              "width": 88,
+              "x": 3.3333583733974352,
+              "y": 3611.182984741211,
+              "width": 64.00000626001602,
               "rotation": 0,
               "zIndex": 5,
               "visible": true
@@ -1483,17 +1493,17 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 629.643,
-              "width": 26,
-              "rotation": 1,
+              "x": 1.2441817882449127,
+              "y": 805.0430244140625,
+              "width": 43.643,
+              "rotation": 0,
               "zIndex": 6,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2876.2,
-              "width": 88,
+              "x": -0.5641276041666687,
+              "y": 1387.0620396728514,
+              "width": 99.28205128205128,
               "rotation": 0,
               "zIndex": 6,
               "visible": true
@@ -1518,18 +1528,18 @@
               "visible": true
             },
             "medium": {
-              "x": 70,
-              "y": 614.286,
-              "width": 26,
+              "x": 76.29885478742732,
+              "y": 1077.7289877929688,
+              "width": 20,
               "rotation": -1,
               "zIndex": 7,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2366.6,
-              "width": 88,
-              "rotation": 0,
+              "x": 51.743564703525635,
+              "y": 2250.263064086914,
+              "width": 37.948699168669876,
+              "rotation": 2,
               "zIndex": 7,
               "visible": true
             }
@@ -1553,19 +1563,19 @@
               "visible": true
             },
             "medium": {
-              "x": 34,
-              "y": 691.071,
-              "width": 34,
-              "rotation": 0,
-              "zIndex": 8,
+              "x": 23.313952068949853,
+              "y": 2710.8570244140624,
+              "width": 19.071,
+              "rotation": -5,
+              "zIndex": 12,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 3385.8,
-              "width": 88,
-              "rotation": 0,
-              "zIndex": 8,
+              "x": 22.000006260016033,
+              "y": 5026.39990234375,
+              "width": 55.58973732972756,
+              "rotation": 5,
+              "zIndex": 12,
               "visible": true
             }
           }
@@ -1588,17 +1598,17 @@
               "visible": true
             },
             "medium": {
-              "x": 38,
-              "y": 883.036,
-              "width": 26,
-              "rotation": 2,
+              "x": 34.02671241369913,
+              "y": 2105.9359999999997,
+              "width": 75.5,
+              "rotation": 0,
               "zIndex": 9,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 3695.2,
-              "width": 88,
+              "x": -10.410225110176277,
+              "y": 4382.182938964845,
+              "width": 120,
               "rotation": 0,
               "zIndex": 9,
               "visible": true
@@ -1612,7 +1622,7 @@
           "tone": "caption",
           "fontSize": {
             "large": 20,
-            "medium": 18,
+            "medium": 17,
             "small": 17
           },
           "layout": {
@@ -1625,16 +1635,16 @@
               "visible": true
             },
             "medium": {
-              "x": 2,
-              "y": 959.821,
-              "width": 34,
+              "x": 1.4139055573219477,
+              "y": 617.8640183105468,
+              "width": 60.929,
               "rotation": 0,
               "zIndex": 3,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 4204.8,
+              "x": 4.35899939903846,
+              "y": 1150.5619252319334,
               "width": 88,
               "rotation": 0,
               "zIndex": 3,
@@ -1660,17 +1670,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 82.08263642351017,
+              "y": 1635.043,
+              "width": 23.429,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 53.179549779647445,
+              "y": 3466.8827970581056,
+              "width": 48.41025015024039,
               "rotation": 0,
               "zIndex": 10,
               "visible": true
@@ -1695,18 +1705,18 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
+              "x": 50.17911627906977,
+              "y": 1075.3140244140625,
+              "width": 19.286,
+              "rotation": 1,
               "zIndex": 11,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
+              "x": 4.153858673878206,
+              "y": 2251.863018310547,
+              "width": 36.10255784254807,
+              "rotation": 1,
               "zIndex": 11,
               "visible": true
             }
@@ -1730,17 +1740,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 49.571,
+              "y": 801.7,
+              "width": 19.786,
               "rotation": 0,
               "zIndex": 12,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 4.769249549278845,
+              "y": 2024.662932861328,
+              "width": 36.102589142628204,
               "rotation": 0,
               "zIndex": 12,
               "visible": true
@@ -1766,19 +1776,19 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 40,
-              "width": 32,
+              "x": 46.272145212572674,
+              "y": 43.742951171875,
+              "width": 67.429,
               "rotation": 0,
-              "zIndex": 30,
+              "zIndex": 14,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 60,
+              "x": -12.461522811498394,
+              "y": 615.1998992919921,
+              "width": 126,
               "rotation": 0,
-              "zIndex": 30,
+              "zIndex": 14,
               "visible": true
             }
           }
@@ -1801,19 +1811,19 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 400,
-              "width": 32,
+              "x": 27.286,
+              "y": 60.2,
+              "width": 55.214,
               "rotation": 0,
-              "zIndex": 31,
+              "zIndex": 10,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 560,
-              "width": 60,
+              "x": 18.102551582532048,
+              "y": -15.199786376952943,
+              "width": 100,
               "rotation": 0,
-              "zIndex": 31,
+              "zIndex": 10,
               "visible": true
             }
           }
@@ -1836,19 +1846,19 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 760,
-              "width": 32,
+              "x": 30.3243488372093,
+              "y": 417.9139877929687,
+              "width": 24.511636423510176,
               "rotation": 0,
               "zIndex": 32,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1080,
-              "width": 60,
+              "x": 59.128223908253204,
+              "y": 457.60020446777344,
+              "width": 51.89745467748397,
               "rotation": 0,
-              "zIndex": 32,
+              "zIndex": 19,
               "visible": true
             }
           }
@@ -1871,17 +1881,17 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 1120,
-              "width": 32,
+              "x": 51.94654962300145,
+              "y": 33.4570244140625,
+              "width": 7.286,
               "rotation": 0,
               "zIndex": 33,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 1600,
-              "width": 60,
+              "x": 59.538489708533646,
+              "y": -3.2000915527344205,
+              "width": 13.948752378806091,
               "rotation": 0,
               "zIndex": 33,
               "visible": true
@@ -1906,17 +1916,17 @@
               "visible": true
             },
             "medium": {
-              "x": 4,
-              "y": 1480,
-              "width": 32,
+              "x": 38.941857626271805,
+              "y": -36.18603662109375,
+              "width": 12.357,
               "rotation": 0,
               "zIndex": 34,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 2120,
-              "width": 60,
+              "x": 78.20512194511217,
+              "y": 50.39991760253906,
+              "width": 23.79486553485577,
               "rotation": 0,
               "zIndex": 34,
               "visible": true
@@ -1940,17 +1950,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 63.72439250999273,
+              "y": 537.5,
+              "width": 12.714,
               "rotation": 0,
               "zIndex": 18,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 10.1025641025641,
+              "y": 1043.2000152587889,
+              "width": 31.589712289663453,
               "rotation": 0,
               "zIndex": 18,
               "visible": true
@@ -1975,18 +1985,18 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 76.643,
+              "y": 815.5429694824219,
+              "width": 19,
               "rotation": 0,
               "zIndex": 19,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
+              "x": 51.333361503405456,
+              "y": 2014.2629328613284,
+              "width": 36.512839292868584,
+              "rotation": -1,
               "zIndex": 19,
               "visible": true
             }
@@ -2010,18 +2020,18 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
-              "rotation": 0,
+              "x": -2.0581381154614826,
+              "y": 1764.4999877929688,
+              "width": 22.143,
+              "rotation": -10,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
-              "rotation": 0,
+              "x": 5.999968699919872,
+              "y": 3136.982780273438,
+              "width": 50.05128205128205,
+              "rotation": 3,
               "zIndex": 20,
               "visible": true
             }
@@ -2047,17 +2057,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": 82.88718604651163,
+              "y": 718.5290122070312,
+              "width": 20.367392509992733,
               "rotation": 0,
               "zIndex": 21,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 120,
-              "width": 54.400000000000006,
+              "x": 2.7179674979967956,
+              "y": 1959.1618931884764,
+              "width": 88,
               "rotation": 0,
               "zIndex": 21,
               "visible": true
@@ -2085,17 +2095,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": 57.32904367278343,
+              "y": 1366.086048828125,
+              "width": 43.786,
               "rotation": 0,
               "zIndex": 22,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 120,
-              "width": 54.400000000000006,
+              "x": 4.35896809895832,
+              "y": 2493.4829328613278,
+              "width": 93.12820512820511,
               "rotation": 0,
               "zIndex": 22,
               "visible": true
@@ -2110,7 +2120,7 @@
           "fontSize": {
             "large": 14,
             "medium": 18,
-            "small": 17
+            "small": 14
           },
           "layout": {
             "large": {
@@ -2122,17 +2132,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": 61.348837209302324,
+              "y": 1736.014048828125,
+              "width": 20.46981395348837,
               "rotation": 0,
               "zIndex": 23,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 120,
-              "width": 54.400000000000006,
+              "x": 11.743602263621794,
+              "y": 3552.8829206542973,
+              "width": 54.153846153846146,
               "rotation": 0,
               "zIndex": 23,
               "visible": true
@@ -2160,17 +2170,17 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 120,
-              "width": 34,
+              "x": -0.9151381154614826,
+              "y": 2132.056951171875,
+              "width": 31.143,
               "rotation": 0,
               "zIndex": 24,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 120,
-              "width": 54.400000000000006,
+              "x": 5.589781149839736,
+              "y": 3904.5830488281244,
+              "width": 88,
               "rotation": 0,
               "zIndex": 24,
               "visible": true
@@ -2194,19 +2204,19 @@
               "visible": true
             },
             "medium": {
-              "x": 8,
-              "y": 40,
-              "width": 42,
+              "x": 12.286,
+              "y": 1212.6,
+              "width": 49.956956327216574,
               "rotation": 0,
-              "zIndex": 25,
+              "zIndex": 1,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 40,
-              "width": 67.2,
+              "x": 1.6922325721153832,
+              "y": 1879.8630274658199,
+              "width": 88,
               "rotation": 0,
-              "zIndex": 25,
+              "zIndex": 1,
               "visible": true
             }
           },
@@ -2222,7 +2232,7 @@
           "height": {
             "large": 24,
             "medium": 24,
-            "small": 18
+            "small": 14
           },
           "layout": {
             "large": {
@@ -2234,17 +2244,17 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
+              "x": 54.915145212572675,
+              "y": 787.1290183105468,
+              "width": 9.071,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
+              "x": 13.53649969951923,
+              "y": 2241.707030517578,
+              "width": 16.66075297976763,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
@@ -2259,7 +2269,7 @@
           "height": {
             "large": 24,
             "medium": 24,
-            "small": 18
+            "small": 14
           },
           "layout": {
             "large": {
@@ -2271,17 +2281,17 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
+              "x": 56.38494213299418,
+              "y": 1059.1429755859374,
+              "width": 7.071,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
+              "x": 13.494045622996794,
+              "y": 2017.2860244140625,
+              "width": 14.250487179487179,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
@@ -2296,7 +2306,7 @@
           "height": {
             "large": 24,
             "medium": 24,
-            "small": 18
+            "small": 16
           },
           "layout": {
             "large": {
@@ -2308,17 +2318,17 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
+              "x": 83.00692739371367,
+              "y": 1057.7429877929687,
+              "width": 6.357,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
+              "x": 64.00392993790064,
+              "y": 2242.186012207031,
+              "width": 14.97237835536859,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
@@ -2333,7 +2343,7 @@
           "height": {
             "large": 24,
             "medium": 24,
-            "small": 18
+            "small": 14
           },
           "layout": {
             "large": {
@@ -2345,17 +2355,17 @@
               "visible": true
             },
             "medium": {
-              "x": 12,
-              "y": 20,
-              "width": 16,
+              "x": 82.08608734556685,
+              "y": 795.1290183105468,
+              "width": 8.786,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
             },
             "small": {
-              "x": 6,
-              "y": 20,
-              "width": 36,
+              "x": 64.27810256410257,
+              "y": 2007.306868774414,
+              "width": 14.324455278445512,
               "rotation": 0,
               "zIndex": 20,
               "visible": true
