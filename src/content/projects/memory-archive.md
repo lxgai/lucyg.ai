@@ -80,7 +80,7 @@ Current Skills
 ## What's Next
 For now, all I hope is that I'll continue to upkeep this space and use it as the sort of journal and inspiration it was intended to be.
 
-In the future, I do plan on refining the design, maybe once I do some more learning on design principles and UX. It would be nice to create something clean yet maintains elements that pop in a first impression. Right now I feel like Memory Archive sits at a pretty average (but nice!) space in terms of not being overly cluttered, but not quite bringing much unique flavor to the table. I am also cautious of going overboard with things like animations and getting lost in the sauce.
+In the future, I do plan on refining the design, maybe once I do some more learning on design principles and UX. Right now I feel like Memory Archive sits at a pretty average (but nice!) space in terms of remaining relatively clean, but not quite bringing much unique flavor to the table. (This is obviously a limitation to springboarding with Claude.) I am also cautious of going overboard with things like animations and getting lost in the sauce.
 
 
 And also sometime (hopefully by the time you read this) there will be a dark mode...
