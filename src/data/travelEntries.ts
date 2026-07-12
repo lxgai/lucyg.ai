@@ -1,5 +1,6 @@
 import { TRIPS, type Trip } from "@/data/travels";
 import china24 from "@/data/travel-details/china-24.json";
+import china25 from "@/data/travel-details/china-25.json";
 import japan24 from "@/data/travel-details/japan-24.json";
 import netherlands25 from "@/data/travel-details/netherlands-25.json";
 import { getTravelDetailIndexMeta, reportTravelDetailIndexDrift } from "@/lib/travelDetailIndex";
@@ -13,6 +14,7 @@ export const TRAVEL_DETAILS: Partial<Record<string, TravelDetailData>> = {
   "china-24": china24 as TravelDetailData,
   "japan-24": japan24 as TravelDetailData,
   "netherlands-25": netherlands25 as TravelDetailData,
+  "china-25": china25 as TravelDetailData,
 };
 
 export type ResolvedTravelEntry = {

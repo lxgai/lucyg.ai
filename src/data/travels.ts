@@ -23,4 +23,8 @@ export const TRIPS: Trip[] = [
     id: "netherlands-25",
     cover: "/images/travels/netherlands-25/canal-cruise.jpg",
   },
+  {
+    id: "china-25",
+    cover: "/images/travels/china-25/shanghai-bund.jpg",
+  },
 ];

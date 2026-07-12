@@ -1,0 +1,2368 @@
+{
+  "fileNo": "004",
+  "section": "SECTION B · TRAVELS / CHINA",
+  "metadata": {
+    "place": "China",
+    "dateRange": "OCT 2 - OCT 15, 2025",
+    "duration": "14 days"
+  },
+  "hero": {
+    "title": "China,",
+    "italicTitle": "autumn '25.",
+    "intro": "While the summer heat seeped into autumn, I spent my days moving around Eastern China. Hangzhou's lakesides rippled into Wenzhou's sweeping mountains. Nanjing's imperial history rolled into Shanghai's neon nightlife. There was a constant sense of movement. It's admirable, in a way. Even when at peace walking amongst more rural mountains, or the juxtaposing city-center lights, the current never really stopped — it just changed shape.",
+    "canvasHeight": {
+      "large": 600,
+      "medium": 467,
+      "small": 660
+    },
+    "titleTopMargin": {
+      "large": 22,
+      "medium": 22,
+      "small": 22
+    },
+    "copyLayout": {
+      "large": {
+        "x": 58,
+        "y": 30,
+        "width": 43.71429760425122,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "medium": {
+        "x": 58,
+        "y": 23.333,
+        "width": 38,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      },
+      "small": {
+        "x": 6,
+        "y": 327.733,
+        "width": 88,
+        "rotation": 0,
+        "zIndex": 2,
+        "visible": true
+      }
+    },
+    "decorations": [
+      {
+        "id": "hero-tape-china25",
+        "type": "tape",
+        "color": "rgba(203, 81, 175, 0.35)",
+        "opacity": 0.88,
+        "height": {
+          "large": 24,
+          "medium": 24,
+          "small": 18
+        },
+        "layout": {
+          "large": {
+            "x": 45.0649390282569,
+            "y": 490,
+            "width": 9,
+            "rotation": -6.1,
+            "zIndex": 20,
+            "visible": true
+          },
+          "medium": {
+            "x": 45,
+            "y": 334.444,
+            "width": 9,
+            "rotation": -6.1,
+            "zIndex": 20,
+            "visible": true
+          },
+          "small": {
+            "x": 45,
+            "y": 140.347,
+            "width": 9,
+            "rotation": -6.1,
+            "zIndex": 20,
+            "visible": true
+          }
+        }
+      }
+    ],
+    "image": {
+      "id": "hero-shanghai-bund",
+      "type": "image",
+      "src": "/images/travels/china-25/china-25-hero.png",
+      "alt": "",
+      "caption": "",
+      "aspect": "4032 / 2688",
+      "layout": {
+        "large": {
+          "x": -3.1298681482092126,
+          "y": 40.199981689453125,
+          "width": 58,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "medium": {
+          "x": -3,
+          "y": -11.667,
+          "width": 58,
+          "rotation": -0.6,
+          "zIndex": 1,
+          "visible": true
+        },
+        "small": {
+          "x": 6,
+          "y": 24,
+          "width": 88,
+          "rotation": 0,
+          "zIndex": 1,
+          "visible": true
+        }
+      },
+      "cutout": true
+    },
+    "metadataFields": [
+      {
+        "label": "14 DAYS",
+        "description": "Hangzhou · Wenzhou · Nanjing · Shanghai"
+      },
+      {
+        "label": "Weather",
+        "description": "SUMMER HUMIDITY CONTINUES- 32°C avg"
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "End of file - China '25"
+  },
+  "sections": [
+    {
+      "id": "hangzhou",
+      "no": "01",
+      "name": "Hangzhou",
+      "nativeName": "杭州",
+      "romanizedName": "Hangzhou",
+      "dayLabel": "Days 1 - 4",
+      "coordinates": "30.27°N · 120.15°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 1200,
+        "mediumWidth": 860,
+        "mediumHeight": 691,
+        "smallWidth": 390,
+        "smallHeight": 2649
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "hangzhou-westlake-1",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-westlake-1.jpg",
+          "alt": "West Lake",
+          "caption": "",
+          "aspect": "4032 / 3024",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 54.857135227748316,
+              "y": -59.199981689453125,
+              "width": 50.357148306710386,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            },
+            "medium": {
+              "x": -6,
+              "y": 15.357,
+              "width": 50,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 533.6,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-westlake-2",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-westlake-2.jpg",
+          "alt": "West Lake",
+          "caption": "",
+          "aspect": "4032 / 3024",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 53.99999564034599,
+              "y": 322.79998779296875,
+              "width": 50.99998474121094,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 48,
+              "y": -7.679,
+              "width": 30,
+              "rotation": 1,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-qiantangriver",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-qiantangriver.jpg",
+          "alt": "Qiantang River",
+          "caption": "On the Qiantang River",
+          "aspect": "4032 / 3024",
+          "cutout": false,
+          "layout": {
+            "large": {
+              "x": 33.21425737653458,
+              "y": 759.9999389648438,
+              "width": 31.857135227748326,
+              "rotation": 3,
+              "zIndex": 4,
+              "visible": true
+            },
+            "medium": {
+              "x": -4,
+              "y": 322.5,
+              "width": 46,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1352.6,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-sticker-wonton",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-wonton.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 41.14282335553851,
+              "y": 241.2000732421875,
+              "width": 11.14285169328962,
+              "rotation": 8,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 70,
+              "y": 330.179,
+              "width": 9,
+              "rotation": 8,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1662,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "hangzhou-note",
+          "type": "text",
+          "text": "Back to Hangzhou for my mom's wontons (yay!) and slow evenings by West Lake. This time around we also visited the Leifeng Pagoda and took a small cruise along the Qiantang River, admiring the cityscape at night.  So many lovely waterfront views.\n\n(Not pictured) I also did a good amount of shopping...",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 71.64285714285714,
+              "y": 801.9998779296875,
+              "width": 31.214279174804688,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 2,
+              "y": 499.107,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2452.4,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mrh79rny",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-2.jpg",
+          "alt": "hangzhou-leifeng-2.jpg",
+          "caption": "high up",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": 34.85718536376954,
+              "y": 444.79998779296875,
+              "width": 14.5,
+              "rotation": 4,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "image-mrh7bhbx",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-3.jpg",
+          "alt": "hangzhou-leifeng-3",
+          "caption": "looking out from the pagoda",
+          "aspect": "1600 / 1200",
+          "layout": {
+            "large": {
+              "x": -2.928589957101006,
+              "y": 768.7999267578125,
+              "width": 30.000008719308035,
+              "rotation": -4.1,
+              "zIndex": 8,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "image-mrh7dc9w",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-food-3.png",
+          "alt": "sticker-food-3.png",
+          "caption": "",
+          "aspect": "640 / 476",
+          "layout": {
+            "large": {
+              "x": 38.78574044363839,
+              "y": 10.400054931640625,
+              "width": 17.214287894112722,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh7v2l2",
+          "type": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-pagoda.png",
+          "alt": "hangzhou-leifeng-pagoda",
+          "caption": "",
+          "aspect": "1880 / 2228",
+          "layout": {
+            "large": {
+              "x": -10.78571101597377,
+              "y": 9.600006103515625,
+              "width": 54.07142966134208,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          },
+          "cutout": true
+        }
+      ],
+      "decorations": [
+        {
+          "id": "hangzhou-tape",
+          "type": "tape",
+          "color": "rgba(61, 109, 161, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 16,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 38.85713304792131,
+              "y": 434.4000244140625,
+              "width": 8.642862592424667,
+              "rotation": 3,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 10,
+              "y": 291.786,
+              "width": 14,
+              "rotation": -3.4,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 10,
+              "y": 132.321,
+              "width": 14,
+              "rotation": -3.4,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mrh803q2",
+          "type": "tape",
+          "color": "rgba(61, 109, 161, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 18,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 4.857142857142857,
+              "y": 759.1999969482422,
+              "width": 12,
+              "rotation": -3.1,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mrh827zs",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 16,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 44.42856706891741,
+              "y": 752.0000305175781,
+              "width": 12,
+              "rotation": 3,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "wenzhou",
+      "no": "02",
+      "name": "Wenzhou",
+      "nativeName": "温州",
+      "romanizedName": "Wenzhou",
+      "dayLabel": "Days 5 - 7",
+      "coordinates": "27.99°N · 120.70°E",
+      "align": "right",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 1400,
+        "mediumWidth": 860,
+        "mediumHeight": 729,
+        "smallWidth": 390,
+        "smallHeight": 2203
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "yandang-mountain-1",
+          "type": "image",
+          "src": "/images/travels/china-25/yandang-mountain-1.jpg",
+          "alt": "Yandang Mountain",
+          "caption": "",
+          "aspect": "4032 / 3024",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": -1.5000054495675172,
+              "y": 110.80007934570312,
+              "width": 55.785709926060264,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 56,
+              "y": -7.679,
+              "width": 48,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "yandang-mountain-2",
+          "type": "image",
+          "src": "/images/travels/china-25/yandang-mountain-2.jpg",
+          "alt": "Yandang Mountain",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 0.5714242117745414,
+              "y": 625.6000671386719,
+              "width": 40.92857033865792,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 6,
+              "y": 30.714,
+              "width": 28,
+              "rotation": -2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 333.4,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "yandang-mountain-dalongqiu",
+          "type": "image",
+          "src": "/images/travels/china-25/yandang-mountain-dalongqiu.jpg",
+          "alt": "Dalongqiu Waterfall, Yandang Mountain",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 58.42857905796597,
+              "y": 33.59991455078125,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 40,
+              "y": 322.5,
+              "width": 44,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1238.2,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "yandang-wenzhou",
+          "type": "image",
+          "src": "/images/travels/china-25/yandang-wenzhou.jpg",
+          "alt": "Wenzhou",
+          "caption": "",
+          "aspect": "4032 / 3024 ",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 49.99999237060546,
+              "y": 783.2000122070312,
+              "width": 49.285718645368306,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "medium": {
+              "x": 2,
+              "y": 368.571,
+              "width": 26,
+              "rotation": 2,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1547.6,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "wenzhou-note",
+          "type": "text",
+          "text": "Dad decided it would be a nice two day trip into the mountains. I was pretty impressed with the Yandang mountain range but the Dalongqiu waterfall gave off the vibes of a leaky faucet...",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 2.2857088361467612,
+              "y": -22.4000244140625,
+              "width": 43.78572082519531,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 58,
+              "y": 491.429,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2057.2,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mrh8xee1",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "sticker-flower.png",
+          "caption": "",
+          "aspect": "888 / 928",
+          "layout": {
+            "large": {
+              "x": 7.0714372907366085,
+              "y": -125.60017395019531,
+              "width": 5,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh8xzjm",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-flower-2.png",
+          "alt": "sticker-flower-2.png",
+          "caption": "",
+          "aspect": "1127 / 1119",
+          "layout": {
+            "large": {
+              "x": 93.57142530168807,
+              "y": 727.1999664306641,
+              "width": 8.928563799176896,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh8y8cm",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-squiggle.png",
+          "alt": "sticker-squiggle.png",
+          "caption": "",
+          "aspect": "1056 / 622",
+          "layout": {
+            "large": {
+              "x": 39.357165745326455,
+              "y": 631.1999206542969,
+              "width": 21.071426391601562,
+              "rotation": 9,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh8yyrv",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "sticker-flower.png",
+          "caption": "",
+          "aspect": "888 / 928",
+          "layout": {
+            "large": {
+              "x": 19.00001198904855,
+              "y": -128,
+              "width": 5,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh90etd",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "sticker-flower.png",
+          "caption": "",
+          "aspect": "888 / 928",
+          "layout": {
+            "large": {
+              "x": 32.285725184849326,
+              "y": -124.79998779296875,
+              "width": 5,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            }
+          },
+          "cutout": true
+        }
+      ],
+      "decorations": [
+        {
+          "id": "wenzhou-tape",
+          "type": "tape",
+          "color": "rgba(76, 120, 68, 0.6)",
+          "opacity": 1,
+          "height": {
+            "large": 22,
+            "medium": 22,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 89.500006539481,
+              "y": 786.8000793457031,
+              "width": 12,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 46,
+              "y": -23.036,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 46,
+              "y": -10.446,
+              "width": 14,
+              "rotation": 5,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "nanjing",
+      "no": "03",
+      "name": "Nanjing",
+      "nativeName": "南京",
+      "romanizedName": "Nanjing",
+      "dayLabel": "Days 8 - 10",
+      "coordinates": "32.06°N · 118.80°E",
+      "align": "left",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 1250,
+        "mediumWidth": 860,
+        "mediumHeight": 691,
+        "smallWidth": 390,
+        "smallHeight": 2203
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "nanjing-confucius-temple",
+          "type": "image",
+          "src": "/images/travels/china-25/nanjing-confucius-temple.jpg",
+          "alt": "Confucius Temple",
+          "caption": "Confucius Temple",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 49.64283752441407,
+              "y": -19.20001220703125,
+              "width": 37.92857796805246,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 48,
+              "y": -15.357,
+              "width": 28,
+              "rotation": 2,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "nanjing-confucian-temple-2",
+          "type": "image",
+          "src": "/images/travels/china-25/nanjing-confucian-temple-2.jpg",
+          "alt": "Confucius Temple",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": -4.1428538731166356,
+              "y": 33.60009765625,
+              "width": 49.071416582380024,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 80,
+              "y": 61.429,
+              "width": 24,
+              "rotation": -2,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 843,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "nanjing-sun-yatsen",
+          "type": "image",
+          "src": "/images/travels/china-25/nanjing-sun-yatsen.jpg",
+          "alt": "Sun Yat-sen Mausoleum",
+          "caption": "Sun Yat-sen's Mausoleum",
+          "aspect": "4032 / 3024",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 46.99998801095145,
+              "y": 604.0001220703125,
+              "width": 53.07142421177455,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "medium": {
+              "x": -2,
+              "y": 337.857,
+              "width": 46,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1352.6,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 4,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "nanjing-note",
+          "type": "text",
+          "text": "Another two day trip. As the former national capital, Nanjing  wore its history brightly. We walked amongst the Confucius Temple's night market crowds and joined a river cruise at night.  In the morning we walked up to the Sun Yat-sen Mausoleum.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 72.71429334368025,
+              "y": -55.19969177246094,
+              "width": 30.642854963030135,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 50,
+              "y": 460.714,
+              "width": 38,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2057.2,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          },
+          "font": "serif"
+        },
+        {
+          "id": "image-mrh99k9p",
+          "type": "image",
+          "src": "/images/travels/china-25/nanjing-1.jpg",
+          "alt": "nanjing-1.jpg",
+          "caption": "",
+          "aspect": "1200 / 1544",
+          "layout": {
+            "large": {
+              "x": -2.1428331647600585,
+              "y": 675.1998901367188,
+              "width": 24.428567068917403,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrh99u1k",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-food.png",
+          "alt": "sticker-food.png",
+          "caption": "",
+          "aspect": "561 / 640",
+          "layout": {
+            "large": {
+              "x": 27.714328220912375,
+              "y": 799.2000122070312,
+              "width": 15.571434020996097,
+              "rotation": 20,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrha5gm8",
+          "type": "image",
+          "src": "/images/travels/china-25/paper.png",
+          "alt": "paper.png",
+          "caption": "",
+          "aspect": "1600 / 911",
+          "layout": {
+            "large": {
+              "x": 68.4285648890904,
+              "y": -103.99996948242188,
+              "width": 38.21428353445871,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          },
+          "cutout": true
+        }
+      ],
+      "decorations": [
+        {
+          "id": "nanjing-tape",
+          "type": "tape",
+          "color": "rgba(198, 155, 63, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 54.785699026925215,
+              "y": -30.400115966796875,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 42,
+              "y": 30.714,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 42,
+              "y": 13.929,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "shanghai",
+      "no": "04",
+      "name": "Shanghai",
+      "nativeName": "上海",
+      "romanizedName": "Shanghai",
+      "dayLabel": "Days 11 - 14",
+      "coordinates": "31.23°N · 121.47°E",
+      "align": "right",
+      "canvas": {
+        "largeWidth": 1120,
+        "largeHeight": 3700,
+        "mediumWidth": 860,
+        "mediumHeight": 1840,
+        "smallWidth": 390,
+        "smallHeight": 4427
+      },
+      "blurb": "",
+      "blocks": [
+        {
+          "id": "shanghai-bund",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-bund.jpg",
+          "alt": "The Bund",
+          "caption": "Walking the Bund",
+          "aspect": "3024/4032 ",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 1.9285507202148415,
+              "y": 20,
+              "width": 46.92857469831195,
+              "rotation": 0,
+              "zIndex": 14,
+              "visible": true
+            },
+            "medium": {
+              "x": 52,
+              "y": -7.679,
+              "width": 50,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 24,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-bund-2",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-bund-2.jpg",
+          "alt": "The Bund",
+          "caption": "",
+          "aspect": " 3024/4032 ",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": -2.5000185285295604,
+              "y": -79.60002136230469,
+              "width": 23.50000762939454,
+              "rotation": 0,
+              "zIndex": 15,
+              "visible": true
+            },
+            "medium": {
+              "x": 2,
+              "y": 23.036,
+              "width": 44,
+              "rotation": -1,
+              "zIndex": 2,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 333.4,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 2,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-fotografiska",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-fotografiska-1.jpg",
+          "alt": "Fotografiska Shanghai",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 1.1428440638950903,
+              "y": 1718.4000549316406,
+              "width": 50.00000980922154,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 6,
+              "y": 322.5,
+              "width": 26,
+              "rotation": 2,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1152.4,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-nightlife",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-nightlife-1.jpg",
+          "alt": "Shanghai nightlife",
+          "caption": "bar hopping",
+          "aspect": "4032 / 3024",
+          "cutout": false,
+          "layout": {
+            "large": {
+              "x": 59.142885480608264,
+              "y": 2197.6000061035156,
+              "width": 26.57144383021764,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            },
+            "medium": {
+              "x": 36,
+              "y": 399.286,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1662,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 5,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-haus-gentlemonster",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-haus-gentlemonster.jpg",
+          "alt": "Gentle Monster, Shanghai",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 0.4999989100864959,
+              "y": 988.000244140625,
+              "width": 43.64286586216518,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 629.643,
+              "width": 26,
+              "rotation": 1,
+              "zIndex": 6,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2876.2,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 6,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-shopping",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-shopping.jpg",
+          "alt": "Shopping in Shanghai",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 76.85714721679689,
+              "y": 1340.0000610351562,
+              "width": 19.999993460518976,
+              "rotation": -1,
+              "zIndex": 7,
+              "visible": true
+            },
+            "medium": {
+              "x": 70,
+              "y": 614.286,
+              "width": 26,
+              "rotation": -1,
+              "zIndex": 7,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2366.6,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 7,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-photoshoot-bts",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-photoshoot-bts.jpg",
+          "alt": "Photoshoot, behind the scenes",
+          "caption": "behind the scenes...",
+          "aspect": "3024/4032 ",
+          "cutout": false,
+          "layout": {
+            "large": {
+              "x": 19.499997820172997,
+              "y": 3251.2000427246094,
+              "width": 19.07143293108259,
+              "rotation": -5,
+              "zIndex": 12,
+              "visible": true
+            },
+            "medium": {
+              "x": 34,
+              "y": 691.071,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 3385.8,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 8,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-photoshoot",
+          "type": "image",
+          "src": "/images/travels/china-25/ChinaPhotoshoot.png",
+          "alt": "Photoshoot",
+          "caption": "",
+          "aspect": "3024 / 4032",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 31.1428473336356,
+              "y": 2622.7998657226562,
+              "width": 75.50000217982702,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            },
+            "medium": {
+              "x": 38,
+              "y": 883.036,
+              "width": 26,
+              "rotation": 2,
+              "zIndex": 9,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 3695.2,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 9,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "shanghai-note",
+          "type": "text",
+          "text": "Modern city, modern life. As my first international solo venture, I wanted to soak in the contemporary luxuries Shanghai had to offer. From the Gentle Monster to Louis Vuitton flagships, there was shopping, architecture, contemporary art, and history. One of my favorite ways to end the night was with my airpods in, walking along Nanjing Road or the Bund.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 20,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 1.7857284545898482,
+              "y": 793.1999816894531,
+              "width": 60.928569248744424,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "medium": {
+              "x": 2,
+              "y": 959.821,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 4204.8,
+              "width": 88,
+              "rotation": 0,
+              "zIndex": 3,
+              "visible": true
+            }
+          },
+          "font": "serif"
+        },
+        {
+          "id": "image-mrhb9p2a",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-nightlife-2.jpg",
+          "alt": "shanghai-nightlife-2.jpg",
+          "caption": "INS",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": 83.5714307512556,
+              "y": 2040.800277709961,
+              "width": 23.42857142857143,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            }
+          },
+          "cutout": false
+        },
+        {
+          "id": "image-mrhb9qtl",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-haus-3.jpg",
+          "alt": "shanghai-haus-3.jpg",
+          "caption": "",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": 49.714286804199226,
+              "y": 1350.4001159667969,
+              "width": 19.285712105887278,
+              "rotation": 1,
+              "zIndex": 11,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 11,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 11,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrhb9rio",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-haus-2.jpg",
+          "alt": "shanghai-haus-2.jpg",
+          "caption": "",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": 49.571437290736604,
+              "y": 1002.4000854492188,
+              "width": 19.785720825195316,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 12,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "auto-shanghai-louis-vuitton",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-louis-vuitton.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 45.71427590506418,
+              "y": 52.79986572265625,
+              "width": 67.42857142857143,
+              "rotation": 0,
+              "zIndex": 14,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 40,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 30,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-sticker-ribbon-1",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-1.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 27.285696847098222,
+              "y": 78.4000244140625,
+              "width": 55.214281354631694,
+              "rotation": 0,
+              "zIndex": 10,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 400,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 560,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 31,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-sticker-ribbon-2",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-2.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 28.92856706891741,
+              "y": 532.8001861572266,
+              "width": 26,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 760,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1080,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 32,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-sticker-star-1",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-star-1.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 53.714290073939715,
+              "y": 14.399993896484375,
+              "width": 7.285716465541292,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 1120,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 1600,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 33,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "auto-sticker-star-2",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-star-2.png",
+          "alt": "",
+          "caption": "",
+          "aspect": "1 / 1",
+          "cutout": true,
+          "layout": {
+            "large": {
+              "x": 35.49999346051898,
+              "y": -133.60015869140625,
+              "width": 12.357149396623882,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            },
+            "medium": {
+              "x": 4,
+              "y": 1480,
+              "width": 32,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 2120,
+              "width": 60,
+              "rotation": 0,
+              "zIndex": 34,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mrhbtajs",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-food-2.png",
+          "alt": "sticker-food-2.png",
+          "caption": "",
+          "aspect": "640 / 330",
+          "layout": {
+            "large": {
+              "x": 62.14285387311663,
+              "y": 699.9999084472656,
+              "width": 12.714291163853236,
+              "rotation": 0,
+              "zIndex": 18,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 18,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 18,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrhbvnxj",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-shopping-2.jpg",
+          "alt": "shanghai-shopping-2.jpg",
+          "caption": "",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": 76.64286150251117,
+              "y": 1004.7998962402344,
+              "width": 19.000013078962052,
+              "rotation": 0,
+              "zIndex": 19,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 19,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 19,
+              "visible": true
+            }
+          },
+          "cutout": true
+        },
+        {
+          "id": "image-mrhbzqio",
+          "type": "image",
+          "src": "/images/travels/china-25/shanghai-fotografiska-2.jpg",
+          "alt": "shanghai-fotografiska-2.jpg",
+          "caption": "\"These Days\"",
+          "aspect": "1200 / 1600",
+          "layout": {
+            "large": {
+              "x": -1.49999128069196,
+              "y": 2234.399948120117,
+              "width": 22.14286586216518,
+              "rotation": -10,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "text-mrhcoku8",
+          "type": "text",
+          "text": "Shopping Corner :D",
+          "tone": "annotation",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 86.14285823277064,
+              "y": 936.8000946044922,
+              "width": 18.785723005022323,
+              "rotation": 0,
+              "zIndex": 21,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 21,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 21,
+              "visible": true
+            }
+          },
+          "font": "mono"
+        },
+        {
+          "id": "text-mrhcqjpz",
+          "type": "text",
+          "text": "(Above) Trying on glasses at Gentle Monster and some clothes at local malls.\n\n(Left)  Fotografiska Shanghai. As an enjoyer of contemporary art, I had the pleasure of viewing some exhibits here, one of them being Cho Gi-Seok's \"The Coexistence of Imperfection\", where he explores how various dichotomies work together (i.e. love & hate, nature & technology).",
+          "tone": "caption",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 57.14283752441407,
+              "y": 1752.0000762939453,
+              "width": 43.78572300502232,
+              "rotation": 0,
+              "zIndex": 22,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 22,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 22,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "text-mrhcvxj7",
+          "type": "text",
+          "text": "And later some nightlife...",
+          "tone": "annotation",
+          "fontSize": {
+            "large": 14,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": 66.00001416887557,
+              "y": 2140.000045776367,
+              "width": 17.214285714285715,
+              "rotation": 0,
+              "zIndex": 23,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 23,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 23,
+              "visible": true
+            }
+          },
+          "font": "mono"
+        },
+        {
+          "id": "text-mrhd1d57",
+          "type": "text",
+          "text": "One experience unique to China is that they offer these very cool photoshoots for quite reasonable prices (at least if you come from the States). These photo studios offer dozens of themes to pick from, ranging from simple to extravagant. \n\nIt took me a few hours to do hair, makeup, and costume. Truly though, I'd like to shout out the photographer because I am probably the most awkward and stiff person to sign up for this (mission challenge confidence, completed). She guided me through every single pose and kept reminding me to relax my face and straighten my posture. \n\n10/10 experience and a fun way to get me out of my comfort zone.",
+          "tone": "caption",
+          "fontSize": {
+            "large": 18,
+            "medium": 18,
+            "small": 17
+          },
+          "layout": {
+            "large": {
+              "x": -0.35714067731584687,
+              "y": 2736.0000915527344,
+              "width": 31.142857142857142,
+              "rotation": 0,
+              "zIndex": 24,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 120,
+              "width": 34,
+              "rotation": 0,
+              "zIndex": 24,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 120,
+              "width": 54.400000000000006,
+              "rotation": 0,
+              "zIndex": 24,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "image-mrhd1vw5",
+          "type": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-1.png",
+          "alt": "sticker-ribbon-1.png",
+          "caption": "",
+          "aspect": "1039 / 1165",
+          "layout": {
+            "large": {
+              "x": 12.285719735281809,
+              "y": 1579.199966430664,
+              "width": 50.142863682338174,
+              "rotation": 0,
+              "zIndex": 1,
+              "visible": true
+            },
+            "medium": {
+              "x": 8,
+              "y": 40,
+              "width": 42,
+              "rotation": 0,
+              "zIndex": 25,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 40,
+              "width": 67.2,
+              "rotation": 0,
+              "zIndex": 25,
+              "visible": true
+            }
+          },
+          "cutout": true
+        }
+      ],
+      "decorations": [
+        {
+          "id": "tape-mrhbybhi",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 54.357139587402344,
+              "y": 992.800048828125,
+              "width": 9.07143075125558,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mrhbyn8f",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 56.571435110909604,
+              "y": 1340.7999877929688,
+              "width": 7.071428571428571,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mrhbyog4",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 83.28572191510881,
+              "y": 1329.5999908447266,
+              "width": 6.357142857142856,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "tape-mrhbyomn",
+          "type": "tape",
+          "color": "rgba(243, 215, 158, 0.65)",
+          "opacity": 0.88,
+          "height": {
+            "large": 24,
+            "medium": 24,
+            "small": 18
+          },
+          "layout": {
+            "large": {
+              "x": 81.71427917480469,
+              "y": 992.8000640869141,
+              "width": 8.785709926060267,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "medium": {
+              "x": 12,
+              "y": 20,
+              "width": 16,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            },
+            "small": {
+              "x": 6,
+              "y": 20,
+              "width": 36,
+              "rotation": 0,
+              "zIndex": 20,
+              "visible": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -31,6 +31,7 @@ const ROUTES = [
   { route: "/travels/china-24", sources: ["src/app/travels/china-24/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/china-24.json"] },
   { route: "/travels/japan-24", sources: ["src/app/travels/japan-24/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/japan-24.json"] },
   { route: "/travels/netherlands-25", sources: ["src/app/travels/netherlands-25/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/netherlands-25.json"] },
+  { route: "/travels/china-25", sources: ["src/app/travels/china-25/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/china-25.json"] },
 ];
 
 function git(args) {

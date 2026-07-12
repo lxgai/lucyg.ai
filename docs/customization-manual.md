@@ -154,6 +154,9 @@ The route files are thin wrappers:
 - `src/app/projects/page.tsx` renders the projects index
 - `src/app/projects/[slug]/page.tsx` finds the project by `slug`, loads the matching Markdown file, and renders the detail page
 
+## Travel Index Photos
+Cover photos are defined in `src/data/travels.ts`.
+
 ## Favorite Albums And Tracklists
 
 Album display data lives in `src/data/content.ts`.
