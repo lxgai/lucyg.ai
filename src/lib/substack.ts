@@ -57,6 +57,7 @@ export function getSubstackLinks() {
 
   return {
     embedUrl,
+    publicationUrl,
     subscribeUrl: publicationUrl ? `${publicationUrl}/subscribe` : undefined,
   };
 }

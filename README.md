@@ -1,42 +1,37 @@
 # lucyg.ai
 
-Personal site and archive for Lucy Gai: a portfolio, travel log, writing index, favorites shelf, and link directory collected in one place.
+Personal site for Lucy Gai: projects, travels, writing and favorites, collected in one place.
 
-The site is designed as a quiet personal archive, closer to a library card catalog than a traditional portfolio. It uses archival metadata, editorial typography, and photo-forward layouts to make projects, trips, essays, and references feel cataloged rather than broadcast.
+The site is a quiet, text-first "digital garden": a sidebar of recent travels and writing, a single reading column, and a table of contents, in light and dark themes.
 
 ## What You Can Find
 
-- **Home** - a current snapshot of Lucy's work, interests, and recent updates.
-- **Projects** - a portfolio archive with selected software, design, and creative work.
-- **Blog** - writing imported from Substack 
-- **Travels** - visual travel pages with maps and detailed trip archives.
-- **Favorites** - albums, films, and other saved references.
-- **About** - background, current notes, and contact information.
-- **Links** - a small directory of places to find Lucy elsewhere.
+- **Home** - an introduction and what Lucy is currently reading, building and planning.
+- **Projects** - things Lucy has built, each with a long-form write-up.
+- **Travels** - a travel log with detailed pages for individual trips.
+- **Blog** - writing from Lucy's Substack.
+- **Favorites** - albums, with a featured track and tracklist, and films, with Letterboxd reviews.
 
 ## Design
 
-The current visual direction is called **Memory Archive**. It combines the structure of a catalog system with the warmth of personal photographs and collected notes:
+The visual system is documented in [`docs/design.md`](docs/design.md):
 
-- warm paper backgrounds
-- serif display type for titles and names
-- mono metadata labels for dates, file IDs, and taxonomy
-- hairline borders and archival strips
-- restrained rose accents
-- photo mounts, cutouts, and tape accents on travel pages
+- mint and plum backgrounds with magenta text and jade accents, in light and dark themes
+- DM Serif Display for headings, Bricolage Grotesque for body text, a handwritten face for dates and captions, and JetBrains Mono for labels
+- no cards, shadows or dividers; one playful element per page at most
+
+Trip detail pages still use the site's previous "Memory Archive" design ([`docs/design-memory-archive.md`](docs/design-memory-archive.md)) until they're redesigned.
 
 ## Technology
-
-This site is built with:
 
 - Next.js 15 App Router
 - React 19
 - TypeScript
-- MUI and Joy UI
-- Tailwind CSS for the development-only admin editor
-- Static JSON data for local content and layout definitions
+- CSS modules and CSS custom properties
+- Tailwind CSS for the development-only admin editors
+- Static data and Markdown for content; Substack, Spotify and Letterboxd for feeds and track data
 
-Personal home and travel images are not committed to this repository. Public pages load those assets from external storage in Supabase.
+Home, project and travel images are not committed to this repository. Public pages load them from Supabase storage.
 
 ## Local Development
 
@@ -54,7 +49,9 @@ npx tsc --noEmit
 npm run lint
 ```
 
-The project also includes a development-only editor for maintaining travel-detail layouts. These admin routes are disabled in production.
+Set `NEXT_PUBLIC_SITE_IMAGE_BASE_URL` and `SUBSTACK_FEED_URL` in `.env.local` to load images and blog posts. See [`docs/customization-manual.md`](docs/customization-manual.md) for how to edit each page's content.
+
+The project also includes development-only editors for travel layouts. These admin routes are disabled in production.
 
 ## License
 

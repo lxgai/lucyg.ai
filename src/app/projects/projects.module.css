@@ -1,0 +1,64 @@
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.row:hover {
+  opacity: 0.8;
+}
+
+.thumb {
+  display: block;
+  width: 280px;
+  height: 190px;
+  object-fit: cover;
+  background: var(--lightgray);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--dark);
+}
+
+.detail {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.date {
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.6;
+}
+
+/* Too narrow for a 280px thumbnail beside text: stack them. */
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .thumb {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 280 / 190;
+  }
+}

@@ -1,0 +1,304 @@
+.root {
+  min-height: 100svh;
+  width: 100%;
+  background: var(--light);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--darkgray);
+}
+
+.layout {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px clamp(24px, 6vw, 96px) 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 56px;
+  align-items: flex-start;
+}
+
+/* Left sidebar */
+.sidebar {
+  flex: 0 0 260px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: sticky;
+  top: 64px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.siteTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.siteTitle a {
+  color: var(--dark);
+}
+
+.themeToggle {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border: none;
+  background: transparent;
+  color: var(--darkgray);
+  cursor: pointer;
+  line-height: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light mode shows the moon, dark mode shows the sun. */
+.sunIcon {
+  display: none;
+}
+
+:global(html[data-theme="dark"]) .sunIcon {
+  display: block;
+}
+
+:global(html[data-theme="dark"]) .moonIcon {
+  display: none;
+}
+
+.sideSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sideHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--dark);
+}
+
+.sideItem {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4px;
+}
+
+.sideItemTitle {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--dark);
+}
+
+.sideItemMeta {
+  font-family: var(--font-hand);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--darkgray);
+  opacity: 0.6;
+}
+
+.seeAll {
+  font-size: 14px;
+  color: var(--darkgray);
+  opacity: 0.6;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.seeAll:hover {
+  opacity: 0.85;
+}
+
+/* Main column */
+.main {
+  flex: 1 1 480px;
+  min-width: 0;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 64px - 56px - 88px);
+}
+
+.endSpacer {
+  flex: 0 0 64px;
+}
+
+.bottomSpacer {
+  flex: 1 0 56px;
+}
+
+/* Table of contents: right column at >= 1240px, otherwise in the sidebar. */
+.tocColumn {
+  flex: 0 0 200px;
+  position: sticky;
+  top: 64px;
+  display: none;
+}
+
+.tocInSidebar {
+  display: block;
+}
+
+@media (min-width: 1240px) {
+  .tocColumn {
+    display: block;
+  }
+
+  .tocInSidebar {
+    display: none;
+  }
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tocToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--dark);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.tocChevron {
+  transition: transform 0.2s;
+}
+
+.tocChevronClosed {
+  transform: rotate(-90deg);
+}
+
+.tocList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.tocList .tocList {
+  margin-top: 2px;
+  padding-left: 14px;
+}
+
+.tocLink {
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.tocLink:hover {
+  color: var(--darkgray);
+}
+
+/* Footer */
+.footer {
+  flex: 0 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 56px;
+  row-gap: 8px;
+  padding-bottom: 4rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--darkgray);
+  opacity: 0.6;
+}
+
+.footerMeta {
+  flex: 0 0 260px;
+  max-width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.clock {
+  font-family: var(--font-code);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.footerLinks {
+  flex: 1 1 480px;
+  min-width: 0;
+  max-width: 720px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+@media (min-width: 1240px) {
+  .footerLinksWithToc {
+    max-width: 976px;
+  }
+}
+
+.footerLink {
+  color: var(--darkgray);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.footerLink:hover {
+  opacity: 0.7;
+}
+
+.footerArrow {
+  flex: none;
+  fill: var(--underline);
+}
+
+/* Once the columns wrap, the sidebar sits above main at main's width and stops
+   being sticky. */
+@media (max-width: 904px) {
+  .sidebar {
+    position: static;
+    flex: 1 1 100%;
+    max-width: 720px;
+  }
+
+  .footerMeta,
+  .footerLinks {
+    flex: 1 1 100%;
+    max-width: 720px;
+  }
+
+  .footerLinks {
+    justify-content: flex-start;
+  }
+}

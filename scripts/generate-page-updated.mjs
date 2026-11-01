@@ -16,8 +16,6 @@ const ROUTES = [
   { route: "/about", sources: ["src/app/about/page.tsx"] },
   { route: "/blog", sources: ["src/app/blog/page.tsx", "src/app/blog/BlogIndexClient.tsx", "src/data/blog-tags.ts", "src/data/blog.ts"] },
   { route: "/favorites", sources: ["src/app/favorites/page.tsx", "src/data/favorites.ts", "src/data/favorite-albums.json"] },
-  { route: "/links", sources: ["src/app/links/page.tsx"] },
-  { route: "/portfolio", sources: ["src/app/portfolio/page.tsx"] },
   { route: "/projects", sources: ["src/app/projects/page.tsx", "src/components/content/ProjectArchive.tsx", "src/data/projects.ts"] },
   ...projectSlugs().map((slug) => {
     const markdownPath = `src/content/projects/${slug}.md`;

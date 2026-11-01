@@ -22,6 +22,10 @@ const nextConfig: NextConfig = {
     qualities: [75, 85, 100],
     remotePatterns: siteImageRemotePatterns,
   },
+  async redirects() {
+    // About was folded into Home in the redesign.
+    return [{ source: "/about", destination: "/", permanent: true }];
+  },
 };
 
 export default nextConfig;

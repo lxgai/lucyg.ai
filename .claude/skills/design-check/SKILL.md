@@ -1,31 +1,30 @@
 ---
 name: design-check
-description: Review code against the Memory Archive design system (colors, typography, metadata strip, layout/scroll rules, components, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift toward legacy scrapbook styling. Defaults to the current git diff; accepts file/dir paths.
+description: Review code against the site's digital-garden design system (CSS-variable tokens, the four font families, SiteShell layout and breakpoints, light/dark theming, shared components, scroll rules, copy voice). Use before handing off UI changes, when the user asks to "design check", "check the design", "review against the design system", or to audit a page/component for drift back toward the old Memory Archive styling. Defaults to the current git diff; accepts file/dir paths.
 ---
 
 # design-check
 
-Audit code against the **Memory Archive** design system for this site. This skill does **not** hunt for logic bugs. It checks one thing: does the UI follow the documented design system, or has it drifted?
+Audit code against the site's **digital garden** design system. This skill doesn't hunt for logic bugs. It checks one thing: does the UI follow the documented design system, or has it drifted?
 
 ## Sources of truth
 
 Read these first, every run:
 
-1. `src/components/design/tokens.ts` - actual token values in code.
+1. `src/styles/globals.css` - actual token values (`:root` and `html[data-theme="dark"]`).
 2. `docs/design.md` - current visual and copy source of truth.
-3. `AGENTS.md` - implementation rules for Codex, especially scroll, metadata, Substack, and verification.
-4. `.claude/CLAUDE.md` - still useful Claude-side implementation notes; treat `docs/design.md` and `AGENTS.md` as newer if they disagree.
+3. `.claude/CLAUDE.md` - implementation rules: layout, scroll, conventions, verification.
 
-If `tokens.ts` and `docs/design.md` disagree on a design token, report a `DESIGN-SYSTEM CONFLICT` finding instead of choosing silently.
+If `globals.css` and `docs/design.md` disagree on a token, report a `DESIGN-SYSTEM CONFLICT` finding instead of choosing silently.
 
-The accent is rose `rgb(163, 91, 115)`. Flag raw accent literals in public UI unless there is a deliberate local CSS variable wrapper. Flag reintroduced navy `oklch(0.38 0.08 250)`, retired rust `oklch(0.52 0.13 40)`, or old scrapbook pink styling.
+`docs/design-memory-archive.md` describes the retired system. Use it only to recognize drift, never as a rule.
 
 ## Scope
 
-- **Default:** current working diff. Run `git status --porcelain` and `git diff --name-only HEAD`; review added/modified `.tsx`, `.ts` files that carry UI, `.css`, and relevant docs.
+- **Default:** current working diff. Run `git status --porcelain` and `git diff --name-only HEAD`; review added/modified `.tsx`, `.ts` files that carry UI, `.css` / `.module.css`, and relevant docs.
 - **If the user passes a path:** review that file or directory instead.
 - Skip `src/app/admin/**` unless asked; admin editors legitimately use Tailwind and dev-only styling.
-- Data JSON under `src/data/travels/**` and `src/data/travel-details/**` is layout coordinate data. Only check it for color/copy literals when asked.
+- Skip the legacy travel detail system (`src/app/travels/<slug>/`, `src/components/travel/**`, `src/components/design/**`, `src/data/travel-details/**`) unless asked. It's pending redesign and intentionally still uses MUI and the old tokens.
 
 Announce the scope in one line before reporting.
 
@@ -46,172 +45,92 @@ If clean, say so plainly. End with `N blockers, M should-fix, K notes`.
 
 ### 1. Color tokens
 
-Severity: **SHOULD-FIX**, or **BLOCKER** for legacy palette colors in public UI.
+Severity: **SHOULD-FIX**; **BLOCKER** for legacy Memory Archive colors in public UI.
 
-Raw hex, `rgba()`, or `oklch()` literals that match a token should use the token from `@/components/design/tokens`.
+Components must use CSS variables, never raw color literals.
 
-| Literal | Token |
-|---|---|
-| `#f1e9df` | `tokens.paper` |
-| `#e6dccb` | `tokens.paperDeep` |
-| `#fbf6ee` | `tokens.paperCard` |
-| `#1f1a16` | `tokens.ink` |
-| `#5a4e43` | `tokens.ink60` |
-| `#8a7e70` | `tokens.ink40` |
-| `#c9bfae` | `tokens.ink20` |
-| `rgba(31, 26, 22, 0.2)` | `tokens.hair` |
-| `rgba(31, 26, 22, 0.55)` | `tokens.hairStrong` |
-| rose accent literal | `tokens.accent` |
+| Light literal | Dark literal | Token |
+|---|---|---|
+| `#f8fbf8` | `#181316` | `var(--light)` |
+| | `#2b2327` | `var(--lightgray)` |
+| `#b5b0b2` | `#6e6468` | `var(--gray)` |
+| `#9b2c5c` | `#e38db2` | `var(--darkgray)` |
+| `#6e1d42` | `#f4c9da` | `var(--dark)` |
+| `#2f8f6b` | `#4fbf93` | `var(--underline)` |
 
-Do not flag once-off white/black overlays, photo shadows, texture gradients, or photo filter values unless they become a dominant palette.
+- Muted text must be `color: var(--darkgray); opacity: .6`. Flag any separate gray for muted text.
+- Tints of a token use `color-mix(in srgb, var(--underline) 12%, transparent)` style, not a literal.
+- **BLOCKER:** legacy tokens or values in public UI: `var(--paper)`, `var(--ink…)`, `tokens.*` from `@/components/design/tokens`, `#f1e9df`, `#1f1a16`, the rose accent `rgb(163, 91, 115)`.
+- Don't flag photo filters or one-off overlays inside images.
 
-### 2. Typography
-
-Severity: **SHOULD-FIX**, or **BLOCKER** for non-approved fonts in public UI.
-
-- `fontFamily` should reference `tokens.serif`, `tokens.mono`, or `tokens.hand`, not a raw font stack.
-- Newsreader (serif) and JetBrains Mono (mono) are the only typefaces; public UI must not introduce any other font.
-- Serif is for headings, page titles, place names, post titles, and editorial prose.
-- Mono is for metadata, section labels, dates, catalog numbers, taxonomy, and controls. Mono should usually be small (`8-11px`), letter-spaced (`1.4-2px`), and uppercase.
-
-### 3. Metadata strip
-
-Severity: **SHOULD-FIX**, or **BLOCKER** when a public page reintroduces old `file:` strip text or hairline strip rules.
-
-All listing and detail pages should use the shared `MetadataStrip`/`PageShell` style:
-
-- Left field: section label in an accent-filled tab, with `tokens.paperCard` text.
-- Right fields: REF label, short dotted leader, updated date.
-- No top or bottom rules on the strip itself.
-- Font size stays at normal metadata scale on mobile; do not shrink the strip text just to fit.
-- Small screens (`<=768px`) show only the section tab. Hide the REF label, dotted leader, and updated date.
-
-Section tab separators (BLOCKER on detail pages when wrong):
-
-- Detail pages use the pattern `SECTION {letter} · {SERIES} / {ENTRY}`: a middot `·` separates the series prefix, and a forward slash `/` separates the specific entry name. Example: `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`.
-- Do not use middots all the way through (e.g. `SECTION A · PROJECTS · {slug}` is wrong). The final separator before the entry name must be a slash, following the travel detail convention.
-
-REF labels:
-
-- Home: `REF. 00`
-- Listing/index pages: `REF. {letter}-IDX`, with `A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`.
-- Detail pages: `REF. {letter}-{nn}` from archive position, for example China is `REF. B-01`.
-- Placeholder/secondary pages may use a clear REF variant, but never `file:`.
-
-Dates:
-
-- Strip dates come from `src/data/page-updated.ts` via `scripts/generate-page-updated.mjs`.
-- Render tight dots: `UPDATED 04·22·26`, with no spaces around the dots.
-
-Detail pages:
-
-- Strip sits below nav as normal site chrome.
-- Back link (`← Projects`, `← Travels`, `← Blog`) sits directly below the strip and above content.
-- Use actual arrow glyphs (`←`, `→`, `↗`) in public UI. Never use ASCII substitutes such as `<-`, `->`, or `=>` for visible arrows.
-- Travel detail scaled surfaces must start after the strip/back link; nav and metadata must not be inside the scaled surface.
-- China detail's tab has no leading arrow.
-
-Blog detail exception:
-
-- `Also on Substack ↗` must not be in the strip.
-- It belongs in the top utility row beside the `← Blog` back link, right-aligned.
-- Style it as uppercase mono text in `tokens.accent`, underlined, with the external-link arrow glyph.
-
-### 4. Layout and scroll
+### 2. Theming
 
 Severity: **BLOCKER**.
 
-Root page wrappers:
+- Every new style must work in both themes. A color that only reads in light mode (a hard-coded white/black background, text on an image without a token) is a blocker.
+- Theme switching is `data-theme` on `<html>`. Flag `@media (prefers-color-scheme)` rules in components; only the pre-paint script in `src/app/layout.tsx` reads the system preference.
 
-- Use `minHeight: "100svh"`.
-- Use `width: "100%"`, not `width: "100vw"`.
-- Use `overflow: "clip"` when clipping is needed.
-- Do not use `overflowX: "hidden"` on root boxes.
-- Do not set `overscroll-behavior` or `touch-action` on `html` or `body`.
-- The document should remain the only vertical scroll container.
+### 3. Typography
 
-Gutters are **SHOULD-FIX**: desktop side padding about `56px`; mobile about `20px`.
+Severity: **SHOULD-FIX**; **BLOCKER** for a non-approved family in public UI.
 
-### 5. Component conventions
+- `font-family` must reference `var(--font-heading)`, `var(--font-body)`, `var(--font-hand)` or `var(--font-code)`, never a raw stack.
+- Only DM Serif Display, Bricolage Grotesque, Nothing You Could Do and JetBrains Mono. Newsreader (`--font-newsreader`) and Caveat (`--font-caveat`) are loaded only for the legacy travel pages.
+- Roles: heading font for headings, titles and sidebar items; body font for prose and UI; hand font for dates, captions, greeting and sign-off; code font for labels, the clock, track numbers and inline code.
+- Flag mono uppercase letter-spaced metadata labels; that's the old catalog style.
 
-Severity: **SHOULD-FIX**.
+### 4. Layout
 
-- New section pages should use `PageShell` and shared design primitives instead of recreating nav, strip, hairlines, labels, or pills.
-- Page titles should be large serif with one italicized word where appropriate.
-- Photo mounts should use paper-card frames, subtle sepia/saturation treatment, captions, and catalog labels.
-- Tag chips should be mono uppercase, transparent background, accent border, and accent text.
-- Public UI should be responsive at `<=768px`; multi-column layouts collapse or otherwise adapt cleanly.
+Severity: **BLOCKER** for structure, **SHOULD-FIX** for sizes.
 
-About page:
+- Every public page renders inside `SiteShell`. Flag pages that build their own nav/footer or still use `PageShell`.
+- `toc` is passed on Home (site nav) and article pages only. Flag a TOC on list pages.
+- Main column max 720px. Breakpoints: `1240px` (TOC column), `904px` (sidebar wraps), `560px` (multi-column rows inside main stack). Flag new arbitrary breakpoints for the same purpose.
+- List rows (Travel Log, Blog) use the shared `list.module.css` grid and stay on one line at every width.
+- `SiteShell` is server-only; a `"use client"` file importing it is a **BLOCKER**.
 
-- Intro splits into a 48px serif headline and a smaller body paragraph; on small screens the headline is about 28px and the body about 19px.
-- The contact card image fills the card width with equal padding, and the card column hugs the image instead of stretching wide.
-- The contact card label is `REF. E-001 LIKENESS.PNG`, all uppercase mono black text.
-- Contact links are minimal rows with logo/icon plus uppercase mono network name; do not show text handles or boxed tiles.
-- Small-screen order is intro, contact card, then Currently.
+### 5. Scroll rules
 
-### 6. Travel index
+Severity: **BLOCKER**.
 
-Severity: **SHOULD-FIX** for drift on `/travels`.
+- Root wrappers use `min-height: 100svh` and `width: 100%`, never `100vw`.
+- Use `overflow: clip`, not `overflow-x: hidden`, on root boxes.
+- Don't set `overscroll-behavior` or `touch-action` on `html` or `body`.
+- The document stays the only vertical scroll container.
 
-- Sort label reads `newest first` or `oldest first`, not `filed by date · newest first`.
-- Sort label is clickable and toggles the trip order.
-- Carousel arrows are `36x26`; disabled arrows must not retain accent hover styling.
-- Travel cards should stretch to equal height with the footer pinned to the bottom so footer dividers align.
-- Travel titles use `white-space: nowrap`.
-- On very narrow phones (`<430px`), title size may reduce from `52px` to about `40px`.
-- Column count should be dynamic `3 / 2 / 1` based on measured title/container width, not hardcoded viewport breakpoints.
+### 6. Components and patterns
 
-### 7. Projects index and detail
+Severity: **SHOULD-FIX**; **BLOCKER** for removed patterns.
 
-Severity: **SHOULD-FIX** for drift on `/projects` or `/projects/[slug]`.
+- Reuse `linkClass`, `mutedClass`, `pageTitleClass`, `Tag`, `TagRow` and `Asterisks` from `@/components/site/ui`, and `Article` / `proseClass` from `@/components/site/Article`, before adding new rules.
+- When two modules style the same element, the owning component should expose a variant. Flag fixes that depend on CSS load order.
+- No cards, box shadows, border-radius on containers, divider lines or decorative icons. Section breaks use `Asterisks`. Only inline code and code blocks have a radius (5px).
+- At most one playful element per page.
+- **BLOCKER (removed patterns):** metadata strip / `MetadataStrip`, `SECTION X · …` tabs, `REF.` labels, catalog or entry numbers, `UPDATED` labels on redesigned pages, the About / Links / Portfolio pages, the subscribe form, MUI imports (`@mui/*`) in public UI.
+- Images use `next/image`; unknown sizes use `width={0} height={0}` with `sizes` and CSS `width: 100%; height: auto`. `priority` only above the fold.
+- Accordions are `<button aria-expanded>` with closed panels `inert`; decorative glyphs are `aria-hidden`.
 
-Projects index:
+### 7. Copy and voice
 
-- Preserve the current spread-entry layout: generated thumbnail plus text block on desktop, text/info first and image second on small screens.
-- Title is `Things I've made.` with no italicized word.
-- Subtitle is only the entry count, for example `1 entry`; do not append `solo`, `collab`, or view-mode text.
-- Each entry's mono line under the title is the tech stack, not role text such as `Solo` or `Co-founder`.
-- Do not render a second tech-stack line in the footer row; the footer row keeps status, spacer, and `open file →`.
-- Sort controls are `newest` / `oldest` above a full-width hairline divider.
-- Entry numbers remain fixed chronologically: oldest project is `Entry 01` even when sorted newest-first.
-- Use the normal hairline for the first-entry divider; do not use a strong rule above the first entry.
+Severity: **NOTE**, unless a removed pattern comes back.
 
-Project detail:
-
-- Header order is back link, hero image, italic serif title, specs strip. Do not render a kicker/status row above the title.
-- Do not render the project `tagline` between the title and specs strip; the prototype detail page intentionally omits it.
-- Specs strip is minimal: no top/bottom rules, width `min(100%, max(50%, 620px))`, left-aligned.
-- Specs labels stack above values at all widths. Values are JetBrains Mono.
-- Field labels are `First published`, `Updated`, `Stack`, `Status`.
-- Dates use tight dots with no spaces, for example `Feb·03·2026`.
-- Desktop fields are separated by small circular dot separators, not borders or slash marks.
-- Phone fields reflow into a 2x2 grid with separators hidden.
-- Status value includes a colored circle: `live` renders green `#71a37e`; `shipping` renders the accent rose.
-- Links are unboxed accent text with no divider line above them.
-- Do **not** render previous/next project navigation at the foot of the page. The detail page ends with the "Where to find it" links row and the right-aligned `Back to top ↑` control; there is no prev/next pager. Flag any reintroduced `← Previous` / `Next →` project nav as **SHOULD-FIX**.
-
-### 8. Copy and voice
-
-Severity: **NOTE**, unless copy conflicts with metadata rules.
-
-- Prefer archival words: "Cataloged", "Filed", "Entry".
-- Mono labels should be taxonomic, for example `SERIES B · TRAVELS` or `REF. B-IDX`.
-- Avoid `FILE:`/`file:` labels in public metadata.
-- Use italics for places and titles, not generic emphasis.
-- Keep the voice quiet and considered, not chatty.
+- Warm, first-person and lowercase-friendly in personal moments (greeting, sign-off); plain everywhere else.
+- Flag archival/catalog vocabulary ("Cataloged", "Filed", "Entry 01", "open file →").
+- Use real arrow glyphs (`→`, `←`, `↗`) in visible UI. Never `->`, `<-` or `=>`.
 
 ## Process
 
 1. Read the sources of truth.
 2. Resolve scope and state it.
 3. Search with `rg` for likely drift:
-   - colors: `#[0-9a-fA-F]{3,6}|rgba?\(|oklch\(`
-   - typography: `fontFamily`
-   - metadata: `file:|FILE:|MetadataStrip|catNo|updatedLabel|metadataExtra|Also on Substack`
-   - scroll: `100vw|overflowX|overscroll-behavior|touch-action`
-   - travel index: `newest first|oldest first|whiteSpace|ResizeObserver|TravelsArrow`
-   - visible ASCII arrows: `<-|->|&lt;-|-&gt;`
+   - colors: `#[0-9a-fA-F]{3,8}\b|rgba?\(|oklch\(|hsl\(`
+   - legacy tokens: `--paper|--ink|tokens\.|@/components/design/`
+   - fonts: `font-family|fontFamily|Newsreader|Caveat`
+   - theming: `prefers-color-scheme|data-theme`
+   - removed patterns: `MetadataStrip|PageShell|catNo|REF\.|SECTION [A-Z]|UPDATED|@mui/`
+   - decoration: `box-shadow|border-radius|border-(top|bottom)`
+   - scroll: `100vw|overflow-x|overscroll-behavior|touch-action`
+   - ASCII arrows: `<-|->|&lt;-|-&gt;`
 4. Read context around each hit. Never flag from grep alone.
 5. Report findings grouped by severity.
 
@@ -219,12 +138,12 @@ Severity: **NOTE**, unless copy conflicts with metadata rules.
 
 Report-only by default. If the user passes `--fix` or asks you to apply fixes, make only safe mechanical fixes:
 
-- swap token-equivalent literals for `tokens.*`
-- replace raw font stacks with `tokens.*`
-- replace `file:` metadata labels with the correct `REF.` value when the route mapping is obvious
-- add missing token imports
+- swap token-equivalent color literals for `var(--…)`
+- replace raw font stacks with the matching `var(--font-…)`
+- replace a separate muted gray with `color: var(--darkgray); opacity: .6`
+- replace ASCII arrows with glyphs
 
-Do not auto-resolve design-system conflicts, rewrite layout architecture, or rewrite copy without confirming.
+Don't auto-resolve design-system conflicts, rewrite layout architecture, or rewrite copy without confirming.
 
 After fixes, run the project verification gate:
 
@@ -232,5 +151,3 @@ After fixes, run the project verification gate:
 npx tsc --noEmit
 npm run lint
 ```
-
-On Windows PowerShell, use `npx.cmd`/`npm.cmd` if script execution policy blocks `npx` or `npm`.

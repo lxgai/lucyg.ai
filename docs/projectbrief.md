@@ -1,18 +1,19 @@
-# Project Brief — Memory Archive (lucyg.ai)
+# Project Brief — lucyg.ai
 
 
 ## Summary
 
 
-**lucyg.ai** is a design-focused personal website for Lucy Gai, built as a "Memory Archive":
-a quiet personal site styled after a library card catalog rather than a conventional portfolio
-or feed. It collects writing, travel journals, projects, and favorites into structured,
-editorial layouts unified by a single design system. The site is built on Next.js 15 (App
-Router) and React 19 with TypeScript in strict mode, stores its content as typed static JSON
-(no database), and pulls in a few external sources — a Substack blog feed, Spotify album data,
-and Letterboxd films. A custom, development-only visual editor lets the author lay out
-freeform "scrapbook" travel pages, and a set of project-specific Claude Code skills automates
-the repetitive content work.
+**lucyg.ai** is Lucy Gai's personal website, built as a quiet, text-first "digital garden" in
+the spirit of the Markdown site-generator Quartz. It collects projects, travels, writing and favorites in a
+three-column layout: a sidebar with recent travels and writing, a single reading column, and a
+table of contents. The site is built on Next.js 15 (App Router) and React 19 with TypeScript in
+strict mode. Content lives in typed static data and Markdown (no database), and a few external
+sources feed in: a Substack blog feed, Spotify album data and Letterboxd reviews.
+
+The site replaced an earlier design, "Memory Archive", styled after a library card catalog. That
+system is documented in `docs/design-memory-archive.md` and still powers the trip detail pages
+and their development-only visual editor until those are redesigned.
 
 
 ## Tech stack
@@ -20,14 +21,15 @@ the repetitive content work.
 
 | Area | Choice |
 | --- | --- |
-| Framework | Next.js `15.5.7` (App Router) |
-| UI runtime | React `19.2.3` |
-| Language | TypeScript `5`, `strict: true`, target ES2017, `@/*` → `src/*` path alias |
-| Styling | MUI Material `7` (`sx` props) for public UI; Tailwind CSS `4` (dev dependency) for the admin editor; Emotion as MUI's styling engine |
-| Content parsing | `fast-xml-parser` (Substack RSS) + `sanitize-html` (untrusted feed HTML) |
-| Markdown | `react-markdown` |
-| Images | `next/image` with remote patterns pointing at an external image bucket |
-| Data | Static JSON / TypeScript modules under `src/data/` — no database |
+| Framework | Next.js `15.5` (App Router) |
+| UI runtime | React `19.2` |
+| Language | TypeScript `5`, `strict: true`, `@/*` → `src/*` path alias |
+| Styling | CSS modules + CSS custom properties for public pages; Tailwind CSS `4` for the admin editors; MUI `7` only on the legacy trip detail pages |
+| Fonts | `next/font/google`: DM Serif Display, Bricolage Grotesque, Nothing You Could Do, JetBrains Mono |
+| Content parsing | `fast-xml-parser` (Substack and Letterboxd RSS) + `sanitize-html` (untrusted feed HTML) |
+| Markdown | `react-markdown` + `remark-gfm` for project write-ups |
+| Images | `next/image`, with home, project and travel photos in a Supabase storage bucket |
+| Data | Static TypeScript/JSON under `src/data/`, Markdown under `src/content/` — no database |
 | Tooling | ESLint `9` (`next/core-web-vitals` + `next/typescript`), Node `.mjs` scripts |
 
 
@@ -36,214 +38,209 @@ A few stack notes worth calling out:
 
 - **No database and no CMS.** Content lives in version control as typed data files. The
   trade-off — editing means committing code — is deliberate for a single-author site.
-- **Two styling systems on purpose.** Public pages use MUI's `sx` responsive object notation;
-  the admin editor uses Tailwind. They're kept in separate areas rather than mixed.
+- **No UI library on public pages.** The redesign dropped MUI in favour of plain React, CSS
+  modules and a handful of CSS variables. Icons are inline SVG paths, not an icon package.
 - **External services are reached over the network, not via SDKs.** There's no Supabase,
-  Spotify, or Letterboxd client library in `package.json`. Images resolve to a configured
-  remote host via `next/image`; integrations run through Node scripts and a couple of API
-  routes.
+  Spotify or Letterboxd client library in `package.json`. Images resolve to the bucket's public
+  URL; the integrations run through server-side fetches and Node scripts.
 
 
 ## Architecture
 
 
-**App Router with server-first rendering.** Pages live under `src/app/` as folders, with
-dynamic routes for `projects/[slug]`, `travels/[id]`, and `blog/[slug]`. Pages are React
-Server Components by default; components that need hooks, browser APIs, or interactivity
-(`Nav`, `TravelDetailPage`, `VinylPlayer`, `PhotoGallery`, `TravelMap`) opt in with
-`"use client"`.
+**App Router with server-first rendering.** Pages live under `src/app/`, with dynamic routes
+for `projects/[slug]` and `blog/[slug]` and one folder per trip under `travels/`. Pages are React
+Server Components by default. Only the genuinely interactive pieces opt into `"use client"`: the
+theme toggle, the collapsible table of contents, the live footer clock and the Favorites
+accordions with their audio player.
+
+
+**One shared shell.** Every public page renders inside `SiteShell`
+(`src/components/site/SiteShell.tsx`), a server-only component that lays out the sidebar, main
+column, optional table of contents and footer. Because it fetches the Substack feed for the
+sidebar's "Selected Writing", it can't be imported by client components; client pages are split
+into a server `page.tsx` that renders the shell around a client child.
+
+
+**Responsive through CSS, not JavaScript.** The three columns are a wrapping flex row. At
+`≥1240px` the table of contents gets its own column; below that it moves into the sidebar; below
+`~904px` the sidebar wraps above the content. Both TOC placements are rendered and switched with
+media queries, so there's no layout measurement or hydration flash.
+
+
+**Theming before first paint.** Colors are eight CSS variables on `:root`, redefined under
+`html[data-theme="dark"]`. A tiny inline script in `<head>` sets `data-theme` from the saved
+choice or the system preference before the page paints, so dark-mode visitors never see a
+light flash.
 
 
 **Static data as a content model.** `src/data/` holds the source of truth: `travels.ts`
-(`TRIPS`), `projects.ts` (`PROJECTS`), `favorites.ts` (albums, tracklists, films), and
-per-trip layout files in `src/data/travel-details/*.json`. Shared TypeScript types in
-`src/types/` describe these shapes so the data and the components that render it stay in sync.
+(`TRIPS`), `projects.ts` (`PROJECTS`), `favorites.ts` (albums, tracklists, audio clips, films),
+`blog-tags.ts`, and per-trip layout files in `src/data/travel-details/*.json`. Project write-ups
+are Markdown in `src/content/projects/`; their headings become the page's table of contents.
 
 
-**Image pipeline.** `src/lib/images.ts` normalizes local-looking paths (e.g.
-`/images/travels/...`) and resolves them to an external image bucket. `next.config.ts` reads
-`NEXT_PUBLIC_SITE_IMAGE_BASE_URL` and registers it as an allowed `remotePatterns` host so
-`next/image` can optimize remote assets (quality tiers 75/85/100).
+**Image pipeline.** `src/lib/images.ts` maps logical paths such as `/images/projects/<slug>/…`
+to the Supabase bucket under `NEXT_PUBLIC_SITE_IMAGE_BASE_URL`, and `next.config.ts` registers
+that host for `next/image`. Favorites covers and audio clips stay in `public/`.
 
 
 **Content pipeline with graceful fallback.** `src/lib/substack.ts` (a `server-only` module)
-fetches the configured Substack RSS feed, parses it with `fast-xml-parser`, and sanitizes each
-post's HTML with an explicit tag/attribute allowlist before rendering. Network results are
-cached with Next.js ISR at a one-hour revalidation window (`REVALIDATE_SECONDS = 60 * 60`). If
-the feed is missing, returns a non-OK status, or fails to parse, the code falls back to local
-posts — the blog never hard-fails on an external dependency.
-
-
-**Build hook for freshness.** `predev` and `prebuild` run `scripts/generate-page-updated.mjs`,
-which regenerates the "last updated" timestamps shown in each page's metadata strip, so the
-catalog dates stay current without manual edits.
+fetches the Substack RSS feed, parses it with `fast-xml-parser`, and sanitizes each post's HTML
+with an explicit tag/attribute allowlist. `src/lib/articleHtml.ts` then adds heading ids for the
+table of contents and turns `✧ ✦ ✧` lines into the site's asterisk divider. Results are cached
+with ISR for an hour. If the feed is missing or fails, the blog falls back to local posts — it
+never hard-fails on an external dependency. Favorites reads Letterboxd's RSS the same way to
+pull in review text for each film.
 
 
 ## Features
 
 
-- **Home** — an editorial landing page with a "Lately" block surfacing the latest blog post,
-  recent music, current trip, and active project as quick links.
-- **Blog** — an index plus per-post detail pages backed by the Substack feed (with the local
-  fallback above), including related-post links and an "Also on Substack ↗" out-link.
-- **Travels** — an index with a sortable card carousel, and rich per-trip detail "journals"
-  (see below) featuring freeform image/text layouts, and a photo lightbox.
-- **Projects** — an index "spread list" and detail pages with a specs grid (stack, status,
-  dates) and optional by-the-numbers metrics.
-- **Favorites** — a music view with a custom vinyl-player UI, an album grid, and tracklists
-  synced from Spotify; plus a films view backed by Letterboxd.
-- **About / Links** — a two-column about page with a contact index, and a minimal links page.
+- **Home** — a dithered banner, a handwritten greeting, a short introduction, a "Currently"
+  list and a handwritten sign-off. Its table of contents doubles as site navigation.
+- **Projects** — a list of thumbnail rows and long-form Markdown write-ups with a lede,
+  captioned figures, tables and a generated table of contents.
+- **Travels** — a Travel Log of dated rows with city tags, linking to per-trip detail pages
+  (still on the legacy fixed-canvas layout, see below).
+- **Blog** — a dated list with tags and full posts rendered from Substack, with reading time and
+  a generated table of contents.
+- **Favorites** — accordions of albums (cover, a featured-track audio clip, a tracklist with
+  favorites starred, synced from Spotify) and films (poster and Letterboxd review).
+- **Everywhere** — light and dark themes, a sidebar of recent travels and writing, and a footer
+  with a live clock and social links.
 
 
 ## What makes it technically interesting
 
 
-### The fixed-canvas travel-detail system
+### A small, strict design system
 
 
-The travel journals are the centerpiece. Instead of a flowing responsive layout, each trip is
-authored on **fixed design canvases per breakpoint** — large `1440px`, medium `1120px`, small
-`470px`. Every element (image, text, tape decoration) stores a per-breakpoint layout with a
-deliberate **coordinate contract**:
+The look is enforced by a handful of rules rather than per-page styling (documented in
+`docs/design.md`):
+
+- **Eight color tokens**, each with a light and a dark value: a mint background, magenta body
+  text, a deeper magenta for headings and jade for underlines, tags and accents. Muted text is
+  the body color at 60% opacity rather than a separate gray.
+- **Four typefaces with fixed roles**: DM Serif Display for headings, Bricolage Grotesque for
+  body and UI, Nothing You Could Do for handwritten dates and captions, JetBrains Mono for
+  labels and the clock.
+- **Restraint as a rule**: no cards, shadows, divider lines or decorative icons, and at most one
+  playful element per page.
+
+Shared pieces (`Tag`, `TagRow`, `Asterisks`, `Article`, link and title classes) live in
+`src/components/site/`, so pages compose them instead of restyling.
 
 
-- horizontal position and width are expressed as **percentages of the canvas width**;
-- vertical position is expressed in **absolute pixels**;
-- plus rotation, z-index, and a visibility flag.
+### The legacy fixed-canvas travel-detail system
 
 
-On the public page the entire canvas is rendered and then **scaled to fit the available width**
-with a CSS transform, measured live via a `ResizeObserver`, with a `0.94` multiplier for
-breathing room. Because positions are percentages of the canvas, scaling the container down
-keeps every element in the right relative place — no per-element recomputation. The admin
-editor renders the same components at **scale `1`** so drag and resize math operates on stable,
-unscaled design coordinates. This separation — *edit in design space, display in scaled space*
-— is what keeps the whole system simple.
+The trip pages predate the redesign and are its last holdout. Each trip is authored on **fixed
+design canvases per breakpoint** — large `1440px`, medium `1120px`, small `470px`. Every element
+(image, text, tape decoration) stores a per-breakpoint layout with a deliberate **coordinate
+contract**:
 
+- horizontal position and width are **percentages of the canvas width**;
+- vertical position is **absolute pixels**;
+- plus rotation, z-index and a visibility flag.
 
-### Automated responsive derivation
+The public page renders the canvas and **scales it to fit** with a CSS transform measured by a
+`ResizeObserver` (with a `0.94` multiplier). The admin editor renders the same components at
+**scale `1`** so drag and resize math works in stable design coordinates — *edit in design
+space, display in scaled space*. Only the `large` layout is authored by hand;
+`scripts/derive-travel-layouts.mjs` derives a proportional medium layout and a single-column
+small layout.
 
-
-Authoring three breakpoints by hand would be tedious, so only the `large` layout is authored
-manually. `scripts/derive-travel-layouts.mjs` derives the other two: **medium** is a faithful
-proportional shrink (percentages carry over, pixel offsets scale by the width ratio, rotation
-preserved), and **small** is an auto-generated single-column stack (full-width blocks, rotation
-flattened, ordered by reading order, heights estimated from image aspect ratios). The script
-only changes vertical/height values — it never touches canvas widths, preserving the
-coordinate contract.
-
-
-### The Memory Archive design system
-
-
-The aesthetic is enforced by a small, strict system rather than ad-hoc styling:
-
-
-- **Two typefaces only** — Newsreader (serif) for editorial/human content, JetBrains Mono for
-  metadata, labels, and catalog numbers.
-- **A tight palette** defined as tokens (`src/components/design/tokens.ts`): warm "paper"
-  backgrounds, layered "ink" text shades, hairline borders, and one rose accent used sparingly.
-- **A shared metadata strip** with an archival taxonomy: a filled accent section "tab", a
-  `REF.` catalog number (`REF. 00` for home, `REF. B-IDX` for the travels index, `REF. B-01`
-  for the first trip), a dotted leader, and tight-dot dates like `UPDATED 04·22·26`.
-- **A quiet, archival copy voice** — "Cataloged", "Filed", "Entry" — documented in
-  `docs/design.md` as the visual and editorial source of truth.
+The planned redesign replaces these canvases with single-column articles, with the editor
+revamped to match.
 
 
 ### A development-only editor, contained safely
 
 
-The travel-detail editor lives at `/admin/travel-detail-editor` and is never exposed in
-production: the page calls `notFound()` when `NODE_ENV === "production"`, and every
-`/api/admin/*` route returns 404 before doing any file work. The save/load routes validate the
-trip slug against a strict regex and resolve paths defensively so writes can only land inside
-`src/data/travel-details/` — guarding against path traversal even on a personal project.
+The travel editors live under `/admin/` and are never exposed in production: the pages call
+`notFound()` when `NODE_ENV === "production"`, and every `/api/admin/*` route returns 404 before
+doing any file work. The save/load routes validate the trip slug against a strict regex and
+resolve paths defensively so writes can only land inside `src/data/travel-details/`.
 
 
 ### Custom Claude Code skills as project tooling
 
 
-The repository ships its own automation as Claude Code skills under `.claude/skills/`, turning
-repetitive, error-prone content chores into repeatable, verified workflows:
+The repository ships its own automation as Claude Code skills under `.claude/skills/`:
 
-
-- **`add-trip`** — scaffolds a new travel entry end-to-end (JSON, route page, index entries,
-  asset manifest) while keeping the slug identical across every file.
+- **`add-trip`** — scaffolds a new travel entry end-to-end while keeping the slug identical
+  across every file.
 - **`derive-travel-layouts`** — runs the responsive derivation described above.
-- **`design-check`** — audits changes against the design system (tokens, type, metadata strip,
-  scroll rules, copy voice).
-- **`manage-albums`** — adds/removes/reorders favorites albums, keeping titles consistent across
-  data files and re-syncing tracklists.
+- **`design-check`** — audits changes against the design system (tokens, fonts, theming,
+  layout, scroll rules, removed patterns, copy voice).
+- **`manage-albums`** — adds, removes and reorders favorite albums, keeping titles consistent
+  across data files and re-syncing tracklists.
 
 
 ## What you could learn building this (new to web dev / frontend)
 
 
-This project is an unusually complete tour of modern frontend concepts. For someone newer to
-web development — especially building alongside a tool like Claude Code — here's what's
-genuinely learnable from it, and where each idea shows up.
+This project is a compact tour of modern frontend concepts. For someone newer to web development
+— especially building alongside a tool like Claude Code — here's what's learnable from it, and
+where each idea shows up.
 
 
-**The React + Next.js mental model.** The whole site is composition: small components taking
-`props` and returning UI. The App Router teaches **file-based routing** (a folder under
-`src/app/` becomes a URL) and **dynamic routes** (`[slug]`, `[id]`). The most important modern
-distinction is **Server Components vs. Client Components** — most pages render on the server for
-free, and you only reach for `"use client"` when you need state, effects, or browser APIs. The
-blog and travel pages are a clean example of the split.
+**The React + Next.js mental model.** The site is composition: small components taking `props`
+and returning UI. The App Router teaches **file-based routing** (a folder under `src/app/`
+becomes a URL) and **dynamic routes** (`[slug]`). The most important modern distinction is
+**Server Components vs. Client Components**: most of the site renders on the server, and only
+the theme toggle, clock, table of contents and accordions ship JavaScript to the browser.
 
 
-**Styling systems beat ad-hoc CSS.** The site demonstrates *why* you constrain yourself: a
-fixed palette and exactly two fonts, expressed as **design tokens**, produce a coherent look
-with far less effort than free-styling each page. You'll also see **responsive breakpoints**
-in practice (MUI's `sx` object notation), and the real-world reality that a codebase can host
-**more than one styling approach** (MUI for public UI, Tailwind for the editor) as long as
-they're kept in their own lanes.
+**CSS can do more than you think.** The redesign removed a component library and lost nothing.
+**CSS variables** make theming a matter of swapping eight values; **CSS modules** scope styles
+to a component without naming collisions; **media queries** move the table of contents between
+columns with no JavaScript; and `grid-template-rows: 0fr → 1fr` animates an accordion to its
+natural height. Constraining yourself to a few tokens and fonts produces a more coherent site
+with less code.
 
 
 **Data without a database.** Not every site needs Postgres. Here, content is **typed static
-JSON/TS modules**, which makes the data self-documenting and impossible to mis-shape (the
-compiler checks it). The lesson is judgment: this works because there's one author and content
-changes ship with deploys — and you'll learn to recognize when that *stops* being enough.
+data and Markdown**, which makes it self-documenting and hard to mis-shape (the compiler checks
+it). The lesson is judgment: this works because there's one author and content ships with
+deploys.
 
 
-**Fetching external data safely.** The Substack integration is a compact masterclass:
-parse an external format (RSS/XML), **sanitize untrusted HTML** before rendering it (never
-trust a third party's markup), **cache** results with ISR so you're not re-fetching on every
-request, and **fall back gracefully** when the network fails. Those four habits transfer to
-almost any API integration.
+**Fetching external data safely.** The Substack integration is a small masterclass: parse an
+external format (RSS/XML), **sanitize untrusted HTML** before rendering it, **cache** results
+with ISR so you're not re-fetching on every request, and **fall back gracefully** when the
+network fails. Those habits transfer to almost any API integration.
 
 
-**How images actually work on the web.** `next/image` introduces the concepts that matter for
-performance: serving optimized formats and sizes, hosting assets on a **remote bucket/CDN** and
-allow-listing that host, using `fill` + `sizes` for responsive images, and marking only
-above-the-fold images as `priority` (this is the **LCP** — largest contentful paint — that web
-performance scores care about).
+**How images work on the web.** `next/image` introduces the concepts that matter for
+performance: serving optimized sizes, hosting assets on a **remote bucket/CDN** and
+allow-listing that host, using `sizes` for responsive images, and marking only above-the-fold
+images as `priority` (the **LCP** — largest contentful paint — that performance scores care
+about).
 
 
-**TypeScript as a guardrail, not bureaucracy.** Strict mode forces you to handle the cases you'd
-otherwise forget (null/undefined). The travel layout types are a great teaching example of
-**discriminated unions** — modeling "a block is either an image or text" so that invalid
-combinations literally can't be written. Good types make a whole class of bugs unrepresentable.
+**TypeScript as a guardrail.** Strict mode forces you to handle the cases you'd otherwise
+forget. The travel layout types are a good example of **discriminated unions** — "a block is
+either an image or text" — so invalid combinations can't be written.
 
 
-**Coordinate systems and responsive math.** The fixed-canvas system teaches a transferable
-idea: separate your **logical coordinate space** from how it's **displayed**. Author in stable
-units, then scale the presentation. The same pattern recurs in games, canvas/SVG work, and any
-zoomable UI.
+**Coordinate systems and responsive math.** The legacy travel canvases teach a transferable
+idea: separate your **logical coordinate space** from how it's **displayed**. The same pattern
+recurs in games, canvas/SVG work and any zoomable UI.
 
 
-**Security basics apply even to "just a personal site."** Env-gating admin tooling so it can't
-ship to production, and validating file paths to prevent traversal, are habits worth forming
-early — the admin routes here show both.
+**Security basics apply even to "just a personal site."** Env-gating admin tooling and
+validating file paths to prevent traversal are habits worth forming early.
 
 
-**Working effectively *with* an AI coding tool.** Perhaps the most portable lesson. This repo is
+**Working effectively *with* an AI coding tool.** Perhaps the most portable lesson. The repo is
 set up so the tool produces consistent work: conventions are written down where the tool reads
-them (`.claude/CLAUDE.md`, `docs/design.md`), repeatable tasks are captured as **skills** rather
-than re-explained each time, and there are **verification gates** (`npx tsc --noEmit`,
-`npm run lint`, the `design-check` skill) that catch drift. The meta-skill is treating generated
-code as a draft you review and own — reading it, understanding it, and holding it to the same
-standards you would your own.
+them (`.claude/CLAUDE.md`, `AGENTS.md`, `docs/design.md`), repeatable tasks are captured as
+**skills**, and **verification gates** (`npx tsc --noEmit`, `npm run lint`, the `design-check`
+skill) catch drift. A whole-site redesign became tractable because the target design was
+written down first and every page could be checked against it.
 
 
 ## Verification & workflow
@@ -251,23 +248,18 @@ standards you would your own.
 
 The project has **no test framework**; quality is enforced by static checks and conventions:
 
-
 ```bash
 npx tsc --noEmit   # type-check (strict)
 npm run lint       # ESLint (next/core-web-vitals + next/typescript)
 ```
 
-
-For UI changes, the `design-check` skill audits diffs against the Memory Archive system, and
-visual review is done at desktop and mobile widths with attention to text overflow and scroll
-behavior. Builds, installs, and dev servers are run by the author, not automatically.
+For UI changes, the `design-check` skill audits diffs against the design system, and visual
+review covers desktop (≥1240px), tablet (~900px) and mobile (~375px) widths in both light and
+dark mode. Builds, installs and dev servers are run by the author, not automatically.
 
 
 ---
 
 
 *See `src/content/projects/memory-archive.md` for the author's personal, first-person account
-of why the site was built. This brief is the complementary technical view.*
-
-
-
+of why the site was originally built. This brief is the complementary technical view.*

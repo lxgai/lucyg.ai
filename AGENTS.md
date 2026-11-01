@@ -2,18 +2,19 @@
 
 ## Project
 
-Personal site for Lucy Gai. This is a design-focused Next.js portfolio with sections for home, blog, travels, projects, favorites, about, links, and a development-only travel-detail editor.
+Personal site for Lucy Gai: a text-first Next.js "digital garden" with home, projects, travels, favorites, blog, and a development-only travel-detail editor.
 
-Use `docs/design.md` as the visual source of truth for the site's Memory Archive design system.
+Use `docs/design.md` as the visual source of truth. The previous Memory Archive system is archived in `docs/design-memory-archive.md` for reference only; don't apply it to new work. `.claude/CLAUDE.md` carries the same rules for Claude Code; keep the two in sync.
 
 ## Stack
 
 - Next.js 15 App Router
 - React 19
 - TypeScript with `strict: true`
-- MUI v7 / Joy UI available; most UI is currently MUI `sx`
-- Tailwind CSS v4 is configured and used in the admin editor
-- Static JSON data under `src/data/`; no database
+- Public pages: plain React + CSS modules + CSS custom properties (no MUI)
+- MUI v7 is still installed for the legacy travel detail pages; don't use it in new public UI
+- Tailwind CSS v4 is configured and used in the admin editors
+- Static data under `src/data/`, project write-ups in `src/content/projects/`, blog posts from the Substack RSS feed; no database
 
 ## Commands
 
@@ -23,160 +24,121 @@ npm run build
 npm run lint
 ```
 
-There is no test framework configured. Before handing off code changes, run `npm run lint` and `npm run build` when practical.
+There is no test framework configured.
 
 Note: `npm run lint` currently maps to `next lint`; verify it still works with the installed Next version before relying on it.
 
 ## Important Paths
 
 - `src/app/` - App Router pages and API routes
-- `src/components/` - shared components such as `Header`, `PhotoGallery`
+- `src/components/site/` - redesigned site chrome and shared UI: `SiteShell`, `Toc`, `ThemeToggle`, `Clock`, `Article`, `Tag`/`TagRow`/`Asterisks`
+- `src/components/design/`, `src/components/travel/` - legacy Memory Archive components still used by travel detail pages and the editors
+- `src/data/` - projects, travels, favorites (albums, tracklists, films), blog tags
 - `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
-- `src/data/blog-tags.ts` - local tag mapping for Substack-imported blog entries
-- `src/data/substack/sample-feed.xml` - fixture RSS feed for local Substack integration testing
-- `src/lib/substack.ts` - server-only Substack RSS importer and sanitizer
-- `src/types/` - shared TypeScript types
-- `src/styles/globals.css` - global CSS, Tailwind import, font variables
-- `docs/design.md` - current design system and copy guidance
-- `.claude/CLAUDE.md` - older but still useful implementation notes, especially scroll and admin-editor details
+- `src/content/projects/` - Markdown write-ups, one per project slug
+- `src/lib/` - Substack and Letterboxd feeds, image URL resolver, date and slug helpers, article HTML prep
+- `src/styles/globals.css` - design tokens, theme, global resets
+- `docs/design.md` - current design system
+- `docs/customization-manual.md` - how to edit projects, travels, favorites and blog content
 
 ## Design Direction
 
-The intended aesthetic is "Memory Archive": a quiet personal archive / library card catalog with structured, editorial layouts.
+Quiet, three-column, text-first (modelled on the Markdown site-generator Quartz). No cards, shadows, divider lines or decorative icons. One playful element per page at most.
 
-Follow these defaults for new or refreshed public-facing UI:
+Tokens are CSS variables in `src/styles/globals.css`; never hard-code colors in components.
 
-- Background paper: `#f1e9df`
-- Secondary paper: `#e6dccb`
-- Card paper: `#fbf6ee`
-- Primary ink: `#1f1a16`
-- Secondary ink: `#5a4e43`
-- Metadata ink: `#8a7e70`
-- Hairline: `rgba(31, 26, 22, 0.2)`
-- Strong hairline: `rgba(31, 26, 22, 0.55)`
-- Accent rose: `rgb(163, 91, 115)`, used sparingly
+- `--light` background, `--darkgray` body text and links, `--dark` headings, `--underline` (jade) for link underlines, tags, asterisks and arrows, `--gray` idle TOC links, `--lightgray` code backgrounds, placeholders and table rules.
+- Muted text is `color: var(--darkgray); opacity: .6`, never a separate gray.
+- Light/dark is `data-theme` on `<html>`; every new style must work in both.
 
-Typography direction:
+Typography (the only four families; don't add others in new UI):
 
-- Display serif should be Newsreader for headings, page titles, place names, post titles, and other human/editorial content.
-- Mono should be JetBrains Mono for metadata, section labels, catalog numbers, dates, and taxonomy.
-- Newsreader and JetBrains Mono are the only typefaces; do not introduce others.
+- DM Serif Display (`--font-heading`): headings, titles, sidebar items.
+- Bricolage Grotesque (`--font-body`): body and UI.
+- Nothing You Could Do (`--font-hand`): dates, captions, greeting, sign-off.
+- JetBrains Mono (`--font-code`): labels, clock, track numbers, inline code.
 
-Layout direction:
+Layout:
 
-- Desktop page gutters: about `56px`
-- Mobile gutters: about `20px`
-- Use wide horizontal containers and generous whitespace.
-- Section pages should use the shared metadata strip (filled accent "tab" for the section name, no top/bottom rules) with section name, REF label, dotted leader, and tight-dot updated date on desktop. On small screens, show only the tab; hide the REF label, dotted leader, and updated date.
-- Page titles should be large serif type with one italicized word where appropriate.
-- Navigation should be sticky, hairline-bordered, with active links underlined in the accent color.
+- Every public page renders inside `SiteShell`. Pass `toc` on Home (site nav) and article pages only; list pages have no TOC.
+- Main column max 720px. TOC column appears at ≥1240px, otherwise the TOC sits in the sidebar.
+- The sidebar wraps above main below ~904px. Multi-column rows inside main stack below 560px where they'd get too narrow.
+- Use real arrow glyphs (`→`, `←`) in visible UI, never ASCII substitutes.
+- Removed patterns that must not come back: the metadata strip, `SECTION X · REF.` labels, catalog numbers, the About, Links and Portfolio pages, the subscribe form.
 
-Metadata strip dates:
-
-- `UPDATED` labels are generated into `src/data/page-updated.ts` by `scripts/generate-page-updated.mjs`.
-- Render dates with tight dots, for example `UPDATED 04·22·26`.
-- The generator runs on `predev` and `prebuild`; run `npm run generate:page-updated` manually after date-source changes while a dev server is already running.
-- Each route has a source-file list in `scripts/generate-page-updated.mjs`. If any listed source is dirty in Git, that route uses today's date; otherwise it uses the latest committed date for those sources.
-- When moving section data, update the route source list so unrelated section edits do not bump each other's metadata dates.
-
-Metadata strip REF labels:
-
-- Home uses `REF. 00`.
-- Listing/index pages use `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`).
-- Detail pages use `REF. {letter}-{nn}` from the entry's archive position, such as `REF. B-01` for China.
-- Detail page section tabs follow `SECTION {letter} · {SERIES} / {ENTRY}`: middot `·` for the series prefix, forward slash `/` before the specific entry name (e.g. `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`). Do not separate the entry name with a middot.
-- Do not use `file:`/`FILE:` text in public metadata strips.
-- Detail page back links (`← Projects`, `← Travels`, `← Blog`) sit directly below the strip and above content.
-- Use actual arrow glyphs in visible public UI (`←`, `→`, `↗`); never use ASCII substitutes such as `<-` or `->`.
-- Blog detail keeps `Also on Substack ↗` out of the strip; place it centered below the post title area near tags.
-
-Copy direction:
-
-- Quiet and considered, not chatty.
-- Prefer archival words such as "Cataloged", "Filed", and "Entry".
-- Mono labels can be taxonomic, for example `SERIES C · TRAVELS` or `REF. C-IDX`.
-- Use italics for places and titles, not generic emphasis.
+Copy: warm, first-person and lowercase-friendly in personal moments (greeting, sign-off), plain everywhere else.
 
 ## Coding Conventions
 
-- Keep page components client-side when they need hooks, browser APIs, MUI interactivity, or match the existing page pattern.
+- Prefer server components. Use `"use client"` only for interactive pieces (theme toggle, TOC collapse, clock, accordions, audio).
+- `SiteShell` is server-only (it reads the Substack feed). Client pages must be split into a server `page.tsx` that renders `SiteShell` around a client component.
+- Style with a CSS module next to the component. Reuse `ui.module.css` and `article.module.css` before adding new rules.
+- When two modules style the same element, don't rely on CSS load order. Add a variant to the owning component instead.
 - Use the `@/*` alias for imports from `src`.
-- Prefer MUI `sx` responsive object notation for public UI unless working in an area already using Tailwind.
-- Use `next/image` for images with explicit `width`/`height`, or `fill` plus `sizes`.
+- Use `next/image`. For images of unknown size use `width={0} height={0}` with `sizes` and CSS `width: 100%; height: auto`.
 - Use `priority` only for above-the-fold images.
 - Keep route folders kebab-case and components/types PascalCase.
-- Prefer local React state; no global state library is configured.
-- Preserve TypeScript strictness and avoid `any` unless a narrow, documented escape hatch is genuinely needed.
+- Preserve TypeScript strictness and avoid `any`.
 
 ## Page Layout And Scroll Rules
 
 For root page wrappers:
 
-- Use `minHeight: "100svh"`.
-- Use `width: "100%"`, not `width: "100vw"`.
-- Use `overflow: "clip"` when clipping is needed.
-- Do not use `overflowX: "hidden"` on root boxes.
-- Do not set `overscroll-behavior` or `touch-action` on `html` or `body`.
+- Use `min-height: 100svh`.
+- Use `width: 100%`, not `100vw`.
+- Use `overflow: clip` when clipping is needed; don't use `overflow-x: hidden` on root boxes.
+- Don't set `overscroll-behavior` or `touch-action` on `html` or `body`.
 
-The document should remain the only vertical scroll container. Using `100vw` or `overflowX: hidden` on page roots can create horizontal overflow or accidental nested vertical scroll containers, especially on Windows/Linux.
+The document should remain the only vertical scroll container. `100vw` or `overflow-x: hidden` on page roots can create horizontal overflow or nested vertical scroll containers, especially on Windows/Linux.
 
 ## Blog And Substack
 
-The public blog uses Substack as the primary source when configured.
+The blog reads the Substack RSS feed through `src/lib/substack.ts`.
 
 - `SUBSTACK_FEED_URL` points at the publication RSS feed, usually `https://your-subdomain.substack.com/feed`.
+- `SUBSTACK_PUBLICATION_URL` is optional; otherwise the publication link is derived from the feed URL. It feeds the "Also on Substack." link on `/blog`.
 - `SUBSTACK_USE_SAMPLE_FEED=1` forces the committed fixture feed at `src/data/substack/sample-feed.xml`.
-- `SUBSTACK_EMBED_URL` optionally enables the official Substack subscribe iframe.
-- If no feed is configured or feed parsing fails, the site falls back to local `POSTS` from `src/data/content.ts`.
-- Substack RSS often does not expose editor tags. Add personal-site tags by slug in `src/data/blog-tags.ts`.
-- Do not add a generic fallback tag such as `entry`; entries with no RSS or local tags should render without tag chips.
-- Imported article HTML must remain sanitized in `src/lib/substack.ts`; do not render raw feed HTML directly.
-- Keep RSS images rendered through sanitized HTML/CSS instead of `next/image`, unless a deliberate remote image policy is added.
+- If no feed is configured or parsing fails, the site falls back to local `POSTS` from `src/data/blog.ts`.
+- Substack RSS often doesn't expose tags. Add tags by slug in `src/data/blog-tags.ts`. Don't add a generic fallback tag; untagged posts render without chips.
+- Article HTML must stay sanitized in `src/lib/substack.ts`; never render raw feed HTML. `src/lib/articleHtml.ts` only adds heading ids and dividers to the sanitized HTML.
 
-## Travel Detail System
+## Images
 
-Detailed trip pages, such as `/travels/china-24`, use travel detail JSON from `src/data/travel-details/`.
+Home, project and travel images live in the Supabase bucket, not the repo. Code references logical paths such as `/images/projects/<slug>/<file>`, and `src/lib/images.ts` rewrites them to `{NEXT_PUBLIC_SITE_IMAGE_BASE_URL}/projects/<slug>/<file>`. Favorites covers and audio clips stay local under `public/`.
 
-- Travel detail content uses fixed design canvases per breakpoint: `large` 1440px, `medium` 1120px, and `small` 470px.
-- The public page renders the fixed travel detail block centered and scaled to fit the available page width. The current public scale multiplier is `0.94`.
-- The site nav and public metadata strip are normal site chrome and must not be inside the scaled travel detail surface.
-- The scaled travel detail block starts below the metadata strip and includes hero, section canvases, and closing content.
-- The dev editor preview renders the selected breakpoint at exact scale `1` for stable drag and resize coordinates.
-- Hero layout is editable through travel detail JSON: image frame, copy block, tape decorations, and per-breakpoint hero canvas height.
-- Section canvas widths define the horizontal coordinate system. Do not expose editable section width controls in the editor; only section heights should be editable per breakpoint.
-- Drag and resize math should continue to use unscaled design coordinates.
+## Travel Detail System (legacy, pending redesign)
+
+Trip pages such as `/travels/china-25` still use the fixed-canvas Memory Archive layout from `src/data/travel-details/*.json`, rendered by `TravelDetailPage` with the old `PageShell`. The redesign replaces them with single-column articles (stickers over photo corners, city h2s with the Chinese name, day-range sublines). That work, along with a single-column revamp of the editor, is deferred. Until then:
+
+- Fixed design canvases per breakpoint: `large` 1440px, `medium` 1120px, `small` 470px, scaled to fit with a `0.94` multiplier.
+- Drag and resize math uses unscaled design coordinates. Section widths stay in JSON but aren't editable; heights are.
+- The legacy tokens (`--paper`, `--ink`, …) and Newsreader/Caveat fonts stay loaded for these pages. Remove them once the travel pages are redesigned.
+- `scripts/generate-page-updated.mjs` (run on `predev`/`prebuild`) still feeds the old metadata strip on these pages. Delete it, and `src/data/page-updated.ts`, after the travel redesign.
 
 ## Admin Travel Detail Editor
 
 The editor at `/admin/travel-detail-editor` is development-only.
 
 - It must call `notFound()` in production, and all `/api/admin/*` routes must return 404 in production before doing any file or request work.
-- Be careful when touching save/load path handling; do not broaden write access beyond the project data files.
-- It edits travel detail JSON under `src/data/travel-details/`.
-- It should render the same detail components as the public page where practical, but in fixed preview mode at scale `1`.
-- The hero can be visually edited by selecting and dragging its image frame, copy block, and tape pieces in the preview.
-- Keep section width values in JSON/types for compatibility, but do not make them editable in the UI.
-- Height controls are allowed because they change vertical canvas space without changing the horizontal coordinate contract.
+- Be careful when touching save/load path handling; don't broaden write access beyond the project data files.
+- It edits travel detail JSON under `src/data/travel-details/` and renders the same detail components as the public page at scale `1`.
 
 ## Implementation Notes
 
-- The current working tree may contain user edits. Do not revert unrelated changes.
+- The working tree may contain user edits. Don't revert unrelated changes.
 - Keep changes scoped to the requested feature or fix.
-- If updating the design system implementation, prefer adding clear shared constants/helpers only when they reduce real duplication.
-- Do not introduce new UI libraries unless the task requires it.
-- Avoid decorative one-off assets or layouts that conflict with the archive/catalog direction.
-- Public pages should be responsive at mobile `<=768px`; multi-column layouts collapse to one column.
+- Don't introduce new UI libraries unless the task requires it.
 
 ## Verification
 
-For code changes, Codex should stop once TypeScript and lint pass:
+For code changes, stop once TypeScript and lint pass:
 
 ```bash
 npx tsc --noEmit
 npm run lint
 ```
 
-Lucy will run dependency installation, production builds, and dev servers herself. Do not run these unless she explicitly asks in that turn:
+Lucy runs dependency installation, production builds and dev servers herself. Don't run these unless she explicitly asks in that turn:
 
 ```bash
 npm install
@@ -184,4 +146,4 @@ npm run build
 npm run dev
 ```
 
-When visual changes are involved, describe what should be checked at desktop and mobile widths instead of starting the dev server. Pay special attention to text overflow, scroll behavior, and whether legacy styling was unintentionally preserved where the new Memory Archive design should apply.
+When visual changes are involved, describe what to check at desktop (≥1240px), tablet (~900px) and mobile (~375px) widths, in both light and dark mode.

@@ -32,7 +32,7 @@ My initial prompt mentioned `"minimal"`, `"clean"`, yet still `"scrapbook"` and 
 
 ![Variations of music player and metadata strip](/images/projects/memory-archive/music-infostrip-variations.png)
 
-Final summary of design choices are shown in [/docs/design.md](https://github.com/lxgai/lucyg.ai/blob/master/docs/design.md). 
+Final summary of design choices are shown in [/docs/design-memory-archive.md](https://github.com/lxgai/lucyg.ai/blob/master/docs/design-memory-archive.md). 
 
 
 ## Some Brief Technical Details

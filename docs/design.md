@@ -1,280 +1,148 @@
-# Design System — Personal Site
+# Design System — lucyg.ai
 
-## Aesthetic Direction: Memory Archive
+The site is a quiet, text-first, three-column "digital garden" in the spirit of the Markdown site-generator Quartz. There are no cards, shadows, divider lines or decorative icons. Muted text is the body color at reduced opacity, never a separate gray. Each page gets at most one playful element (the handwritten greeting, the asterisk divider, the album player, stickers on travel entries).
 
-The site reads like a personal **library card catalog** — an archival room where each section is a cataloged collection. Quiet, structured, scrapbook-adjacent but never cluttered.
-
-**References:** stationery shops, archival exhibits, library taxonomy, faded film photography.
+The source prototypes live in the Claude Design project "Lucy Gai's site redesign". The previous Memory Archive system is kept for reference in `docs/design-memory-archive.md`; don't apply it to new work.
 
 ---
 
-# Palette
+## Tokens
 
-* **Paper** `#f1e9df` — primary background
-* **Paper deep** `#e6dccb` — secondary surface
-* **Paper card** `#fbf6ee` — cards & lifted surfaces
-* **Ink** `#1f1a16` — primary text
-* **Ink 60%** `#5a4e43` — secondary text / labels
-* **Ink 40%** `#8a7e70` — tertiary / metadata
-* **Hairline** `rgba(31, 26, 22, 0.2)` — dividers
-* **Strong hairline** `rgba(31, 26, 22, 0.55)` — section breaks
-* **Accent — Rose** `rgb(163, 91, 115)` — used sparingly for active states, taxonomy labels, “now playing”, call-to-action
-* **Live — Green** `#71a37e` — project status color for entries marked `live`; `shipping` status continues to use the accent rose
+Defined as CSS custom properties in `src/styles/globals.css`: light values on `:root`, dark values under `html[data-theme="dark"]`.
 
-> Alternate accents available as tweaks: forest, navy, rust. Default is rose.
+| Token | Light | Dark | Used for |
+|---|---|---|---|
+| `--light` | `#f8fbf8` (mint white) | `#181316` (plum black) | page background |
+| `--lightgray` | `color-mix(in oklch, #f8fbf8 90%, #8a8580)` | `#2b2327` | inline-code background, image placeholders, table rules |
+| `--gray` | `#b5b0b2` | `#6e6468` | idle TOC links |
+| `--darkgray` | `#9b2c5c` (magenta) | `#e38db2` | body text, links, greeting |
+| `--dark` | `color-mix(in oklch, #9b2c5c 72%, black)` ≈ `#6e1d42` | `#f4c9da` | headings, site title, sidebar item titles |
+| `--underline` | `#2f8f6b` (jade) | `#4fbf93` | link underlines, tags, asterisks, stars, footer arrows |
+| `--highlight` | `color-mix(in srgb, #9b2c5c 10%, transparent)` | `rgba(227,141,178,.12)` | reserved |
+| `--textHighlight` | `color-mix(in srgb, #2f8f6b 25%, transparent)` | `rgba(79,191,147,.3)` | `::selection` |
 
----
+**Muted text** (dates, "See all", footer, labels): `color: var(--darkgray); opacity: .6`.
 
-# Typography
+### Theme
 
-* **Display serif: Newsreader**
+- `data-theme` on `<html>` is set before paint by the inline script in `src/app/layout.tsx`: the saved `localStorage.theme`, otherwise `prefers-color-scheme`.
+- `ThemeToggle` flips the attribute and saves the choice. It shows Phosphor `Moon` in light mode and `Sun` in dark mode (both rendered, switched with CSS).
 
-  * Used for headlines, page titles, place names, post titles, and all “human” content
-  * Italic variant used for editorial emphasis
-  * The italicized word at the end of a title is a recurring move
-  * Tight letter-spacing on display sizes (`−2` to `−3`)
+### Fonts
 
-* **Mono: JetBrains Mono**
+Loaded with `next/font/google` in `src/app/layout.tsx` and exposed as CSS variables.
 
-  * Used for everything systemic:
+| Role | Family | Variable |
+|---|---|---|
+| Headings, site title, sidebar item titles, article and list titles | DM Serif Display 400 | `--font-heading` |
+| Body, UI, tags, project/favorites row titles | Bricolage Grotesque (variable, opsz) | `--font-body` |
+| Handwritten: greeting, dates, captions, sign-off, sidebar meta | Nothing You Could Do | `--font-hand` |
+| Mono: "Currently" labels, clock, track numbers and durations, inline code | JetBrains Mono 400/500 | `--font-code` |
 
-    * section labels
-    * metadata
-    * dates
-    * catalog numbers
-    * taxonomy
-  * Always small (`8–11px`)
-  * Letter-spaced (`1.4–2`)
-  * Often uppercase
-
-* **Only these two typefaces**
-
-  * No other fonts are part of the system
+Newsreader and Caveat are still loaded only for the legacy travel detail pages. Don't use them in new UI.
 
 ---
 
-# Layout System
+## Shared styles
 
-* Wide horizontal containers
+- **Inline body link** (`linkClass`): underline in `var(--underline)`, thickness 1.5px, offset 2px, weight 600.
+- **Tag / chip** (`Tag`, `TagRow`): `padding: .15rem .4rem`, Bricolage 600 12px (13px on the Travel Log and Blog lists), `color: var(--underline)` on a 12% tint of it, no radius, no wrap. Blog tags are prefixed with `#`. Rows use `gap: .4rem`.
+- **Asterisk divider** (`Asterisks`): centered `* * *` in `var(--underline)`, 1.1em, line-height 1, `aria-hidden`. Used above the footer on every page, between Favorites sections, and inside articles wherever the source had `✧ ✦ ✧`.
+- **Page title** (`pageTitleClass`): DM Serif 2.25rem / 1.15, `var(--dark)`.
 
-  * `56px` side padding on desktop
-  * `20px` on mobile
-
-* Generous whitespace
-
-* **Section header strip**
-
-  * Mono-caps metadata row at the top of every section page (no top/bottom rules)
-  * Section name sits in a filled accent "tab" (accent background, paper-card text); the rest is plain mono
-  * Desktop fields:
-
-    * section name (accent tab)
-    * REF label
-    * short dotted leader
-    * last updated, with tight dots (`UPDATED 04·22·26`)
-  * Small screens show only the section tab; the REF label, dotted leader, and updated date are hidden
-  * Section tab separators on detail pages follow the pattern `SECTION {letter} · {SERIES} / {ENTRY}`: a middot `·` separates the series prefix and a forward slash `/` precedes the specific entry name (e.g. `SECTION B · TRAVELS / CHINA`, `SECTION A · PROJECTS / {slug}`). Do not use middots all the way through.
-  * REF labels:
-
-    * home: `REF. 00`
-    * listing/index pages: `REF. {letter}-IDX` (`A=Projects`, `B=Travels`, `C=Favorites`, `D=Blog`, `E=About`)
-    * detail pages: `REF. {letter}-{nn}` from archive position
-
-* **Page title**
-
-  * Big serif title (`84px`)
-  * One italicized word
-  * Optional mono subtitle below
-
-* **Sticky nav**
-
-  * Hairline-bordered
-  * Brand left
-  * Links right
-  * Active link underlined in accent color
+These live in `src/components/site/ui.tsx` and `ui.module.css`.
 
 ---
 
-# Recurring Components
+## Global layout
 
-* **Card label**
+Every redesigned page renders inside `SiteShell` (`src/components/site/SiteShell.tsx`), a server component.
 
-  * `CAT. X · № 001 · MM · DD · YY`
-  * Appears on:
+```
+max-width 1440, centered; padding 64px clamp(24px, 6vw, 96px) 0
+flex, wrap, justify-content center, gap 56px, align-items flex-start
 
-    * archival cards
-    * photo mounts
-    * contact card
-    * contact-index tab
+[sidebar 260px, sticky top 64]  [main flex 1 1 480px, max 720]  [TOC 200px, sticky]
+[footer: full-width row reusing the same column widths]
+```
 
-* **Hairline dividers**
+- Base text: Bricolage 18px / 1.65.
+- **Main** has `min-height: calc(100svh - 64px - 56px - 88px)` so the footer sits near the bottom of short pages. After the content come a 64px spacer, the asterisks and a `flex: 1 0 56px` spacer.
+- **TOC column** only renders at ≥1240px, and only on Home and article pages. Below 1240px the TOC moves into the sidebar under the title row. List pages have no TOC.
+- **Below ~904px** the sidebar wraps above main, matches main's width and stops being sticky.
 
-  * `1px` hair color
-  * Sometimes dashed
+### Sidebar
 
-* **Photo mounts**
+1. Title row: "Lucy Gai" (DM Serif 28px, `var(--dark)`, links to `/`) and the theme toggle.
+2. TOC, below 1240px and only on pages that have one.
+3. **Recent Travels**: the two most recent trips. Title DM Serif 17px `var(--dark)`, date handwritten 13px muted, then "See all travels →".
+4. **Selected Writing**: the two most recent Substack posts, same pattern, then "See all writing →".
 
-  * Photos sit inside paper-card frames
-  * Uses filter:
+"See all" links: Bricolage 14px, muted, 1px underline at offset 2px, hover `opacity: .85`.
 
-    ```css
-    sepia(0.1-0.15) saturate(0.9)
-    ```
-  * Caption + catalog label below
+### Table of contents
 
-* **Tag chips**
+- Header button: "Table of Contents" in DM Serif 16px with a chevron. Open by default; collapsing rotates the chevron −90°.
+- Links: 15px / 1.35, `var(--gray)`, weight 600, hover `var(--darkgray)`. Nested lists indent 14px.
+- Home: the TOC is the site nav (Projects, Travels, Favorites, Blog).
+- Articles: the page title (`#top`) with h2s under it and h3s one level deeper.
 
-  * Mono uppercase
-  * Accent border
-  * Accent text on transparent background
+### Footer
 
----
-
-# Section-Specific Treatments
-
-* **Home**
-
-  * Big serif `"Hi, I'm Lucy."` hero
-  * `ENTRY 001` mono label
-  * `"Lately"` quick-link list with ↗ arrows
-
-* **Projects**
-
-  * Spread-entry archive list:
-
-    * generated thumbnail
-    * `Entry nn · year`
-    * plain serif project title
-    * tech stack under the title
-    * kind sentence
-  * `● shipping` displayed in accent color; `● live` displayed in green `#71a37e`
-
-  * status plus `open file →`
-  * Index title is `Things I've made.` with no italicized word
-  * Sort control toggles `newest` / `oldest`; entry numbers stay fixed chronologically, with the oldest project as `Entry 01`
-  * Small screens show entry text/info first, then image
-
-* **Project detail pages**
-
-  * Header order is back link, hero image, italic serif title, specs strip
-  * Back links use real arrow glyphs, for example `← Projects`; never visible ASCII `<-`
-  * Do not render a kicker/status row above the title
-  * Do not render the project tagline between the title and specs strip
-  * Specs strip is minimal: no top/bottom rules, left-aligned, fluid width `min(100%, max(50%, 620px))`
-  * Specs labels stack above mono values at all widths
-  * Labels are `First published`, `Updated`, `Stack`, and `Status`
-  * Dates use tight dots, for example `Feb·03·2026`
-  * Desktop specs use small circular dot separators; phone specs reflow into a 2x2 grid with separators hidden
-  * Status value includes a colored dot: `live` status uses green `#71a37e`; `shipping` status continues to use the accent color
-  * Detail links are unboxed accent text; no divider sits between links and prev/next nav
-  * Body markdown images are click-to-expand: a mono uppercase `⤢ Expand` tag sits top-right in a translucent black box (same treatment as the thumbnail year tag); visible on hover on desktop, always visible on mobile
-  * Clicking an image opens a full-screen lightbox on a dark scrim, closable via the `✕` button, Escape, or clicking outside the image
-
-* **Travels**
-
-  * Postcard carousel
-  * Dynamic 3 / 2 / 1 columns based on measured title width and available container width
-  * Sort control toggles `newest first` / `oldest first`
-  * Trip titles stay on one line
-  * Slight rotation
-  * Hover flattens + lifts
-  * Photo with sepia filter
-
-* **Favorites — albums**
-
-  * Spinning vinyl with centered album-art label
-  * Tonearm lifts on pause
-  * Tracklist card below
-  * Active track shown in accent color with `♪` marker
-  * Record-rack thumbnail grid on the right
-
-* **Favorites — movies**
-
-  * 3 layouts
-  * `"cards"` is default
-  * Paper card + `84×126` poster
-  * Includes:
-
-    * title
-    * director
-    * rating
-    * quote
-    * date logged
-
-* **Blog**
-
-  * Filterable tag pills
-  * 3-column rows:
-
-    * `№ / date`
-    * `title + excerpt`
-    * `tags`
-  * Blog detail utility row pairs `← Blog` on the left with `Also on Substack ↗` on the right when a source URL exists
-  * `Also on Substack ↗` is uppercase mono, underlined, and uses the rose accent
-
-* **Travel detail pages**
-
-  * Public metadata strip remains normal site chrome, matching the scale of other section pages
-  * Back link sits directly below the metadata strip and above the scaled detail surface
-  * Detail content below the strip is a fixed design canvas per breakpoint:
-
-    * `large` `1440px`
-    * `medium` `1120px`
-    * `small` `470px`
-  * Public detail canvas is centered and scaled to fit the available page width; current scale multiplier is `0.94`
-  * Hero, section headers, section canvases, and closing content share the same scaled content block
-  * Hero image frame, copy block, tape pieces, and canvas height are editable per breakpoint
-  * Editor preview renders the selected breakpoint at exact scale `1`
-  * Section canvas widths are part of the horizontal coordinate system and should not be edited in the UI
-  * Section canvas heights remain editable per breakpoint to manage vertical space
-  * Photo mounts, tape pieces, handwritten-style annotations, and slight rotational offsets provide the scrapbook texture inside the archive layout
-
-* **About**
-
-  * Big serif intro split into a 48px headline and smaller paragraph body; mobile uses about 28px headline and 19px body
-  * `"Currently"` metadata grid
-  * Contact Index card on the right, sized to hug the image column and centered within that column
-  * Contact card label reads `REF. E-001 LIKENESS.PNG` in uppercase mono black
-  * Contact links are minimal logo/icon rows with uppercase mono network names, no handles or boxed tiles
-  * Mobile order is intro, contact card, then Currently
-  * Tab label hangs off the top-left border
+A full-width flex row: "Lucy Gai", "© year" and a live `HH:MM:SS` clock (JetBrains Mono 13px) on the left. On the right are Instagram, Letterboxd, Spotify, GitHub and Mail, each followed by a 12px Phosphor `ArrowUpRight` in `var(--underline)`. Bricolage 14px, muted. The right block widens to 976px when the TOC column shows.
 
 ---
 
-# Voice & Copy
+## Pages
 
-* Quiet and considered, not chatty
-* `"Cataloged"` not `"shown"`
-* `"Filed"` not `"sorted"`
-* `"Entry"` not `"post"`
-* Mono labels lean taxonomic:
+### Home `/`
+Banner image (`/images/home/home_image.png`, dithered, rendered unoptimized and pixel-sharp), handwritten greeting, three intro paragraphs with inline links, "Some places you may want to visit", a **Currently** grid (JetBrains Mono labels), and the handwritten sign-off. `/about` redirects here (301 in `next.config.ts`).
 
-  * `"SERIES B · TRAVELS"`
-  * `"REF. B-IDX"`
-* Italics used for places and titles, never for emphasis
+### List rows (Travel Log, Blog)
+`grid-template-columns: 96px minmax(0,1fr) max-content; column-gap: 12px`. Date handwritten 14px muted; title DM Serif 1.12rem `var(--dark)`; tags right-aligned at the main column's right edge. Styles in `src/components/site/list.module.css`.
+
+- **Travel Log `/travels`**: title is the country; tags are the first city plus a `+N` chip whose tooltip lists the rest.
+- **Blog `/blog`**: "Also on Substack." under the title, then rows with stacked `#tag` chips.
+
+### Projects `/projects`
+Rows of `280px minmax(0,1fr)` with a 280×190 cover thumbnail, then name (14px/600 `var(--dark)`), "kind. stack" (12px) and date (12px muted). Below 560px the thumbnail stacks above the text.
+
+### Favorites `/favorites`
+**Albums** and **Films** accordions separated by the asterisk divider.
+
+- Each row is a full-width `<button aria-expanded>` with the title (Bricolage 14px/600) and chips on the right. Hover `opacity: .55`. One open row per section; nothing is open by default.
+- The panel stays mounted and animates `grid-template-rows: 0fr → 1fr` with opacity.
+- Album panel: 180×180 cover, a play button for the featured track (plays the local clip in `public/audio/favorites/`, or links to Spotify search when there's no clip), the full tracklist with `★` favorites, and a legend. Albums without a tracklist show "Listen on Spotify".
+- Film panel: 120×180 poster, the Letterboxd review text (or the local note), and "Read review".
+- Data: `src/data/favorites.ts` and `src/data/favorite-albums.json`. Album order follows `customorder`.
+
+### Articles (blog post, project)
+`Article` (`src/components/site/Article.tsx`) plus `article.module.css`:
+
+- `<h1 id="top">` DM Serif 2.25rem, handwritten meta line (e.g. "Jun 30, 2026, 4 min read"), tag row, optional italic lede.
+- Body 16px / 1.7. h2 DM Serif 1.6rem (`margin: 44px 0 16px`, zero top margin right after a divider), h3 1.2rem.
+- Figures full width with a handwritten caption. Inline code in JetBrains Mono on `var(--lightgray)` with a 5px radius. Tables full width at 14px with `var(--lightgray)` row rules and DM Serif headers.
+- **Blog posts** render the sanitized Substack HTML. `src/lib/articleHtml.ts` adds heading ids for the TOC and turns `✧ ✦ ✧` paragraphs into the divider. The post ends with "Also on Substack, where comments live."
+- **Projects** render `src/content/projects/<slug>.md`. The `# Overview` section becomes the lede.
+
+### Travel entries (not yet redesigned)
+Travel detail pages and the dev editor still use the fixed-canvas Memory Archive layout. The redesign calls for single-column articles with stickers over photo corners; that work is deferred.
 
 ---
 
-# Animations
+## Responsive
 
-* `320ms` page fade-in with `6px` translate
-* `4s` linear spin on vinyl
-* `700ms` cubic tonearm lift
-* `180–260ms` hover transitions
+- `1240px`: TOC column shows or hides.
+- `~904px`: sidebar wraps above main.
+- `560px`: project thumbnails and album covers stack above their text.
+- List rows stay on one line at every width.
 
-  * Cards flatten + lift on hover
+## Accessibility
 
----
+- Accordion rows are `<button aria-expanded>`, and closed panels are `inert`.
+- Decorative asterisks, footer arrows and icons are `aria-hidden`.
+- Text keeps ≥4.5:1 contrast in both themes, except the intentionally muted 60% metadata.
 
-# Mobile (≤768px)
+## Voice
 
-* All multi-column grids collapse to single column
-* Hero/title scales down:
-
-  * `128 → 68`
-  * `84 → 46`
-  * `48 → 28`
-* Section strip wraps to 2 rows
-* `56px` side padding → `20px`
-* Vinyl scales to ~`78%`
-* Tweaks panel becomes full-width along the bottom
+Warm, first-person and lowercase-friendly in personal moments (greeting, sign-off), plain everywhere else. No catalog labels, REF numbers or section tabs.

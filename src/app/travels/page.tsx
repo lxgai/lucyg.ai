@@ -1,423 +1,45 @@
-"use client";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Box, Link as MuiLink, Typography } from "@mui/material";
-import Image from "next/image";
-import NextLink from "next/link";
-import PageShell from "@/components/design/PageShell";
-import { tokens } from "@/components/design/tokens";
-import { TRAVEL_ENTRIES, type ResolvedTravelEntry } from "@/data/travelEntries";
-import { resolveSiteImageSrc } from "@/lib/images";
+import Link from "next/link";
+import SiteShell from "@/components/site/SiteShell";
+import listStyles from "@/components/site/list.module.css";
+import { TagRow, pageTitleClass } from "@/components/site/ui";
+import { TRAVEL_ENTRIES } from "@/data/travelEntries";
+import { dateSortValue, formatDisplayDate } from "@/lib/dates";
 
-// Dates are full start dates ("MM / DD / YYYY"); older "MM / YYYY" values still
-// sort correctly with day 0. Returns a comparable YYYYMMDD integer.
-function travelDateValue(trip: ResolvedTravelEntry) {
-  const parts = trip.date.split("/").map((part) => part.trim());
-  const [month = "0", day = "0", year = "0"] =
-    parts.length === 3 ? parts : [parts[0] ?? "0", "0", parts[1] ?? "0"];
-  return Number(year) * 10000 + Number(month) * 100 + Number(day);
-}
+export const revalidate = 3600;
 
-function travelTitle(trip: ResolvedTravelEntry) {
-  const parts = trip.place
-    .split(",")
-    .map((part) => part.trim())
+// First city as a tag, plus a "+N" tag whose tooltip lists the rest.
+function cityTags(citySummary: string) {
+  const cities = citySummary
+    .split("·")
+    .map((city) => city.trim())
     .filter(Boolean);
-  const country = parts.length > 1 ? parts[parts.length - 1] : parts[0];
-  const yy = (trip.date.match(/(\d{4})/)?.[1] ?? "").slice(-2);
+  if (cities.length === 0) return [];
 
-  return { country, yy };
+  const [first, ...rest] = cities;
+  return rest.length > 0 ? [{ label: first }, { label: `+${rest.length}`, title: rest.join(", ") }] : [{ label: first }];
 }
 
 export default function TravelsPage() {
-  const [sortNewest, setSortNewest] = useState(true);
-  const trips = useMemo(
-    () =>
-      [...TRAVEL_ENTRIES].sort((a, b) => {
-        const aIndex = TRAVEL_ENTRIES.findIndex((trip) => trip.id === a.id);
-        const bIndex = TRAVEL_ENTRIES.findIndex((trip) => trip.id === b.id);
-        const dateDiff = travelDateValue(b) - travelDateValue(a);
-        const newestOrder = dateDiff || aIndex - bIndex;
-
-        return sortNewest ? newestOrder : -newestOrder;
-      }),
-    [sortNewest],
-  );
-  const viewportRef = useRef<HTMLDivElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const [titleWidth, setTitleWidth] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [colW, setColW] = useState(0);
-  const gap = 36;
-
-  useLayoutEffect(() => {
-    const measureTitleWidth = () => {
-      const probe = document.createElement("span");
-      probe.style.cssText = [
-        "position:absolute",
-        "top:-9999px",
-        "left:-9999px",
-        "visibility:hidden",
-        "white-space:nowrap",
-        `font-family:${tokens.serif}`,
-        "font-size:52px",
-        "line-height:0.95",
-        "letter-spacing:-1.2px",
-        "font-weight:400",
-      ].join(";");
-      document.body.appendChild(probe);
-
-      const widest = TRAVEL_ENTRIES.reduce((max, trip) => {
-        const { country, yy } = travelTitle(trip);
-        probe.textContent = `${country} '${yy}.`;
-        return Math.max(max, probe.getBoundingClientRect().width);
-      }, 0);
-
-      probe.remove();
-      setTitleWidth(Math.ceil(widest) + 8);
-    };
-
-    measureTitleWidth();
-    void document.fonts?.ready.then(measureTitleWidth);
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!viewportRef.current) return;
-
-    const update = () => setContainerWidth(viewportRef.current?.offsetWidth ?? 0);
-
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(viewportRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const visible = useMemo(() => {
-    if (!containerWidth || !titleWidth) return 1;
-
-    for (const count of [3, 2, 1]) {
-      const columnWidth = (containerWidth - (count - 1) * gap) / count;
-      if (columnWidth >= titleWidth) return count;
-    }
-
-    return 1;
-  }, [containerWidth, titleWidth]);
-
-  const hasCarousel = trips.length > visible;
-  const maxStart = Math.max(0, trips.length - visible);
-  const [start, setStart] = useState(0);
-
-  useEffect(() => {
-    setStart((current) => Math.min(current, maxStart));
-  }, [maxStart, trips.length, visible]);
-
-  useEffect(() => {
-    if (!trackRef.current) return;
-
-    const update = () => {
-      const first = trackRef.current?.querySelector<HTMLElement>("[data-trip-col]");
-      if (first) setColW(first.offsetWidth);
-    };
-
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(trackRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const canPrev = start > 0;
-  const canNext = start < maxStart;
+  const trips = [...TRAVEL_ENTRIES].sort((a, b) => dateSortValue(b.date) - dateSortValue(a.date));
 
   return (
-    <PageShell
-      section="SECTION B · TRAVELS"
-      catNo="REF. B-IDX"
-      title={
-        <>
-          Places, <Box component="span" sx={{ fontStyle: "italic" }}>cataloged.</Box>
-        </>
-      }
-      subtitle={`${trips.length} entries · filed by date`}
-    >
-      <Box
-        sx={{
-          mt: 1,
-          mb: 3,
-          pb: 1.5,
-          borderBottom: `1px solid ${tokens.hair}`,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          gap: 2,
-          fontFamily: tokens.mono,
-          fontSize: 10,
-          letterSpacing: "1.8px",
-          color: tokens.ink60,
-          textTransform: "uppercase",
-        }}
-      >
-        <Box
-          component="button"
-          type="button"
-          onClick={() => {
-            setSortNewest((value) => !value);
-            setStart(0);
-          }}
-          sx={{
-            appearance: "none",
-            border: 0,
-            background: "transparent",
-            p: 0,
-            color: tokens.ink60,
-            cursor: "pointer",
-            font: "inherit",
-            letterSpacing: "inherit",
-            textTransform: "inherit",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 0.875,
-            transition: "color 160ms",
-            "&:hover": { color: tokens.accent },
-          }}
-        >
-          <Box component="span">{sortNewest ? "newest first" : "oldest first"}</Box>
-          <Box component="span" aria-hidden sx={{ fontSize: 9, opacity: 0.7 }}>
-            ⇅
-          </Box>
-        </Box>
-        {hasCarousel && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2.25 }}>
-            <Box component="span">
-              {String(start + 1).padStart(2, "0")} -{" "}
-              {String(Math.min(start + visible, trips.length)).padStart(2, "0")} /{" "}
-              {String(trips.length).padStart(2, "0")}
-            </Box>
-            <TravelsArrow
-              disabled={!canPrev}
-              dir="prev"
-              onClick={() => {
-                if (canPrev) setStart((current) => current - 1);
-              }}
-            />
-            <TravelsArrow
-              disabled={!canNext}
-              dir="next"
-              onClick={() => {
-                if (canNext) setStart((current) => current + 1);
-              }}
-            />
-          </Box>
-        )}
-      </Box>
-
-      <Box
-        ref={viewportRef}
-        sx={{
-          overflow: "hidden",
-          width: "100%",
-        }}
-      >
-        <Box
-          ref={trackRef}
-          sx={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${trips.length}, calc((100% - ${
-              (visible - 1) * gap
-            }px) / ${visible}))`,
-            gap: `${gap}px`,
-            transform:
-              hasCarousel && colW
-                ? `translateX(${-start * (colW + gap)}px)`
-                : "translateX(0)",
-            transition: "transform 480ms cubic-bezier(.2,.7,.2,1)",
-            willChange: "transform",
-          }}
-        >
-          {trips.map((trip, i) => (
-            <Box key={trip.id} data-trip-col sx={{ height: "100%" }}>
-              <TravelsColumn trip={trip} idx={i} />
-            </Box>
-          ))}
-        </Box>
-      </Box>
-    </PageShell>
-  );
-}
-
-function TravelsColumn({ trip, idx }: { trip: ResolvedTravelEntry; idx: number }) {
-  const { country, yy } = travelTitle(trip);
-
-  return (
-    <MuiLink
-      component={NextLink}
-      href={`/travels/${trip.id}`}
-      underline="none"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        color: tokens.ink,
-        cursor: "pointer",
-        height: "100%",
-        "&:hover .travel-image": {
-          transform: "translateY(-6px)",
-        },
-        "&:hover .travel-cta": {
-          color: tokens.ink,
-        },
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          gap: 2,
-          fontFamily: tokens.mono,
-          fontSize: 9,
-          letterSpacing: "1.8px",
-          color: tokens.ink60,
-          textTransform: "uppercase",
-          mb: 2.25,
-        }}
-      >
-        <Box component="span">
-          № {String(idx + 1).padStart(3, "0")}
-        </Box>
-        <Box component="span" sx={{ color: tokens.accent }}>
-          {trip.date}
-        </Box>
-      </Box>
-
-      <Box
-        className="travel-image"
-        sx={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "4 / 5",
-          overflow: "hidden",
-          mb: 2.75,
-          transition: "transform 380ms cubic-bezier(.2,.7,.2,1)",
-          background: tokens.paperDeep,
-        }}
-      >
-        <Image
-          src={resolveSiteImageSrc(trip.cover)}
-          alt={trip.place}
-          fill
-          sizes="(max-width: 768px) 90vw, 30vw"
-          style={{
-            objectFit: "cover",
-            objectPosition: "center",
-            filter: "saturate(0.92)",
-          }}
-        />
-      </Box>
-
-      <Typography
-        component="h2"
-        sx={{
-          fontFamily: tokens.serif,
-          fontSize: { xs: 52, md: 52 },
-          fontWeight: 400,
-          lineHeight: 0.95,
-          letterSpacing: "-1.2px",
-          whiteSpace: "nowrap",
-          m: 0,
-          "@media (max-width:430px)": {
-            fontSize: 40,
-          },
-        }}
-      >
-        {country}{" "}
-        <Box component="span" sx={{ color: tokens.accent, fontStyle: "italic" }}>
-          &rsquo;{yy}.
-        </Box>
-      </Typography>
-
-      <Box
-        sx={{
-          fontFamily: tokens.serif,
-          fontSize: 17,
-          fontStyle: "italic",
-          color: tokens.ink60,
-          mt: 1.5,
-          mb: 2.5,
-          lineHeight: 1.45,
-        }}
-      >
-        {trip.sub}
-      </Box>
-
-      <Box
-        sx={{
-          mt: "auto",
-          pt: 1.75,
-          borderTop: `1px solid ${tokens.hair}`,
-          fontFamily: tokens.mono,
-          fontSize: 9,
-          letterSpacing: "1.4px",
-          color: tokens.ink60,
-          textTransform: "uppercase",
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 2,
-        }}
-      >
-        <Box component="span">{trip.duration}</Box>
-        <Box className="travel-cta" component="span" sx={{ color: tokens.accent }}>
-          read entry →
-        </Box>
-      </Box>
-    </MuiLink>
-  );
-}
-
-function TravelsArrow({
-  dir,
-  disabled,
-  onClick,
-}: {
-  dir: "prev" | "next";
-  disabled: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <Box
-      component="button"
-      type="button"
-      disabled={disabled}
-      onClick={onClick}
-      aria-label={dir === "prev" ? "Previous trips" : "Next trips"}
-      sx={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 36,
-        height: 26,
-        border: `1px solid ${disabled ? tokens.hair : tokens.hairStrong}`,
-        borderRadius: 0,
-        background: "transparent",
-        color: disabled ? tokens.ink40 : tokens.ink,
-        cursor: disabled ? "not-allowed" : "pointer",
-        fontFamily: tokens.mono,
-        fontSize: 14,
-        lineHeight: 1,
-        transition: "background 180ms, color 180ms, border-color 180ms",
-        userSelect: "none",
-        "&:hover": disabled
-          ? {}
-          : {
-              background: tokens.accent,
-              color: tokens.paper,
-              borderColor: tokens.accent,
-            },
-        "&:disabled, &:disabled:hover": {
-          background: "transparent",
-          color: tokens.ink40,
-          borderColor: tokens.hair,
-        },
-      }}
-    >
-      {dir === "prev" ? "←" : "→"}
-    </Box>
+    <SiteShell>
+      <h1 className={pageTitleClass} style={{ marginBottom: 28 }}>
+        Travel Log
+      </h1>
+      <ul className={listStyles.list}>
+        {trips.map((trip) => (
+          <li key={trip.id} className={listStyles.item}>
+            <div className={listStyles.row}>
+              <p className={listStyles.date}>{formatDisplayDate(trip.date)}</p>
+              <h2 className={listStyles.title}>
+                {trip.hasDetail ? <Link href={`/travels/${trip.id}`}>{trip.place}</Link> : trip.place}
+              </h2>
+              <TagRow tags={cityTags(trip.sub)} large layout="inline" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </SiteShell>
   );
 }

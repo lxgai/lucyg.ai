@@ -1,0 +1,212 @@
+/* Article layout shared by blog posts and project pages (modelled on Quartz). */
+
+.title {
+  margin: 0;
+  scroll-margin-top: 64px;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--dark);
+}
+
+.meta {
+  margin: 6px 0 12px;
+  font-family: var(--font-hand);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--darkgray);
+  opacity: 0.6;
+}
+
+.tags {
+  margin: 0 0 24px;
+}
+
+.lede {
+  margin: 0 0 24px;
+  font-size: 16px;
+  line-height: 1.7;
+  font-style: italic;
+  text-wrap: pretty;
+}
+
+.lede p {
+  margin: 0;
+}
+
+/* Body content: rendered markdown or sanitized Substack HTML. */
+.prose {
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose p {
+  margin: 0 0 20px;
+  text-wrap: pretty;
+}
+
+.prose a {
+  color: var(--darkgray);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+.prose h2 {
+  margin: 44px 0 16px;
+  scroll-margin-top: 24px;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--dark);
+}
+
+.prose h3,
+.prose h4 {
+  margin: 28px 0 10px;
+  scroll-margin-top: 24px;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--dark);
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+.prose li {
+  margin: 0 0 4px;
+}
+
+.prose li > p {
+  margin: 0;
+}
+
+.prose blockquote {
+  margin: 0 0 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--lightgray);
+  font-style: italic;
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose figure {
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prose img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background: var(--lightgray);
+}
+
+.prose figcaption {
+  font-family: var(--font-hand);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--darkgray);
+  opacity: 0.6;
+}
+
+.prose code {
+  font-family: var(--font-code);
+  font-size: 0.85em;
+  color: var(--dark);
+  background: var(--lightgray);
+  padding: 0.1rem 0.25rem;
+  border-radius: 5px;
+}
+
+.prose pre {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--lightgray);
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  padding: 0;
+  background: transparent;
+}
+
+.prose hr {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid var(--lightgray);
+}
+
+.tableWrap {
+  margin: 0 0 20px;
+  overflow-x: auto;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prose th {
+  text-align: left;
+  padding: 6px 16px 6px 0;
+  border-bottom: 1px solid var(--lightgray);
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--dark);
+}
+
+.prose td {
+  padding: 8px 16px 8px 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--lightgray);
+}
+
+.prose td:first-child {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* Asterisk divider inside articles (from the source's ✧ ✦ ✧ separators). */
+.prose :global(.article-divider) {
+  margin: 28px 0;
+  text-align: center;
+  font-size: 1.1em;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--underline);
+}
+
+.prose :global(.article-divider) + h2 {
+  margin-top: 0;
+}
+
+.closing {
+  margin: 28px 0 0;
+  font-size: 14px;
+}

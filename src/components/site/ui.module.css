@@ -1,0 +1,72 @@
+/* Shared text-level styles used across pages. */
+
+.link {
+  color: var(--darkgray);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--darkgray);
+  opacity: 0.6;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--underline);
+  background: color-mix(in srgb, var(--underline) 12%, transparent);
+  border-radius: 0;
+}
+
+.tagLarge {
+  font-size: 13px;
+}
+
+.tagRow {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tagRowInline {
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tagRowStacked {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.asterisks {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 1.1em;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--underline);
+}
+
+.pageTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--dark);
+}

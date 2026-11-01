@@ -1,10 +1,33 @@
 # Customization Manual
 
-## Projects Index And Detail Pages
+How to change the content on each page. For how things should look, see `docs/design.md`.
 
-Project index metadata lives in `src/data/projects.ts`.
+## Images
 
-The `PROJECTS` array controls the `/projects` index, the detail page hero image/title, the specs strip, links, and previous/next navigation. The long-form detail page body lives in a separate Markdown file under `src/content/projects/`.
+Home, project and travel images live in the Supabase bucket, not the repo. In code and Markdown you write a logical path, and `src/lib/images.ts` rewrites it to the bucket URL:
+
+| Logical path | Bucket object |
+|---|---|
+| `/images/home/<file>` | `home/<file>` |
+| `/images/projects/<slug>/<file>` | `projects/<slug>/<file>` |
+| `/images/travels/<slug>/<file>` | `travels/<slug>/<file>` |
+
+The result is `{NEXT_PUBLIC_SITE_IMAGE_BASE_URL}/<bucket object>`. That variable must be set in `.env.local` (and in the host's environment for production), and the filename must match the uploaded file exactly, including case and extension. Restart the dev server after changing `.env.local`.
+
+Favorites covers (`public/images/favorites/`) and audio clips (`public/audio/favorites/`) stay local.
+
+## Home
+
+The Home page is `src/app/page.tsx`. Edit it directly:
+
+- The banner is `/images/home/home_image.png`. It's dithered, so it's served unoptimized and pixel-sharp; replace the file in the bucket to change it.
+- The greeting, the three intro paragraphs and the sign-off are plain JSX.
+- The **Currently** list is the `CURRENTLY` array at the top of the file. Each row is a `label` and a `value`.
+- The table of contents on Home is the site nav, `SITE_NAV`.
+
+## Projects
+
+Project metadata lives in `src/data/projects.ts`; the write-up lives in `src/content/projects/<slug>.md`.
 
 ```ts
 export const PROJECTS: Project[] = [
@@ -16,63 +39,37 @@ export const PROJECTS: Project[] = [
     status: "live",
     stack: ["next.js", "mui", "tailwind"],
     color: "#c94b62",
-    image: "/images/projects/memory-archive/hero.jpg",
-    first_published: "Jan · 2026",
-    links: [["live", "lucygai.com"]],
+    image: "/images/projects/memory-archive/homepage.png",
+    first_published: "July · 10 · 2026",
+    links: [["live", "lucyg.ai"], ["source", "https://github.com/lxgai/lucyg.ai"]],
   },
 ];
 ```
 
-## Updating A Project Entry
+The `/projects` list shows, per row:
 
-To edit an existing project, find its object in `PROJECTS` and update the fields directly.
+- `image` as the 280×190 thumbnail
+- `name`
+- `kind` and `stack` as "Personal site. next.js · mui · tailwind"
+- `first_published` as a date such as "Jul 10, 2026"
 
-The `/projects` index uses:
+Rows appear in array order.
 
-- `year` for the small year label on the thumbnail and entry metadata
-- `name` for the project title
-- `stack` for the mono metadata line under the title
-- `kind` for the short description sentence
-- `status` for the status dot label
-- `image` for the thumbnail photo
-- `color` for the frame background behind the image (shown while it loads / as letterbox fill)
+The detail page `/projects/<slug>` uses:
 
-The index intentionally does not render a second tech-stack line in the footer row. The footer row keeps status, spacer, and `open file →`.
+- `name` as the title, with a trailing period
+- `first_published` as the handwritten date line
+- `stack` plus `status` as the tag row
+- `image` as the hero, full width
+- `links` for the closing line, e.g. "Live at lucyg.ai · source on GitHub". `live` and `source` get those prefixes; other kinds render as `kind:`. Remove `links` to drop the line.
 
-The index sort control toggles `newest` / `oldest`. Entry numbers stay fixed chronologically: the oldest project is always `Entry 01`, even when the list is sorted newest-first. On small screens, each entry leads with text/info first and image second.
+`year`, `color` and `updated` aren't shown on the redesigned pages.
 
-The detail page uses the same metadata fields, plus:
+Dates accept `"MM / DD / YYYY"`, `"MM/DD/YY"` or `"July · 10 · 2026"`.
 
-- `first_published`, `updated`, `stack`, and `status` for the specs strip
-- `links`, when present, for the "Where to find it" section
+### Writing the project page
 
-The detail-page hero uses the same `image` field as the index thumbnail — there is one shared image per project, just cropped to each frame's aspect ratio (a wide `21 / 9` hero, a `16 / 10` index thumbnail). Setting `image` updates both; they cannot diverge. See the image-sourcing notes below for where the file lives.
-
-Keep the header order as back link, hero image, italic serif title, then specs strip. Back links use real arrow glyphs, such as `← Projects`; do not render visible ASCII arrows such as `<- Projects`.
-
-The specs strip uses stacked labels over JetBrains Mono values at all widths. Labels are `First published`, `Updated`, `Stack`, and `Status`; the `First published` value comes from `first_published` and `Updated` comes from `updated`. Dates use tight dots such as `Feb·03·2026`; desktop fields use small circular separators; phones reflow into a 2x2 grid with separators hidden. The status value includes a colored dot: `live` renders green (`#71a37e`), `shipping` renders the accent rose.
-
-`status` is a free-form string, not a fixed enum. The values `live` and `shipping` are treated as "active" and render the accent rose dot/label; any other value (such as `archived` or `paused`) renders a muted dot but still displays verbatim. `updated` is a manual field — it is not derived from file or git timestamps. The `Updated` cell shows `—` unless `updated` is present and differs from `first_published`.
-
-The detail page body comes from a Markdown file whose filename matches the project `slug`:
-
-```text
-src/content/projects/memory-archive.md
-```
-
-The first project shown on `/projects` is simply the first object in the `PROJECTS` array. Move objects up or down in that array to reorder the index and the previous/next links on detail pages.
-
-## Editing A Project Detail Page
-
-Edit the Markdown file under `src/content/projects/`.
-
-For example, `slug: "memory-archive"` loads:
-
-```text
-src/content/projects/memory-archive.md
-```
-
-Use normal Markdown:
+The Markdown file name must match the `slug`. Use normal Markdown:
 
 ```md
 # Overview
@@ -83,117 +80,101 @@ I wanted somewhere with rooms.
 
 The travel-detail editor started as a small internal tool.
 
-> A useful pull quote can go here.
+### Dragging
+
+...
 
 ![The admin editor with draggable image frames.](/images/projects/memory-archive/editor-view.jpg)
 ```
 
-When a Markdown file starts with `# Overview`, that first section is rendered as the special project lede from the prototype: a small mono `¶ Overview` label followed by larger serif text. Content after the next heading, such as `## The editor`, returns to the normal detail-page section styling.
+- A leading `# Overview` section becomes the italic lede under the title. It isn't repeated in the body.
+- `##` and `###` headings become the table of contents, with `###` nested under the `##` above it.
+- An image on its own line becomes a full-width figure; its alt text is the handwritten caption.
+- A line of only `✧ ✦ ✧` becomes the `* * *` divider.
+- External links open in a new tab. Tables scroll sideways on narrow screens.
 
-Project images — both the hero/thumbnail `image` field in `projects.ts` and any images embedded in the Markdown body — are served from Supabase storage, the same way travel and home images are. Upload them to the bucket under `projects/<slug>/`:
+### Adding a project
 
-```text
-projects/memory-archive/hero.jpg
-projects/memory-archive/editor-view.jpg
-```
+1. Copy an object in `PROJECTS` and place it where it should appear.
+2. Give it a unique kebab-case `slug`; the URL becomes `/projects/<slug>`.
+3. Upload its images to the bucket under `projects/<slug>/` and set `image`.
+4. Create `src/content/projects/<slug>.md`.
 
-Reference them with a logical root-relative path under `/images/projects/<slug>/` — in the `image` field for the hero/thumbnail, and in Markdown for body images:
+Changing a slug changes the URL; update anything that linked to the old one.
 
-```ts
-image: "/images/projects/memory-archive/hero.jpg"
-```
+## Travels
 
-```md
-![The admin editor with draggable image frames.](/images/projects/memory-archive/editor-view.jpg)
-```
+Trips are listed in `src/data/travels.ts` (`TRIPS`). A trip with a detail page takes its country, cities and date from `src/data/travel-details/<id>.json`; a trip without one uses the optional `place`, `sub` and `date` fields.
 
-At render, `src/lib/images.ts` rewrites `/images/projects/<slug>/<file>` to the Supabase object URL (`{NEXT_PUBLIC_SITE_IMAGE_BASE_URL}/projects/<slug>/<file>`). You do not commit project images to the repo or `public/`; only the logical `/images/projects/...` path appears in the data and Markdown. The filename in the path must match the file uploaded to the bucket exactly.
+- `/travels` (the Travel Log) shows each trip's date, country and city tags, newest first. The first city is a tag; the rest collapse into a `+N` tag whose tooltip lists them.
+- The country links to `/travels/<id>` only when a detail page exists.
+- The sidebar's **Recent Travels** shows the two newest trips.
 
-For Markdown body images, the alt text is also rendered as the visible caption. Keep it short and descriptive. The hero/thumbnail `image` is decorative, so it has no caption.
+Detail pages and the editor at `/admin/travel-detail-editor` still use the old fixed-canvas layout until the travel redesign. Use the `add-trip` skill to scaffold a new trip, and `derive-travel-layouts` for its medium and small layouts.
 
-## Creating A New Project
+## Blog
 
-To add a project:
+Posts come from the Substack RSS feed (`SUBSTACK_FEED_URL` in `.env.local`).
 
-1. Copy an existing object in `src/data/projects.ts`.
-2. Paste it into the `PROJECTS` array where it should appear.
-3. Change the `slug` to a unique kebab-case value, for example `reading-room`.
-4. Update the fields: `year`, `name`, `kind`, `status`, `stack`, `color`, `image`, and `first_published` (plus `updated` if it has been revised since). The `image` path points at the shared hero/thumbnail file in Supabase under `projects/<slug>/` (see image sourcing above).
-5. Create a matching Markdown file, for example `src/content/projects/reading-room.md`.
-6. Keep `links` only if the project needs that section; otherwise remove the property.
+- Tags: Substack's feed usually has none. Add them by post slug in `src/data/blog-tags.ts`:
 
-The project URL is generated from `slug`. For example:
+  ```ts
+  export const BLOG_TAGS_BY_SLUG: Record<string, string[]> = {
+    "sample-post": ["sesame", "foodie"],
+  };
+  ```
 
-```ts
-slug: "reading-room"
-```
+  They render with a `#` prefix. Posts without tags show no chips.
+- `##` and `###` headings in the post become the table of contents.
+- A paragraph of only `✧ ✦ ✧` becomes the `* * *` divider.
+- The "Also on Substack." link on `/blog` comes from `SUBSTACK_PUBLICATION_URL`, or is derived from the feed URL.
+- The sidebar's **Selected Writing** shows the two newest posts.
+- Set `SUBSTACK_USE_SAMPLE_FEED=1` to use the fixture feed at `src/data/substack/sample-feed.xml`. With no feed configured, the blog falls back to `POSTS` in `src/data/blog.ts`.
 
-creates:
+## Favorites
 
-```text
-/projects/reading-room
-```
+All favorites data lives in `src/data/favorites.ts`, plus track picks in `src/data/favorite-albums.json`. Use the `manage-albums` skill to add, remove or reorder albums; it keeps every file in sync.
 
-If you change a slug later, the page URL changes too. Update any links that pointed at the old URL.
+### Albums
 
-## Editing The Project Page Design
-
-Use `src/data/projects.ts` for index metadata and detail page chrome. Use `src/content/projects/*.md` for the main detail page writing. Use `src/components/content/ProjectArchive.tsx` only when changing how projects are rendered.
-
-The main pieces are:
-
-- `ProjectsSpreadList` renders the `/projects` index list
-- `ProjectThumb` renders the generated color thumbnail
-- `StatusDot` renders the status dot and label
-- `ProjectDetailReport` renders the detail page
-- `ProjectSpecs` renders the detail page specs strip
-- `ProjectMarkdown` renders the Markdown body and image captions
-
-The route files are thin wrappers:
-
-- `src/app/projects/page.tsx` renders the projects index
-- `src/app/projects/[slug]/page.tsx` finds the project by `slug`, loads the matching Markdown file, and renders the detail page
-
-## Travel Index Photos
-Cover photos are defined in `src/data/travels.ts`.
-
-## Favorite Albums And Tracklists
-
-Album display data lives in `src/data/content.ts`.
-
-The `ALBUMS` array controls the records shown on `/favorites`, including local cover images:
+Each `ALBUMS` entry is a cover, title, artist, year and `customorder`:
 
 ```ts
-export const ALBUMS: Album[] = [
-  {
-    src: "/images/favorites/albums/album-smile-porter.png",
-    title: "SMILE! :D",
-    artist: "Porter Robinson",
-    year: "2024",
-  },
-];
+{ src: "/images/favorites/albums/album-worlds.jpg", title: "Worlds", artist: "Porter Robinson", year: "2014", customorder: 11 },
 ```
 
-Keep using local images under `public/images/favorites/albums/`. The Spotify sync script only updates track metadata; it does not download or replace album art.
+- Albums are listed by `customorder`, highest first. Keep the numbers contiguous.
+- Each row shows the title with the artist and year as tags. Opening it shows the cover, the featured track's play button, and the tracklist with `★` on favorite tracks.
+- Covers are local files under `public/images/favorites/albums/`.
 
-## Marking Favorite Tracks
+### Featured track and audio clip
 
-Featured and favorite track picks live in `src/data/favorite-albums.json`.
+The play button plays a local clip of the featured track. Clips live in `public/audio/favorites/` and are mapped by album title and track number in `FEATURED_TRACK_AUDIO`:
 
-Edit `featuredTrackNumber` and `favoriteTrackNumbers` for each album:
+```ts
+export const FEATURED_TRACK_AUDIO = {
+  "nolimit,": { 14: "/audio/favorites/feel-u-luv-me.mp3" },
+};
+```
+
+The album title must match `ALBUMS` exactly. An album with no clip shows a link that searches Spotify for the featured track instead. An album with no tracklist shows "Listen on Spotify".
+
+### Marking favorite tracks
+
+Edit `featuredTrackNumber` and `favoriteTrackNumbers` for each album in `src/data/favorite-albums.json`:
 
 ```json
 {
-  "title": "SMILE! :D",
+  "title": "Worlds",
   "artist": "Porter Robinson",
   "featuredTrackNumber": 1,
-  "favoriteTrackNumbers": [1, 2, 4]
+  "favoriteTrackNumbers": [1, 2, 3, 10, 12]
 }
 ```
 
-The script matches tracks by title and writes `featured: true` and `fav: true` into the generated tracklist in `src/data/content.ts`.
+Then rerun the Spotify sync (below). It writes `featured: true` and `fav: true` into `TRACKLISTS` in `src/data/favorites.ts`.
 
-Title-based fields still work as an escape hatch for unusual releases:
+Title-based fields work as an escape hatch for unusual releases:
 
 ```json
 {
@@ -202,36 +183,25 @@ Title-based fields still work as an escape hatch for unusual releases:
 }
 ```
 
-For ambiguous albums, pin the exact Spotify album ID. When `spotifyAlbumId` is present, the sync script skips search and fetches that album directly:
+For an album Spotify search gets wrong, pin its ID; the script then fetches it directly:
 
 ```json
 {
   "title": "EUSEXUA",
   "artist": "FKA twigs",
   "spotifyAlbumId": "3o1TOhMkU5FFMSJMDhXfdF",
-  "featuredTrackNumber": 1,
-  "favoriteTrackNumbers": []
+  "featuredTrackNumber": 3,
+  "favoriteTrackNumbers": [2, 3, 4, 6, 8, 9, 10]
 }
 ```
 
-Each album should have one featured track. If `featuredTrack` is blank or does not match, the Favorites page falls back to the first favorite track, then the first track on the album.
+If no featured track matches, the album has no play button or Spotify search link; the sync script warns about it.
 
-## Spotify Sync
+### Spotify sync
 
-The sync script is `scripts/sync-spotify-albums.mjs`.
+`scripts/sync-spotify-albums.mjs` reads `favorite-albums.json`, looks each album up on Spotify, and rewrites the `TRACKLISTS` block in `src/data/favorites.ts` with track numbers, names, `m:ss` durations and the featured/favorite flags. It doesn't touch covers.
 
-It:
-
-- reads `src/data/favorite-albums.json`
-- searches Spotify by album title and artist
-- fetches track numbers, names, and durations
-- converts durations to the site's `m:ss` format
-- updates the `TRACKLISTS` block in `src/data/content.ts`
-- applies `featured: true` from `featuredTrackNumber` or `featuredTrack`
-- applies `fav: true` from `favoriteTrackNumbers` or `favoriteTracks`
-- preserves local album image paths
-
-Add Spotify credentials to `.env.local`:
+Add credentials to `.env.local`:
 
 ```bash
 SPOTIFY_CLIENT_ID=...
@@ -245,39 +215,31 @@ Then run:
 npm run sync:spotify-albums
 ```
 
-You do not need to run this every time the dev server starts. Run it only when you change `src/data/favorite-albums.json` or want to refresh track metadata from Spotify.
+Run it only after changing `favorite-albums.json` or to refresh track data. The site never calls Spotify at runtime.
 
-Typical workflow:
+If a pick doesn't match, the script warns:
 
-```bash
-# 1. Edit favorite albums or favorite tracks
-$EDITOR src/data/favorite-albums.json
-
-# 2. Regenerate local tracklists
-npm run sync:spotify-albums
-
-# 3. Run the site normally
-npm run dev
-```
-
-## Runtime Behavior
-
-The public site does not call Spotify at runtime. It reads the generated local data from `src/data/content.ts`.
-
-That means the site still works without Spotify credentials once the tracklists have been generated.
-
-## Troubleshooting
-
-If a favorite or featured track is misspelled, or Spotify returns a slightly different title, the sync script prints a warning:
-
-```bash
+```text
 Favorite not matched: Track Name
 Favorite track number not matched: 4
 Featured track not matched: Track Name
 ```
 
-Update the title in `src/data/favorite-albums.json` to match Spotify's track name, then rerun:
+Fix the title or number in `favorite-albums.json` to match Spotify and rerun.
 
-```bash
-npm run sync:spotify-albums
+### Films
+
+Each `MOVIES` entry is a poster, title, year, director, rating, date and note:
+
+```ts
+{ src: "/images/favorites/movies/movie-anora.jpg", title: "Anora", year: "2024", director: "Sean Baker", rating: 4.5, date: "11 · 02 · 24", note: "Sprints without ever tiring." },
 ```
+
+- Each row shows the title with the director and year as tags. Opening it shows the poster, a description and "Read review".
+- The page reads the Letterboxd RSS feed (`LETTERBOXD_FEED_URL`, defaulting to `lucy_gai`'s feed) at most once an hour and matches films by title and year. When a match has a review, its text replaces `note` and "Read review" links to it. Otherwise the local `note` shows and the link goes to `letterboxd.com/lucy_gai/film/<title-slug>/`.
+- Posters are local files under `public/images/favorites/movies/`.
+
+## Footer and sidebar
+
+- Footer social links are in `src/components/site/SiteShell.tsx`.
+- The sidebar's Recent Travels and Selected Writing update on their own from the travel data and the Substack feed.
