@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Asterisks, Tag, linkClass } from "@/components/site/ui";
+import { Asterisks, ExternalLink, Tag, linkClass } from "@/components/site/ui";
 import type { Track } from "@/data/favorites";
+import articleStyles from "@/components/site/article.module.css";
 import { cx } from "@/lib/cx";
+import { ALBUMS_ID, FILMS_ID } from "./anchors";
 import styles from "./favorites.module.css";
 
 const SPOTIFY_PROFILE = "https://open.spotify.com/user/charlottefour";
@@ -25,8 +27,9 @@ export type FilmRow = {
   director: string;
   year: string;
   poster: string;
-  description: string;
-  reviewUrl: string;
+  synopsis?: string;
+  review?: string;
+  reviewUrl?: string;
 };
 
 // One open row per section; nothing open by default.
@@ -43,7 +46,9 @@ export default function FavoritesAccordions({ albums, films }: { albums: AlbumRo
   return (
     <>
       <section className={styles.section}>
-        <h2 className={styles.sectionHeading}>Albums</h2>
+        <h2 id={ALBUMS_ID} className={styles.sectionHeading}>
+          Albums
+        </h2>
         <ul className={styles.list}>
           {albums.map((album) => (
             <AccordionItem
@@ -63,9 +68,9 @@ export default function FavoritesAccordions({ albums, films }: { albums: AlbumRo
         </ul>
         <p className={styles.sectionFooter}>
           More picks and playlists on{" "}
-          <a href={SPOTIFY_PROFILE} target="_blank" rel="noopener noreferrer" className={linkClass}>
+          <ExternalLink href={SPOTIFY_PROFILE}>
             Spotify
-          </a>
+          </ExternalLink>
           .
         </p>
       </section>
@@ -73,7 +78,9 @@ export default function FavoritesAccordions({ albums, films }: { albums: AlbumRo
       <Asterisks className={styles.divider} />
 
       <section className={styles.sectionLast}>
-        <h2 className={styles.sectionHeading}>Films</h2>
+        <h2 id={FILMS_ID} className={styles.sectionHeading}>
+          Films
+        </h2>
         <ul className={styles.list}>
           {films.map((film) => (
             <AccordionItem
@@ -89,9 +96,9 @@ export default function FavoritesAccordions({ albums, films }: { albums: AlbumRo
         </ul>
         <p className={styles.sectionFooter}>
           Read all reviews on{" "}
-          <a href={LETTERBOXD_PROFILE} target="_blank" rel="noopener noreferrer" className={linkClass}>
+          <ExternalLink href={LETTERBOXD_PROFILE}>
             Letterboxd
-          </a>
+          </ExternalLink>
           .
         </p>
       </section>
@@ -156,12 +163,12 @@ function AlbumDetails({
               </span>
             </button>
           ) : (
-            <a href={spotifySearch} target="_blank" rel="noopener noreferrer" className={styles.play}>
+            <ExternalLink href={spotifySearch} className={styles.play}>
               <PlayIcon playing={false} />
               <span>
                 Play <span className={styles.playTrack}>{album.featured.name}</span>
               </span>
-            </a>
+            </ExternalLink>
           ))}
 
         {album.tracks && album.tracks.length > 0 ? (
@@ -182,9 +189,9 @@ function AlbumDetails({
             </p>
           </>
         ) : (
-          <a href={SPOTIFY_PROFILE} target="_blank" rel="noopener noreferrer" className={cx(linkClass, styles.textLink)}>
+          <ExternalLink href={SPOTIFY_PROFILE} className={cx(linkClass, styles.textLink)}>
             Listen on Spotify
-          </a>
+          </ExternalLink>
         )}
       </div>
     </div>
@@ -196,10 +203,19 @@ function FilmDetails({ film }: { film: FilmRow }) {
     <div className={styles.filmDetails}>
       <Image src={film.poster} alt={`${film.title} poster`} width={120} height={180} className={styles.poster} />
       <div className={styles.filmText}>
-        <p className={styles.filmDescription}>{film.description}</p>
-        <a href={film.reviewUrl} target="_blank" rel="noopener noreferrer" className={cx(linkClass, styles.textLink)}>
-          Read review
-        </a>
+        {film.synopsis && <p className={cx(styles.filmDescription, styles.filmSynopsis)}>{film.synopsis}</p>}
+        {film.review ? (
+          <blockquote className={cx(articleStyles.quote, styles.filmReview)}>
+            <p className={styles.filmDescription}>{film.review}</p>
+            {film.reviewUrl && (
+              <ExternalLink href={film.reviewUrl} className={cx(linkClass, styles.reviewLink)}>
+                Read full review
+              </ExternalLink>
+            )}
+          </blockquote>
+        ) : (
+          <p className={cx(styles.filmDescription, styles.filmReview)}>Review incoming!</p>
+        )}
       </div>
     </div>
   );

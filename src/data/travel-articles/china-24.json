@@ -11,10 +11,23 @@
   ],
   "blocks": [
     {
-      "id": "img-yangtze-river",
-      "type": "image",
-      "src": "/images/travels/china-24/yangtze-river.png",
-      "alt": "Yangtze River"
+      "id": "canvas-zg8bx3",
+      "type": "canvas",
+      "height": 457,
+      "background": "dots",
+      "items": [
+        {
+          "id": "img-220k7k",
+          "kind": "image",
+          "src": "/images/travels/china-24/yangtze-river.png",
+          "alt": "",
+          "x": 26,
+          "y": -13,
+          "width": 665,
+          "rotation": 0,
+          "zIndex": 1
+        }
+      ]
     },
     {
       "id": "text-1",
@@ -45,7 +58,7 @@
           "kind": "image",
           "src": "/images/travels/china-24/hangzhou.jpg",
           "alt": "West Lake at dusk",
-          "x": 1.0,
+          "x": 1,
           "y": 222.7,
           "width": 304.8,
           "rotation": 0,
@@ -68,7 +81,7 @@
           "src": "/images/travels/china-24/westlake-dumplings.png",
           "alt": "Crab-roe dumplings served along West Lake",
           "x": 296.2,
-          "y": 0.0,
+          "y": 0,
           "width": 366.8,
           "rotation": 0,
           "zIndex": 5
@@ -78,7 +91,7 @@
           "kind": "image",
           "src": "/images/travels/china-24/coconut-drink.png",
           "alt": "Coconut drink",
-          "x": 0.0,
+          "x": 0,
           "y": 328.5,
           "width": 30.8,
           "rotation": -10.6,
@@ -128,8 +141,8 @@
           "kind": "image",
           "src": "/images/travels/china-24/yangtze-river-2.jpg",
           "alt": "Yangtze River",
-          "x": 0.0,
-          "y": 0.0,
+          "x": 0,
+          "y": 0,
           "width": 352.4,
           "rotation": 0,
           "zIndex": 4
@@ -152,7 +165,7 @@
           "kind": "image",
           "src": "/images/travels/china-24/chongqing-food-mall.jpg",
           "alt": "Chongqing food mall",
-          "x": 0.0,
+          "x": 0,
           "y": 2.9,
           "width": 200.4,
           "rotation": 0,
@@ -221,7 +234,7 @@
           "src": "/images/travels/china-24/xiaomian.png",
           "alt": "A bowl of Chongqing xiaomian noodles",
           "x": 175.6,
-          "y": 0.0,
+          "y": 0,
           "width": 85.1,
           "rotation": -10.1,
           "zIndex": 12
@@ -253,7 +266,7 @@
           "src": "/images/travels/china-24/wulong-2.jpeg",
           "alt": "Wulong",
           "x": 233.7,
-          "y": 0.0,
+          "y": 0,
           "width": 269.1,
           "rotation": 3,
           "zIndex": 10
@@ -274,7 +287,7 @@
           "kind": "image",
           "src": "/images/travels/china-24/bus-sticker.png",
           "alt": "",
-          "x": 0.0,
+          "x": 0,
           "y": 144.2,
           "width": 78.2,
           "rotation": 0,

@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Article, { closingClass, proseClass } from "@/components/site/Article";
 import SiteShell from "@/components/site/SiteShell";
-import { linkClass } from "@/components/site/ui";
+import { siteNavWith } from "@/components/site/siteNav";
+import { ExternalLink } from "@/components/site/ui";
 import { prepareArticleHtml } from "@/lib/articleHtml";
 import { formatDisplayDate } from "@/lib/dates";
 import { getBlogEntries } from "@/lib/substack";
@@ -38,16 +39,16 @@ export default async function BlogPostRoute({
     .join(", ");
 
   return (
-    <SiteShell toc={[{ href: "#top", label: post.title, children: headings }]}>
+    <SiteShell toc={siteNavWith("/blog", [{ href: "#top", label: post.title, children: headings }])}>
       <Article title={post.title} meta={meta} tags={post.tags.map((tag) => `#${tag}`)}>
         {/* Sanitized in lib/substack before it reaches the page. */}
         <div className={proseClass} dangerouslySetInnerHTML={{ __html: html }} />
         {post.sourceUrl && (
           <p className={closingClass}>
             Also on{" "}
-            <a href={post.sourceUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+            <ExternalLink href={post.sourceUrl}>
               Substack
-            </a>
+            </ExternalLink>
             , where comments live.
           </p>
         )}

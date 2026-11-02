@@ -56,6 +56,7 @@ export default function RootLayout({
     // Font variables live on <html> so the :root tokens in globals.css can reference them.
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${dmSerif.variable} ${bricolage.variable} ${nothingYouCouldDo.variable} ${jetbrains.variable}`}
     >

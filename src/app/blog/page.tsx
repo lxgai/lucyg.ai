@@ -1,7 +1,8 @@
 import Link from "next/link";
 import SiteShell from "@/components/site/SiteShell";
+import { SITE_NAV } from "@/components/site/siteNav";
 import listStyles from "@/components/site/list.module.css";
-import { TagRow, linkClass, pageTitleClass } from "@/components/site/ui";
+import { ExternalLink, TagRow, pageTitleClass } from "@/components/site/ui";
 import { formatDisplayDate } from "@/lib/dates";
 import { getBlogEntries, getSubstackLinks } from "@/lib/substack";
 
@@ -12,15 +13,15 @@ export default async function BlogPage() {
   const { publicationUrl } = getSubstackLinks();
 
   return (
-    <SiteShell>
+    <SiteShell toc={SITE_NAV}>
       <h1 className={pageTitleClass}>Blog</h1>
       <p style={{ margin: "12px 0 28px", fontSize: 16 }}>
         {publicationUrl ? (
           <>
             Also on{" "}
-            <a href={publicationUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+            <ExternalLink href={publicationUrl}>
               Substack
-            </a>
+            </ExternalLink>
             .
           </>
         ) : (

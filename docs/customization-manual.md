@@ -166,7 +166,7 @@ The play button plays a local clip of the featured track. Clips live in `public/
 
 ```ts
 export const FEATURED_TRACK_AUDIO = {
-  "nolimit,": { 14: "/audio/favorites/feel-u-luv-me.mp3" },
+  "nolimit": { 14: "/audio/favorites/feel-u-luv-me.mp3" },
 };
 ```
 

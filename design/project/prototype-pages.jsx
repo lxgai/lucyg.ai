@@ -8,7 +8,7 @@ const T = window.A_TOKENS;
 function PageHome({ route, setRoute, theme }) {
   const quickLinks = [
     { label: "Latest writing", sub: "on keeping a slow internet", to: "blog" },
-    { label: "Recently played", sub: "nolimit, — Knock2", to: "favorites" },
+    { label: "Recently played", sub: "nolimit — Knock2", to: "favorites" },
     { label: "Where I've been", sub: "Amsterdam, Mar 2025", to: "travels" },
     { label: "What I'm making", sub: "this site, Fieldnotes", to: "projects" },
   ];
@@ -25,7 +25,7 @@ function PageHome({ route, setRoute, theme }) {
           ENTRY 001 ·····  A COLLECTION
         </div>
         <div className="m-intro-text m-hero-title" style={{ fontFamily: theme.serif, fontSize: 128, lineHeight: 0.92, letterSpacing: -3, fontWeight: 400, marginTop: 28 }}>
-          Hi,<br/>
+          Hi,<br />
           <span>I'm Lucy.</span>
         </div>
         <div className="m-intro-text" style={{ marginTop: 16, maxWidth: 480, fontSize: 19, lineHeight: 1.55 }}>
@@ -36,7 +36,7 @@ function PageHome({ route, setRoute, theme }) {
         <div className="m-home-photo" style={{ position: "relative", paddingTop: 40, alignSelf: "start", maxWidth: 700, justifySelf: "center" }}>
           <div className="m-photo-card" style={{ position: "relative", zIndex: 1, margin: "0 auto" }}>
             <div className="m-photo-imgwrap" style={{ width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: T.paperDeep }}>
-              <img src="images/home/selfie_dithered.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 42%", imageRendering: "pixelated" }}/>
+              <img src="images/home/selfie_dithered.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 42%", imageRendering: "pixelated" }} />
             </div>
             <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <div style={window.capStyle(theme, 17)}>Archivist.png, 8x8 Bayer Dither</div>
@@ -65,8 +65,8 @@ function PageHome({ route, setRoute, theme }) {
                 cursor: "pointer", alignItems: "baseline",
                 transition: "color 180ms",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(201, 100, 66, 0.04)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(201, 100, 66, 0.04)"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
               >
                 <div>
                   <div style={{ fontFamily: theme.serif, fontSize: 22, fontStyle: "italic" }}>{q.label}</div>
@@ -118,12 +118,12 @@ function PageBlog({ route, setRoute, theme }) {
         <div key={p.title} className="m-blog-row"
           onClick={() => setRoute(`blog/${p.slug}`)}
           style={{
-          display: "grid", gridTemplateColumns: "120px 1fr 160px", gap: 32,
-          padding: "22px 0", borderBottom: `1px solid ${T.hair}`, alignItems: "baseline",
-          cursor: "pointer",
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(31,26,22,0.02)"}
-        onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+            display: "grid", gridTemplateColumns: "120px 1fr 160px", gap: 32,
+            padding: "22px 0", borderBottom: `1px solid ${T.hair}`, alignItems: "baseline",
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(31,26,22,0.02)"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
         >
           <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase" }}>
             <div>№ {String(window.POSTS.length - window.POSTS.indexOf(p)).padStart(3, "0")}</div>
@@ -219,7 +219,7 @@ function StatusDot({ project, theme }) {
         width: 7, height: 7, borderRadius: "50%",
         background: isLive ? theme.accent : T.ink40,
         boxShadow: isLive ? `0 0 0 3px ${theme.accent}22` : "none",
-      }}/>
+      }} />
       {project.status}
     </span>
   );
@@ -232,7 +232,7 @@ function PageProjects({ route, setRoute, theme }) {
       title={<>Things I've made.</>}
       subtitle={`${window.PROJECTS.length} entries`}>
 
-      <div style={{ height: 24 }}/>
+      <div style={{ height: 24 }} />
 
       <ProjectsSpread theme={theme} setRoute={setRoute} />
     </PageShell>
@@ -292,7 +292,7 @@ function ProjectsSpread({ theme, setRoute }) {
               borderBottom: i === projects.length - 1 ? `1px solid ${T.hairStrong}` : "none",
               cursor: "pointer",
               transition: "background 200ms",
-          }}
+            }}
             onMouseEnter={(e) => e.currentTarget.style.background = "rgba(31,26,22,0.02)"}
             onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
           >
@@ -314,7 +314,7 @@ function ProjectsSpread({ theme, setRoute }) {
               </div>
               <div style={{ display: "flex", gap: 24, alignItems: "center", marginTop: 28, flexWrap: "wrap" }}>
                 <StatusDot project={p} theme={theme} />
-                <span style={{ flex: 1 }}/>
+                <span style={{ flex: 1 }} />
                 <span style={{ fontFamily: T.mono, fontSize: 10, color: theme.accent, letterSpacing: 1.4, textTransform: "uppercase" }}>
                   open file →
                 </span>
@@ -332,8 +332,8 @@ function ProjectsSpread({ theme, setRoute }) {
 // ============================================================
 // SortMenu — mono-styled dropdown for the record rack.
 const SORT_OPTIONS = [
-  ["new",   "new \u2192 old"],
-  ["old",   "old \u2192 new"],
+  ["new", "new \u2192 old"],
+  ["old", "old \u2192 new"],
   ["title", "title (a\u2013z)"],
 ];
 function SortMenu({ sort, setSort, open, setOpen, theme }) {
@@ -451,7 +451,7 @@ function TracklistView({ tracks, playing, onTogglePlay, progress, theme }) {
           position: "absolute", top: 0, left: 0, height: "100%",
           width: `${playing ? progress : 0}%`, background: theme.accent,
           transition: "width 200ms linear",
-        }}/>
+        }} />
       </div>
 
       {/* Full tracklist — context only, no hover, no cursor */}
@@ -579,7 +579,7 @@ function PageFavorites({ route, setRoute, theme }) {
                     width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block",
                     filter: i === selectedIdx ? "none" : "saturate(0.9)",
                     transition: "filter 200ms",
-                  }}/>
+                  }} />
                 </div>
               ))}
             </div>
@@ -598,7 +598,7 @@ function MoviesBlock({ theme }) {
       {window.MOVIES.map(m => (
         <div key={m.title} style={{ background: T.paperCard, border: `1px solid ${T.hairStrong}`, padding: 14, display: "flex", gap: 14 }}>
           <div style={{ width: 84, height: 126, overflow: "hidden", flex: "0 0 auto" }}>
-            <img src={m.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
+            <img src={m.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontFamily: theme.serif, fontSize: 17, fontStyle: "italic", lineHeight: 1.1 }}>{m.title}</div>
@@ -606,7 +606,7 @@ function MoviesBlock({ theme }) {
             <div style={{ marginTop: 10, fontFamily: T.mono, fontSize: 11, color: theme.accent, letterSpacing: 1 }}>
               {"★".repeat(Math.floor(m.rating))}{m.rating % 1 ? "½" : ""}
             </div>
-            <Hair style={{ margin: "10px 0" }}/>
+            <Hair style={{ margin: "10px 0" }} />
             <div style={{ fontFamily: theme.serif, fontSize: 12, color: T.ink60, fontStyle: "italic", lineHeight: 1.4 }}>"{m.note}"</div>
             <div style={{ fontFamily: T.mono, fontSize: 8, color: T.ink40, marginTop: 8, letterSpacing: 1, textTransform: "uppercase" }}>LOGGED {m.date}</div>
           </div>
@@ -644,7 +644,7 @@ function PageAbout({ route, setRoute, theme }) {
           </div>
 
           <div className="m-about-currently">
-            <Hair style={{ margin: "40px 0" }}/>
+            <Hair style={{ margin: "40px 0" }} />
             <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: 1.2, color: T.ink60, textTransform: "uppercase", marginBottom: 14 }}>Currently</div>
             <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: "12px 28px", fontSize: 15, lineHeight: 1.5 }}>
               {[
@@ -652,7 +652,7 @@ function PageAbout({ route, setRoute, theme }) {
                 ["Dreaming", "moving to New York City"],
                 ["Building", "this site, and some other project here"],
                 ["Planning", "Place in Time, Place in Time"],
-              ].map(([k,v]) => (
+              ].map(([k, v]) => (
                 <React.Fragment key={k}>
                   <span style={{ fontFamily: T.mono, fontSize: 10, color: T.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>{k}</span>
                   <span>{v}</span>
@@ -670,9 +670,9 @@ function PageAbout({ route, setRoute, theme }) {
             <span style={{ color: T.ink }}>REF. E-001</span>
             <span>Likeness.png</span>
           </div>
-          <img src="images/home/selfie2_dithered.png" alt="" style={{ display: "block", width: 350, maxWidth: "100%", marginTop: 18, imageRendering: "pixelated" }}/>
+          <img src="images/home/selfie2_dithered.png" alt="" style={{ display: "block", width: 350, maxWidth: "100%", marginTop: 18, imageRendering: "pixelated" }} />
 
-          <Hair style={{ margin: "22px 0" }}/>
+          <Hair style={{ margin: "22px 0" }} />
           <div style={{ fontFamily: theme.serif, fontSize: 16, lineHeight: 1.5, marginBottom: 16 }}>
             Feel free to reach out — I'm also on:
           </div>
@@ -905,7 +905,7 @@ function TravelsColumn({ trip, idx, cutouts, setRoute, theme }) {
         transition: "transform 380ms cubic-bezier(.2,.7,.2,1)",
         transform: hover ? "translateY(-6px)" : "translateY(0)",
       }}>
-        <img src={src} alt="" style={imgStyle}/>
+        <img src={src} alt="" style={imgStyle} />
       </div>
 
       {/* Title — Country 'YY. — never wrap to a second line */}
@@ -942,8 +942,8 @@ function TravelsArrow({ dir, onClick, disabled, theme }) {
       transition: "background 180ms, color 180ms, border-color 180ms",
       userSelect: "none",
     }}
-    onMouseEnter={() => setHover(true)}
-    onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       {dir === "prev" ? "←" : "→"}
     </span>
@@ -1046,7 +1046,7 @@ function PageTrip({ tripId, route, setRoute, theme }) {
             justifySelf: "end",
           }}>
             <div style={{ fontFamily: theme.serif, fontSize: 54, fontStyle: "italic" }}>{trip.stamp}</div>
-            <div style={{ height: 1, width: "70%", background: T.ink, margin: "8px 0" }}/>
+            <div style={{ height: 1, width: "70%", background: T.ink, margin: "8px 0" }} />
             <div style={{ fontSize: 9, letterSpacing: 1.2 }}>POSTED</div>
             <div style={{ fontSize: 9, letterSpacing: 1.2 }}>{trip.date}</div>
             <div style={{ fontSize: 9, letterSpacing: 1.2, marginTop: 4 }}>{trip.duration}</div>
@@ -1085,7 +1085,7 @@ function ScrapEntry({ entry, theme }) {
     return (
       <div style={boxStyle}>
         <div style={{ width: "100%", aspectRatio, overflow: "hidden", background: T.paperDeep }}>
-          <img src={entry.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "sepia(0.12) saturate(0.92)" }}/>
+          <img src={entry.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "sepia(0.12) saturate(0.92)" }} />
         </div>
         <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <div style={window.capStyle(theme, 15)}>{entry.caption}</div>
@@ -1224,9 +1224,9 @@ function ProjectSpecs({ p, theme, layout = "row" }) {
   const fmtDate = (d) => (d || "").replace(/\s*·\s*/g, "·");
   const cells = [
     ["First published", fmtDate(p.published || p.started)],
-    ["Updated",         (p.updated && p.updated !== p.published) ? fmtDate(p.updated) : "—"],
-    ["Stack",           p.stack.join(" · ")],
-    ["Status",          p.status],
+    ["Updated", (p.updated && p.updated !== p.published) ? fmtDate(p.updated) : "—"],
+    ["Stack", p.stack.join(" · ")],
+    ["Status", p.status],
   ];
   if (layout === "stack") {
     return (
@@ -1505,8 +1505,10 @@ function PageBlogPost({ slug, route, setRoute, theme }) {
         )}
 
         {/* Prev / next */}
-        <div style={{ marginTop: 56, paddingTop: 24, borderTop: `1px solid ${T.hair}`,
-          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }} className="m-2col">
+        <div style={{
+          marginTop: 56, paddingTop: 24, borderTop: `1px solid ${T.hair}`,
+          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32
+        }} className="m-2col">
           {prev ? (
             <div onClick={() => setRoute(`blog/${prev.slug}`)} style={{ cursor: "pointer" }}>
               <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: 1.6, color: T.ink60, textTransform: "uppercase" }}>← Older</div>
@@ -1574,7 +1576,7 @@ function PostFigure({ b, theme, dense = false, fullBleed = false }) {
         <img src={b.src} alt={b.caption || ""} style={{
           width: "100%", aspectRatio: aspect, objectFit: "cover",
           display: "block", filter: "sepia(0.06) saturate(0.92)",
-        }}/>
+        }} />
       ) : (
         <div style={{
           width: "100%", aspectRatio: aspect, position: "relative", overflow: "hidden",
@@ -1656,7 +1658,7 @@ function PostLetter({ p, theme, readMin, words }) {
           <img src={p.hero} alt="" style={{
             width: "100%", aspectRatio: "21/9", objectFit: "cover",
             display: "block", filter: "sepia(0.08) saturate(0.9)",
-          }}/>
+          }} />
           {p.heroCaption && (
             <figcaption style={{
               maxWidth: 640, margin: "14px auto 0",
@@ -1715,14 +1717,14 @@ function PostLetter({ p, theme, readMin, words }) {
 function PostSubscribeAndComments({ p, theme, setRoute }) {
   // Sample static comments — in production these'd come from Substack's embed.
   const allComments = [
-    { who: "Mara K.",   when: "2d",  text: "The line about the homepage as a room you return to — that's exactly what I'm trying to do with my own site this year. Bookmarked." },
-    { who: "P. Singh",  when: "2d",  text: "Five readers, one of which is me. I wrote back via email." },
-    { who: "Jess",      when: "1d",  text: "Curious about the RSS button you mentioned — what's the implementation look like?" },
-    { who: "Theo",      when: "22h", text: "Deleted my analytics last month and have not missed them once. The server logs really are enough." },
-    { who: "Anna L.",   when: "18h", text: "This is making me reconsider my whole publishing setup. The audience-of-five framing is so freeing." },
-    { who: "Devon",     when: "12h", text: "What's your stance on webmentions? Feels related to the slow-internet idea." },
-    { who: "K. Yamada", when: "6h",  text: "Wrote a response on my own site rather than commenting here, but wanted to say thanks for this one." },
-    { who: "Hugo",      when: "3h",  text: "Counterpoint: the dates help me, the reader, more than they help you, the writer. Keep them." },
+    { who: "Mara K.", when: "2d", text: "The line about the homepage as a room you return to — that's exactly what I'm trying to do with my own site this year. Bookmarked." },
+    { who: "P. Singh", when: "2d", text: "Five readers, one of which is me. I wrote back via email." },
+    { who: "Jess", when: "1d", text: "Curious about the RSS button you mentioned — what's the implementation look like?" },
+    { who: "Theo", when: "22h", text: "Deleted my analytics last month and have not missed them once. The server logs really are enough." },
+    { who: "Anna L.", when: "18h", text: "This is making me reconsider my whole publishing setup. The audience-of-five framing is so freeing." },
+    { who: "Devon", when: "12h", text: "What's your stance on webmentions? Feels related to the slow-internet idea." },
+    { who: "K. Yamada", when: "6h", text: "Wrote a response on my own site rather than commenting here, but wanted to say thanks for this one." },
+    { who: "Hugo", when: "3h", text: "Counterpoint: the dates help me, the reader, more than they help you, the writer. Keep them." },
   ];
   const MAX = 5;
   const visible = allComments.slice(0, MAX);

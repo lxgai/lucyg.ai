@@ -41,6 +41,7 @@
 .subtitle {
   margin: 0 0 20px;
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 14px;
   line-height: 1.6;
   color: var(--darkgray);
@@ -85,6 +86,7 @@
 
 .caption {
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 14px;
   line-height: 1.6;
   color: var(--darkgray);
@@ -143,6 +145,7 @@
   display: block;
   margin-top: calc(6 / 720 * 100cqw);
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: calc(14 / 720 * 100cqw);
   line-height: 1.6;
   color: var(--darkgray);
@@ -168,6 +171,7 @@
 
 .font-hand {
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
 }
 
 .font-code {

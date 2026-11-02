@@ -2,22 +2,22 @@
 // Exposed on window so each direction's JSX file can consume it without import.
 
 const ALBUMS = [
-  { src: "images/favorites/albums/nolimit.png",       title: "nolimit,",                         artist: "Knock2",           year: "2024" },
-  { src: "images/favorites/albums/smile.png",         title: "SMILE! :D",                        artist: "Porter Robinson",  year: "2024" },
-  { src: "images/favorites/albums/killswitch.jpg",    title: "Killswitch Melodies",              artist: "Flawed Mangoes",   year: "2024" },
-  { src: "images/favorites/albums/metaego.jpg",       title: "无限意识 Meta Ego",                  artist: "Lexie Liu",        year: "2023" },
-  { src: "images/favorites/albums/comfort.jpg",       title: "Comfort in Chaos",                 artist: "John Summit",      year: "2024" },
-  { src: "images/favorites/albums/130mood.jpg",       title: "130 Mood: TRBL",                   artist: "Dean",             year: "2016" },
-  { src: "images/favorites/albums/demidevil.jpg",     title: "Demidevil",                        artist: "Ashnikko",         year: "2021" },
-  { src: "images/favorites/albums/aloneatprom.png",   title: "Alone at Prom",                    artist: "Tory Lanez",       year: "2021" },
-  { src: "images/favorites/albums/comeoversober.jpg", title: "Come Over When You're Sober, Pt.1",artist: "Lil Peep",         year: "2017" },
-  { src: "images/favorites/albums/carrielowell.jpg",  title: "Carrie & Lowell",                  artist: "Sufjan Stevens",   year: "2015" },
-  { src: "images/favorites/albums/wipedout.jpg",      title: "Wiped Out!",                       artist: "The Neighbourhood",year: "2015" },
+  { src: "images/favorites/albums/nolimit.png", title: "nolimit", artist: "Knock2", year: "2024" },
+  { src: "images/favorites/albums/smile.png", title: "SMILE! :D", artist: "Porter Robinson", year: "2024" },
+  { src: "images/favorites/albums/killswitch.jpg", title: "Killswitch Melodies", artist: "Flawed Mangoes", year: "2024" },
+  { src: "images/favorites/albums/metaego.jpg", title: "无限意识 Meta Ego", artist: "Lexie Liu", year: "2023" },
+  { src: "images/favorites/albums/comfort.jpg", title: "Comfort in Chaos", artist: "John Summit", year: "2024" },
+  { src: "images/favorites/albums/130mood.jpg", title: "130 Mood: TRBL", artist: "Dean", year: "2016" },
+  { src: "images/favorites/albums/demidevil.jpg", title: "Demidevil", artist: "Ashnikko", year: "2021" },
+  { src: "images/favorites/albums/aloneatprom.png", title: "Alone at Prom", artist: "Tory Lanez", year: "2021" },
+  { src: "images/favorites/albums/comeoversober.jpg", title: "Come Over When You're Sober, Pt.1", artist: "Lil Peep", year: "2017" },
+  { src: "images/favorites/albums/carrielowell.jpg", title: "Carrie & Lowell", artist: "Sufjan Stevens", year: "2015" },
+  { src: "images/favorites/albums/wipedout.jpg", title: "Wiped Out!", artist: "The Neighbourhood", year: "2015" },
 ];
 
 // Mock tracklists for the music player
 const TRACKLISTS = {
-  "nolimit,": [
+  "nolimit": [
     { n: 1, name: "Dashstar*", time: "2:51", fav: true, featured: true },
     { n: 2, name: "Not Ur Friend", time: "3:12" },
     { n: 3, name: "Hunnids & Hunnids", time: "2:43", fav: true },
@@ -65,12 +65,12 @@ const DEFAULT_TRACKLIST = [
 ];
 
 const MOVIES = [
-  { src: "images/favorites/movies/martysupreme.jpg",   title: "Marty Supreme",                         year: "2025", director: "Josh Safdie",       rating: 4.5, date: "03 · 14 · 25", note: "Timothée at full voltage; ping-pong never looked meaner." },
-  { src: "images/favorites/movies/anora.jpg",          title: "Anora",                                  year: "2024", director: "Sean Baker",        rating: 4.5, date: "11 · 02 · 24", note: "Sprints without ever tiring. A heartbreak dressed as a party." },
-  { src: "images/favorites/movies/bladerunner.jpg",    title: "Blade Runner",                           year: "1982", director: "Ridley Scott",      rating: 5.0, date: "09 · 08 · 24", note: "The rain; the neon; tears in the rain monologue." },
-  { src: "images/favorites/movies/traindragon.jpg",    title: "How to Train Your Dragon",               year: "2010", director: "Dean DeBlois",      rating: 4.5, date: "07 · 19 · 24", note: "Comfort movie forever. That soundtrack." },
-  { src: "images/favorites/movies/eternalsunshine.jpg",title: "Eternal Sunshine of the Spotless Mind",  year: "2004", director: "Michel Gondry",     rating: 5.0, date: "02 · 14 · 25", note: "You can feel the memory coming apart in your hands." },
-  { src: "images/favorites/movies/perks.jpg",          title: "The Perks of Being a Wallflower",        year: "2010", director: "Stephen Chbosky",   rating: 4.0, date: "01 · 05 · 25", note: "Still making me feel infinite." },
+  { src: "images/favorites/movies/martysupreme.jpg", title: "Marty Supreme", year: "2025", director: "Josh Safdie", rating: 4.5, date: "03 · 14 · 25", note: "Timothée at full voltage; ping-pong never looked meaner." },
+  { src: "images/favorites/movies/anora.jpg", title: "Anora", year: "2024", director: "Sean Baker", rating: 4.5, date: "11 · 02 · 24", note: "Sprints without ever tiring. A heartbreak dressed as a party." },
+  { src: "images/favorites/movies/bladerunner.jpg", title: "Blade Runner", year: "1982", director: "Ridley Scott", rating: 5.0, date: "09 · 08 · 24", note: "The rain; the neon; tears in the rain monologue." },
+  { src: "images/favorites/movies/traindragon.jpg", title: "How to Train Your Dragon", year: "2010", director: "Dean DeBlois", rating: 4.5, date: "07 · 19 · 24", note: "Comfort movie forever. That soundtrack." },
+  { src: "images/favorites/movies/eternalsunshine.jpg", title: "Eternal Sunshine of the Spotless Mind", year: "2004", director: "Michel Gondry", rating: 5.0, date: "02 · 14 · 25", note: "You can feel the memory coming apart in your hands." },
+  { src: "images/favorites/movies/perks.jpg", title: "The Perks of Being a Wallflower", year: "2010", director: "Stephen Chbosky", rating: 4.0, date: "01 · 05 · 25", note: "Still making me feel infinite." },
 ];
 
 const TRIPS = [
@@ -265,62 +265,62 @@ const PROJECTS = [
     year: "2026", slug: "memory-archive", name: "Memory Archive",
     role: "Solo · design + build", kind: "Personal site", status: "shipping",
     published: "Feb · 03 · 2026", updated: "May · 18 · 2026",
-    stack: ["next.js","mdx","tailwind"], color: "#c94b62",
+    stack: ["next.js", "mdx", "tailwind"], color: "#c94b62",
     tagline: "A room I keep returning to — built so I have somewhere to put the things I love.",
     started: "Jan · 2026", filed: "ongoing",
     metrics: [["entries", "44"], ["drafts", "12"], ["months", "4"]],
     links: [["live", "lucygai.com"], ["source", "github/lucy/archive"]],
     entries: [
-      { h: "Why a new site",     b: "I had a tumblr, a Notion, a half-finished Astro thing in a folder called 'maybe'. None of them felt like a place. I wanted somewhere with rooms — a record player here, a wall of postcards there, a desk for the things I'm making. Less feed, more apartment." },
+      { h: "Why a new site", b: "I had a tumblr, a Notion, a half-finished Astro thing in a folder called 'maybe'. None of them felt like a place. I wanted somewhere with rooms — a record player here, a wall of postcards there, a desk for the things I'm making. Less feed, more apartment." },
       { h: "The wrong way first", b: "Spent a week on a moodboard before writing any code, which I always pretend I won't do. Newsreader for the body. A paper background I sampled off a 1972 Penguin paperback. The accent color changed every other day until I gave up and made it a knob." },
-      { h: "First post",          b: "Wrote about reading more in small apartments. It took two evenings, mostly because I kept reading what I'd written and finding it embarrassing. Hit publish anyway. Refreshed the homepage maybe forty times to look at the date stamp." },
-      { h: "What it became",      b: "Not a portfolio, not a blog, not really a journal — something between all three. The thing I keep coming back to is the section dividers. Tiny monospace labels. SECTION B · PROJECTS. They make it feel filed, which is what I wanted." },
+      { h: "First post", b: "Wrote about reading more in small apartments. It took two evenings, mostly because I kept reading what I'd written and finding it embarrassing. Hit publish anyway. Refreshed the homepage maybe forty times to look at the date stamp." },
+      { h: "What it became", b: "Not a portfolio, not a blog, not really a journal — something between all three. The thing I keep coming back to is the section dividers. Tiny monospace labels. SECTION B · PROJECTS. They make it feel filed, which is what I wanted." },
     ],
   },
   {
     year: "2025", slug: "fieldnotes", name: "Fieldnotes",
     role: "Co-founder", kind: "iOS app", status: "live",
     published: "Mar · 04 · 2025", updated: "Nov · 22 · 2025",
-    stack: ["swift","supabase"], color: "#4a7ba8",
+    stack: ["swift", "supabase"], color: "#4a7ba8",
     tagline: "A quiet place for the things you notice on walks. Two of us, evenings and Saturdays.",
     started: "Apr · 2024", filed: "Mar · 2025",
     metrics: [["users", "2.1k"], ["entries logged", "38k"], ["app store ★", "4.8"]],
     links: [["app store", "fieldnotes.app"], ["press", "the verge / 2025"]],
     entries: [
       { h: "An app for a feeling", b: "Maya and I kept texting each other photos of weird signs and small flowers. We wanted somewhere to keep them that wasn't camera roll. We wrote one paragraph in a shared doc: a notebook for things you walk past. That paragraph never really changed." },
-      { h: "The map question",     b: "Hardest call: do entries get a map pin, or stay placeless? We tried both. Placed felt like a hiking app. Placeless felt like a diary that happened to know where you were. We went placeless and put the location on a long-press, which nobody finds, which is fine." },
-      { h: "TestFlight",            b: "Twelve people. They all used it differently. One person logged what their cat did. One person logged license plates. I learned that the right empty state is a single italic line, not a tutorial." },
-      { h: "Live on the store",     b: "Featured the week after launch. We spent the day refreshing the analytics dashboard and eating dumplings. Maya cried a little. So did I. Then we went back to fixing a bug where photos sometimes saved sideways." },
+      { h: "The map question", b: "Hardest call: do entries get a map pin, or stay placeless? We tried both. Placed felt like a hiking app. Placeless felt like a diary that happened to know where you were. We went placeless and put the location on a long-press, which nobody finds, which is fine." },
+      { h: "TestFlight", b: "Twelve people. They all used it differently. One person logged what their cat did. One person logged license plates. I learned that the right empty state is a single italic line, not a tutorial." },
+      { h: "Live on the store", b: "Featured the week after launch. We spent the day refreshing the analytics dashboard and eating dumplings. Maya cried a little. So did I. Then we went back to fixing a bug where photos sometimes saved sideways." },
     ],
   },
   {
     year: "2025", slug: "margin-gutter", name: "Margin / Gutter",
     role: "Design", kind: "Indie zine, vol. 02", status: "printed",
     published: "Feb · 22 · 2025", updated: "Mar · 14 · 2025",
-    stack: ["indesign","risograph"], color: "#d08a3a",
+    stack: ["indesign", "risograph"], color: "#d08a3a",
     tagline: "A zine about the spaces between things — printed risograph in Oakland, 200 copies.",
     started: "Sep · 2024", filed: "Feb · 2025",
     metrics: [["copies", "200"], ["spreads", "48"], ["colors", "3"]],
     links: [["store", "margingutter.zine"], ["mirror", "issuu / 12fp9"]],
     entries: [
-      { h: "The premise",        b: "Sam called it: a zine about gutters. Not the kind on the side of your house — the kind on the page, between columns of text. The unused space. We took it from there. Margins, intermissions, hallways, the long thin park between two highways." },
-      { h: "Riso night",          b: "Brought the files to Issue Press, picked fluorescent pink and a navy. The misregistration is the point with riso, you have to make peace with it. The cover came out cleaner than I deserved. The interior is full of happy accidents." },
-      { h: "Folded by hand",      b: "Two hundred copies, four of us, a Saturday. Watched three movies. The folds got worse as the day went on and that's fine. I love every uneven one." },
+      { h: "The premise", b: "Sam called it: a zine about gutters. Not the kind on the side of your house — the kind on the page, between columns of text. The unused space. We took it from there. Margins, intermissions, hallways, the long thin park between two highways." },
+      { h: "Riso night", b: "Brought the files to Issue Press, picked fluorescent pink and a navy. The misregistration is the point with riso, you have to make peace with it. The cover came out cleaner than I deserved. The interior is full of happy accidents." },
+      { h: "Folded by hand", b: "Two hundred copies, four of us, a Saturday. Watched three movies. The folds got worse as the day went on and that's fine. I love every uneven one." },
     ],
   },
   {
     year: "2024", slug: "postcard-service", name: "Postcard Service",
     role: "Build", kind: "Side project", status: "beta",
     published: "Sep · 09 · 2024", updated: "Feb · 11 · 2025",
-    stack: ["rails","stripe"], color: "#4d8a58",
+    stack: ["rails", "stripe"], color: "#4d8a58",
     tagline: "Type a note from your phone. We print it on a postcard. We mail it for you. $3.",
     started: "Jun · 2024", filed: "Sep · 2024",
     metrics: [["cards mailed", "612"], ["countries reached", "14"], ["return rate", "1.8%"]],
     links: [["live", "postcard.fyi (invite-only)"], ["roadmap", "github / issues"]],
     entries: [
-      { h: "Why",          b: "My grandma still writes postcards. I don't. The friction is the post office. I thought: what if I just type the text in an app and someone else does the rest. Turns out a lot of people had this same thought, but the existing ones are corporate and ugly. I wanted one with my friends' handwriting fonts." },
-      { h: "The printer",   b: "Found a small print shop in Vallejo that does runs of 50. They were patient with my emails. We did a test batch in their parking lot — they printed five, I addressed them, we drove them to a real mailbox like little children." },
-      { h: "Beta open",     b: "Invite-only because Stripe scared me and so did fraud. So far the only abuse has been one person mailing themselves a card every day for two weeks. I think that's allowed." },
+      { h: "Why", b: "My grandma still writes postcards. I don't. The friction is the post office. I thought: what if I just type the text in an app and someone else does the rest. Turns out a lot of people had this same thought, but the existing ones are corporate and ugly. I wanted one with my friends' handwriting fonts." },
+      { h: "The printer", b: "Found a small print shop in Vallejo that does runs of 50. They were patient with my emails. We did a test batch in their parking lot — they printed five, I addressed them, we drove them to a real mailbox like little children." },
+      { h: "Beta open", b: "Invite-only because Stripe scared me and so did fraud. So far the only abuse has been one person mailing themselves a card every day for two weeks. I think that's allowed." },
     ],
   },
   {
@@ -333,9 +333,9 @@ const PROJECTS = [
     metrics: [["lines of swift", "1,847"], ["users", "1 (me)"], ["meals saved", "many"]],
     links: [["source", "github / pantry"], ["screenshots", "see below"]],
     entries: [
-      { h: "A one-person app",      b: "I keep buying cilantro and forgetting. The plan was: a tiny menu bar dropdown with what's in the fridge, and what's about to die. I never intended to ship it. I just wanted the thing." },
-      { h: "The shortcut",          b: "The fun part was the keyboard shortcut: ⌘+P pops a quick-add. Tab, type, enter. It made me feel like the kind of person who has a clean kitchen." },
-      { h: "Shelved, lovingly",     b: "Stopped using it because we moved apartments and my new fridge is tiny enough to see everything in. The repo is still there. Sometimes I open the file just to look at the spacing." },
+      { h: "A one-person app", b: "I keep buying cilantro and forgetting. The plan was: a tiny menu bar dropdown with what's in the fridge, and what's about to die. I never intended to ship it. I just wanted the thing." },
+      { h: "The shortcut", b: "The fun part was the keyboard shortcut: ⌘+P pops a quick-add. Tab, type, enter. It made me feel like the kind of person who has a clean kitchen." },
+      { h: "Shelved, lovingly", b: "Stopped using it because we moved apartments and my new fridge is tiny enough to see everything in. The repo is still there. Sometimes I open the file just to look at the spacing." },
     ],
   },
   {
@@ -349,8 +349,8 @@ const PROJECTS = [
     links: [["archive", "letters.lucygai.com"], ["best of", "→ Memory Archive / blog"]],
     entries: [
       { h: "Started in a kitchen", b: "First post was about my dad's record collection. Wrote it sitting at the kitchen counter at my parents' house, Christmas tree still up. I think I rewrote the first sentence eleven times. I still don't love it." },
-      { h: "Hit a stride",         b: "Posted every two weeks for a year. The good ones came out on the long subway rides home. The bad ones came out when I forced it on a Sunday afternoon. There's a lesson there and I keep not learning it." },
-      { h: "Closing time",         b: "Decided to fold it. The form (long single-column blog with a dropdown for categories) wasn't where my head was anymore. I wanted rooms. So I'm building rooms. The archive is still up. The best six pieces are coming with me." },
+      { h: "Hit a stride", b: "Posted every two weeks for a year. The good ones came out on the long subway rides home. The bad ones came out when I forced it on a Sunday afternoon. There's a lesson there and I keep not learning it." },
+      { h: "Closing time", b: "Decided to fold it. The form (long single-column blog with a dropdown for categories) wasn't where my head was anymore. I wanted rooms. So I'm building rooms. The archive is still up. The best six pieces are coming with me." },
     ],
   },
 ];

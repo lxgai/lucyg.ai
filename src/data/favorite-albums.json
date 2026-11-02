@@ -1,75 +1,159 @@
 [
   {
-    "title": "nolimit,",
+    "title": "nolimit",
     "artist": "Knock2",
     "featuredTrackNumber": 14,
-    "favoriteTrackNumbers": [1, 2, 3, 4, 5, 6, 7, 8, 9, 14]
+    "favoriteTrackNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      14
+    ]
   },
   {
     "title": "Worlds",
     "artist": "Porter Robinson",
     "featuredTrackNumber": 1,
-    "favoriteTrackNumbers": [1, 2, 3, 10, 12]
+    "favoriteTrackNumbers": [
+      1,
+      2,
+      3,
+      10,
+      12
+    ]
   },
   {
     "title": "EUSEXUA",
     "artist": "FKA twigs",
     "spotifyAlbumId": "3o1TOhMkU5FFMSJMDhXfdF",
     "featuredTrackNumber": 3,
-    "favoriteTrackNumbers": [2, 3, 4, 6, 8, 9, 10]
+    "favoriteTrackNumbers": [
+      2,
+      3,
+      4,
+      6,
+      8,
+      9,
+      10
+    ]
   },
   {
     "title": "Killswitch Melodies",
     "artist": "Flawed Mangoes",
     "featuredTrackNumber": 1,
-    "favoriteTrackNumbers": [1, 5, 8, 10]
+    "favoriteTrackNumbers": [
+      1,
+      5,
+      8,
+      10
+    ]
   },
   {
     "title": "无限意识 Meta Ego",
     "artist": "Lexie Liu",
     "featuredTrackNumber": 1,
-    "favoriteTrackNumbers": [1, 2, 3, 4, 9]
+    "favoriteTrackNumbers": [
+      1,
+      2,
+      3,
+      4,
+      9
+    ]
   },
   {
     "title": "Comfort in Chaos",
     "artist": "John Summit",
     "featuredTrackNumber": 9,
-    "favoriteTrackNumbers": [4, 5, 7, 9, 11, 12]
+    "favoriteTrackNumbers": [
+      4,
+      5,
+      7,
+      9,
+      11,
+      12
+    ]
   },
   {
     "title": "Demidevil",
     "artist": "Ashnikko",
     "featuredTrackNumber": 3,
-    "favoriteTrackNumbers": [3, 6, 7, 8, 9]
+    "favoriteTrackNumbers": [
+      3,
+      6,
+      7,
+      8,
+      9
+    ]
   },
   {
     "title": "Alone at Prom",
     "artist": "Tory Lanez",
     "featuredTrackNumber": 4,
-    "favoriteTrackNumbers": [4, 5, 7, 11]
+    "favoriteTrackNumbers": [
+      4,
+      5,
+      7,
+      11
+    ]
   },
   {
     "title": "Come Over When You're Sober, Pt.1",
     "artist": "Lil Peep",
     "featuredTrackNumber": 2,
-    "favoriteTrackNumbers": [1, 2, 3, 6]
+    "favoriteTrackNumbers": [
+      1,
+      2,
+      3,
+      6
+    ]
   },
   {
     "title": "Carrie & Lowell",
     "artist": "Sufjan Stevens",
     "featuredTrackNumber": 6,
-    "favoriteTrackNumbers": [1, 2, 4, 6, 7, 8, 11]
+    "favoriteTrackNumbers": [
+      1,
+      2,
+      4,
+      6,
+      7,
+      8,
+      11
+    ]
   },
   {
     "title": "Halo",
     "artist": "Tiffany Day",
     "featuredTrackNumber": 1,
-    "favoriteTrackNumbers": [1, 3, 6, 8, 9, 10, 11]
+    "favoriteTrackNumbers": [
+      1,
+      3,
+      6,
+      8,
+      9,
+      10,
+      11
+    ]
   },
   {
     "title": "Wiped Out!",
     "artist": "The Neighbourhood",
     "featuredTrackNumber": 5,
-    "favoriteTrackNumbers": [2, 3, 4, 5, 6, 8, 10, 11]
+    "favoriteTrackNumbers": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      10,
+      11
+    ]
   }
 ]

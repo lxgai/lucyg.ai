@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Children, isValidElement, type ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { tableWrapClass } from "@/components/site/Article";
@@ -83,12 +83,14 @@ const components: Components = {
   h3({ children }) {
     return <h3 id={slugify(textOf(children))}>{children}</h3>;
   },
-  p({ children }) {
-    const childArray = Children.toArray(children);
-    // A paragraph holding only an image renders as a bare <figure>.
-    if (childArray.length === 1 && isValidElement(childArray[0]) && childArray[0].type === MarkdownImage) {
-      return childArray[0];
-    }
+  p({ node, children }) {
+    // A paragraph holding only images renders as bare <figure>s.
+    const onlyImages = node?.children.every(
+      (child) =>
+        (child.type === "element" && child.tagName === "img") ||
+        (child.type === "text" && !child.value.trim()),
+    );
+    if (onlyImages) return <>{children}</>;
     if (DIVIDER_TEXT.test(textOf(children))) {
       return (
         <div className="article-divider" aria-hidden="true">

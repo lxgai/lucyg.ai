@@ -8,6 +8,7 @@
 
 .sectionHeading {
   margin: 0 0 12px;
+  scroll-margin-top: 24px;
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 400;
@@ -175,15 +176,15 @@
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
   gap: 24px;
-  align-items: end;
+  align-items: center;
   padding: 10px 0 24px;
 }
 
+/* Fixed width, natural height (never cropped), centered against the text. */
 .poster {
   display: block;
   width: 120px;
-  height: 180px;
-  object-fit: cover;
+  height: auto;
   background: var(--lightgray);
 }
 
@@ -200,9 +201,36 @@
   text-wrap: pretty;
 }
 
+.filmSynopsis {
+  font-style: italic;
+}
+
+.reviewLink {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
 .sectionFooter {
   margin: 24px 0 0;
   font-size: 12px;
+}
+
+/* Poster beside the synopsis (centered, from the row's align-items), review full width below. The
+   text wrapper dissolves so its children sit in the row's grid. */
+@media (max-width: 904px) {
+  .filmDetails {
+    column-gap: 16px;
+    row-gap: 28px;
+  }
+
+  .filmText {
+    display: contents;
+  }
+
+  .filmReview {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Too narrow for the cover beside a tracklist: stack them. */

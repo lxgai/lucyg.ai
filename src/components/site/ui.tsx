@@ -6,6 +6,23 @@ export const linkClass = styles.link;
 export const mutedClass = styles.muted;
 export const pageTitleClass = styles.pageTitle;
 
+// Opens in a new tab and marks itself with an ArrowSquareOut after the text.
+export function ExternalLink({
+  href,
+  className = styles.link,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cx(className, styles.external)}>
+      {children}
+    </a>
+  );
+}
+
 export function Tag({ children, large = false, title }: { children: ReactNode; large?: boolean; title?: string }) {
   return (
     <span className={cx(styles.tag, large && styles.tagLarge)} title={title}>

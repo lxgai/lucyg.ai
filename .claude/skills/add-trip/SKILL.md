@@ -42,7 +42,7 @@ This prints the logical paths (`/images/travels/<slug>/<file>`) for every image 
 Create `src/data/travel-articles/<slug>.json` (2-space indent, native names unescaped):
 
 - `slug`, `place`, `title`, `startDate`, `endDate`, and `tags` set to the cities.
-- `blocks`: the opening `image` block (with a real alt text) and intro `text` block if given, then one `section` block per city: `{ "id": "<slugged city>", "type": "section", "level": 2, "title": "<city>" }`. Ids are unique across the article.
+- `blocks`: the opening hero `canvas` block (`"background": "dots"`, `height` about 480, holding the hero image as one item at roughly `x: 24, y: 0, width: 672`, `rotation: 0`, `zIndex: 1`, with a real alt text) and intro `text` block if given, then one `section` block per city: `{ "id": "<slugged city>", "type": "section", "level": 2, "title": "<city>" }`. Ids are unique across the article.
 
 Don't place the rest of the photos; they appear in the editor's image library from `TRAVEL_ASSETS`.
 

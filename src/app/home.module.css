@@ -9,6 +9,7 @@
 .greeting {
   margin: 0 0 20px;
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 1.2rem;
   line-height: 1.3;
   color: var(--darkgray);
@@ -63,7 +64,8 @@
 .signoff {
   margin: 8px 0 0;
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 1.4rem;
   line-height: 1.3;
-  color: var(--dark);
+  color: var(--darkgray);
 }

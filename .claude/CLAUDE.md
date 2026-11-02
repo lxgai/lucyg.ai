@@ -31,7 +31,7 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 ## Important Paths
 
 - `src/app/` - App Router pages and API routes
-- `src/components/site/` - redesigned site chrome and shared UI: `SiteShell`, `Toc`, `ThemeToggle`, `Clock`, `Article`, `Tag`/`TagRow`/`Asterisks`
+- `src/components/site/` - redesigned site chrome and shared UI: `SiteShell`, `Toc`, `ThemeToggle`, `Clock`, `Article`, `Tag`/`TagRow`/`ExpandableTags`/`Asterisks`
 - `src/components/travel/` - `TravelArticle` and canvas helpers
 - `src/data/travel-articles/` - travel articles, edited in the dev editor
 - `src/lib/` - Substack and Letterboxd feeds, date and slug helpers, article HTML prep
@@ -57,7 +57,7 @@ Typography (the only four families; don't add others in new UI):
 
 Layout:
 
-- Every public page renders inside `SiteShell`. Pass `toc` on Home (site nav) and article pages only; list pages have no TOC.
+- Every public page renders inside `SiteShell`, and every page passes `toc`: `SITE_NAV` (`src/components/site/siteNav.ts`) on Home and the index pages (Projects, Travels, Blog); on Favorites and article pages, `siteNavWith(sectionHref, contents)`, which nests the page's contents under its section's link.
 - Main column max 720px. TOC column appears at ≥1240px, otherwise the TOC sits in the sidebar.
 - The sidebar wraps above main below ~904px. Multi-column rows inside main stack below 560px where they'd get too narrow.
 - Use real arrow glyphs (`→`, `←`) in visible UI, never ASCII substitutes.
@@ -91,7 +91,8 @@ The document should remain the only vertical scroll container.
 Trip pages are single-column articles. Each trip lives in `src/data/travel-articles/<slug>.json` (`TravelArticle` in `src/types/travelArticle.ts`), is registered in `TRAVEL_ARTICLES` in `src/data/travelEntries.ts`, and renders with `TravelArticle` inside `SiteShell`.
 
 - An article is a title, place, start/end dates, city tags and a flat list of blocks: `image` (full column width, optional caption), `text` (a blank line starts a new paragraph), `section` (h2 or h3 with optional alt. title and subtitle) and `canvas`.
-- The TOC is built from the blocks: the page title at the root, h2 sections under it, h3 sections under the h2 before them.
+- When the first block is a canvas it is the hero and renders above the title (`splitHero` in `TravelArticle.tsx`, shared with the editor). Every trip opens with one.
+- The TOC is the site nav with the trip nested under Travels, built from the blocks: the page title, h2 sections under it, h3 sections under the h2 before them.
 - A canvas is exactly the column's width with an editable height, and clips its content. Item coordinates are px in a 720px design space (`CANVAS_WIDTH`); the public page scales the whole canvas, text included, to the column width. Backgrounds are limited to the six cutout treatments in `BACKGROUNDS` (`src/components/travel/travelCanvas.ts`).
 - Keep `TravelBlock` a discriminated union rendered with an exhaustive `switch`.
 

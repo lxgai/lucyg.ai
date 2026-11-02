@@ -11,7 +11,7 @@
 .layout {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 64px clamp(24px, 6vw, 96px) 0;
+  padding: 80px clamp(24px, 6vw, 96px) 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 28px;
   position: sticky;
-  top: 64px;
+  top: 80px;
 }
 
 .titleRow {
@@ -78,6 +78,19 @@
   display: none;
 }
 
+/* Recent Travels and Selected Writing: rendered in both places, shown in one. */
+.sideLists,
+.mainLists {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.mainLists {
+  display: none;
+  margin-top: 48px;
+}
+
 .sideSection {
   display: flex;
   flex-direction: column;
@@ -101,14 +114,14 @@
 
 .sideItemTitle {
   font-family: var(--font-heading);
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.35;
   color: var(--dark);
 }
 
 .sideItemMeta {
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--darkgray);
   opacity: 0.6;
@@ -134,7 +147,7 @@
   max-width: 720px;
   display: flex;
   flex-direction: column;
-  min-height: calc(100svh - 64px - 56px - 88px);
+  min-height: calc(100svh - 80px - 56px - 88px);
 }
 
 .endSpacer {
@@ -149,7 +162,7 @@
 .tocColumn {
   flex: 0 0 200px;
   position: sticky;
-  top: 64px;
+  top: 80px;
   display: none;
 }
 
@@ -170,7 +183,38 @@
 .toc {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+}
+
+/* Accordion for the whole list and for each link's nested contents (Toc.tsx
+   COLLAPSE_MS matches the duration). */
+.tocCollapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 240ms cubic-bezier(0.2, 0, 0, 1),
+    opacity 200ms ease;
+}
+
+.tocCollapseOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.tocCollapseInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tocCollapse {
+    transition: none;
+  }
+}
+
+/* The gap under the toggle lives inside the accordion so it closes with it. */
+.tocRoot {
+  padding-top: 12px;
 }
 
 .tocToggle {
@@ -218,7 +262,8 @@
   font-weight: 600;
 }
 
-.tocLink:hover {
+.tocLink:hover,
+.tocLinkCurrent {
   color: var(--darkgray);
 }
 
@@ -271,25 +316,56 @@
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
+}
+
+/* Centered icons read a touch low next to the label. */
+.footerIcon {
+  flex: none;
+  transform: translateY(-1px);
 }
 
 .footerLink:hover {
   opacity: 0.7;
 }
 
-.footerArrow {
-  flex: none;
-  fill: var(--underline);
-}
-
 /* Once the columns wrap, the sidebar sits above main at main's width and stops
    being sticky. */
 @media (max-width: 904px) {
+  .layout {
+    padding-top: 40px;
+  }
+
   .sidebar {
     position: static;
     flex: 1 1 100%;
     max-width: 720px;
+  }
+
+  /* One column: the sidebar keeps only the title row and TOC; the lists move
+     under the asterisks. */
+  .sideLists {
+    display: none;
+  }
+
+  .mainLists {
+    display: flex;
+    margin-top: 32px;
+  }
+
+  .endSpacer {
+    flex-basis: 40px;
+  }
+
+  /* The sidebar sits above main here, so main no longer needs to fill the
+     viewport; drop the spacer that pushed the footer down. The layout's 56px
+     gap is the only space above the footer. */
+  .main {
+    min-height: 0;
+  }
+
+  .bottomSpacer {
+    flex: 0 0 0;
   }
 
   .footerMeta,
@@ -298,7 +374,15 @@
     max-width: 720px;
   }
 
+  .footer {
+    row-gap: 20px;
+  }
+
+  /* Socials above the meta row, wrapping onto as many rows as the width needs. */
   .footerLinks {
+    order: -1;
     justify-content: flex-start;
+    column-gap: 24px;
+    row-gap: 12px;
   }
 }

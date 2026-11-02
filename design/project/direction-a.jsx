@@ -127,12 +127,12 @@ function HomeA() {
             position: "absolute", top: 30, left: 40, right: 20, bottom: 40,
             background: A.paperDeep, transform: "rotate(-1.5deg)",
             border: `1px solid ${A.hairStrong}`,
-          }}/>
+          }} />
           <div style={{
             position: "absolute", top: 20, left: 10, right: 30, bottom: 60,
             background: "#eae1d2", transform: "rotate(1.2deg)",
             border: `1px solid ${A.hairStrong}`,
-          }}/>
+          }} />
           {/* Front photo card */}
           <div style={{
             position: "absolute", top: 0, left: 20, right: 10, bottom: 30,
@@ -234,14 +234,16 @@ function TravelsA() {
             <Hair style={{ margin: "12px 0 10px" }} />
             <div style={{ display: "flex", justifyContent: "space-between", fontFamily: A.mono, fontSize: 9, letterSpacing: 1.4, color: A.ink60, textTransform: "uppercase" }}>
               <span>{t.duration}</span>
-              <span>№ {String(i+1).padStart(3, "0")}</span>
+              <span>№ {String(i + 1).padStart(3, "0")}</span>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ position: "absolute", bottom: 32, left: 48, right: 48, display: "flex", justifyContent: "space-between",
-        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase" }}>
+      <div style={{
+        position: "absolute", bottom: 32, left: 48, right: 48, display: "flex", justifyContent: "space-between",
+        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase"
+      }}>
         <span>Fig. C.01 — Postcards</span>
         <span>3 of 3 shown</span>
       </div>
@@ -319,7 +321,7 @@ function IpodPlayerA({ album, playing, setPlaying, progress, setTrackIdx, trackI
           <span>🔋</span>
         </div>
         <div style={{ flex: 1, display: "flex", gap: 10, marginTop: 10, alignItems: "center" }}>
-          <img src={album.src} alt="" style={{ width: 68, height: 68, objectFit: "cover", border: `1px solid ${A.ink}` }}/>
+          <img src={album.src} alt="" style={{ width: 68, height: 68, objectFit: "cover", border: `1px solid ${A.ink}` }} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontFamily: A.serif, fontSize: 13, fontStyle: "italic", color: A.ink, lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{album.title}</div>
             <div style={{ fontFamily: A.mono, fontSize: 9, color: A.ink60, marginTop: 2 }}>{album.artist}</div>
@@ -377,7 +379,7 @@ function CassettePlayerA({ album, playing, setPlaying, progress }) {
 
       {/* Reels */}
       <div style={{ marginTop: 20, display: "flex", justifyContent: "space-around", alignItems: "center" }}>
-        {[0,1].map(i => (
+        {[0, 1].map(i => (
           <div key={i} style={{
             width: 84, height: 84, borderRadius: "50%",
             background: "#1f1a16",
@@ -386,14 +388,14 @@ function CassettePlayerA({ album, playing, setPlaying, progress }) {
             animationDelay: `${i * -0.2}s`,
           }}>
             <div style={{ position: "absolute", inset: 12, borderRadius: "50%", border: "2px dashed rgba(255,255,255,0.15)" }} />
-            {[0,60,120,180,240,300].map(deg => (
+            {[0, 60, 120, 180, 240, 300].map(deg => (
               <div key={deg} style={{
                 position: "absolute", top: "50%", left: "50%",
                 width: 2, height: 30,
                 background: "rgba(255,255,255,0.12)",
                 transform: `translate(-50%,-50%) rotate(${deg}deg)`,
                 transformOrigin: "center",
-              }}/>
+              }} />
             ))}
             <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 14, height: 14, borderRadius: "50%", background: A.paper }} />
           </div>
@@ -409,7 +411,7 @@ function CassettePlayerA({ album, playing, setPlaying, progress }) {
           <div onClick={() => setPlaying(!playing)} style={{ width: 28, height: 14, background: A.rust, color: A.paper, border: `1px solid ${A.rust}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, cursor: "pointer" }}>{playing ? "❚❚" : "▶"}</div>
           <div style={{ width: 28, height: 14, background: "#fbf6ee", border: `1px solid ${A.ink60}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}>▶▶</div>
         </div>
-        <div style={{ fontFamily: A.mono, fontSize: 9, color: A.ink60, letterSpacing: 1.2, textTransform: "uppercase" }}>{playing ? "PLAYING" : "STOPPED"} · {String(Math.floor(progress/100*43)).padStart(2,"0")}:{String(Math.floor(progress/100*60) % 60).padStart(2,"0")}</div>
+        <div style={{ fontFamily: A.mono, fontSize: 9, color: A.ink60, letterSpacing: 1.2, textTransform: "uppercase" }}>{playing ? "PLAYING" : "STOPPED"} · {String(Math.floor(progress / 100 * 43)).padStart(2, "0")}:{String(Math.floor(progress / 100 * 60) % 60).padStart(2, "0")}</div>
       </div>
     </div>
   );
@@ -491,7 +493,7 @@ function FavoritesA({ playerVariant, moviesVariant }) {
                     color: i === trackIdx ? A.rust : A.ink,
                     cursor: "pointer",
                   }}>
-                    <span style={{ color: A.ink40, fontSize: 9 }}>{String(tr.n).padStart(2,"0")}</span>
+                    <span style={{ color: A.ink40, fontSize: 9 }}>{String(tr.n).padStart(2, "0")}</span>
                     <span style={{ fontFamily: A.serif, fontSize: 14, fontStyle: i === trackIdx ? "italic" : "normal" }}>{tr.name}</span>
                     <span style={{ color: A.ink60, fontSize: 10 }}>{tr.time}</span>
                   </div>
@@ -527,8 +529,10 @@ function FavoritesA({ playerVariant, moviesVariant }) {
         <MoviesA moviesVariant={moviesVariant} />
       )}
 
-      <div style={{ position: "absolute", bottom: 20, left: 48, right: 48, display: "flex", justifyContent: "space-between",
-        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase" }}>
+      <div style={{
+        position: "absolute", bottom: 20, left: 48, right: 48, display: "flex", justifyContent: "space-between",
+        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase"
+      }}>
         <span>Fig. D.{tab === "music" ? "01" : "02"} — {tab}</span>
         <span>Variant: {tab === "music" ? playerVariant : moviesVariant}</span>
       </div>
@@ -591,13 +595,13 @@ function MoviesA({ moviesVariant }) {
           <div style={{ background: "#1f1a16", padding: "12px 12px", borderRadius: 2, display: "flex", gap: 2, overflowX: "hidden", position: "relative" }}>
             {/* Sprocket holes */}
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 12, background: "#1f1a16", display: "flex", alignItems: "center", gap: 10, padding: "0 12px" }}>
-              {Array.from({length: 24}).map((_, i) => (
-                <div key={i} style={{ width: 10, height: 6, background: A.paper, borderRadius: 1 }}/>
+              {Array.from({ length: 24 }).map((_, i) => (
+                <div key={i} style={{ width: 10, height: 6, background: A.paper, borderRadius: 1 }} />
               ))}
             </div>
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 12, background: "#1f1a16", display: "flex", alignItems: "center", gap: 10, padding: "0 12px" }}>
-              {Array.from({length: 24}).map((_, i) => (
-                <div key={i} style={{ width: 10, height: 6, background: A.paper, borderRadius: 1 }}/>
+              {Array.from({ length: 24 }).map((_, i) => (
+                <div key={i} style={{ width: 10, height: 6, background: A.paper, borderRadius: 1 }} />
               ))}
             </div>
             <div style={{ padding: "16px 4px 16px", display: "flex", gap: 4, width: "100%", justifyContent: "space-between" }}>
@@ -655,7 +659,7 @@ function AboutA() {
             <span style={{ fontFamily: A.mono, fontSize: 10, color: A.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>Reading</span>
             <span><em>A Little Life</em> — Hanya Yanagihara</span>
             <span style={{ fontFamily: A.mono, fontSize: 10, color: A.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>Listening</span>
-            <span>nolimit, — Knock2 (on repeat, regrettably)</span>
+            <span>nolimit — Knock2 (on repeat, regrettably)</span>
             <span style={{ fontFamily: A.mono, fontSize: 10, color: A.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>Building</span>
             <span>this site, and a quiet tool for keeping lists</span>
             <span style={{ fontFamily: A.mono, fontSize: 10, color: A.ink60, textTransform: "uppercase", letterSpacing: 1, paddingTop: 3 }}>Planning</span>
@@ -683,8 +687,10 @@ function AboutA() {
         </div>
       </div>
 
-      <div style={{ position: "absolute", bottom: 32, left: 48, right: 48, display: "flex", justifyContent: "space-between",
-        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase" }}>
+      <div style={{
+        position: "absolute", bottom: 32, left: 48, right: 48, display: "flex", justifyContent: "space-between",
+        fontFamily: A.mono, fontSize: 9, letterSpacing: 1.6, color: A.ink40, textTransform: "uppercase"
+      }}>
         <span>Fig. F.01 — Card</span>
         <span>File under: Lucy</span>
       </div>
@@ -758,8 +764,10 @@ function ProjectsA() {
 
       <div style={{ position: "absolute", top: 250, left: 48, right: 48, bottom: 60, overflow: "hidden" }}>
         {/* Column headers */}
-        <div style={{ display: "grid", gridTemplateColumns: "80px 2fr 1.4fr 1fr 0.9fr", gap: 20, padding: "10px 0", borderBottom: `1px solid ${A.hairStrong}`,
-          fontFamily: A.mono, fontSize: 9, letterSpacing: 1.4, color: A.ink60, textTransform: "uppercase" }}>
+        <div style={{
+          display: "grid", gridTemplateColumns: "80px 2fr 1.4fr 1fr 0.9fr", gap: 20, padding: "10px 0", borderBottom: `1px solid ${A.hairStrong}`,
+          fontFamily: A.mono, fontSize: 9, letterSpacing: 1.4, color: A.ink60, textTransform: "uppercase"
+        }}>
           <span>Year</span><span>Title / role</span><span>Kind</span><span>Stack</span><span>Status</span>
         </div>
         {window.PROJECTS.map((p, i) => (

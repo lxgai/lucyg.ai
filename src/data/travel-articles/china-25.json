@@ -12,11 +12,23 @@
   ],
   "blocks": [
     {
-      "id": "image-china-25-hero",
-      "type": "image",
-      "src": "/images/travels/china-25/china-25-hero.png",
-      "alt": "China, autumn 2025",
-      "background": "dots"
+      "id": "canvas-w9ut1x",
+      "type": "canvas",
+      "height": 476,
+      "background": "dots",
+      "items": [
+        {
+          "id": "img-6po7ri",
+          "kind": "image",
+          "src": "/images/travels/china-25/china-25-hero.png",
+          "alt": "",
+          "x": 14,
+          "y": 5,
+          "width": 698,
+          "rotation": 0,
+          "zIndex": 1
+        }
+      ]
     },
     {
       "id": "text",

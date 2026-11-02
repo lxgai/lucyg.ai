@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Article from "@/components/site/Article";
+import { siteNavWith } from "@/components/site/siteNav";
 import type { TocItem } from "@/components/site/Toc";
 import { cx } from "@/lib/cx";
 import { formatDisplayDate } from "@/lib/dates";
@@ -21,7 +22,8 @@ export const travelArticleStyles = styles;
 
 const FULL_SIZES = "(max-width: 904px) 100vw, 720px";
 
-// Page title at the root, h2 sections under it, h3 sections under the h2 before them.
+// Site nav with the trip under Travels: the page title, h2 sections under it,
+// h3 sections under the h2 before them.
 export function travelArticleToc(article: TravelArticleData): TocItem[] {
   const sections: TocItem[] = [];
 
@@ -37,7 +39,7 @@ export function travelArticleToc(article: TravelArticleData): TocItem[] {
     }
   }
 
-  return [{ href: "#top", label: article.title.replace(/\.$/, ""), children: sections }];
+  return siteNavWith("/travels", [{ href: "#top", label: article.title.replace(/\.$/, ""), children: sections }]);
 }
 
 export function travelArticleDates(article: TravelArticleData) {
@@ -63,7 +65,7 @@ export function canvasItemClassName(item: TravelCanvasItem) {
 }
 
 // The visible content of a canvas item, positioned by its wrapper.
-export function CanvasItemContent({ item }: { item: TravelCanvasItem }) {
+export function CanvasItemContent({ item, priority = false }: { item: TravelCanvasItem; priority?: boolean }) {
   if (item.kind === "text") return <>{item.text}</>;
 
   const share = (item.width / CANVAS_WIDTH) * 100;
@@ -75,6 +77,10 @@ export function CanvasItemContent({ item }: { item: TravelCanvasItem }) {
       height={0}
       sizes={`(max-width: 904px) ${Math.ceil(share)}vw, ${Math.ceil(item.width)}px`}
       draggable={false}
+      priority={priority}
+      // Until it loads the image is 0px tall, so one starting above the canvas
+      // top is fully clipped and native lazy loading never fetches it.
+      loading={!priority && item.y < 0 ? "eager" : undefined}
       className={cx(styles.canvasImage, treatedClass(item.background))}
     />
   );
@@ -147,7 +153,7 @@ export function SectionBlock({ block }: { block: TravelSectionBlock }) {
   );
 }
 
-function CanvasBlock({ block }: { block: TravelCanvasBlock }) {
+function CanvasBlock({ block, priority = false }: { block: TravelCanvasBlock; priority?: boolean }) {
   return (
     <div className={canvasClassName(block.background)} style={canvasStyle(block.height)}>
       {block.items.map((item) => (
@@ -157,7 +163,7 @@ function CanvasBlock({ block }: { block: TravelCanvasBlock }) {
           style={canvasItemStyle(item, block.height)}
           aria-hidden={item.kind === "image" && !item.alt ? true : undefined}
         >
-          <CanvasItemContent item={item} />
+          <CanvasItemContent item={item} priority={priority} />
         </div>
       ))}
     </div>
@@ -181,13 +187,25 @@ export function TravelBlockView({ block, priority = false }: { block: TravelBloc
   }
 }
 
+// An opening canvas becomes the hero above the title.
+export function splitHero(blocks: TravelBlock[]): { hero?: TravelCanvasBlock; body: TravelBlock[] } {
+  const [first, ...rest] = blocks;
+  return first?.type === "canvas" ? { hero: first, body: rest } : { body: blocks };
+}
+
 export default function TravelArticle({ article }: { article: TravelArticleData }) {
+  const { hero, body: blocks } = splitHero(article.blocks);
   // Only an opening image is above the fold.
-  const firstImage = article.blocks.findIndex((block) => block.type === "image");
+  const firstImage = hero ? -1 : blocks.findIndex((block) => block.type === "image");
 
   return (
-    <Article title={article.title} meta={travelArticleDates(article)} tags={article.tags}>
-      {article.blocks.map((block, index) => (
+    <Article
+      title={article.title}
+      meta={travelArticleDates(article)}
+      tags={article.tags}
+      hero={hero && <CanvasBlock block={hero} priority />}
+    >
+      {blocks.map((block, index) => (
         <TravelBlockView key={block.id} block={block} priority={index === firstImage && index < 2} />
       ))}
     </Article>

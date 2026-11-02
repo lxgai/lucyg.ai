@@ -15,7 +15,7 @@ Defined as CSS custom properties in `src/styles/globals.css`: light values on `:
 | `--light` | `#f8fbf8` (mint white) | `#181316` (plum black) | page background |
 | `--lightgray` | `color-mix(in oklch, #f8fbf8 90%, #8a8580)` | `#2b2327` | inline-code background, image placeholders, table rules |
 | `--gray` | `#b5b0b2` | `#6e6468` | idle TOC links |
-| `--darkgray` | `#9b2c5c` (magenta) | `#e38db2` | body text, links, greeting |
+| `--darkgray` | `#9b2c5c` (magenta) | `#e38db2` | body text, links, greeting, sign-off |
 | `--dark` | `color-mix(in oklch, #9b2c5c 72%, black)` ≈ `#6e1d42` | `#f4c9da` | headings, site title, sidebar item titles |
 | `--underline` | `#2f8f6b` (jade) | `#4fbf93` | link underlines, tags, asterisks, stars, footer arrows |
 | `--highlight` | `color-mix(in srgb, #9b2c5c 10%, transparent)` | `rgba(227,141,178,.12)` | reserved |
@@ -36,7 +36,7 @@ Loaded with `next/font/google` in `src/app/layout.tsx` and exposed as CSS variab
 |---|---|---|
 | Headings, site title, sidebar item titles, article and list titles | DM Serif Display 400 | `--font-heading` |
 | Body, UI, tags, project/favorites row titles | Bricolage Grotesque (variable, opsz) | `--font-body` |
-| Handwritten: greeting, dates, captions, sign-off, sidebar meta | Nothing You Could Do | `--font-hand` |
+| Handwritten: greeting, dates, captions, sign-off, sidebar meta. Outside the sidebar it is thickened with `-webkit-text-stroke: var(--font-hand-stroke) currentColor` (the font has one weight) | Nothing You Could Do | `--font-hand` |
 | Mono: "Currently" labels, clock, track numbers and durations, inline code | JetBrains Mono 400/500 | `--font-code` |
 
 ---
@@ -57,23 +57,23 @@ These live in `src/components/site/ui.tsx` and `ui.module.css`.
 Every redesigned page renders inside `SiteShell` (`src/components/site/SiteShell.tsx`), a server component.
 
 ```
-max-width 1440, centered; padding 64px clamp(24px, 6vw, 96px) 0
+max-width 1440, centered; padding 80px clamp(24px, 6vw, 96px) 0
 flex, wrap, justify-content center, gap 56px, align-items flex-start
 
-[sidebar 260px, sticky top 64]  [main flex 1 1 480px, max 720]  [TOC 200px, sticky]
+[sidebar 260px, sticky top 80]  [main flex 1 1 480px, max 720]  [TOC 200px, sticky]
 [footer: full-width row reusing the same column widths]
 ```
 
 - Base text: Bricolage 18px / 1.65.
-- **Main** has `min-height: calc(100svh - 64px - 56px - 88px)` so the footer sits near the bottom of short pages. After the content come a 64px spacer, the asterisks and a `flex: 1 0 56px` spacer.
-- **TOC column** only renders at ≥1240px, and only on Home and article pages. Below 1240px the TOC moves into the sidebar under the title row. List pages have no TOC.
-- **Below ~904px** the sidebar wraps above main, matches main's width and stops being sticky.
+- **Main** has `min-height: calc(100svh - 80px - 56px - 88px)` so the footer sits near the bottom of short pages. After the content come a 64px spacer, the asterisks and a `flex: 1 0 56px` spacer.
+- **TOC column** only renders at ≥1240px. Below 1240px the TOC moves into the sidebar under the title row. Every page has one.
+- **Below ~904px** the sidebar wraps above main, matches main's width and stops being sticky. It keeps only the title row and TOC; Recent Travels and Selected Writing move under the asterisks at the end of main, and the footer moves its socials 20px above the meta row, wrapping onto as many rows as the width needs.
 
 ### Sidebar
 
 1. Title row: "Lucy Gai" (DM Serif 28px, `var(--dark)`, links to `/`) and the theme toggle.
-2. TOC, below 1240px and only on pages that have one.
-3. **Recent Travels**: the two most recent trips. Title DM Serif 17px `var(--dark)`, date handwritten 13px muted, then "See all travels →".
+2. TOC, below 1240px.
+3. **Recent Travels**: the two most recent trips. Title DM Serif 18px `var(--dark)`, date handwritten 14px muted, then "See all travels →".
 4. **Selected Writing**: the two most recent Substack posts, same pattern, then "See all writing →".
 
 "See all" links: Bricolage 14px, muted, 1px underline at offset 2px, hover `opacity: .85`.
@@ -82,12 +82,14 @@ flex, wrap, justify-content center, gap 56px, align-items flex-start
 
 - Header button: "Table of Contents" in DM Serif 16px with a chevron. Open by default; collapsing rotates the chevron −90°.
 - Links: 15px / 1.35, `var(--gray)`, weight 600, hover `var(--darkgray)`. Nested lists indent 14px.
-- Home: the TOC is the site nav (Projects, Travels, Favorites, Blog).
+- Home and the index pages (Projects, Travels, Blog): the TOC is the site nav (Projects, Travels, Favorites, Blog).
+- Individual pages (Favorites, trips, projects, posts): the same site nav, with the page's contents indented under its section's link. Articles nest the page title with its headings under it; Favorites nests Albums and Films. The current section's nav link is `--darkgray` (the hover color) on its own page and every page under it. In-page, the heading in view (the last one past 120px from the top) and the entries containing it (the page title, an h3's h2) are `--darkgray` too.
+- Motion: the list and each link's nested contents are a grid-rows accordion (240ms). On navigation the old page's contents slide closed under their link while the new page's slide open under theirs; a link whose contents don't change stays still. None with reduced motion.
 - Articles: the page title (`#top`) with h2s under it and h3s one level deeper.
 
 ### Footer
 
-A full-width flex row: "Lucy Gai", "© year" and a live `HH:MM:SS` clock (JetBrains Mono 13px) on the left. On the right are Instagram, Letterboxd, Spotify, GitHub and Mail, each followed by a 12px Phosphor `ArrowUpRight` in `var(--underline)`. Bricolage 14px, muted. The right block widens to 976px when the TOC column shows.
+A full-width flex row: "Lucy Gai", "© year" and a live `HH:MM:SS` clock (JetBrains Mono 13px) on the left. On the right are Instagram, Letterboxd, Spotify, GitHub and Mail, each a 16px Phosphor regular-weight logo (a matching hand-drawn Letterboxd mark, since Phosphor has none) before a Bricolage 600 label, centered with the icon nudged up 1px. Bricolage 14px, muted. Other external links end in a bold Phosphor `ArrowSquareOut` in `var(--underline)`. The right block widens to 976px when the TOC column shows.
 
 ---
 
@@ -99,7 +101,7 @@ Banner image (`/images/home/home_image.png`, dithered, rendered unoptimized and 
 ### List rows (Travel Log, Blog)
 `grid-template-columns: 96px minmax(0,1fr) max-content; column-gap: 12px`. Date handwritten 14px muted; title DM Serif 1.12rem `var(--dark)`; tags right-aligned at the main column's right edge. Styles in `src/components/site/list.module.css`.
 
-- **Travel Log `/travels`**: title is the country; tags are the first city plus a `+N` chip whose tooltip lists the rest.
+- **Travel Log `/travels`**: title is the country; tags are the first city plus a `+N` chip. Hovering the tags (or tapping `+N`, which toggles) slides all the cities open leftward over the row (260ms clip reveal and fade, none with reduced motion), right-aligned and on top of the title if they need the room (`ExpandableTags`).
 - **Blog `/blog`**: "Also on Substack." under the title, then rows with stacked `#tag` chips.
 
 ### Projects `/projects`
@@ -131,14 +133,14 @@ Single-column articles (`src/components/travel/TravelArticle.tsx`), modelled on 
 - **Images**: full column width, transparent by default (cutouts sit on the page), optional handwritten caption aligned left, center or right. An image can take any of the six background treatments below, with 8px padding, so it frames the image and shows through transparent areas.
 - **Text**: 16px / 1.7 paragraphs.
 - **Canvases**: column-width boxes with free placement of photos, stickers and text boxes in any of the four fonts (left, center or right aligned), rotated as needed. Canvas images can take a handwritten caption (left, center or right aligned) and a background treatment too, scaled with the canvas. Content is clipped, so stickers sit over photo corners rather than hanging outside. The whole canvas scales with the column. Backgrounds are the six cutout treatments: none, solid panel (`--lightgray`), 4px `--lightgray` border, jade tint (`--underline` 10%), jade dot grid (14px) and magenta tint (`--darkgray` 7%).
-- TOC: the page title, then h2 sections, with h3s nested under their h2.
+- TOC: the site nav, with the page title under Travels, then h2 sections, with h3s nested under their h2.
 
 ---
 
 ## Responsive
 
 - `1240px`: TOC column shows or hides.
-- `~904px`: sidebar wraps above main.
+- `~904px`: sidebar wraps above main and its two lists move under the asterisks; footer socials move above the meta row and wrap.
 - `560px`: project thumbnails and album covers stack above their text.
 - List rows stay on one line at every width.
 

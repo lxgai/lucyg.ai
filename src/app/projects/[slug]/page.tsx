@@ -2,7 +2,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Article, { closingClass, proseClass } from "@/components/site/Article";
 import SiteShell from "@/components/site/SiteShell";
-import { linkClass } from "@/components/site/ui";
+import { siteNavWith } from "@/components/site/siteNav";
+import { ExternalLink } from "@/components/site/ui";
 import { PROJECTS, type Project } from "@/data/projects";
 import { formatDisplayDate } from "@/lib/dates";
 import { resolveSiteImageSrc } from "@/lib/images";
@@ -32,9 +33,9 @@ function ProjectLinks({ links }: { links: NonNullable<Project["links"]> }) {
         <span key={part.href}>
           {index > 0 && " · "}
           {index === 0 ? part.prefix.charAt(0).toUpperCase() + part.prefix.slice(1) : part.prefix}{" "}
-          <a href={part.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+          <ExternalLink href={part.href}>
             {part.label}
-          </a>
+          </ExternalLink>
         </span>
       ))}
     </p>
@@ -57,7 +58,7 @@ export default async function ProjectDetailRoute({
   const tags = [...project.stack, project.status].filter(Boolean);
 
   return (
-    <SiteShell toc={[{ href: "#top", label: project.name, children: markdownHeadings(body) }]}>
+    <SiteShell toc={siteNavWith("/projects", [{ href: "#top", label: project.name, children: markdownHeadings(body) }])}>
       <Article
         title={`${project.name}.`}
         meta={formatDisplayDate(project.first_published)}

@@ -6,24 +6,32 @@ export const proseClass = styles.prose;
 export const tableWrapClass = styles.tableWrap;
 export const closingClass = styles.closing;
 
-// Article header (title, handwritten meta line, tags, optional italic lede)
-// followed by the body. The <h1 id="top"> is the TOC's first entry.
+// Article header (optional hero, title, handwritten meta line, tags, optional
+// italic lede) followed by the body. "#top" is the TOC's first entry: the hero
+// when there is one, otherwise the <h1>.
 export default function Article({
   title,
   meta,
   tags,
   lede,
+  hero,
   children,
 }: {
   title: string;
   meta?: string;
   tags: string[];
   lede?: ReactNode;
+  hero?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <article>
-      <h1 id="top" className={styles.title}>
+      {hero && (
+        <div id="top" className={styles.hero}>
+          {hero}
+        </div>
+      )}
+      <h1 id={hero ? undefined : "top"} className={styles.title}>
         {title}
       </h1>
       {meta && <p className={styles.meta}>{meta}</p>}

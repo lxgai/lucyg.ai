@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SiteShell from "@/components/site/SiteShell";
+import { SITE_NAV } from "@/components/site/siteNav";
 import { pageTitleClass } from "@/components/site/ui";
 import { PROJECTS } from "@/data/projects";
 import { formatDisplayDate } from "@/lib/dates";
@@ -9,7 +10,7 @@ import styles from "./projects.module.css";
 
 export default function ProjectsPage() {
   return (
-    <SiteShell>
+    <SiteShell toc={SITE_NAV}>
       <h1 className={pageTitleClass} style={{ marginBottom: 28 }}>
         Projects
       </h1>

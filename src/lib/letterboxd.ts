@@ -4,6 +4,7 @@ import { MOVIES } from "@/data/favorites";
 
 const DEFAULT_LETTERBOXD_FEED_URL = "https://letterboxd.com/lucy_gai/rss/";
 const REVALIDATE_SECONDS = 60 * 60;
+const SYNOPSIS_REVALIDATE_SECONDS = 60 * 60 * 24 * 7;
 
 export type LetterboxdMovieEntry = {
   key: string;
@@ -67,6 +68,31 @@ export async function getLetterboxdFavoriteMovieEntries() {
   }
 }
 
+// The synopsis isn't in the RSS feed; it's the description meta tag on the film's page.
+export async function getLetterboxdFilmSynopsis(filmSlug: string) {
+  try {
+    const response = await fetch(`https://letterboxd.com/film/${encodeURIComponent(filmSlug)}/`, {
+      next: { revalidate: SYNOPSIS_REVALIDATE_SECONDS },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Letterboxd film page returned ${response.status}`);
+    }
+
+    const html = await response.text();
+    const content = html.match(/<meta\s+(?:name="description"|property="og:description")\s+content="([^"]*)"/)?.[1];
+    return content ? decodeEntities(content).trim() || undefined : undefined;
+  } catch (error) {
+    console.error(`Unable to fetch Letterboxd synopsis for ${filmSlug}.`, error);
+    return undefined;
+  }
+}
+
+// "https://letterboxd.com/lucy_gai/film/anora/1/" → "anora"
+export function filmSlugFromReviewUrl(url: string | undefined) {
+  return url?.match(/\/film\/([^/]+)/)?.[1];
+}
+
 async function getFeedXml() {
   const feedUrl = normalizeExternalUrl(process.env.LETTERBOXD_FEED_URL) ?? DEFAULT_LETTERBOXD_FEED_URL;
 
@@ -112,7 +138,7 @@ function toMovieEntry(item: RssItem): LetterboxdMovieEntry | undefined {
     year,
     rating: parseRating(nodeText(item["letterboxd:memberRating"]) || nodeText(item.title)),
     date: formatDisplayDate(watchedAt),
-    note: htmlToText(rawHtml),
+    note: reviewText(htmlToText(rawHtml)),
     sourceUrl: normalizeExternalUrl(nodeText(item.link) || nodeText(item.guid)),
   };
 }
@@ -161,12 +187,35 @@ function formatDisplayDate(value: string) {
 }
 
 function htmlToText(html: string) {
-  return sanitizeHtml(html, {
-    allowedTags: [],
-    allowedAttributes: {},
-  })
+  return decodeEntities(
+    sanitizeHtml(html, {
+      allowedTags: [],
+      allowedAttributes: {},
+    }),
+  )
     .replace(/\s+/g, " ")
     .trim();
+}
+
+// Diary entries without a review only carry "Watched on <date>."
+function reviewText(text: string) {
+  const review = text
+    .replace(/^This review may contain spoilers\.\s*/i, "")
+    .replace(/^Watched on [^.]*\.$/i, "")
+    .trim();
+  return review || undefined;
+}
+
+const NAMED_ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
+
+function decodeEntities(value: string) {
+  return value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
+    if (entity[0] === "#") {
+      const code = entity[1].toLowerCase() === "x" ? parseInt(entity.slice(2), 16) : Number(entity.slice(1));
+      return Number.isFinite(code) ? String.fromCodePoint(code) : match;
+    }
+    return NAMED_ENTITIES[entity.toLowerCase()] ?? match;
+  });
 }
 
 function nodeText(value: unknown): string {

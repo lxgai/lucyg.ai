@@ -44,7 +44,13 @@ export async function getBlogEntries(): Promise<BlogEntry[]> {
 
   try {
     const entries = parseSubstackFeed(feedXml);
-    return entries.length > 0 ? entries : getLocalEntries();
+    if (entries.length === 0) return getLocalEntries();
+
+    const postTags = await getPostTags();
+    return entries.map((entry) => ({
+      ...entry,
+      tags: mergeTags(entry.tags, postTags.get(entry.slug) ?? []),
+    }));
   } catch (error) {
     console.error("Unable to parse Substack RSS feed.", error);
     return getLocalEntries();
@@ -85,6 +91,52 @@ async function getFeedXml() {
     console.error("Unable to fetch Substack RSS feed.", error);
     return undefined;
   }
+}
+
+const ARCHIVE_PAGE_SIZE = 50;
+
+type ArchivePost = {
+  slug?: unknown;
+  postTags?: { name?: unknown }[];
+};
+
+// The RSS feed omits post tags, so read them from the public archive API.
+async function getPostTags() {
+  const tagsBySlug = new Map<string, string[]>();
+  const publicationUrl = getPublicationUrl();
+
+  if (!publicationUrl || process.env.SUBSTACK_USE_SAMPLE_FEED === "1") {
+    return tagsBySlug;
+  }
+
+  try {
+    for (let offset = 0; ; offset += ARCHIVE_PAGE_SIZE) {
+      const response = await fetch(
+        `${publicationUrl}/api/v1/archive?sort=new&limit=${ARCHIVE_PAGE_SIZE}&offset=${offset}`,
+        { next: { revalidate: REVALIDATE_SECONDS } },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Substack archive returned ${response.status}`);
+      }
+
+      const posts = (await response.json()) as ArchivePost[];
+
+      for (const post of posts) {
+        if (typeof post.slug !== "string") continue;
+        const names = (post.postTags ?? [])
+          .map((tag) => (typeof tag.name === "string" ? tag.name : ""))
+          .filter(Boolean);
+        tagsBySlug.set(slugify(post.slug), names);
+      }
+
+      if (posts.length < ARCHIVE_PAGE_SIZE) break;
+    }
+  } catch (error) {
+    console.error("Unable to fetch Substack post tags.", error);
+  }
+
+  return tagsBySlug;
 }
 
 function parseSubstackFeed(feedXml: string): BlogEntry[] {
@@ -132,8 +184,66 @@ function toBlogEntry(item: RssItem): BlogEntry | undefined {
   };
 }
 
+const GALLERY_EMBED = /<div class="image-gallery-embed" data-attrs="([^"]*)"[^>]*>\s*<\/div>/g;
+const GALLERY_IMAGE_WIDTH = 848;
+
+type GalleryAttrs = {
+  gallery?: {
+    images?: { src?: unknown }[];
+    caption?: unknown;
+    alt?: unknown;
+  };
+};
+
+function decodeEntities(value: string) {
+  return value
+    .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => String.fromCodePoint(parseInt(code, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Substack image grids arrive as an empty div whose data-attrs JSON holds the
+// images; expand them into a figure before sanitizing strips the div.
+function expandImageGalleries(html: string) {
+  return html.replace(GALLERY_EMBED, (match, attrs: string) => {
+    let gallery: GalleryAttrs["gallery"];
+    try {
+      gallery = (JSON.parse(decodeEntities(attrs)) as GalleryAttrs).gallery;
+    } catch {
+      return match;
+    }
+
+    const sources = (gallery?.images ?? [])
+      .map((image) => (typeof image.src === "string" ? normalizeExternalUrl(image.src) : undefined))
+      .filter((src): src is string => Boolean(src));
+    if (sources.length === 0) return match;
+
+    const alt = typeof gallery?.alt === "string" ? escapeHtml(gallery.alt) : "";
+    const caption = typeof gallery?.caption === "string" ? gallery.caption.trim() : "";
+    const images = sources
+      .map(
+        (src) =>
+          `<img src="https://substackcdn.com/image/fetch/w_${GALLERY_IMAGE_WIDTH},c_limit,f_auto,q_auto:good,fl_progressive:steep/${encodeURIComponent(src)}" alt="${alt}">`,
+      )
+      .join("");
+    const columns = Math.min(sources.length, 3);
+
+    return `<figure class="image-gallery image-gallery-${columns}">${images}${
+      caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ""
+    }</figure>`;
+  });
+}
+
 function sanitizeArticleHtml(html: string) {
-  return sanitizeHtml(html, {
+  return sanitizeHtml(expandImageGalleries(html), {
     allowedTags: [
       "a",
       "b",
@@ -160,7 +270,11 @@ function sanitizeArticleHtml(html: string) {
     ],
     allowedAttributes: {
       a: ["href", "name", "target", "rel"],
+      figure: ["class"],
       img: ["src", "alt", "title", "width", "height", "loading"],
+    },
+    allowedClasses: {
+      figure: ["image-gallery", "image-gallery-1", "image-gallery-2", "image-gallery-3"],
     },
     allowedSchemes: ["http", "https", "mailto"],
     allowedSchemesByTag: {

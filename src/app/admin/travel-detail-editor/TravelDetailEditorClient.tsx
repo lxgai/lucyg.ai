@@ -8,6 +8,7 @@ import {
   TravelBlockView,
   canvasClassName,
   canvasItemClassName,
+  splitHero,
   travelArticleDates,
 } from "@/components/travel/TravelArticle";
 import { ALIGNMENTS, BACKGROUNDS, CANVAS_FONTS, CANVAS_WIDTH, canvasItemStyle } from "@/components/travel/travelCanvas";
@@ -668,6 +669,45 @@ export default function TravelDetailEditorClient() {
       : selectedBlock?.type === "canvas"
         ? "Click or drag onto the canvas to add"
         : "Click to add an image block";
+  const { hero, body } = splitHero(article.blocks);
+
+  // A block in the preview with its selection outline and move controls;
+  // index is its position in article.blocks.
+  const renderBlock = (block: TravelBlock, index: number) => {
+    const selected = selection?.blockId === block.id;
+    return (
+      <div
+        key={block.id}
+        className="group relative"
+        style={{ outline: selected && !selection?.itemId ? "2px solid var(--underline)" : undefined, outlineOffset: 4 }}
+        onPointerDown={() => {
+          if (!selected || selection?.itemId) setSelection({ blockId: block.id });
+        }}
+      >
+        {block.type === "canvas" ? (
+          <CanvasEditor
+            block={block}
+            selection={selection}
+            onSelect={setSelection}
+            onStartDrag={(event, mode, itemId) => startDrag(event, mode, block.id, itemId)}
+            onDropAsset={(src, x, y) => addCanvasImage(block.id, src, x, y)}
+          />
+        ) : block.type === "image" && !block.src ? (
+          <div className="mb-5 grid h-40 place-items-center border border-dashed border-[var(--gray)] text-sm opacity-60">Pick an image from the library</div>
+        ) : block.type === "text" && !block.text.trim() ? (
+          <p className="mb-5 text-sm opacity-60">Empty text block. Write in the panel on the right.</p>
+        ) : block.type === "section" && !block.title.trim() ? (
+          <p className="mb-5 text-sm opacity-60">Untitled section. Add a title on the right.</p>
+        ) : (
+          <TravelBlockView block={block} />
+        )}
+        <div className={`absolute -left-11 top-0 grid gap-1 ${selected ? "" : "invisible group-hover:visible"}`}>
+          <button type="button" aria-label="Move up" className={buttonClass} disabled={index === 0} onClick={() => moveBlock(block.id, -1)}>↑</button>
+          <button type="button" aria-label="Move down" className={buttonClass} disabled={index === article.blocks.length - 1} onClick={() => moveBlock(block.id, 1)}>↓</button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <main className="min-h-screen bg-[var(--light)] font-[family-name:var(--font-body)] text-[var(--darkgray)]">
@@ -763,43 +803,14 @@ export default function TravelDetailEditorClient() {
         <section className="min-w-0 overflow-x-auto pb-24" onPointerDown={(event) => event.target === event.currentTarget && setSelection(null)}>
           {/* The column renders at its real 720px width so canvas coordinates are 1:1. */}
           <div style={{ width: CANVAS_WIDTH, margin: "0 auto", fontSize: 18, lineHeight: 1.65 } as CSSProperties}>
-            <Article title={article.title || "Untitled"} meta={travelArticleDates(article)} tags={article.tags}>
+            <Article
+              title={article.title || "Untitled"}
+              meta={travelArticleDates(article)}
+              tags={article.tags}
+              hero={hero && renderBlock(hero, 0)}
+            >
               {article.blocks.length === 0 && <p className="text-sm opacity-60">Add a block from the left to start.</p>}
-              {article.blocks.map((block, index) => {
-                const selected = selection?.blockId === block.id;
-                return (
-                  <div
-                    key={block.id}
-                    className="group relative"
-                    style={{ outline: selected && !selection?.itemId ? "2px solid var(--underline)" : undefined, outlineOffset: 4 }}
-                    onPointerDown={() => {
-                      if (!selected || selection?.itemId) setSelection({ blockId: block.id });
-                    }}
-                  >
-                    {block.type === "canvas" ? (
-                      <CanvasEditor
-                        block={block}
-                        selection={selection}
-                        onSelect={setSelection}
-                        onStartDrag={(event, mode, itemId) => startDrag(event, mode, block.id, itemId)}
-                        onDropAsset={(src, x, y) => addCanvasImage(block.id, src, x, y)}
-                      />
-                    ) : block.type === "image" && !block.src ? (
-                      <div className="mb-5 grid h-40 place-items-center border border-dashed border-[var(--gray)] text-sm opacity-60">Pick an image from the library</div>
-                    ) : block.type === "text" && !block.text.trim() ? (
-                      <p className="mb-5 text-sm opacity-60">Empty text block. Write in the panel on the right.</p>
-                    ) : block.type === "section" && !block.title.trim() ? (
-                      <p className="mb-5 text-sm opacity-60">Untitled section. Add a title on the right.</p>
-                    ) : (
-                      <TravelBlockView block={block} />
-                    )}
-                    <div className={`absolute -left-11 top-0 grid gap-1 ${selected ? "" : "invisible group-hover:visible"}`}>
-                      <button type="button" aria-label="Move up" className={buttonClass} disabled={index === 0} onClick={() => moveBlock(block.id, -1)}>↑</button>
-                      <button type="button" aria-label="Move down" className={buttonClass} disabled={index === article.blocks.length - 1} onClick={() => moveBlock(block.id, 1)}>↓</button>
-                    </div>
-                  </div>
-                );
-              })}
+              {body.map((block, index) => renderBlock(block, hero ? index + 1 : index))}
             </Article>
           </div>
         </section>

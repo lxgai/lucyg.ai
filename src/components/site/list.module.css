@@ -10,7 +10,9 @@
   margin: 0 0 1.2em;
 }
 
+/* Positioned so ExpandableTags can lay its full row over the title. */
 .row {
+  position: relative;
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr) max-content;
   column-gap: 12px;
@@ -20,6 +22,7 @@
 .date {
   margin: 0;
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 14px;
   line-height: 1.6;
   color: var(--darkgray);

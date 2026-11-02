@@ -2,7 +2,7 @@
 
 .title {
   margin: 0;
-  scroll-margin-top: 64px;
+  scroll-margin-top: 80px;
   font-family: var(--font-heading);
   font-size: 2.25rem;
   font-weight: 400;
@@ -10,9 +10,16 @@
   color: var(--dark);
 }
 
+/* Adds to the hero figure's own bottom margin. */
+.hero {
+  padding-bottom: 8px;
+  scroll-margin-top: 80px;
+}
+
 .meta {
   margin: 6px 0 12px;
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 14px;
   line-height: 1.6;
   color: var(--darkgray);
@@ -60,6 +67,19 @@
   font-weight: 600;
 }
 
+/* Same marker as ui.module.css .external; prose links are plain HTML, so match
+   on target instead. Linked images don't get one. */
+.prose a[target="_blank"]:not(:has(img))::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.2em;
+  vertical-align: -0.1em;
+  background-color: var(--underline);
+  mask: var(--icon-external) center / contain no-repeat;
+}
+
 .prose h2 {
   margin: 44px 0 16px;
   scroll-margin-top: 24px;
@@ -87,6 +107,24 @@
   padding-left: 22px;
 }
 
+/* Tailwind's preflight strips list markers globally. */
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose ul ul {
+  list-style: circle;
+}
+
+.prose li ul,
+.prose li ol {
+  margin: 4px 0 0;
+}
+
 .prose li {
   margin: 0 0 4px;
 }
@@ -95,11 +133,46 @@
   margin: 0;
 }
 
+/* A large faded opening quote mark hangs in the indent; no border.
+   .quote is the same treatment for quotes outside prose (film reviews). */
+.prose blockquote,
+.quote {
+  position: relative;
+}
+
 .prose blockquote {
-  margin: 0 0 20px;
-  padding-left: 16px;
-  border-left: 2px solid var(--lightgray);
-  font-style: italic;
+  margin: 24px 0 24px 40px;
+}
+
+.quote {
+  margin: 0 0 0 40px;
+}
+
+.prose blockquote::before,
+.quote::before {
+  content: "“";
+  position: absolute;
+  top: 0;
+  left: -40px;
+  font-family: var(--font-heading);
+  font-size: 56px;
+  line-height: 1;
+  color: var(--darkgray);
+  opacity: 0.4;
+  transform: translateY(-0.08em);
+}
+
+@media (max-width: 560px) {
+  .prose blockquote,
+  .quote {
+    margin-left: 28px;
+  }
+
+  .prose blockquote::before,
+  .quote::before {
+    left: -28px;
+    font-size: 44px;
+  }
 }
 
 .prose blockquote p:last-child {
@@ -121,8 +194,32 @@
   background: var(--lightgray);
 }
 
+.prose figure:global(.image-gallery) {
+  display: grid;
+  grid-template-columns: repeat(var(--gallery-columns, 1), minmax(0, 1fr));
+  gap: 6px;
+}
+
+.prose figure:global(.image-gallery-2) {
+  --gallery-columns: 2;
+}
+
+.prose figure:global(.image-gallery-3) {
+  --gallery-columns: 3;
+}
+
+.prose :global(.image-gallery) img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.prose :global(.image-gallery) figcaption {
+  grid-column: 1 / -1;
+}
+
 .prose figcaption {
   font-family: var(--font-hand);
+  -webkit-text-stroke: var(--font-hand-stroke) currentColor;
   font-size: 14px;
   line-height: 1.6;
   color: var(--darkgray);

@@ -1,20 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import SiteShell from "@/components/site/SiteShell";
-import type { TocItem } from "@/components/site/Toc";
+import { SITE_NAV } from "@/components/site/siteNav";
 import { linkClass } from "@/components/site/ui";
 import { resolveSiteImageSrc } from "@/lib/images";
 import styles from "./home.module.css";
 
 export const revalidate = 3600;
-
-// On Home the TOC doubles as the site navigation.
-const SITE_NAV: TocItem[] = [
-  { href: "/projects", label: "Projects" },
-  { href: "/travels", label: "Travels" },
-  { href: "/favorites", label: "Favorites" },
-  { href: "/blog", label: "Blog" },
-];
 
 const CURRENTLY = [
   { label: "Reading", value: <><em>The Iliad</em> — Homer (trans. Fagles)</> },
