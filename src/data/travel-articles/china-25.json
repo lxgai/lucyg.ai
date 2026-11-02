@@ -103,21 +103,39 @@
       "text": "Back to Hangzhou for my mom's wontons (yay!) and slow evenings by West Lake. This time around we also visited the Leifeng Pagoda and took a small cruise along the Qiantang River, admiring the cityscape at night. So many lovely waterfront views.\n\n(Not pictured) I also did a good amount of shopping..."
     },
     {
-      "id": "image-zflwg9",
-      "type": "image",
-      "src": "/images/travels/china-25/hangzhou-westlake-1.jpg",
-      "alt": ""
-    },
-    {
-      "id": "image-b63h8k",
-      "type": "image",
-      "src": "/images/travels/china-25/hangzhou-westlake-2.jpg",
-      "alt": ""
+      "id": "canvas-6di16s",
+      "type": "canvas",
+      "height": 212,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-bk87q9",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-westlake-1.jpg",
+          "alt": "",
+          "x": 4,
+          "y": 1,
+          "width": 361,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-k4q8jh",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-westlake-2.jpg",
+          "alt": "",
+          "x": 373,
+          "y": 1,
+          "width": 361,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
     },
     {
       "id": "canvas-no7bqb",
       "type": "canvas",
-      "height": 300,
+      "height": 415,
       "background": "none",
       "items": [
         {
@@ -125,22 +143,55 @@
           "kind": "image",
           "src": "/images/travels/china-25/sticker-food-3.png",
           "alt": "",
-          "x": 508,
-          "y": 158,
-          "width": 143,
+          "x": 331,
+          "y": 236,
+          "width": 120,
           "rotation": 0,
-          "zIndex": 3
+          "zIndex": 6
         },
         {
           "id": "img-j88lvs",
           "kind": "image",
           "src": "/images/travels/china-25/hangzhou-qiantangriver.jpg",
           "alt": "",
-          "x": 16,
-          "y": 9,
-          "width": 364,
-          "rotation": 0,
+          "x": 480,
+          "y": 227,
+          "width": 215,
+          "rotation": -3,
           "zIndex": 2
+        },
+        {
+          "id": "img-tkbdim",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-pagoda.png",
+          "alt": "",
+          "x": -14,
+          "y": 2,
+          "width": 356,
+          "rotation": 0,
+          "zIndex": 4
+        },
+        {
+          "id": "img-c96x50",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-3.jpg",
+          "alt": "",
+          "x": 354,
+          "y": 32,
+          "width": 221,
+          "rotation": 4,
+          "zIndex": 5
+        },
+        {
+          "id": "img-ea2fgd",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-wonton.png",
+          "alt": "",
+          "x": 603,
+          "y": 136,
+          "width": 74,
+          "rotation": 0,
+          "zIndex": 7
         }
       ]
     },
@@ -155,7 +206,7 @@
     {
       "id": "canvas-igbvwn",
       "type": "canvas",
-      "height": 122,
+      "height": 67,
       "background": "none",
       "items": [
         {
@@ -163,9 +214,9 @@
           "kind": "image",
           "src": "/images/travels/china-25/sticker-flower.png",
           "alt": "",
-          "x": 122,
-          "y": 17,
-          "width": 80,
+          "x": 221,
+          "y": 2,
+          "width": 48,
           "rotation": 0,
           "zIndex": 1
         },
@@ -174,9 +225,9 @@
           "kind": "image",
           "src": "/images/travels/china-25/sticker-flower.png",
           "alt": "",
-          "x": 293,
-          "y": 18,
-          "width": 80,
+          "x": 324,
+          "y": 4,
+          "width": 48,
           "rotation": 0,
           "zIndex": 2
         },
@@ -185,39 +236,9 @@
           "kind": "image",
           "src": "/images/travels/china-25/sticker-flower.png",
           "alt": "",
-          "x": 465,
-          "y": 19,
-          "width": 80,
-          "rotation": 0,
-          "zIndex": 3
-        }
-      ]
-    },
-    {
-      "id": "canvas-4",
-      "type": "canvas",
-      "height": 473,
-      "background": "none",
-      "items": [
-        {
-          "id": "img-yandang-mountain-2",
-          "kind": "image",
-          "src": "/images/travels/china-25/yandang-mountain-2.jpg",
-          "alt": "Yandang Mountain",
-          "x": 362,
-          "y": 2,
-          "width": 355,
-          "rotation": 0,
-          "zIndex": 1
-        },
-        {
-          "id": "img-sgt3al",
-          "kind": "image",
-          "src": "/images/travels/china-25/yandang-mountain-dalongqiu.jpg",
-          "alt": "",
-          "x": 2,
-          "y": 1,
-          "width": 351,
+          "x": 428,
+          "y": 4,
+          "width": 48,
           "rotation": 0,
           "zIndex": 3
         }
@@ -229,54 +250,54 @@
       "text": "Dad decided it would be a nice two day trip into the mountains. I was pretty impressed with the Yandang mountain range but the Dalongqiu waterfall gave off the vibes of a leaky faucet..."
     },
     {
-      "id": "canvas-5",
+      "id": "canvas-4",
       "type": "canvas",
-      "height": 341,
+      "height": 327,
       "background": "none",
       "items": [
         {
-          "id": "img-yandang-wenzhou",
+          "id": "img-yandang-mountain-2",
           "kind": "image",
-          "src": "/images/travels/china-25/yandang-wenzhou.jpg",
-          "alt": "Wenzhou",
-          "x": 376,
-          "y": 71,
-          "width": 336,
+          "src": "/images/travels/china-25/yandang-mountain-2.jpg",
+          "alt": "Yandang Mountain",
+          "x": 256,
+          "y": 0,
+          "width": 243,
           "rotation": 0,
           "zIndex": 1
         },
         {
-          "id": "sticker-flower-2-2",
+          "id": "img-sgt3al",
           "kind": "image",
-          "src": "/images/travels/china-25/sticker-flower-2.png",
-          "alt": "",
-          "x": 361,
-          "y": 30,
-          "width": 67,
-          "rotation": 0,
-          "zIndex": 2
-        },
-        {
-          "id": "img-5zkv5s",
-          "kind": "image",
-          "src": "/images/travels/china-25/yandang-mountain-1.jpg",
+          "src": "/images/travels/china-25/yandang-mountain-dalongqiu.jpg",
           "alt": "",
           "x": 3,
-          "y": 3,
-          "width": 334,
+          "y": -6,
+          "width": 246,
           "rotation": 0,
           "zIndex": 3
         },
         {
-          "id": "img-iuvm61",
+          "id": "img-g1jiin",
           "kind": "image",
-          "src": "/images/travels/china-25/sticker-squiggle.png",
+          "src": "/images/travels/china-25/yandang-mountain-1.jpg",
           "alt": "",
-          "x": 502,
-          "y": -9,
-          "width": 216,
+          "x": 511,
+          "y": -4,
+          "width": 208,
           "rotation": 0,
-          "zIndex": 0
+          "zIndex": 4
+        },
+        {
+          "id": "img-9yszop",
+          "kind": "image",
+          "src": "/images/travels/china-25/yandang-wenzhou.jpg",
+          "alt": "",
+          "x": 508,
+          "y": 158,
+          "width": 220,
+          "rotation": 0,
+          "zIndex": 5
         }
       ]
     },
@@ -291,7 +312,7 @@
     {
       "id": "canvas-6",
       "type": "canvas",
-      "height": 501,
+      "height": 312,
       "background": "none",
       "items": [
         {
@@ -301,19 +322,7 @@
           "alt": "Confucius Temple",
           "x": 0,
           "y": 0,
-          "width": 355,
-          "rotation": 0,
-          "zIndex": 1
-        },
-        {
-          "id": "caption-nanjing-confucius-temple",
-          "kind": "text",
-          "text": "Confucius Temple",
-          "font": "hand",
-          "size": 14,
-          "x": 0,
-          "y": 479.3,
-          "width": 355,
+          "width": 232,
           "rotation": 0,
           "zIndex": 1
         },
@@ -322,33 +331,22 @@
           "kind": "image",
           "src": "/images/travels/china-25/nanjing-confucian-temple-2.jpg",
           "alt": "Confucius Temple",
-          "x": 365,
-          "y": 0,
-          "width": 355,
+          "x": 243,
+          "y": -3,
+          "width": 235,
           "rotation": 0,
           "zIndex": 1
         },
         {
-          "id": "sticker-paper",
+          "id": "img-7d1es8",
           "kind": "image",
-          "src": "/images/travels/china-25/paper.png",
+          "src": "/images/travels/china-25/nanjing-1.jpg",
           "alt": "",
-          "x": 0,
-          "y": 0,
-          "width": 110,
-          "rotation": -4,
-          "zIndex": 2
-        },
-        {
-          "id": "sticker-food",
-          "kind": "image",
-          "src": "/images/travels/china-25/sticker-food.png",
-          "alt": "",
-          "x": 640,
-          "y": 0,
-          "width": 80,
+          "x": 489,
+          "y": 1,
+          "width": 241,
           "rotation": 0,
-          "zIndex": 2
+          "zIndex": 4
         }
       ]
     },
@@ -360,7 +358,7 @@
     {
       "id": "canvas-7",
       "type": "canvas",
-      "height": 457,
+      "height": 393,
       "background": "none",
       "items": [
         {
@@ -368,10 +366,10 @@
           "kind": "image",
           "src": "/images/travels/china-25/nanjing-sun-yatsen.jpg",
           "alt": "Sun Yat-sen Mausoleum",
-          "x": 0,
-          "y": 0,
-          "width": 355,
-          "rotation": 0,
+          "x": 30,
+          "y": 36,
+          "width": 417,
+          "rotation": 3,
           "zIndex": 1
         },
         {
@@ -380,22 +378,22 @@
           "text": "Sun Yat-sen's Mausoleum",
           "font": "hand",
           "size": 14,
-          "x": 0,
-          "y": 272.2,
-          "width": 355,
+          "x": 103,
+          "y": 367,
+          "width": 191,
           "rotation": 0,
           "zIndex": 1
         },
         {
-          "id": "img-nanjing-1",
+          "id": "img-hch0de",
           "kind": "image",
-          "src": "/images/travels/china-25/nanjing-1.jpg",
-          "alt": "Nanjing",
-          "x": 365,
-          "y": 0,
-          "width": 355,
+          "src": "/images/travels/china-25/sticker-food.png",
+          "alt": "",
+          "x": 534,
+          "y": 169,
+          "width": 130,
           "rotation": 0,
-          "zIndex": 1
+          "zIndex": 2
         }
       ]
     },
@@ -472,50 +470,9 @@
       "title": "Shopping Corner :D"
     },
     {
-      "id": "canvas-9",
-      "type": "canvas",
-      "height": 473,
-      "background": "none",
-      "items": [
-        {
-          "id": "img-shanghai-haus-gentlemonster",
-          "kind": "image",
-          "src": "/images/travels/china-25/shanghai-haus-gentlemonster.jpg",
-          "alt": "Gentle Monster, Shanghai",
-          "x": 0,
-          "y": 0,
-          "width": 355,
-          "rotation": 0,
-          "zIndex": 1
-        },
-        {
-          "id": "img-shanghai-shopping",
-          "kind": "image",
-          "src": "/images/travels/china-25/shanghai-shopping.jpg",
-          "alt": "Shopping in Shanghai",
-          "x": 365,
-          "y": 0,
-          "width": 355,
-          "rotation": 0,
-          "zIndex": 1
-        },
-        {
-          "id": "sticker-star-1",
-          "kind": "image",
-          "src": "/images/travels/china-25/sticker-star-1.png",
-          "alt": "",
-          "x": 664,
-          "y": 0,
-          "width": 56,
-          "rotation": 0,
-          "zIndex": 2
-        }
-      ]
-    },
-    {
       "id": "canvas-10",
       "type": "canvas",
-      "height": 473,
+      "height": 245,
       "background": "none",
       "items": [
         {
@@ -523,9 +480,9 @@
           "kind": "image",
           "src": "/images/travels/china-25/shanghai-haus-2.jpg",
           "alt": "Gentle Monster, Shanghai",
-          "x": 0,
-          "y": 0,
-          "width": 355,
+          "x": -8,
+          "y": 6,
+          "width": 175,
           "rotation": 0,
           "zIndex": 1
         },
@@ -534,41 +491,68 @@
           "kind": "image",
           "src": "/images/travels/china-25/shanghai-haus-3.jpg",
           "alt": "Gentle Monster, Shanghai",
-          "x": 365,
-          "y": 0,
-          "width": 355,
+          "x": 177,
+          "y": 3,
+          "width": 175,
           "rotation": 0,
           "zIndex": 1
+        },
+        {
+          "id": "img-znvc8y",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-shopping-2.jpg",
+          "alt": "",
+          "x": 544,
+          "y": 3,
+          "width": 175,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "img-p5n52i",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-shopping.jpg",
+          "alt": "",
+          "x": 362,
+          "y": 3,
+          "width": 175,
+          "rotation": 0,
+          "zIndex": 3
         }
       ]
     },
     {
+      "id": "text-6",
+      "type": "text",
+      "text": "(Above) Trying on glasses at Gentle Monster and some clothes at local malls.\n\n(Left) Fotografiska Shanghai. As an enjoyer of contemporary art, I had the pleasure of viewing some exhibits here, one of them being Cho Gi-Seok's \"The Coexistence of Imperfection\", where he explores how various dichotomies work together (i.e. love & hate, nature & technology).\n\nAnd later some nightlife..."
+    },
+    {
       "id": "canvas-11",
       "type": "canvas",
-      "height": 473,
+      "height": 510,
       "background": "none",
       "items": [
-        {
-          "id": "img-shanghai-shopping-2",
-          "kind": "image",
-          "src": "/images/travels/china-25/shanghai-shopping-2.jpg",
-          "alt": "Shopping in Shanghai",
-          "x": 0,
-          "y": 0,
-          "width": 355,
-          "rotation": 0,
-          "zIndex": 1
-        },
         {
           "id": "img-shanghai-louis-vuitton",
           "kind": "image",
           "src": "/images/travels/china-25/shanghai-louis-vuitton.png",
           "alt": "Louis Vuitton, Shanghai",
-          "x": 365,
-          "y": 0,
-          "width": 355,
+          "x": 348,
+          "y": -4,
+          "width": 374,
           "rotation": 0,
           "zIndex": 1
+        },
+        {
+          "id": "img-e929vg",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-haus-gentlemonster.jpg",
+          "alt": "",
+          "x": 23,
+          "y": 90,
+          "width": 295,
+          "rotation": 0,
+          "zIndex": 2
         }
       ]
     },
@@ -624,11 +608,6 @@
           "zIndex": 2
         }
       ]
-    },
-    {
-      "id": "text-6",
-      "type": "text",
-      "text": "(Above) Trying on glasses at Gentle Monster and some clothes at local malls.\n\n(Left) Fotografiska Shanghai. As an enjoyer of contemporary art, I had the pleasure of viewing some exhibits here, one of them being Cho Gi-Seok's \"The Coexistence of Imperfection\", where he explores how various dichotomies work together (i.e. love & hate, nature & technology).\n\nAnd later some nightlife..."
     },
     {
       "id": "canvas-13",

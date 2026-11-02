@@ -49,7 +49,7 @@
     {
       "id": "canvas-1",
       "type": "canvas",
-      "height": 723,
+      "height": 600,
       "background": "none",
       "items": [
         {
@@ -57,9 +57,9 @@
           "kind": "image",
           "src": "/images/travels/japan-24/blue_paper.png",
           "alt": "",
-          "x": 345.4,
-          "y": 0,
-          "width": 374.6,
+          "x": 412,
+          "y": -15,
+          "width": 294,
           "rotation": 0,
           "zIndex": 1
         },
@@ -68,9 +68,9 @@
           "kind": "image",
           "src": "/images/travels/japan-24/teamlabs2.jpg",
           "alt": "teamLab digital art",
-          "x": 348,
-          "y": 70.3,
-          "width": 344.1,
+          "x": 457,
+          "y": 32,
+          "width": 170,
           "rotation": 2,
           "zIndex": 2
         },
@@ -79,9 +79,9 @@
           "kind": "image",
           "src": "/images/travels/japan-24/teamlabs.jpg",
           "alt": "teamLab digital art",
-          "x": 2.2,
-          "y": 204.3,
-          "width": 317,
+          "x": 6,
+          "y": 4,
+          "width": 365,
           "rotation": 0,
           "zIndex": 3
         },
@@ -90,9 +90,9 @@
           "kind": "image",
           "src": "/images/travels/japan-24/akihabara.jpg",
           "alt": "Akihabara district",
-          "x": 414.7,
-          "y": 363.1,
-          "width": 222.4,
+          "x": 455,
+          "y": 309,
+          "width": 213,
           "rotation": 0,
           "zIndex": 4
         },
@@ -123,24 +123,22 @@
           "kind": "image",
           "src": "/images/travels/japan-24/rooftop.jpeg",
           "alt": "Rooftop dinner",
-          "x": 181.9,
-          "y": 474.1,
+          "x": 211,
+          "y": 373,
           "width": 154.9,
           "rotation": -1.2,
-          "zIndex": 13,
-          "caption": "Love me a rooftop dinner"
+          "zIndex": 13
         },
         {
           "id": "img-shibuya-crossing",
           "kind": "image",
           "src": "/images/travels/japan-24/shibuya-crossing.jpg",
           "alt": "Shibuya crossing",
-          "x": 0,
-          "y": 490.1,
+          "x": 32,
+          "y": 307,
           "width": 153.8,
-          "rotation": 1.3,
-          "zIndex": 14,
-          "caption": "Shibuya crossing"
+          "rotation": 0,
+          "zIndex": 14
         }
       ]
     },
@@ -158,7 +156,7 @@
     {
       "id": "canvas-2",
       "type": "canvas",
-      "height": 570,
+      "height": 370,
       "background": "none",
       "items": [
         {
@@ -166,9 +164,9 @@
           "kind": "image",
           "src": "/images/travels/japan-24/harajuku-ish.jpg",
           "alt": "Harajuku street",
-          "x": 0,
-          "y": 280.6,
-          "width": 289,
+          "x": 24,
+          "y": 58,
+          "width": 278,
           "rotation": -1,
           "zIndex": 5
         },
@@ -234,7 +232,7 @@
     {
       "id": "canvas-3",
       "type": "canvas",
-      "height": 285,
+      "height": 223,
       "background": "none",
       "items": [
         {
@@ -242,22 +240,22 @@
           "kind": "image",
           "src": "/images/travels/japan-24/ryokan.jpg",
           "alt": "Hakone ryokan",
-          "x": 0,
-          "y": 0,
-          "width": 398.5,
+          "x": -4,
+          "y": -34,
+          "width": 358,
           "rotation": 0,
           "zIndex": 2
         },
         {
-          "id": "img-kaiseki-full",
+          "id": "img-cqxpg7",
           "kind": "image",
-          "src": "/images/travels/japan-24/kaiseki-full.jpeg",
-          "alt": "Kaiseki dinner",
-          "x": 435.9,
-          "y": 23.3,
-          "width": 284.1,
-          "rotation": 0.7,
-          "zIndex": 2
+          "src": "/images/travels/japan-24/train.jpeg",
+          "alt": "",
+          "x": 365,
+          "y": -15,
+          "width": 416,
+          "rotation": 0,
+          "zIndex": 3
         }
       ]
     },
@@ -269,7 +267,7 @@
     {
       "id": "canvas-4",
       "type": "canvas",
-      "height": 399,
+      "height": 422,
       "background": "none",
       "items": [
         {
@@ -277,23 +275,11 @@
           "kind": "image",
           "src": "/images/travels/japan-24/green_paper.png",
           "alt": "",
-          "x": 435.6,
-          "y": 0,
+          "x": 437,
+          "y": -46,
           "width": 284.4,
           "rotation": 270,
           "zIndex": 1
-        },
-        {
-          "id": "img-train",
-          "kind": "image",
-          "src": "/images/travels/japan-24/train.jpeg",
-          "alt": "Train station",
-          "x": 2.2,
-          "y": 183.8,
-          "width": 333.3,
-          "rotation": 0,
-          "zIndex": 7,
-          "caption": "Station, headed to Hakone"
         },
         {
           "id": "sticker-kaiseki-sticker1",
@@ -311,11 +297,22 @@
           "kind": "image",
           "src": "/images/travels/japan-24/kaiseki-sticker2.png",
           "alt": "",
-          "x": 449.7,
-          "y": 69.5,
+          "x": 452,
+          "y": 55,
           "width": 127.1,
           "rotation": 0,
           "zIndex": 33
+        },
+        {
+          "id": "img-19aesv",
+          "kind": "image",
+          "src": "/images/travels/japan-24/kaiseki-full.jpeg",
+          "alt": "",
+          "x": 7,
+          "y": 71,
+          "width": 489,
+          "rotation": 0,
+          "zIndex": 0
         }
       ]
     }

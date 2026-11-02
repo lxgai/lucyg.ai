@@ -50,29 +50,18 @@
     {
       "id": "canvas-1",
       "type": "canvas",
-      "height": 435,
-      "background": "none",
+      "height": 484,
+      "background": "dots",
       "items": [
-        {
-          "id": "img-hangzhou",
-          "kind": "image",
-          "src": "/images/travels/china-24/hangzhou.jpg",
-          "alt": "West Lake at dusk",
-          "x": 1,
-          "y": 222.7,
-          "width": 304.8,
-          "rotation": 0,
-          "zIndex": 1
-        },
         {
           "id": "img-west-lake-2",
           "kind": "image",
           "src": "/images/travels/china-24/west-lake-2.jpg",
           "alt": "West Lake",
-          "x": 592.7,
-          "y": 134.3,
-          "width": 127.3,
-          "rotation": 1,
+          "x": 376,
+          "y": 22,
+          "width": 321,
+          "rotation": 0,
           "zIndex": 2
         },
         {
@@ -80,10 +69,10 @@
           "kind": "image",
           "src": "/images/travels/china-24/westlake-dumplings.png",
           "alt": "Crab-roe dumplings served along West Lake",
-          "x": 296.2,
-          "y": 0,
-          "width": 366.8,
-          "rotation": 0,
+          "x": -2,
+          "y": -41,
+          "width": 452,
+          "rotation": 1,
           "zIndex": 5
         },
         {
@@ -91,9 +80,9 @@
           "kind": "image",
           "src": "/images/travels/china-24/coconut-drink.png",
           "alt": "Coconut drink",
-          "x": 0,
-          "y": 328.5,
-          "width": 30.8,
+          "x": 40,
+          "y": 384,
+          "width": 31,
           "rotation": -10.6,
           "zIndex": 5
         },
@@ -102,13 +91,19 @@
           "kind": "image",
           "src": "/images/travels/china-24/stars-purple.png",
           "alt": "",
-          "x": 609.5,
-          "y": 320.6,
-          "width": 72.2,
+          "x": 283,
+          "y": 376,
+          "width": 110,
           "rotation": 20,
           "zIndex": 8
         }
       ]
+    },
+    {
+      "id": "image-v7eckg",
+      "type": "image",
+      "src": "/images/travels/china-24/hangzhou.jpg",
+      "alt": ""
     },
     {
       "id": "chongqing",
@@ -119,125 +114,89 @@
       "subtitle": "days 7 - 10"
     },
     {
-      "id": "canvas-2",
-      "type": "canvas",
-      "height": 415,
-      "background": "none",
-      "items": [
-        {
-          "id": "img-hongyadong-heart",
-          "kind": "image",
-          "src": "/images/travels/china-24/hongyadong-heart.png",
-          "alt": "Hongyadong lit up at night from across the river",
-          "x": 407.4,
-          "y": 17.5,
-          "width": 312.6,
-          "rotation": 0,
-          "zIndex": 2,
-          "caption": "Hongyadong, 8:42pm"
-        },
-        {
-          "id": "img-yangtze-river-2",
-          "kind": "image",
-          "src": "/images/travels/china-24/yangtze-river-2.jpg",
-          "alt": "Yangtze River",
-          "x": 0,
-          "y": 0,
-          "width": 352.4,
-          "rotation": 0,
-          "zIndex": 4
-        }
-      ]
-    },
-    {
       "id": "text-7",
       "type": "text",
       "text": "The moment the sun disappears along the horizon, this urban, \"8-D\" city comes to life. Despite it being ruthlessly hot, my cyberpunk dream of experiencing the vertical landscape of this city became a reality. From neon views to spicy eats to being dropped off at the wrong elevation, I could only wish I had more evenings to just walk by the river and watch."
     },
     {
-      "id": "canvas-3",
+      "id": "canvas-2",
       "type": "canvas",
-      "height": 827,
+      "height": 257,
       "background": "none",
       "items": [
         {
-          "id": "img-chongqing-food-mall",
+          "id": "img-yangtze-river-2",
           "kind": "image",
-          "src": "/images/travels/china-24/chongqing-food-mall.jpg",
-          "alt": "Chongqing food mall",
-          "x": 0,
-          "y": 2.9,
-          "width": 200.4,
+          "src": "/images/travels/china-24/yangtze-river-2.jpg",
+          "alt": "Yangtze River",
+          "x": 3,
+          "y": 1,
+          "width": 370,
           "rotation": 0,
-          "zIndex": 5
+          "zIndex": 4
         },
         {
-          "id": "img-liziba-station",
-          "kind": "image",
-          "src": "/images/travels/china-24/liziba-station.png",
-          "alt": "Liziba station",
-          "x": 519.5,
-          "y": 27.4,
-          "width": 162.8,
-          "rotation": -1.6,
-          "zIndex": 6,
-          "caption": "the famous Liziba station"
-        },
-        {
-          "id": "img-three-natural-bridges-arrow",
-          "kind": "image",
-          "src": "/images/travels/china-24/three-natural-bridges-arrow.png",
-          "alt": "Three Natural Bridges",
-          "x": 467.7,
-          "y": 400.6,
-          "width": 252.3,
-          "rotation": 0,
-          "zIndex": 7
-        },
-        {
-          "id": "img-jiuli-city",
-          "kind": "image",
-          "src": "/images/travels/china-24/jiuli-city.jpg",
-          "alt": "Jiuli city",
-          "x": 3.2,
-          "y": 635.1,
-          "width": 218.9,
-          "rotation": 0,
-          "zIndex": 8,
-          "caption": "Jiuli city - in a neighboring district"
-        },
-        {
-          "id": "img-family-stickered",
-          "kind": "image",
-          "src": "/images/travels/china-24/family-stickered.png",
-          "alt": "Family photo with stickers",
-          "x": 575.7,
-          "y": 324.1,
-          "width": 137.8,
-          "rotation": 0,
-          "zIndex": 9
-        },
-        {
-          "id": "img-chongqing-highways",
+          "id": "img-sm7txd",
           "kind": "image",
           "src": "/images/travels/china-24/chongqing-highways.jpeg",
-          "alt": "Chongqing highways",
-          "x": 249.4,
-          "y": 83.1,
-          "width": 250.2,
+          "alt": "",
+          "x": 405,
+          "y": 36,
+          "width": 274,
           "rotation": 0,
-          "zIndex": 10
+          "zIndex": 5
+        }
+      ]
+    },
+    {
+      "id": "canvas-hy4gnm",
+      "type": "canvas",
+      "height": 400,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-713ivo",
+          "kind": "image",
+          "src": "/images/travels/china-24/chongqing-food-mall.jpg",
+          "alt": "",
+          "x": 484,
+          "y": 114,
+          "width": 201,
+          "rotation": 0,
+          "zIndex": 1
         },
         {
-          "id": "img-xiaomian",
+          "id": "img-ouaaga",
+          "kind": "image",
+          "src": "/images/travels/china-24/hongyadong-heart.png",
+          "alt": "",
+          "x": -24,
+          "y": -1,
+          "width": 337,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "img-vy3eg6",
           "kind": "image",
           "src": "/images/travels/china-24/xiaomian.png",
-          "alt": "A bowl of Chongqing xiaomian noodles",
-          "x": 175.6,
-          "y": 0,
-          "width": 85.1,
-          "rotation": -10.1,
-          "zIndex": 12
+          "alt": "",
+          "x": 533,
+          "y": 25,
+          "width": 98,
+          "rotation": 20,
+          "zIndex": 3
+        },
+        {
+          "id": "img-873nqh",
+          "kind": "image",
+          "src": "/images/travels/china-24/liziba-station.png",
+          "alt": "",
+          "x": 308,
+          "y": 45,
+          "width": 160,
+          "rotation": 0,
+          "zIndex": 0
         }
       ]
     },
@@ -255,54 +214,77 @@
       "text": "If you ever find yourself willing to take a rough, 3 hour bus ride headed southwest from Chongqing's center, I do highly recommend you check out the Three Natural Bridges."
     },
     {
-      "id": "canvas-4",
+      "id": "canvas-3",
       "type": "canvas",
-      "height": 457,
+      "height": 696,
       "background": "none",
       "items": [
         {
-          "id": "img-wulong-2",
+          "id": "img-three-natural-bridges-arrow",
+          "kind": "image",
+          "src": "/images/travels/china-24/three-natural-bridges-arrow.png",
+          "alt": "Three Natural Bridges",
+          "x": 327,
+          "y": 53,
+          "width": 337,
+          "rotation": 5,
+          "zIndex": 7
+        },
+        {
+          "id": "img-jiuli-city",
+          "kind": "image",
+          "src": "/images/travels/china-24/jiuli-city.jpg",
+          "alt": "Jiuli city",
+          "x": 17,
+          "y": 457,
+          "width": 258,
+          "rotation": 0,
+          "zIndex": 8,
+          "caption": "Jiuli city - in a neighboring district"
+        },
+        {
+          "id": "img-family-stickered",
+          "kind": "image",
+          "src": "/images/travels/china-24/family-stickered.png",
+          "alt": "Family photo with stickers",
+          "x": 490,
+          "y": -47,
+          "width": 231,
+          "rotation": 0,
+          "zIndex": 9
+        },
+        {
+          "id": "img-mzrk6o",
           "kind": "image",
           "src": "/images/travels/china-24/wulong-2.jpeg",
-          "alt": "Wulong",
-          "x": 233.7,
-          "y": 0,
-          "width": 269.1,
-          "rotation": 3,
+          "alt": "",
+          "x": 4,
+          "y": 4,
+          "width": 300,
+          "rotation": 0,
           "zIndex": 10
         },
         {
-          "id": "sticker-sketch-arrow",
-          "kind": "image",
-          "src": "/images/travels/china-24/sketch-arrow.png",
-          "alt": "",
-          "x": 139.2,
-          "y": 50.4,
-          "width": 97.7,
-          "rotation": 0,
-          "zIndex": 30
-        },
-        {
-          "id": "sticker-bus-sticker",
-          "kind": "image",
-          "src": "/images/travels/china-24/bus-sticker.png",
-          "alt": "",
-          "x": 0,
-          "y": 144.2,
-          "width": 78.2,
-          "rotation": 0,
-          "zIndex": 30
-        },
-        {
-          "id": "sticker-plant-sticker",
+          "id": "img-b42epz",
           "kind": "image",
           "src": "/images/travels/china-24/plant-sticker.png",
           "alt": "",
-          "x": 281.5,
-          "y": 292.9,
-          "width": 129.2,
-          "rotation": 0,
-          "zIndex": 31
+          "x": 637,
+          "y": 497,
+          "width": 82,
+          "rotation": 30,
+          "zIndex": 11
+        },
+        {
+          "id": "img-rywlzd",
+          "kind": "image",
+          "src": "/images/travels/china-24/bus-sticker.png",
+          "alt": "",
+          "x": 655,
+          "y": 421,
+          "width": 63,
+          "rotation": -5,
+          "zIndex": 13
         }
       ]
     }
