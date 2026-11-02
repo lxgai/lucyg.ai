@@ -1,850 +1,924 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { tokens } from "@/components/design/tokens";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import Article from "@/components/site/Article";
 import {
-  TravelDetailSectionFrame,
-  TravelDetailSurface,
-  TravelDetailViewportContainer,
-} from "@/components/travel/TravelDetailSectionFrame";
-import { Closing, Hero, TravelMetadataStrip } from "@/components/travel/TravelDetailPage";
-import {
-  travelDetailCanvasWidth,
-  travelDetailCanvasXBounds,
-  travelDetailPageGutterPx,
-  travelDetailSurfaceWidth,
-} from "@/components/travel/detailGeometry";
-import { normalizeSiteImagePath, resolveSiteImageSrc } from "@/lib/images";
+  CanvasItemContent,
+  TravelBlockView,
+  canvasClassName,
+  canvasItemClassName,
+  travelArticleDates,
+} from "@/components/travel/TravelArticle";
+import { ALIGNMENTS, BACKGROUNDS, CANVAS_FONTS, CANVAS_WIDTH, canvasItemStyle } from "@/components/travel/travelCanvas";
+import { parseDateParts } from "@/lib/dates";
+import { resolveSiteImageSrc } from "@/lib/images";
+import { slugify } from "@/lib/slug";
 import type {
-  TravelDetailBlock,
-  TravelDetailBreakpoint,
-  TravelDetailData,
-  TravelDetailFreeformLayout,
-  TravelDetailImageBlock,
-  TravelDetailResponsiveLayout,
-  TravelDetailSection,
-  TravelDetailTapeDecoration,
-  TravelDetailTextBlock,
-  TravelDetailTextFont,
-  TravelDetailTextTone,
-} from "@/types/travelDetail";
+  TravelAlign,
+  TravelArticle,
+  TravelBlock,
+  TravelBackground,
+  TravelCanvasBlock,
+  TravelCanvasFont,
+  TravelCanvasItem,
+  TravelSectionBlock,
+} from "@/types/travelArticle";
 
-type PageInfo = { slug: string; filePath: string };
-type HistoryEntry = { data: TravelDetailData; description: string };
-type Selection =
-  | { kind: "hero" }
-  | { kind: "heroImage" }
-  | { kind: "heroCopy" }
-  | { kind: "heroDecoration"; id: string }
-  | { kind: "section"; sectionId: string }
-  | { kind: "block"; sectionId: string; id: string }
-  | { kind: "decoration"; sectionId: string; id: string };
-type SectionDragState = {
-  scope: "section";
-  sectionId: string;
-  itemKind: "block" | "decoration";
-  id: string;
-};
-type HeroDragState = {
-  scope: "hero";
-  itemKind: "image" | "copy" | "decoration";
-  id: string;
-};
-type DragState = (SectionDragState | HeroDragState) & {
-  mode: "move" | "resize";
+type Selection = { blockId: string; itemId?: string } | null;
+// Omit applied to each member of the canvas item union.
+type NewCanvasItem = TravelCanvasItem extends infer Item ? (Item extends TravelCanvasItem ? Omit<Item, "zIndex"> : never) : never;
+type Toast = { message: string; type: "success" | "error" } | null;
+type Drag = {
+  mode: "move" | "resize" | "rotate" | "height";
+  blockId: string;
+  itemId?: string;
   startX: number;
   startY: number;
-  designWidth: number;
-  initial: TravelDetailFreeformLayout;
+  base: TravelArticle;
+  initial: { x: number; y: number; width: number; height: number; centerX: number; centerY: number };
 };
 
-type AssetResponse = { assets?: string[]; error?: string };
+const assetDragType = "application/x-travel-asset";
+const MIN_CANVAS_HEIGHT = 40;
 
-type PageResponse = { pages?: PageInfo[]; error?: string };
-type DropAssetHandler = (sectionId: string, src: string) => void | Promise<void>;
-
-const breakpoints: TravelDetailBreakpoint[] = ["large", "medium", "small"];
-const breakpointLabels: Record<TravelDetailBreakpoint, string> = {
-  large: "Large",
-  medium: "Medium",
-  small: "Small",
-};
-const tones: TravelDetailTextTone[] = ["body", "caption", "annotation"];
-const textFonts: TravelDetailTextFont[] = ["serif", "mono"];
-const paper = "#fbf6ee";
-const background = "#f1e9df";
-const secondaryPaper = "#e6dccb";
-const assetDragType = "application/x-travel-detail-asset";
-const minCanvasX = travelDetailCanvasXBounds.min;
-const maxCanvasX = travelDetailCanvasXBounds.max;
-const minCanvasY = -220;
+const panelClass = "grid content-start gap-3 border border-[var(--lightgray)] p-4";
+const headingClass = "font-[family-name:var(--font-heading)] text-lg text-[var(--dark)]";
+const labelClass = "grid gap-1 text-xs font-semibold opacity-70";
+const inputClass =
+  "w-full min-w-0 border border-[var(--lightgray)] bg-[var(--light)] px-2 py-1.5 text-sm font-normal text-[var(--darkgray)] opacity-100 outline-none focus:border-[var(--underline)]";
+const buttonClass =
+  "border border-[var(--lightgray)] px-2.5 py-1.5 text-xs font-semibold text-[var(--darkgray)] hover:border-[var(--underline)] disabled:opacity-40";
+const primaryButtonClass =
+  "bg-[var(--darkgray)] px-3 py-1.5 text-xs font-semibold text-[var(--light)] disabled:opacity-40";
 
 function uid(prefix: string) {
-  return `${prefix}-${Date.now().toString(36)}`;
+  return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function defaultLayout(x = 8, y = 24, width = 42, zIndex = 1): TravelDetailResponsiveLayout {
-  return {
-    large: { x, y, width, rotation: 0, zIndex, visible: true },
-    medium: { x, y, width, rotation: 0, zIndex, visible: true },
-    small: { x: 6, y, width: Math.min(88, Math.max(36, width * 1.6)), rotation: 0, zIndex, visible: true },
-  };
+function clone<T>(value: T): T {
+  return structuredClone(value);
 }
 
 function imageName(src: string) {
   return src.split("/").pop() ?? src;
 }
 
-function normalizeAssetSrc(src: string) {
-  const sitePath = normalizeSiteImagePath(src);
-  return sitePath.startsWith("/images/travels/") ? sitePath : "";
+// "MM / DD / YYYY" ⇄ the <input type="date"> value "YYYY-MM-DD".
+function toInputDate(value: string) {
+  const parts = parseDateParts(value);
+  if (!parts) return "";
+  return `${parts.year}-${String(parts.month).padStart(2, "0")}-${String(parts.day).padStart(2, "0")}`;
 }
 
-function originalImageAspect(src: string) {
-  return new Promise<string>((resolve) => {
-    const image = new window.Image();
-
-    image.onload = () => {
-      if (image.naturalWidth > 0 && image.naturalHeight > 0) {
-        resolve(`${image.naturalWidth} / ${image.naturalHeight}`);
-        return;
-      }
-
-      resolve("3 / 2");
-    };
-    image.onerror = () => resolve("3 / 2");
-    image.src = resolveSiteImageSrc(src);
-  });
+function fromInputDate(value: string) {
+  const [year, month, day] = value.split("-");
+  return year && month && day ? `${month} / ${day} / ${year}` : "";
 }
 
-function updateHeroMetadataField(draft: TravelDetailData, index: number, key: "label" | "description", value: string) {
-  draft.hero.metadataFields ??= [];
-  while (draft.hero.metadataFields.length <= index) {
-    draft.hero.metadataFields.push({ label: "", description: "" });
+// Section ids are the slugged title, kept unique across the article's blocks.
+function sectionId(article: TravelArticle, block: TravelSectionBlock) {
+  const base = slugify(block.title) || "section";
+  const taken = new Set(article.blocks.filter((other) => other.id !== block.id).map((other) => other.id));
+  let id = base;
+  for (let n = 2; taken.has(id); n += 1) id = `${base}-${n}`;
+  return id;
+}
+
+// Re-derives section anchors from their titles on save, so ids stay stable while typing.
+function withSectionIds(article: TravelArticle) {
+  const next = clone(article);
+  const renamed = new Map<string, string>();
+  for (const block of next.blocks) {
+    if (block.type !== "section") continue;
+    const id = sectionId(next, block);
+    if (id !== block.id) renamed.set(block.id, id);
+    block.id = id;
   }
-  draft.hero.metadataFields[index][key] = value;
+  return { article: next, renamed };
 }
 
-function heroCanvasWidth(breakpoint: TravelDetailBreakpoint) {
-  return travelDetailSurfaceWidth(breakpoint) - travelDetailPageGutterPx[breakpoint] * 2;
+function findBlock(article: TravelArticle, blockId: string) {
+  return article.blocks.find((block) => block.id === blockId);
 }
 
-function heroLayoutFor(data: TravelDetailData, itemKind: "image" | "copy" | "decoration", id: string) {
-  if (itemKind === "image") return data.hero.image.layout;
-  if (itemKind === "copy") return data.hero.copyLayout;
-  return data.hero.decorations.find((decoration) => decoration.id === id)?.layout ?? null;
+function findCanvas(article: TravelArticle, blockId: string) {
+  const block = findBlock(article, blockId);
+  return block?.type === "canvas" ? block : undefined;
 }
 
-function Toast({ message, type, onClose }: { message: string; type: "success" | "error"; onClose: () => void }) {
-  useEffect(() => {
-    const t = window.setTimeout(onClose, 3000);
-    return () => window.clearTimeout(t);
-  }, [onClose]);
-
-  return <div className={`fixed bottom-4 right-4 z-50 px-4 py-2 text-sm text-white shadow-lg ${type === "success" ? "bg-green-700" : "bg-red-700"}`}>{message}</div>;
+function findItem(article: TravelArticle, blockId: string, itemId: string) {
+  return findCanvas(article, blockId)?.items.find((item) => item.id === itemId);
 }
 
-function Field({ label, value, onChange, multiline = false }: { label: string; value: string; onChange: (value: string) => void; multiline?: boolean }) {
+function isTyping(target: EventTarget | null) {
+  return target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+}
+
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <label className="grid gap-1 text-[11px] uppercase tracking-[0.16em] text-stone-500">
+    <label className={labelClass}>
       {label}
-      {multiline ? (
-        <textarea className="min-h-24 border border-stone-300 bg-[#fbf6ee] px-3 py-2 font-serif text-base normal-case tracking-normal text-stone-900 outline-none focus:border-stone-700" value={value} onChange={(event) => onChange(event.target.value)} />
-      ) : (
-        <input className="border border-stone-300 bg-[#fbf6ee] px-3 py-2 font-serif text-base normal-case tracking-normal text-stone-900 outline-none focus:border-stone-700" value={value} onChange={(event) => onChange(event.target.value)} />
-      )}
+      {children}
     </label>
   );
 }
 
-function NumberField({ label, value, onChange, min, max, step = 1 }: { label: string; value: number; onChange: (value: number) => void; min?: number; max?: number; step?: number }) {
+function TextInput({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (value: string) => void; placeholder?: string }) {
   return (
-    <label className="grid gap-1 text-[11px] uppercase tracking-[0.16em] text-stone-500">
-      {label}
-      <input type="number" min={min} max={max} step={step} className="border border-stone-300 bg-[#fbf6ee] px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-900 outline-none focus:border-stone-700" value={value} onChange={(event) => onChange(Number(event.target.value))} />
-    </label>
+    <Field label={label}>
+      <input className={inputClass} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+    </Field>
   );
 }
 
-function SelectField<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: readonly T[]; onChange: (value: T) => void }) {
+function NumberInput({ label, value, onChange, step = 1 }: { label: string; value: number; onChange: (value: number) => void; step?: number }) {
   return (
-    <label className="grid gap-1 text-[11px] uppercase tracking-[0.16em] text-stone-500">
-      {label}
-      <select className="border border-stone-300 bg-[#fbf6ee] px-3 py-2 font-mono text-xs normal-case tracking-normal text-stone-900 outline-none focus:border-stone-700" value={value} onChange={(event) => onChange(event.target.value as T)}>
-        {options.map((option) => <option key={option} value={option}>{option}</option>)}
-      </select>
-    </label>
+    <Field label={label}>
+      <input
+        type="number"
+        step={step}
+        className={inputClass}
+        value={Math.round(value * 10) / 10}
+        onChange={(event) => {
+          const next = Number(event.target.value);
+          if (Number.isFinite(next)) onChange(next);
+        }}
+      />
+    </Field>
   );
 }
 
-function CheckboxField({ label, checked, onChange }: { label: string; checked: boolean; onChange: (checked: boolean) => void }) {
+function BackgroundPicker({ value, onChange }: { value: TravelBackground; onChange: (value: TravelBackground) => void }) {
   return (
-    <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-stone-500">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
-      {label}
-    </label>
-  );
-}
-
-function HeroMetadataFieldsEditor({ data, updateData }: { data: TravelDetailData; updateData: (description: string, mutator: (draft: TravelDetailData) => void) => void }) {
-  return (
-    <>
-      {[0, 1].map((index) => {
-        const field = data.hero.metadataFields?.[index] ?? { label: "", description: "" };
-        const fieldNo = index + 1;
-
-        return (
-          <div key={fieldNo} className="grid gap-3 border border-stone-300 bg-[#f1e9df] p-3">
-            <Field label={`Metadata field ${fieldNo}`} value={field.label} onChange={(label) => updateData(`Edit hero metadata field ${fieldNo}`, (draft) => updateHeroMetadataField(draft, index, "label", label))} />
-            <Field label={`Metadata description ${fieldNo}`} value={field.description} onChange={(description) => updateData(`Edit hero metadata description ${fieldNo}`, (draft) => updateHeroMetadataField(draft, index, "description", description))} />
-          </div>
-        );
-      })}
-    </>
-  );
-}
-
-function getSelected(data: TravelDetailData, selection: Selection | null) {
-  if (!selection) return null;
-  if (selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy" || selection.kind === "heroDecoration") return null;
-  const section = data.sections.find((item) => item.id === selection.sectionId);
-  if (!section) return null;
-  if (selection.kind === "section") return { section, item: section };
-  if (selection.kind === "block") return { section, item: section.blocks.find((item) => item.id === selection.id) ?? null };
-  return { section, item: section.decorations.find((item) => item.id === selection.id) ?? null };
-}
-
-function PreviewBlock({ block, breakpoint, selected, onSelect, onPointerDown }: { block: TravelDetailBlock; breakpoint: TravelDetailBreakpoint; selected: boolean; onSelect: () => void; onPointerDown: (event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => void }) {
-  const layout = block.layout[breakpoint];
-  if (!layout.visible) return null;
-  const isSmall = breakpoint === "small";
-
-  return (
-    <div className={`absolute outline-offset-2 ${selected ? "outline outline-2 outline-stone-900" : ""}`} draggable={false} style={{ left: `${layout.x}%`, top: layout.y, width: `${layout.width}%`, zIndex: layout.zIndex, transform: `rotate(${layout.rotation}deg)` }} onDragStart={(event) => event.preventDefault()} onPointerDown={(event) => onPointerDown(event, "move")} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-      {/* Mirrors the public PhotoFrame / BlockView metrics so preview spacing matches the live page. */}
-      {block.type === "image" ? (
-        block.cutout ? (
-          <figure draggable={false} style={{ margin: 0 }}>
-            <div className="relative w-full" style={{ aspectRatio: block.aspect }}>
-              {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className="object-contain" />}
-            </div>
-            <figcaption style={{ marginTop: 4, fontFamily: tokens.hand, fontSize: isSmall ? 17 : 20, fontWeight: 500, lineHeight: 1.1, color: tokens.accent, textAlign: "center" }}>{block.caption}</figcaption>
-          </figure>
-        ) : (
-          <figure draggable={false} style={{ margin: 0, position: "relative", background: tokens.paperCard, border: `1px solid ${tokens.hairStrong}`, padding: isSmall ? 8 : 12, boxShadow: "0 14px 30px rgba(31, 26, 22, 0.12)" }}>
-            <div className="relative w-full" style={{ aspectRatio: block.aspect, overflow: "hidden", background: tokens.paperDeep }}>
-              {block.src && <Image src={resolveSiteImageSrc(block.src)} alt={block.alt} fill unoptimized sizes="420px" draggable={false} className="object-cover" />}
-            </div>
-            <div style={{ marginTop: 8.8, display: "flex", justifyContent: "space-between", gap: 16, alignItems: "baseline" }}>
-              <span style={{ fontFamily: tokens.hand, fontSize: isSmall ? 18 : 21, fontWeight: 500, lineHeight: 1.05 }}>{block.caption}</span>
-              <span style={{ flex: "0 0 auto", fontFamily: tokens.mono, fontSize: 9, color: tokens.ink40, letterSpacing: "1.2px", textTransform: "uppercase" }}>Filed</span>
-            </div>
-          </figure>
-        )
-      ) : (
-        <p style={{ margin: 0, fontFamily: block.font === "mono" ? tokens.mono : tokens.serif, fontStyle: block.font === "mono" ? "normal" : "italic", fontSize: block.fontSize[breakpoint], lineHeight: block.tone === "annotation" ? 1.15 : 1.5, color: block.tone === "annotation" ? tokens.accent : tokens.ink60, whiteSpace: "pre-wrap" }}>{block.text}</p>
-      )}
-      <button type="button" aria-label="Resize" className="absolute -bottom-2 -right-2 h-4 w-4 border border-stone-900 bg-[#e6dccb]" onPointerDown={(event) => onPointerDown(event, "resize")} />
+    <div className="grid gap-1.5">
+      <span className="text-xs font-semibold opacity-70">Background</span>
+      <div className="grid grid-cols-3 gap-1.5">
+        {BACKGROUNDS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            aria-pressed={value === option.value}
+            className="grid gap-1 border border-[var(--lightgray)] p-1 text-[10px] font-semibold aria-pressed:border-[var(--underline)] aria-pressed:text-[var(--underline)]"
+            onClick={() => onChange(option.value)}
+          >
+            <span className={canvasClassName(option.value)} style={{ display: "block", height: 28, marginBottom: 0 }} />
+            {option.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-function PreviewTape({ decoration, breakpoint, selected, onSelect, onPointerDown }: { decoration: TravelDetailTapeDecoration; breakpoint: TravelDetailBreakpoint; selected: boolean; onSelect: () => void; onPointerDown: (event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => void }) {
-  const layout = decoration.layout[breakpoint];
-  if (!layout.visible) return null;
-
+function AlignPicker({ label, value, onChange }: { label: string; value: TravelAlign; onChange: (value: TravelAlign) => void }) {
   return (
-    <div className={`absolute border-y border-dashed border-amber-800/25 outline-offset-2 ${selected ? "outline outline-2 outline-stone-900" : ""}`} style={{ left: `${layout.x}%`, top: layout.y, width: `${layout.width}%`, height: decoration.height[breakpoint], zIndex: layout.zIndex, transform: `rotate(${layout.rotation}deg)`, background: decoration.color, opacity: decoration.opacity }} onPointerDown={(event) => onPointerDown(event, "move")} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-      <button type="button" aria-label="Resize tape" className="absolute -bottom-2 -right-2 h-4 w-4 border border-stone-900 bg-[#e6dccb]" onPointerDown={(event) => onPointerDown(event, "resize")} />
+    <div className="grid gap-1.5">
+      <span className="text-xs font-semibold opacity-70">{label}</span>
+      <div className="grid grid-cols-3 gap-1.5">
+        {ALIGNMENTS.map((option) => (
+          <button key={option.value} type="button" aria-pressed={value === option.value} className={`${buttonClass} aria-pressed:border-[var(--underline)] aria-pressed:text-[var(--underline)]`} onClick={() => onChange(option.value)}>
+            {option.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-function SectionPreview({ section, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { section: TravelDetailSection; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: DropAssetHandler; onDragItem: (state: DragState) => void }) {
-  const canvasRef = useRef<HTMLDivElement | null>(null);
-  const width = travelDetailCanvasWidth(section, breakpoint);
+function TagEditor({ tags, onChange }: { tags: string[]; onChange: (tags: string[]) => void }) {
+  const [draft, setDraft] = useState("");
 
-  const startDrag = (itemKind: "block" | "decoration", id: string, event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => {
-    event.stopPropagation();
-    const item = itemKind === "block" ? section.blocks.find((block) => block.id === id) : section.decorations.find((decoration) => decoration.id === id);
-    if (!item) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    onDragItem({ scope: "section", sectionId: section.id, itemKind, id, mode, startX: event.clientX, startY: event.clientY, designWidth: width, initial: { ...item.layout[breakpoint] } });
-  };
+  function add() {
+    const tag = draft.trim();
+    if (tag && !tags.includes(tag)) onChange([...tags, tag]);
+    setDraft("");
+  }
 
   return (
-    <TravelDetailSectionFrame
-      section={section}
-      breakpoint={breakpoint}
-      canvasRef={canvasRef}
-      onCanvasClick={() => onSelect({ kind: "section", sectionId: section.id })}
-      onCanvasDragOver={(event) => {
-        if (event.dataTransfer.types.includes(assetDragType)) event.preventDefault();
-      }}
-      onCanvasDrop={(event) => {
-        const rawSrc = event.dataTransfer.getData(assetDragType);
-        if (!rawSrc) return;
-        event.preventDefault();
-        const src = normalizeAssetSrc(rawSrc);
-        if (src) void onDropAsset(section.id, src);
-      }}
-    >
-      {section.decorations.map((decoration) => <PreviewTape key={decoration.id} decoration={decoration} breakpoint={breakpoint} selected={selection?.kind === "decoration" && selection.id === decoration.id} onSelect={() => onSelect({ kind: "decoration", sectionId: section.id, id: decoration.id })} onPointerDown={(event, mode) => startDrag("decoration", decoration.id, event, mode)} />)}
-      {section.blocks.map((block) => <PreviewBlock key={block.id} block={block} breakpoint={breakpoint} selected={selection?.kind === "block" && selection.id === block.id} onSelect={() => onSelect({ kind: "block", sectionId: section.id, id: block.id })} onPointerDown={(event, mode) => startDrag("block", block.id, event, mode)} />)}
-    </TravelDetailSectionFrame>
+    <div className="grid gap-2">
+      <span className="text-xs font-semibold opacity-70">City tags</span>
+      <div className="flex flex-wrap gap-1.5">
+        {tags.map((tag, index) => (
+          <span key={tag} className="inline-flex items-center gap-1 bg-[color-mix(in_srgb,var(--underline)_12%,transparent)] px-1.5 py-0.5 text-xs font-semibold text-[var(--underline)]">
+            {tag}
+            <button type="button" aria-label={`Remove ${tag}`} className="opacity-70 hover:opacity-100" onClick={() => onChange(tags.filter((_, other) => other !== index))}>
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <input
+          className={`${inputClass} min-w-0 flex-1`}
+          value={draft}
+          placeholder="Add a city"
+          onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              add();
+            }
+          }}
+        />
+        <button type="button" className={buttonClass} onClick={add}>
+          Add
+        </button>
+      </div>
+    </div>
   );
 }
 
-function HeroPreview({
-  data,
-  breakpoint,
+function CanvasEditor({
+  block,
   selection,
   onSelect,
-  onDragItem,
+  onStartDrag,
+  onDropAsset,
 }: {
-  data: TravelDetailData;
-  breakpoint: TravelDetailBreakpoint;
-  selection: Selection | null;
+  block: TravelCanvasBlock;
+  selection: Selection;
   onSelect: (selection: Selection) => void;
-  onDragItem: (state: DragState) => void;
+  onStartDrag: (event: React.PointerEvent, mode: Drag["mode"], itemId?: string) => void;
+  onDropAsset: (src: string, x: number, y: number) => void;
 }) {
-  const selectedItem =
-    selection?.kind === "heroImage"
-      ? "image"
-      : selection?.kind === "heroCopy"
-        ? "copy"
-        : selection?.kind === "heroDecoration"
-          ? (`decoration:${selection.id}` as const)
-          : undefined;
-
-  const startDrag = (item: "image" | "copy" | `decoration:${string}`, event: React.PointerEvent<HTMLElement>, mode: "move" | "resize") => {
-    event.stopPropagation();
-    event.currentTarget.setPointerCapture(event.pointerId);
-
-    const isDecoration = item.startsWith("decoration:");
-    const itemKind: "image" | "copy" | "decoration" = isDecoration ? "decoration" : item === "image" ? "image" : "copy";
-    const id = isDecoration ? item.replace("decoration:", "") : item;
-    const layout = heroLayoutFor(data, itemKind, id);
-    if (!layout) return;
-
-    onDragItem({
-      scope: "hero",
-      itemKind,
-      id,
-      mode,
-      startX: event.clientX,
-      startY: event.clientY,
-      designWidth: heroCanvasWidth(breakpoint),
-      initial: { ...layout[breakpoint] },
-    });
-  };
-
   return (
-    <Hero
-      data={data}
-      breakpoint={breakpoint}
-      onOpen={() => undefined}
-      editable={{
-        selectedItem,
-        onSelect: (item) => {
-          if (item === "image") onSelect({ kind: "heroImage" });
-          else if (item === "copy") onSelect({ kind: "heroCopy" });
-          else onSelect({ kind: "heroDecoration", id: item.replace("decoration:", "") });
-        },
-        onPointerDown: startDrag,
-      }}
-    />
+    <div className="relative" style={{ marginBottom: 20 }}>
+      <div
+        className={canvasClassName(block.background)}
+        style={{ height: block.height, marginBottom: 0, outline: "1px dashed var(--gray)" }}
+        onPointerDown={(event) => {
+          if (event.target === event.currentTarget) onSelect({ blockId: block.id });
+        }}
+        onDragOver={(event) => {
+          if (event.dataTransfer.types.includes(assetDragType)) event.preventDefault();
+        }}
+        onDrop={(event) => {
+          const src = event.dataTransfer.getData(assetDragType);
+          if (!src) return;
+          event.preventDefault();
+          const rect = event.currentTarget.getBoundingClientRect();
+          onDropAsset(src, event.clientX - rect.left, event.clientY - rect.top);
+        }}
+      >
+        {block.items.map((item) => {
+          const selected = selection?.blockId === block.id && selection.itemId === item.id;
+          return (
+            <div
+              key={item.id}
+              className={canvasItemClassName(item)}
+              style={{
+                ...canvasItemStyle(item, block.height),
+                cursor: "move",
+                outline: selected ? "2px solid var(--underline)" : undefined,
+                touchAction: "none",
+              }}
+              onPointerDown={(event) => {
+                event.stopPropagation();
+                onSelect({ blockId: block.id, itemId: item.id });
+                onStartDrag(event, "move", item.id);
+              }}
+            >
+              <CanvasItemContent item={item} />
+              {selected && (
+                <>
+                  <span
+                    aria-label="Rotate"
+                    title="Drag to rotate (shift snaps to 15°)"
+                    className="absolute left-1/2 top-1 h-3.5 w-3.5 -translate-x-1/2 cursor-grab rounded-full border-2 border-[var(--underline)] bg-[var(--light)]"
+                    onPointerDown={(event) => {
+                      event.stopPropagation();
+                      onStartDrag(event, "rotate", item.id);
+                    }}
+                  />
+                  <span
+                    aria-label="Resize"
+                    title="Drag to resize"
+                    className="absolute bottom-0 right-0 h-3.5 w-3.5 cursor-nwse-resize border-2 border-[var(--underline)] bg-[var(--light)]"
+                    onPointerDown={(event) => {
+                      event.stopPropagation();
+                      onStartDrag(event, "resize", item.id);
+                    }}
+                  />
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div
+        aria-label="Resize canvas height"
+        title="Drag to change the canvas height"
+        className="absolute -bottom-1.5 left-1/2 h-3 w-16 -translate-x-1/2 cursor-ns-resize bg-[var(--gray)] hover:bg-[var(--underline)]"
+        onPointerDown={(event) => {
+          event.stopPropagation();
+          onSelect({ blockId: block.id });
+          onStartDrag(event, "height");
+        }}
+      />
+    </div>
   );
 }
 
-function Preview({ data, breakpoint, selection, onSelect, onDropAsset, onDragItem }: { data: TravelDetailData; breakpoint: TravelDetailBreakpoint; selection: Selection | null; onSelect: (selection: Selection) => void; onDropAsset: DropAssetHandler; onDragItem: (state: DragState) => void }) {
-  return (
-    <TravelDetailSurface
-      breakpoint={breakpoint}
-      mode="fixed"
-      sx={{
-        mx: "auto",
-        width: travelDetailSurfaceWidth(breakpoint),
-        minHeight: 640,
-        maxWidth: "none",
-        border: "1px solid rgba(120, 113, 108, 0.65)",
-        background,
-        color: tokens.ink,
-        boxShadow: "0 1px 3px rgba(31, 26, 22, 0.1)",
-      }}
-    >
-      <TravelMetadataStrip data={data} breakpoint={breakpoint} />
-      <HeroPreview data={data} breakpoint={breakpoint} selection={selection} onSelect={onSelect} onDragItem={onDragItem} />
-      <TravelDetailViewportContainer breakpoint={breakpoint} sx={{ pt: breakpoint === "small" ? 7 : 7.5 }}>
-        {data.sections.map((section) => <SectionPreview key={section.id} section={section} breakpoint={breakpoint} selection={selection} onSelect={onSelect} onDropAsset={onDropAsset} onDragItem={onDragItem} />)}
-      </TravelDetailViewportContainer>
-      <Closing data={data} breakpoint={breakpoint} onOpen={() => undefined} />
-    </TravelDetailSurface>
-  );
+function newBlock(type: TravelBlock["type"]): TravelBlock {
+  switch (type) {
+    case "image":
+      return { id: uid("image"), type: "image", src: "", alt: "" };
+    case "text":
+      return { id: uid("text"), type: "text", text: "" };
+    case "section":
+      return { id: uid("section"), type: "section", level: 2, title: "" };
+    case "canvas":
+      return { id: uid("canvas"), type: "canvas", height: 400, background: "none", items: [] };
+  }
 }
 
-export default function TravelDetailEditorPage() {
-  const [pages, setPages] = useState<PageInfo[]>([]);
-  const [selectedSlug, setSelectedSlug] = useState("");
+export default function TravelDetailEditorClient() {
+  const [slugs, setSlugs] = useState<string[]>([]);
+  const [slug, setSlug] = useState("");
   const [assets, setAssets] = useState<string[]>([]);
-  const [data, setData] = useState<TravelDetailData | null>(null);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const [breakpoint, setBreakpoint] = useState<TravelDetailBreakpoint>("large");
-  const [selection, setSelection] = useState<Selection | null>(null);
-  const [dragState, setDragState] = useState<DragState | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const skipHistoryRef = useRef(false);
+  const [article, setArticle] = useState<TravelArticle | null>(null);
+  const [saved, setSaved] = useState<TravelArticle | null>(null);
+  const [past, setPast] = useState<TravelArticle[]>([]);
+  const [future, setFuture] = useState<TravelArticle[]>([]);
+  const [selection, setSelection] = useState<Selection>(null);
+  const [drag, setDrag] = useState<Drag | null>(null);
+  const [toast, setToast] = useState<Toast>(null);
+  const lastCommit = useRef<{ key: string; at: number } | null>(null);
+  const latest = useRef<TravelArticle | null>(null);
+  latest.current = article;
 
-  const canUndo = historyIndex > 0;
-  const canRedo = historyIndex >= 0 && historyIndex < history.length - 1;
-  const selected = data ? getSelected(data, selection) : null;
-
-  const pushHistory = useCallback((nextData: TravelDetailData, description: string) => {
-    if (skipHistoryRef.current) {
-      skipHistoryRef.current = false;
-      return;
-    }
-    setHistory((prev) => [...prev.slice(0, historyIndex + 1), { data: structuredClone(nextData), description }]);
-    setHistoryIndex((prev) => prev + 1);
-  }, [historyIndex]);
-
-  const updateData = useCallback((description: string, mutator: (draft: TravelDetailData) => void) => {
-    setData((current) => {
-      if (!current) return current;
-      const next = structuredClone(current);
-      mutator(next);
-      pushHistory(next, description);
-      return next;
-    });
-  }, [pushHistory]);
+  const dirty = article !== null && saved !== null && JSON.stringify(article) !== JSON.stringify(saved);
 
   useEffect(() => {
-    fetch("/api/admin/travel-detail/pages")
-      .then((response) => response.json() as Promise<PageResponse>)
-      .then((body) => {
-        const nextPages = body.pages ?? [];
-        setPages(nextPages);
-        if (nextPages[0]) setSelectedSlug(nextPages[0].slug);
+    fetch("/api/admin/travel-article/pages")
+      .then((response) => response.json() as Promise<{ slugs?: string[]; error?: string }>)
+      .then((result) => {
+        setSlugs(result.slugs ?? []);
+        setSlug((current) => current || result.slugs?.[0] || "");
+        if (result.error) setToast({ message: result.error, type: "error" });
       })
-      .catch(() => setToast({ message: "Failed to load travel detail pages", type: "error" }));
+      .catch(() => setToast({ message: "Couldn't list travel articles", type: "error" }));
   }, []);
 
   useEffect(() => {
-    if (!selectedSlug) return;
+    if (!slug) return;
+    setArticle(null);
+    setSelection(null);
+    setPast([]);
+    setFuture([]);
 
-    fetch(`/api/admin/travel-detail/load?slug=${encodeURIComponent(selectedSlug)}`)
-      .then((response) => response.json() as Promise<TravelDetailData>)
-      .then((nextData) => {
-        setData(nextData);
-        setSelection(nextData.sections[0] ? { kind: "section", sectionId: nextData.sections[0].id } : null);
-        setHistory([{ data: structuredClone(nextData), description: "Initial load" }]);
-        setHistoryIndex(0);
+    fetch(`/api/admin/travel-article/load?slug=${encodeURIComponent(slug)}`)
+      .then((response) => response.json() as Promise<TravelArticle & { error?: string }>)
+      .then((result) => {
+        if (result.error) throw new Error(result.error);
+        setArticle(result);
+        setSaved(result);
       })
-      .catch(() => setToast({ message: "Failed to load travel detail", type: "error" }));
+      .catch((error: Error) => setToast({ message: error.message || "Couldn't load article", type: "error" }));
 
-    fetch(`/api/admin/travel-detail/assets?slug=${encodeURIComponent(selectedSlug)}`)
-      .then((response) => response.json() as Promise<AssetResponse>)
-      .then((body) => setAssets(body.assets ?? []))
-      .catch(() => setToast({ message: "Failed to load image assets", type: "error" }));
-  }, [selectedSlug]);
+    fetch(`/api/admin/travel-article/assets?slug=${encodeURIComponent(slug)}`)
+      .then((response) => response.json() as Promise<{ assets?: string[] }>)
+      .then((result) => setAssets(result.assets ?? []))
+      .catch(() => setAssets([]));
+  }, [slug]);
 
   useEffect(() => {
-    if (!dragState) return;
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 3000);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
 
-    const onMove = (event: PointerEvent) => {
-      setData((current) => {
-        if (!current) return current;
-        const next = structuredClone(current);
-        const layout =
-          dragState.scope === "hero"
-            ? heroLayoutFor(next, dragState.itemKind, dragState.id)
-            : (() => {
-                const section = next.sections.find((item) => item.id === dragState.sectionId);
-                if (!section) return null;
-                const item = dragState.itemKind === "block" ? section.blocks.find((block) => block.id === dragState.id) : section.decorations.find((decoration) => decoration.id === dragState.id);
-                return item?.layout ?? null;
-              })();
-        if (!layout) return current;
-        const dx = event.clientX - dragState.startX;
-        const dy = event.clientY - dragState.startY;
-        if (dragState.mode === "resize") {
-          layout[breakpoint].width = Math.max(5, Math.min(100, dragState.initial.width + (dx / dragState.designWidth) * 100));
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  // Applies a change with undo history. Edits sharing a key within a second
+  // (typing in one field) collapse into a single undo step.
+  const update = useCallback(
+    (mutate: (draft: TravelArticle) => void, key?: string) => {
+      if (!article) return;
+      const draft = clone(article);
+      mutate(draft);
+
+      const now = Date.now();
+      const coalesce = key && lastCommit.current?.key === key && now - lastCommit.current.at < 1000;
+      if (!coalesce) setPast((stack) => [...stack.slice(-99), article]);
+      lastCommit.current = key ? { key, at: now } : null;
+      setFuture([]);
+      setArticle(draft);
+    },
+    [article],
+  );
+
+  const undo = useCallback(() => {
+    if (!article || past.length === 0) return;
+    setFuture((stack) => [article, ...stack]);
+    setArticle(past[past.length - 1]);
+    setPast((stack) => stack.slice(0, -1));
+    lastCommit.current = null;
+  }, [article, past]);
+
+  const redo = useCallback(() => {
+    if (!article || future.length === 0) return;
+    setPast((stack) => [...stack, article]);
+    setArticle(future[0]);
+    setFuture((stack) => stack.slice(1));
+    lastCommit.current = null;
+  }, [article, future]);
+
+  const save = useCallback(async () => {
+    if (!article) return;
+    const { article: next, renamed } = withSectionIds(article);
+    try {
+      const response = await fetch("/api/admin/travel-article/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug, json: next }),
+      });
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) throw new Error(result.error ?? "Save failed");
+      setArticle(next);
+      setSaved(next);
+      setSelection((current) => (current && renamed.has(current.blockId) ? { ...current, blockId: renamed.get(current.blockId)! } : current));
+      setToast({ message: `Saved ${slug}`, type: "success" });
+    } catch (error) {
+      setToast({ message: error instanceof Error ? error.message : "Save failed", type: "error" });
+    }
+  }, [article, slug]);
+
+  const deleteSelection = useCallback(() => {
+    if (!selection) return;
+    update((draft) => {
+      if (selection.itemId) {
+        const canvas = findCanvas(draft, selection.blockId);
+        if (canvas) canvas.items = canvas.items.filter((item) => item.id !== selection.itemId);
+      } else {
+        draft.blocks = draft.blocks.filter((block) => block.id !== selection.blockId);
+      }
+    });
+    setSelection(selection.itemId ? { blockId: selection.blockId } : null);
+  }, [selection, update]);
+
+  // Keyboard: undo/redo, save, delete, and arrow-key nudging for canvas items.
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      const mod = event.metaKey || event.ctrlKey;
+      if (mod && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        void save();
+        return;
+      }
+      if (isTyping(event.target)) return;
+
+      if (mod && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (event.shiftKey) redo();
+        else undo();
+      } else if ((event.key === "Delete" || event.key === "Backspace") && selection) {
+        event.preventDefault();
+        deleteSelection();
+      } else if (selection?.itemId && event.key.startsWith("Arrow")) {
+        event.preventDefault();
+        const step = event.shiftKey ? 10 : 1;
+        const dx = event.key === "ArrowLeft" ? -step : event.key === "ArrowRight" ? step : 0;
+        const dy = event.key === "ArrowUp" ? -step : event.key === "ArrowDown" ? step : 0;
+        const { blockId, itemId } = selection;
+        update((draft) => {
+          const item = findItem(draft, blockId, itemId);
+          if (!item) return;
+          item.x += dx;
+          item.y += dy;
+        }, `nudge-${itemId}`);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [deleteSelection, redo, save, selection, undo, update]);
+
+  // Pointer drags edit the article live and become one undo step on release.
+  useEffect(() => {
+    if (!drag) return;
+    const active = drag;
+
+    function onMove(event: PointerEvent) {
+      const dx = event.clientX - active.startX;
+      const dy = event.clientY - active.startY;
+      const next = clone(active.base);
+
+      if (active.mode === "height") {
+        const canvas = findCanvas(next, active.blockId);
+        if (canvas) canvas.height = Math.max(MIN_CANVAS_HEIGHT, Math.round(active.initial.height + dy));
+      } else if (active.itemId) {
+        const item = findItem(next, active.blockId, active.itemId);
+        if (!item) return;
+        if (active.mode === "move") {
+          item.x = Math.round(active.initial.x + dx);
+          item.y = Math.round(active.initial.y + dy);
+        } else if (active.mode === "resize") {
+          item.width = Math.max(20, Math.round(active.initial.width + dx));
         } else {
-          layout[breakpoint].x = Math.max(minCanvasX, Math.min(maxCanvasX, dragState.initial.x + (dx / dragState.designWidth) * 100));
-          layout[breakpoint].y = Math.max(minCanvasY, dragState.initial.y + dy);
+          // The handle sits above the centre, so pointing straight up is 0°.
+          const angle = (Math.atan2(event.clientY - active.initial.centerY, event.clientX - active.initial.centerX) * 180) / Math.PI + 90;
+          const snap = event.shiftKey ? 15 : 1;
+          let rotation = Math.round(angle / snap) * snap;
+          if (rotation > 180) rotation -= 360;
+          item.rotation = rotation;
         }
-        return next;
-      });
-    };
+      }
+      setArticle(next);
+    }
 
-    const onUp = () => {
-      setData((current) => {
-        if (current) pushHistory(current, dragState.mode === "resize" ? "Resize item" : "Move item");
-        return current;
-      });
-      setDragState(null);
-    };
+    function onUp() {
+      setDrag(null);
+      if (latest.current && JSON.stringify(latest.current) !== JSON.stringify(active.base)) {
+        setPast((stack) => [...stack.slice(-99), active.base]);
+        setFuture([]);
+      }
+      lastCommit.current = null;
+    }
 
     window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp, { once: true });
+    window.addEventListener("pointerup", onUp);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  }, [breakpoint, dragState, pushHistory]);
+  }, [drag]);
 
-  const undo = useCallback(() => {
-    if (!canUndo) return;
-    const nextIndex = historyIndex - 1;
-    skipHistoryRef.current = true;
-    setData(structuredClone(history[nextIndex].data));
-    setHistoryIndex(nextIndex);
-  }, [canUndo, history, historyIndex]);
-
-  const redo = useCallback(() => {
-    if (!canRedo) return;
-    const nextIndex = historyIndex + 1;
-    skipHistoryRef.current = true;
-    setData(structuredClone(history[nextIndex].data));
-    setHistoryIndex(nextIndex);
-  }, [canRedo, history, historyIndex]);
-
-  const save = async () => {
-    if (!data || !selectedSlug) return;
-    try {
-      const response = await fetch("/api/admin/travel-detail/save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slug: selectedSlug, json: data }) });
-      const body = (await response.json()) as { success?: boolean; error?: string };
-      setToast(body.success ? { message: "Saved travel detail JSON", type: "success" } : { message: body.error ?? "Save failed", type: "error" });
-    } catch {
-      setToast({ message: "Save failed", type: "error" });
-    }
-  };
-
-  const copyJson = async () => {
-    if (!data) return;
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-      setToast({ message: "Copied JSON", type: "success" });
-    } catch {
-      setToast({ message: "Copy failed", type: "error" });
-    }
-  };
-
-  const addSection = () => updateData("Add section", (draft) => {
-    const index = draft.sections.length + 1;
-    const section: TravelDetailSection = {
-      id: uid("section"),
-      no: String(index).padStart(2, "0"),
-      name: "New section",
-      nativeName: "",
-      romanizedName: "New section",
-      dayLabel: "Days",
-      coordinates: "",
-      align: "left",
-      canvas: { largeWidth: 1120, largeHeight: 620, mediumWidth: 860, mediumHeight: 620, smallWidth: 390, smallHeight: 720 },
-      blurb: "",
-      blocks: [],
-      decorations: [],
-    };
-    draft.sections.push(section);
-    setSelection({ kind: "section", sectionId: section.id });
-  });
-
-  const addImage = async (sectionId: string, src: string) => {
-    const imageSrc = normalizeAssetSrc(src);
-    if (!imageSrc) return;
-    const aspect = await originalImageAspect(imageSrc);
-
-    updateData("Add image", (draft) => {
-      const section = draft.sections.find((item) => item.id === sectionId);
-      if (!section) return;
-      const block: TravelDetailImageBlock = { id: uid("image"), type: "image", src: imageSrc, alt: imageName(imageSrc), caption: imageName(imageSrc), aspect, layout: defaultLayout(8, 40, 42, section.blocks.length + 1) };
-      section.blocks.push(block);
-      setSelection({ kind: "block", sectionId, id: block.id });
+  function startDrag(event: React.PointerEvent, mode: Drag["mode"], blockId: string, itemId?: string) {
+    if (!article || event.button !== 0) return;
+    event.preventDefault();
+    const canvas = findCanvas(article, blockId);
+    const item = itemId ? findItem(article, blockId, itemId) : undefined;
+    // Handles sit inside the item, so the item box is their parent.
+    const target = event.currentTarget as HTMLElement;
+    const rect = ((mode === "move" ? target : target.parentElement) ?? target).getBoundingClientRect();
+    setDrag({
+      mode,
+      blockId,
+      itemId,
+      startX: event.clientX,
+      startY: event.clientY,
+      base: article,
+      initial: {
+        x: item?.x ?? 0,
+        y: item?.y ?? 0,
+        width: item?.width ?? 0,
+        height: canvas?.height ?? 0,
+        centerX: rect.left + rect.width / 2,
+        centerY: rect.top + rect.height / 2,
+      },
     });
-  };
-
-  const setHeroImage = async (src: string) => {
-    const imageSrc = normalizeAssetSrc(src);
-    if (!imageSrc) return;
-    const aspect = await originalImageAspect(imageSrc);
-
-    updateData("Set hero image", (draft) => {
-      draft.hero.image.src = imageSrc;
-      draft.hero.image.aspect = aspect;
-    });
-    setSelection({ kind: "heroImage" });
-  };
-
-  const addText = (sectionId: string) => updateData("Add text", (draft) => {
-    const section = draft.sections.find((item) => item.id === sectionId);
-    if (!section) return;
-    const block: TravelDetailTextBlock = { id: uid("text"), type: "text", text: "New note", tone: "caption", fontSize: { large: 18, medium: 18, small: 17 }, layout: defaultLayout(8, 120, 34, section.blocks.length + 1) };
-    section.blocks.push(block);
-    setSelection({ kind: "block", sectionId, id: block.id });
-  });
-
-  const addTape = (sectionId: string) => updateData("Add tape", (draft) => {
-    const section = draft.sections.find((item) => item.id === sectionId);
-    if (!section) return;
-    const decoration: TravelDetailTapeDecoration = { id: uid("tape"), type: "tape", color: "rgba(243, 215, 158, 0.65)", opacity: 0.88, height: { large: 24, medium: 24, small: 18 }, layout: defaultLayout(12, 20, 16, 20) };
-    section.decorations.push(decoration);
-    setSelection({ kind: "decoration", sectionId, id: decoration.id });
-  });
-
-  const addHeroTape = () => updateData("Add hero tape", (draft) => {
-    const decoration: TravelDetailTapeDecoration = { id: uid("hero-tape"), type: "tape", color: "rgba(243, 215, 158, 0.65)", opacity: 0.88, height: { large: 24, medium: 24, small: 18 }, layout: defaultLayout(12, 20, 12, 20) };
-    draft.hero.decorations.push(decoration);
-    setSelection({ kind: "heroDecoration", id: decoration.id });
-  });
-
-  const deleteSelection = () => {
-    if (!selection) return;
-    updateData("Delete selection", (draft) => {
-      if (selection.kind === "heroDecoration") {
-        draft.hero.decorations = draft.hero.decorations.filter((decoration) => decoration.id !== selection.id);
-        setSelection({ kind: "hero" });
-        return;
-      }
-      if (selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy") {
-        setSelection({ kind: "hero" });
-        return;
-      }
-      if (selection.kind === "section") {
-        draft.sections = draft.sections.filter((section) => section.id !== selection.sectionId);
-        setSelection(draft.sections[0] ? { kind: "section", sectionId: draft.sections[0].id } : null);
-        return;
-      }
-      const section = draft.sections.find((item) => item.id === selection.sectionId);
-      if (!section) return;
-      if (selection.kind === "block") section.blocks = section.blocks.filter((block) => block.id !== selection.id);
-      if (selection.kind === "decoration") section.decorations = section.decorations.filter((decoration) => decoration.id !== selection.id);
-      setSelection({ kind: "section", sectionId: section.id });
-    });
-  };
-
-  const updateLayout = (next: Partial<TravelDetailFreeformLayout>) => {
-    if (!selection || selection.kind === "section" || selection.kind === "hero") return;
-    updateData("Edit layout", (draft) => {
-      if (selection.kind === "heroImage") {
-        draft.hero.image.layout[breakpoint] = { ...draft.hero.image.layout[breakpoint], ...next };
-        return;
-      }
-      if (selection.kind === "heroCopy") {
-        draft.hero.copyLayout[breakpoint] = { ...draft.hero.copyLayout[breakpoint], ...next };
-        return;
-      }
-      if (selection.kind === "heroDecoration") {
-        const decoration = draft.hero.decorations.find((item) => item.id === selection.id);
-        if (decoration) decoration.layout[breakpoint] = { ...decoration.layout[breakpoint], ...next };
-        return;
-      }
-      const section = draft.sections.find((item) => item.id === selection.sectionId);
-      const item = selection.kind === "block" ? section?.blocks.find((block) => block.id === selection.id) : section?.decorations.find((decoration) => decoration.id === selection.id);
-      if (item) item.layout[breakpoint] = { ...item.layout[breakpoint], ...next };
-    });
-  };
-
-  const selectedSectionId = selection && "sectionId" in selection ? selection.sectionId : "";
-  const selectedSection = data?.sections.find((section) => section.id === selectedSectionId) ?? null;
-  const sectionItem = selected?.item && "blocks" in selected.item ? selected.item : null;
-  const layoutItem = selected?.item && "layout" in selected.item ? selected.item : null;
-  const heroImageTarget = selection?.kind === "hero" || selection?.kind === "heroImage";
-  const heroSelected = data && selection?.kind === "hero" ? data.hero : null;
-  const heroImageItem = data && selection?.kind === "heroImage" ? data.hero.image : null;
-  const heroCopyLayout = data && selection?.kind === "heroCopy" ? data.hero.copyLayout : null;
-  const heroDecorationItem = data && selection?.kind === "heroDecoration" ? data.hero.decorations.find((decoration) => decoration.id === selection.id) ?? null : null;
-  const selectedHeroLayout = heroImageItem?.layout ?? heroCopyLayout ?? heroDecorationItem?.layout ?? null;
-
-  if (!data) {
-    return <main className="min-h-screen bg-[#f1e9df] p-6 font-mono text-sm uppercase tracking-[0.16em] text-stone-600">Loading travel detail editor...</main>;
   }
 
+  function insertBlock(block: TravelBlock) {
+    update((draft) => {
+      const index = selection ? draft.blocks.findIndex((other) => other.id === selection.blockId) : -1;
+      draft.blocks.splice(index === -1 ? draft.blocks.length : index + 1, 0, block);
+    });
+    setSelection({ blockId: block.id });
+  }
+
+  function moveBlock(blockId: string, direction: -1 | 1) {
+    update((draft) => {
+      const index = draft.blocks.findIndex((block) => block.id === blockId);
+      const target = index + direction;
+      if (index === -1 || target < 0 || target >= draft.blocks.length) return;
+      [draft.blocks[index], draft.blocks[target]] = [draft.blocks[target], draft.blocks[index]];
+    });
+  }
+
+  function addCanvasItem(blockId: string, item: NewCanvasItem) {
+    update((draft) => {
+      const canvas = findCanvas(draft, blockId);
+      if (!canvas) return;
+      const zIndex = Math.max(0, ...canvas.items.map((other) => other.zIndex)) + 1;
+      canvas.items.push({ ...item, zIndex });
+    });
+    setSelection({ blockId, itemId: item.id });
+  }
+
+  function addCanvasImage(blockId: string, src: string, centerX?: number, centerY?: number) {
+    const canvas = article && findCanvas(article, blockId);
+    if (!canvas) return;
+    const width = 300;
+    addCanvasItem(blockId, {
+      id: uid("img"),
+      kind: "image",
+      src,
+      alt: "",
+      x: Math.round((centerX ?? CANVAS_WIDTH / 2) - width / 2),
+      y: Math.round((centerY ?? canvas.height / 2) - width / 3),
+      width,
+      rotation: 0,
+    });
+  }
+
+  function addCanvasText(blockId: string) {
+    const canvas = article && findCanvas(article, blockId);
+    if (!canvas) return;
+    addCanvasItem(blockId, {
+      id: uid("text"),
+      kind: "text",
+      text: "New text",
+      font: "hand",
+      size: 18,
+      x: Math.round(CANVAS_WIDTH / 2 - 120),
+      y: Math.round(canvas.height / 2 - 14),
+      width: 240,
+      rotation: 0,
+    });
+  }
+
+  // Library clicks fill the selected image block, add to the selected canvas,
+  // or append a new image block.
+  function applyAsset(src: string) {
+    if (!article) return;
+    const block = selection ? findBlock(article, selection.blockId) : undefined;
+    if (block?.type === "image") {
+      update((draft) => {
+        const target = findBlock(draft, block.id);
+        if (target?.type === "image") target.src = src;
+      });
+    } else if (block?.type === "canvas") {
+      addCanvasImage(block.id, src);
+    } else {
+      insertBlock({ id: uid("image"), type: "image", src, alt: "" });
+    }
+  }
+
+  if (!article) {
+    return (
+      <main className="min-h-screen bg-[var(--light)] p-6 text-sm text-[var(--darkgray)]">
+        {slugs.length === 0 && slug === "" ? "No travel articles in src/data/travel-articles yet." : "Loading travel editor…"}
+        {toast && <p className="mt-2">{toast.message}</p>}
+      </main>
+    );
+  }
+
+  const selectedBlock = selection ? findBlock(article, selection.blockId) : undefined;
+  const selectedItem = selection?.itemId ? findItem(article, selection.blockId, selection.itemId) : undefined;
+  const libraryHint =
+    selectedBlock?.type === "image"
+      ? "Click to set the selected image"
+      : selectedBlock?.type === "canvas"
+        ? "Click or drag onto the canvas to add"
+        : "Click to add an image block";
+
   return (
-    <main className="min-h-screen bg-[#f1e9df] text-stone-900">
-      <div className="sticky top-0 z-40 border-b border-stone-400 bg-[#e6dccb] px-5 py-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div><div className="font-mono text-[11px] uppercase tracking-[0.18em] text-stone-500">Dev only · Travel detail editor</div><h1 className="font-serif text-3xl italic leading-none">Section canvas editor</h1></div>
-          <div className="flex flex-wrap items-center gap-2">
-            <select className="border border-stone-400 bg-[#fbf6ee] px-3 py-2 font-mono text-xs" value={selectedSlug} onChange={(event) => setSelectedSlug(event.target.value)}>{pages.map((page) => <option key={page.slug} value={page.slug}>{page.slug}</option>)}</select>
-            {breakpoints.map((item) => <button key={item} className={`border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] ${breakpoint === item ? "bg-stone-900 text-[#fbf6ee]" : ""}`} onClick={() => setBreakpoint(item)}>{breakpointLabels[item]}</button>)}
-            <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] disabled:opacity-40" disabled={!canUndo} onClick={undo}>Undo</button>
-            <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] disabled:opacity-40" disabled={!canRedo} onClick={redo}>Redo</button>
-            <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={copyJson}>Copy JSON</button>
-            <button className="bg-stone-900 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] text-[#fbf6ee]" onClick={save}>Save</button>
-          </div>
+    <main className="min-h-screen bg-[var(--light)] font-[family-name:var(--font-body)] text-[var(--darkgray)]">
+      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--lightgray)] bg-[var(--light)] px-5 py-3">
+        <div>
+          <p className="text-xs opacity-60">Dev only</p>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl leading-none text-[var(--dark)]">Travel editor</h1>
         </div>
-      </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            className={inputClass}
+            value={slug}
+            onChange={(event) => {
+              if (dirty && !window.confirm("Discard unsaved changes?")) return;
+              setSlug(event.target.value);
+            }}
+          >
+            {slugs.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <button type="button" className={buttonClass} disabled={past.length === 0} onClick={undo}>
+            Undo
+          </button>
+          <button type="button" className={buttonClass} disabled={future.length === 0} onClick={redo}>
+            Redo
+          </button>
+          <a className={buttonClass} href={`/travels/${slug}`} target="_blank" rel="noopener noreferrer">
+            View page ↗
+          </a>
+          <button type="button" className={primaryButtonClass} disabled={!dirty} onClick={() => void save()}>
+            {dirty ? "Save" : "Saved"}
+          </button>
+        </div>
+      </header>
 
-      <div className="grid gap-5 p-5 xl:grid-cols-[280px_minmax(0,1fr)_280px] 2xl:grid-cols-[300px_minmax(0,1fr)_300px]">
-        <aside className="grid content-start gap-5 xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)] xl:overflow-auto xl:pr-1">
-          <div className="border border-stone-400 bg-[#fbf6ee] p-4">
-            <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Sections</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={addSection}>Add section</button></div>
-            <div className="mt-3 grid gap-2">
-              <button className={`border px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.12em] ${selection?.kind === "hero" ? "border-stone-900 bg-[#e6dccb]" : "border-stone-300"}`} onClick={() => setSelection({ kind: "hero" })}>00 · Hero</button>
-              {data.sections.map((section) => <button key={section.id} className={`border px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.12em] ${selection && "sectionId" in selection && selection.sectionId === section.id ? "border-stone-900 bg-[#e6dccb]" : "border-stone-300"}`} onClick={() => setSelection({ kind: "section", sectionId: section.id })}>{section.no} · {section.name}</button>)}
+      <div className="grid gap-6 p-5 xl:grid-cols-[280px_minmax(0,1fr)_300px]">
+        <aside className="grid content-start gap-4 xl:sticky xl:top-20 xl:max-h-[calc(100vh-6rem)] xl:overflow-auto">
+          <section className={panelClass}>
+            <h2 className={headingClass}>Page</h2>
+            <TextInput label="Title" value={article.title} onChange={(title) => update((draft) => void (draft.title = title), "title")} />
+            <TextInput label="Place (Travel Log name)" value={article.place} onChange={(place) => update((draft) => void (draft.place = place), "place")} />
+            <div className="grid gap-2">
+              <Field label="Start">
+                <input type="date" className={inputClass} value={toInputDate(article.startDate)} onChange={(event) => update((draft) => void (draft.startDate = fromInputDate(event.target.value)))} />
+              </Field>
+              <Field label="End">
+                <input type="date" className={inputClass} value={toInputDate(article.endDate)} onChange={(event) => update((draft) => void (draft.endDate = fromInputDate(event.target.value)))} />
+              </Field>
             </div>
-            {selectedSection && <div className="mt-3 flex gap-2"><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={() => addText(selectedSection.id)}>Add text</button><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]" onClick={() => addTape(selectedSection.id)}>Add tape</button></div>}
-          </div>
+            <TagEditor tags={article.tags} onChange={(tags) => update((draft) => void (draft.tags = tags))} />
+          </section>
 
-          <div className="border border-stone-400 bg-[#fbf6ee] p-4">
-            <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Image library</h2>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-400">{heroImageTarget ? "Click to set hero image" : selectedSection ? `Click to add to ${selectedSection.name}` : "Select hero or a section first"}</p>
-            <div className="mt-3 grid grid-cols-2 gap-2">{assets.map((asset) => <button key={asset} draggable onDragStart={(event) => { event.dataTransfer.setData(assetDragType, asset); event.dataTransfer.setData("text/plain", asset); }} onClick={() => { if (heroImageTarget) void setHeroImage(asset); else if (selectedSection) void addImage(selectedSection.id, asset); }} className="border border-stone-300 bg-[#f1e9df] p-1 text-left"><div className="relative aspect-square bg-stone-200">{asset && <Image src={resolveSiteImageSrc(asset)} alt="" fill sizes="140px" className="object-cover" draggable={false} />}</div><div className="mt-1 truncate font-mono text-[10px] text-stone-600">{imageName(asset)}</div></button>)}</div>
-          </div>
-
-          <div className="border border-stone-400 bg-[#fbf6ee] p-4">
-            <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Trip metadata</h2>
-            <div className="mt-4 grid gap-3">
-              <Field label="Section" value={data.section} onChange={(section) => updateData("Edit section", (draft) => void (draft.section = section))} />
-              <Field label="Place" value={data.metadata.place} onChange={(place) => updateData("Edit place", (draft) => void (draft.metadata.place = place))} />
-              <Field label="Date range" value={data.metadata.dateRange} onChange={(dateRange) => updateData("Edit date range", (draft) => void (draft.metadata.dateRange = dateRange))} />
-              <Field label="Duration" value={data.metadata.duration} onChange={(duration) => updateData("Edit duration", (draft) => void (draft.metadata.duration = duration))} />
+          <section className={panelClass}>
+            <h2 className={headingClass}>Add block</h2>
+            <p className="text-xs opacity-60">Inserted after the selected block.</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button type="button" className={buttonClass} onClick={() => insertBlock(newBlock("image"))}>Image</button>
+              <button type="button" className={buttonClass} onClick={() => insertBlock(newBlock("text"))}>Text</button>
+              <button type="button" className={buttonClass} onClick={() => insertBlock(newBlock("canvas"))}>Canvas</button>
+              <button type="button" className={buttonClass} onClick={() => insertBlock(newBlock("section"))}>Section</button>
             </div>
-          </div>
+          </section>
 
-          <div className="border border-stone-400 bg-[#fbf6ee] p-4">
-            <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Hero</h2>
-            <div className="mt-4 grid gap-3">
-              <Field label="Title" value={data.hero.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
-              <Field label="Subtitle line" value={data.hero.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
-              <Field label="Hero intro" value={data.hero.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
-              <Field label="Hero image" value={data.hero.image.src} onChange={(src) => updateData("Edit hero image", (draft) => void (draft.hero.image.src = src))} />
-              <Field label="Hero caption" value={data.hero.image.caption} onChange={(caption) => updateData("Edit hero caption", (draft) => void (draft.hero.image.caption = caption))} />
-              <Field label="Hero alt" value={data.hero.image.alt} onChange={(alt) => updateData("Edit hero alt", (draft) => void (draft.hero.image.alt = alt))} />
-              <CheckboxField label="Hero cutout" checked={Boolean(data.hero.image.cutout)} onChange={(cutout) => updateData("Edit hero cutout", (draft) => void (draft.hero.image.cutout = cutout))} />
-              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={() => setSelection({ kind: "hero" })}>Select hero layout</button>
-              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={addHeroTape}>Add hero tape</button>
+          <section className={panelClass}>
+            <h2 className={headingClass}>Image library</h2>
+            <p className="text-xs opacity-60">{libraryHint}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {assets.map((asset) => (
+                <button
+                  key={asset}
+                  type="button"
+                  draggable
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData(assetDragType, asset);
+                    event.dataTransfer.setData("text/plain", asset);
+                  }}
+                  onClick={() => applyAsset(asset)}
+                  className="border border-[var(--lightgray)] p-1 text-left hover:border-[var(--underline)]"
+                >
+                  <span className="relative block aspect-square bg-[var(--lightgray)]">
+                    <Image src={resolveSiteImageSrc(asset)} alt="" fill sizes="130px" className="object-contain" draggable={false} />
+                  </span>
+                  <span className="mt-1 block truncate text-[10px]">{imageName(asset)}</span>
+                </button>
+              ))}
             </div>
-          </div>
-
-          <div className="border border-stone-400 bg-[#fbf6ee] p-4">
-            <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Closing</h2>
-            <div className="mt-4 grid gap-3">
-              <Field label="Eyebrow" value={data.closing.eyebrow} onChange={(eyebrow) => updateData("Edit closing eyebrow", (draft) => void (draft.closing.eyebrow = eyebrow))} />
-            </div>
-          </div>
+          </section>
         </aside>
 
-        <section className="overflow-auto px-2 pb-4"><Preview data={data} breakpoint={breakpoint} selection={selection} onSelect={setSelection} onDropAsset={addImage} onDragItem={setDragState} /></section>
+        <section className="min-w-0 overflow-x-auto pb-24" onPointerDown={(event) => event.target === event.currentTarget && setSelection(null)}>
+          {/* The column renders at its real 720px width so canvas coordinates are 1:1. */}
+          <div style={{ width: CANVAS_WIDTH, margin: "0 auto", fontSize: 18, lineHeight: 1.65 } as CSSProperties}>
+            <Article title={article.title || "Untitled"} meta={travelArticleDates(article)} tags={article.tags}>
+              {article.blocks.length === 0 && <p className="text-sm opacity-60">Add a block from the left to start.</p>}
+              {article.blocks.map((block, index) => {
+                const selected = selection?.blockId === block.id;
+                return (
+                  <div
+                    key={block.id}
+                    className="group relative"
+                    style={{ outline: selected && !selection?.itemId ? "2px solid var(--underline)" : undefined, outlineOffset: 4 }}
+                    onPointerDown={() => {
+                      if (!selected || selection?.itemId) setSelection({ blockId: block.id });
+                    }}
+                  >
+                    {block.type === "canvas" ? (
+                      <CanvasEditor
+                        block={block}
+                        selection={selection}
+                        onSelect={setSelection}
+                        onStartDrag={(event, mode, itemId) => startDrag(event, mode, block.id, itemId)}
+                        onDropAsset={(src, x, y) => addCanvasImage(block.id, src, x, y)}
+                      />
+                    ) : block.type === "image" && !block.src ? (
+                      <div className="mb-5 grid h-40 place-items-center border border-dashed border-[var(--gray)] text-sm opacity-60">Pick an image from the library</div>
+                    ) : block.type === "text" && !block.text.trim() ? (
+                      <p className="mb-5 text-sm opacity-60">Empty text block. Write in the panel on the right.</p>
+                    ) : block.type === "section" && !block.title.trim() ? (
+                      <p className="mb-5 text-sm opacity-60">Untitled section. Add a title on the right.</p>
+                    ) : (
+                      <TravelBlockView block={block} />
+                    )}
+                    <div className={`absolute -left-11 top-0 grid gap-1 ${selected ? "" : "invisible group-hover:visible"}`}>
+                      <button type="button" aria-label="Move up" className={buttonClass} disabled={index === 0} onClick={() => moveBlock(block.id, -1)}>↑</button>
+                      <button type="button" aria-label="Move down" className={buttonClass} disabled={index === article.blocks.length - 1} onClick={() => moveBlock(block.id, 1)}>↓</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </Article>
+          </div>
+        </section>
 
-        <aside className="sticky top-24 h-[calc(100vh-7rem)] overflow-auto border border-stone-400 bg-[#fbf6ee] p-4">
-          <div className="flex items-center justify-between gap-3"><h2 className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">Selection</h2><button className="border border-stone-500 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] disabled:opacity-40" disabled={!selection || selection.kind === "hero" || selection.kind === "heroImage" || selection.kind === "heroCopy"} onClick={deleteSelection}>Delete</button></div>
-          {!selected?.item && !heroSelected && !heroImageItem && !heroCopyLayout && !heroDecorationItem && <p className="mt-4 font-serif text-sm italic text-stone-600">Select a section, image, text block, or tape piece.</p>}
-          {heroSelected && (
-            <div className="mt-4 grid gap-3">
-              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero · {breakpointLabels[breakpoint]}</div>
-              <NumberField label="Large height" value={heroSelected.canvasHeight.large} min={240} onChange={(large) => updateData("Edit hero large height", (draft) => void (draft.hero.canvasHeight.large = large))} />
-              <NumberField label="Medium height" value={heroSelected.canvasHeight.medium} min={240} onChange={(medium) => updateData("Edit hero medium height", (draft) => void (draft.hero.canvasHeight.medium = medium))} />
-              <NumberField label="Small height" value={heroSelected.canvasHeight.small} min={240} onChange={(small) => updateData("Edit hero small height", (draft) => void (draft.hero.canvasHeight.small = small))} />
-              <NumberField label={`Title font size (${breakpointLabels[breakpoint]})`} value={heroSelected.titleFontSize?.[breakpoint] ?? (breakpoint === "large" ? 88 : breakpoint === "medium" ? 72 : 56)} min={24} max={140} onChange={(size) => updateData("Edit hero title font size", (draft) => { draft.hero.titleFontSize ??= { large: 88, medium: 72, small: 56 }; draft.hero.titleFontSize[breakpoint] = size; })} />
-              <NumberField label={`Body font size (${breakpointLabels[breakpoint]})`} value={heroSelected.introFontSize?.[breakpoint] ?? (breakpoint === "small" ? 17 : 18)} min={10} max={40} onChange={(size) => updateData("Edit hero body font size", (draft) => { draft.hero.introFontSize ??= { large: 18, medium: 18, small: 17 }; draft.hero.introFontSize[breakpoint] = size; })} />
-              <Field label="Title" value={heroSelected.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
-              <Field label="Subtitle line" value={heroSelected.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
-              <Field label="Intro" value={heroSelected.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
-              <button className="border border-stone-500 px-3 py-2 font-mono text-xs uppercase tracking-[0.16em]" onClick={addHeroTape}>Add hero tape</button>
-            </div>
+        <aside className={`${panelClass} xl:sticky xl:top-20 xl:max-h-[calc(100vh-6rem)] xl:overflow-auto`}>
+          <div className="flex items-center justify-between gap-2">
+            <h2 className={headingClass}>{selectedItem ? (selectedItem.kind === "image" ? "Canvas image" : "Text box") : selectedBlock ? `${selectedBlock.type[0].toUpperCase()}${selectedBlock.type.slice(1)} block` : "Selection"}</h2>
+            <button type="button" className={buttonClass} disabled={!selection} onClick={deleteSelection}>
+              Delete
+            </button>
+          </div>
+
+          {!selectedBlock && <p className="text-sm opacity-60">Select a block in the page to edit it.</p>}
+
+          {selectedBlock?.type === "image" && (
+            <>
+              <p className="text-xs opacity-60">{selectedBlock.src ? imageName(selectedBlock.src) : "No image yet. Pick one from the library."}</p>
+              <TextInput label="Alt text" value={selectedBlock.alt} onChange={(alt) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "image") block.alt = alt; }, `alt-${selectedBlock.id}`)} />
+              <TextInput label="Caption (optional)" value={selectedBlock.caption ?? ""} onChange={(caption) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "image") block.caption = caption || undefined; }, `caption-${selectedBlock.id}`)} />
+              <AlignPicker label="Caption alignment" value={selectedBlock.captionAlign ?? "left"} onChange={(align) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "image") block.captionAlign = align === "left" ? undefined : align; })} />
+              <BackgroundPicker value={selectedBlock.background ?? "none"} onChange={(background) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "image") block.background = background === "none" ? undefined : background; })} />
+              <p className="text-xs opacity-60">The background shows through transparent parts of the image, with 8px of padding around it.</p>
+            </>
           )}
-          {heroImageItem && (
-            <div className="mt-4 grid gap-3">
-              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero image · {breakpointLabels[breakpoint]}</div>
-              <Field label="Image path" value={heroImageItem.src} onChange={(src) => updateData("Edit hero image", (draft) => void (draft.hero.image.src = src))} />
-              <Field label="Alt" value={heroImageItem.alt} onChange={(alt) => updateData("Edit hero alt", (draft) => void (draft.hero.image.alt = alt))} />
-              <Field label="Caption" value={heroImageItem.caption} onChange={(caption) => updateData("Edit hero caption", (draft) => void (draft.hero.image.caption = caption))} />
-              <Field label="Aspect" value={heroImageItem.aspect} onChange={(aspect) => updateData("Edit hero aspect", (draft) => void (draft.hero.image.aspect = aspect))} />
-              <CheckboxField label="Cutout" checked={Boolean(heroImageItem.cutout)} onChange={(cutout) => updateData("Edit hero cutout", (draft) => void (draft.hero.image.cutout = cutout))} />
-            </div>
+
+          {selectedBlock?.type === "text" && (
+            <Field label="Text (a blank line starts a new paragraph)">
+              <textarea rows={14} className={inputClass} value={selectedBlock.text} onChange={(event) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "text") block.text = event.target.value; }, `text-${selectedBlock.id}`)} />
+            </Field>
           )}
-          {heroCopyLayout && (
-            <div className="mt-4 grid gap-3">
-              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">Hero copy · {breakpointLabels[breakpoint]}</div>
-              <Field label="Title" value={data.hero.title} onChange={(title) => updateData("Edit hero title", (draft) => void (draft.hero.title = title))} />
-              <Field label="Subtitle line" value={data.hero.italicTitle ?? ""} onChange={(italicTitle) => updateData("Edit hero subtitle", (draft) => void (draft.hero.italicTitle = italicTitle))} />
-              <Field label="Intro" value={data.hero.intro} multiline onChange={(intro) => updateData("Edit hero intro", (draft) => void (draft.hero.intro = intro))} />
-              <HeroMetadataFieldsEditor data={data} updateData={updateData} />
-            </div>
+
+          {selectedBlock?.type === "section" && (
+            <>
+              <TextInput
+                label="Section title (required)"
+                value={selectedBlock.title}
+                placeholder="Hangzhou"
+                onChange={(title) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "section") block.title = title; }, `title-${selectedBlock.id}`)}
+              />
+              <Field label="Priority">
+                <select className={inputClass} value={selectedBlock.level} onChange={(event) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "section") block.level = Number(event.target.value) === 3 ? 3 : 2; })}>
+                  <option value={2}>Header 2</option>
+                  <option value={3}>Header 3</option>
+                </select>
+              </Field>
+              <TextInput label="Alt. title (optional)" value={selectedBlock.altTitle ?? ""} placeholder="杭州" onChange={(altTitle) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "section") block.altTitle = altTitle || undefined; }, `alt-${selectedBlock.id}`)} />
+              <TextInput label="Subtitle (optional)" value={selectedBlock.subtitle ?? ""} placeholder="days 1 - 4" onChange={(subtitle) => update((draft) => { const block = findBlock(draft, selectedBlock.id); if (block?.type === "section") block.subtitle = subtitle || undefined; }, `subtitle-${selectedBlock.id}`)} />
+              <p className="text-xs opacity-60">Anchor on save: #{sectionId(article, selectedBlock)}</p>
+            </>
           )}
-          {heroDecorationItem && (
-            <div className="mt-4 grid gap-3">
-              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">{heroDecorationItem.id} · Hero tape · {breakpointLabels[breakpoint]}</div>
-              <Field label="Color" value={heroDecorationItem.color} onChange={(color) => updateData("Edit hero tape color", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.color = color; })} />
-              <NumberField label="Opacity" value={heroDecorationItem.opacity} min={0} max={1} step={0.05} onChange={(opacity) => updateData("Edit hero tape opacity", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.opacity = opacity; })} />
-              <NumberField label="Height" value={heroDecorationItem.height[breakpoint]} min={4} max={80} onChange={(height) => updateData("Edit hero tape height", (draft) => { const decoration = draft.hero.decorations.find((item) => item.id === heroDecorationItem.id); if (decoration) decoration.height[breakpoint] = height; })} />
-            </div>
+
+          {selectedBlock?.type === "canvas" && !selectedItem && (
+            <>
+              <NumberInput label="Height (px at 720 wide)" value={selectedBlock.height} onChange={(height) => update((draft) => { const canvas = findCanvas(draft, selectedBlock.id); if (canvas) canvas.height = Math.max(MIN_CANVAS_HEIGHT, Math.round(height)); }, `height-${selectedBlock.id}`)} />
+              <BackgroundPicker value={selectedBlock.background} onChange={(background) => update((draft) => { const canvas = findCanvas(draft, selectedBlock.id); if (canvas) canvas.background = background; })} />
+              <button type="button" className={buttonClass} onClick={() => addCanvasText(selectedBlock.id)}>
+                Add text box
+              </button>
+              <p className="text-xs opacity-60">Add images by clicking them in the library or dragging them onto the canvas. Drag the bar under the canvas to change its height. Anything outside the canvas is clipped.</p>
+            </>
           )}
-          {selectedHeroLayout && (
-            <div className="mt-4 grid gap-3">
-              <div className="grid grid-cols-2 gap-3">
-                <NumberField label="X %" value={selectedHeroLayout[breakpoint].x} min={minCanvasX} max={maxCanvasX} step={0.1} onChange={(x) => updateLayout({ x })} />
-                <NumberField label="Y px" value={selectedHeroLayout[breakpoint].y} min={minCanvasY} step={1} onChange={(y) => updateLayout({ y })} />
-                <NumberField label="Width %" value={selectedHeroLayout[breakpoint].width} min={1} max={100} step={0.1} onChange={(width) => updateLayout({ width })} />
-                <NumberField label="Rotation" value={selectedHeroLayout[breakpoint].rotation} min={-45} max={45} step={0.1} onChange={(rotation) => updateLayout({ rotation })} />
-                <NumberField label="Z-index" value={selectedHeroLayout[breakpoint].zIndex} min={0} onChange={(zIndex) => updateLayout({ zIndex })} />
-                <CheckboxField label="Visible" checked={selectedHeroLayout[breakpoint].visible} onChange={(visible) => updateLayout({ visible })} />
+
+          {selectedBlock?.type === "canvas" && selectedItem && (
+            <>
+              {selectedItem.kind === "text" ? (
+                <>
+                  <Field label="Text">
+                    <textarea rows={5} className={inputClass} value={selectedItem.text} onChange={(event) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "text") item.text = event.target.value; }, `text-${selectedItem.id}`)} />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Field label="Font">
+                      <select className={inputClass} value={selectedItem.font} onChange={(event) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "text") item.font = event.target.value as TravelCanvasFont; })}>
+                        {CANVAS_FONTS.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    </Field>
+                    <NumberInput label="Size (px)" value={selectedItem.size} onChange={(size) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "text") item.size = Math.max(6, size); }, `size-${selectedItem.id}`)} />
+                  </div>
+                  <AlignPicker label="Alignment" value={selectedItem.align ?? "left"} onChange={(align) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "text") item.align = align === "left" ? undefined : align; })} />
+                </>
+              ) : (
+                <>
+                  <p className="text-xs opacity-60">{imageName(selectedItem.src)}</p>
+                  <TextInput label="Alt text (empty for decorations)" value={selectedItem.alt} onChange={(alt) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "image") item.alt = alt; }, `alt-${selectedItem.id}`)} />
+                  <TextInput label="Caption (optional)" value={selectedItem.caption ?? ""} onChange={(caption) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "image") item.caption = caption || undefined; }, `caption-${selectedItem.id}`)} />
+                  <AlignPicker label="Caption alignment" value={selectedItem.captionAlign ?? "left"} onChange={(align) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "image") item.captionAlign = align === "left" ? undefined : align; })} />
+                  <BackgroundPicker value={selectedItem.background ?? "none"} onChange={(background) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item?.kind === "image") item.background = background === "none" ? undefined : background; })} />
+                </>
+              )}
+              <div className="grid grid-cols-2 gap-2">
+                {(["x", "y", "width", "rotation"] as const).map((key) => (
+                  <NumberInput
+                    key={key}
+                    label={key === "rotation" ? "Rotation (°)" : key === "width" ? "Width" : key.toUpperCase()}
+                    value={selectedItem[key]}
+                    onChange={(value) => update((draft) => { const item = findItem(draft, selectedBlock.id, selectedItem.id); if (item) item[key] = key === "width" ? Math.max(20, value) : value; }, `${key}-${selectedItem.id}`)}
+                  />
+                ))}
               </div>
-            </div>
-          )}
-          {sectionItem && (
-            <div className="mt-4 grid gap-3">
-              <Field label="Name" value={sectionItem.name} onChange={(name) => updateData("Edit section name", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.name = name; })} />
-              <Field label="Native name" value={sectionItem.nativeName} onChange={(nativeName) => updateData("Edit native name", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.nativeName = nativeName; })} />
-              <Field label="Romanized name" value={sectionItem.romanizedName} onChange={(romanizedName) => updateData("Edit romanized name", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.romanizedName = romanizedName; })} />
-              <Field label="Day label" value={sectionItem.dayLabel} onChange={(dayLabel) => updateData("Edit day label", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.dayLabel = dayLabel; })} />
-              <Field label="Coordinates" value={sectionItem.coordinates} onChange={(coordinates) => updateData("Edit coordinates", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.coordinates = coordinates; })} />
-              <SelectField label="Alignment" value={sectionItem.align} options={["left", "right"] as const} onChange={(align) => updateData("Edit section align", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.align = align; })} />
-              <NumberField label="Large height" value={sectionItem.canvas.largeHeight} min={240} onChange={(largeHeight) => updateData("Edit large height", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.canvas.largeHeight = largeHeight; })} />
-              <NumberField label="Medium height" value={sectionItem.canvas.mediumHeight} min={240} onChange={(mediumHeight) => updateData("Edit medium height", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.canvas.mediumHeight = mediumHeight; })} />
-              <NumberField label="Small height" value={sectionItem.canvas.smallHeight} min={240} onChange={(smallHeight) => updateData("Edit small height", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.canvas.smallHeight = smallHeight; })} />
-              <Field label="Blurb" value={sectionItem.blurb} multiline onChange={(blurb) => updateData("Edit blurb", (draft) => { const section = draft.sections.find((item) => item.id === sectionItem.id); if (section) section.blurb = blurb; })} />
-            </div>
-          )}
-          {layoutItem && (
-            <div className="mt-4 grid gap-3">
-              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-stone-500">{layoutItem.id} · {layoutItem.type} · {breakpointLabels[breakpoint]}</div>
-              {layoutItem.type === "image" && (
-                <>
-                  <Field label="Image path" value={layoutItem.src} onChange={(src) => updateData("Edit image path", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.src = src; })} />
-                  <Field label="Alt" value={layoutItem.alt} onChange={(alt) => updateData("Edit alt", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.alt = alt; })} />
-                  <Field label="Caption" value={layoutItem.caption} onChange={(caption) => updateData("Edit caption", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.caption = caption; })} />
-                  <Field label="Aspect" value={layoutItem.aspect} onChange={(aspect) => updateData("Edit aspect", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.aspect = aspect; })} />
-                  <CheckboxField label="Cutout" checked={Boolean(layoutItem.cutout)} onChange={(cutout) => updateData("Edit cutout", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "image") block.cutout = cutout; })} />
-                </>
-              )}
-              {layoutItem.type === "text" && (
-                <>
-                  <Field label="Text" value={layoutItem.text} multiline onChange={(text) => updateData("Edit text", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.text = text; })} />
-                  <SelectField label="Tone" value={layoutItem.tone ?? "caption"} options={tones} onChange={(tone) => updateData("Edit tone", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.tone = tone; })} />
-                  <SelectField label="Font" value={layoutItem.font ?? "serif"} options={textFonts} onChange={(font) => updateData("Edit font", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.font = font; })} />
-                  <NumberField label="Font size" value={layoutItem.fontSize[breakpoint]} min={8} max={80} onChange={(fontSize) => updateData("Edit font size", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const block = section?.blocks.find((item) => item.id === layoutItem.id); if (block?.type === "text") block.fontSize[breakpoint] = fontSize; })} />
-                </>
-              )}
-              {layoutItem.type === "tape" && (
-                <>
-                  <Field label="Color" value={layoutItem.color} onChange={(color) => updateData("Edit tape color", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.color = color; })} />
-                  <NumberField label="Opacity" value={layoutItem.opacity} min={0} max={1} step={0.05} onChange={(opacity) => updateData("Edit tape opacity", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.opacity = opacity; })} />
-                  <NumberField label="Height" value={layoutItem.height[breakpoint]} min={4} max={80} onChange={(height) => updateData("Edit tape height", (draft) => { const section = draft.sections.find((item) => item.id === selectedSectionId); const decoration = section?.decorations.find((item) => item.id === layoutItem.id); if (decoration) decoration.height[breakpoint] = height; })} />
-                </>
-              )}
-              <div className="grid grid-cols-2 gap-3">
-                <NumberField label="X %" value={layoutItem.layout[breakpoint].x} min={minCanvasX} max={maxCanvasX} step={0.1} onChange={(x) => updateLayout({ x })} />
-                <NumberField label="Y px" value={layoutItem.layout[breakpoint].y} min={minCanvasY} step={1} onChange={(y) => updateLayout({ y })} />
-                <NumberField label="Width %" value={layoutItem.layout[breakpoint].width} min={1} max={100} step={0.1} onChange={(width) => updateLayout({ width })} />
-                <NumberField label="Rotation" value={layoutItem.layout[breakpoint].rotation} min={-45} max={45} step={0.1} onChange={(rotation) => updateLayout({ rotation })} />
-                <NumberField label="Z-index" value={layoutItem.layout[breakpoint].zIndex} min={0} onChange={(zIndex) => updateLayout({ zIndex })} />
-                <CheckboxField label="Visible" checked={layoutItem.layout[breakpoint].visible} onChange={(visible) => updateLayout({ visible })} />
+              <div className="flex gap-2">
+                <button type="button" className={buttonClass} onClick={() => update((draft) => { const canvas = findCanvas(draft, selectedBlock.id); const item = findItem(draft, selectedBlock.id, selectedItem.id); if (canvas && item) item.zIndex = Math.max(...canvas.items.map((other) => other.zIndex)) + 1; })}>
+                  Bring to front
+                </button>
+                <button type="button" className={buttonClass} onClick={() => update((draft) => { const canvas = findCanvas(draft, selectedBlock.id); const item = findItem(draft, selectedBlock.id, selectedItem.id); if (canvas && item) item.zIndex = Math.min(...canvas.items.map((other) => other.zIndex)) - 1; })}>
+                  Send to back
+                </button>
               </div>
-            </div>
+              <p className="text-xs opacity-60">Drag to move, the corner square to resize, the circle to rotate (shift snaps to 15°). Arrow keys nudge by 1px, shift by 10px.</p>
+            </>
           )}
-          <div className="mt-5 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-500">Last history entry: {history[historyIndex]?.description ?? "none"}</div>
         </aside>
       </div>
 
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <style jsx global>{`:root { --editor-paper: ${paper}; --editor-background: ${background}; --editor-secondary: ${secondaryPaper}; }`}</style>
+      {toast && (
+        <div role="status" className={`fixed bottom-5 right-5 z-50 px-4 py-2 text-sm font-semibold ${toast.type === "success" ? "bg-[var(--underline)] text-[var(--light)]" : "bg-[var(--darkgray)] text-[var(--light)]"}`}>
+          {toast.message}
+        </div>
+      )}
     </main>
   );
 }

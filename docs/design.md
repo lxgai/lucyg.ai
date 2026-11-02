@@ -39,8 +39,6 @@ Loaded with `next/font/google` in `src/app/layout.tsx` and exposed as CSS variab
 | Handwritten: greeting, dates, captions, sign-off, sidebar meta | Nothing You Could Do | `--font-hand` |
 | Mono: "Currently" labels, clock, track numbers and durations, inline code | JetBrains Mono 400/500 | `--font-code` |
 
-Newsreader and Caveat are still loaded only for the legacy travel detail pages. Don't use them in new UI.
-
 ---
 
 ## Shared styles
@@ -125,8 +123,15 @@ Rows of `280px minmax(0,1fr)` with a 280×190 cover thumbnail, then name (14px/6
 - **Blog posts** render the sanitized Substack HTML. `src/lib/articleHtml.ts` adds heading ids for the TOC and turns `✧ ✦ ✧` paragraphs into the divider. The post ends with "Also on Substack, where comments live."
 - **Projects** render `src/content/projects/<slug>.md`. The `# Overview` section becomes the lede.
 
-### Travel entries (not yet redesigned)
-Travel detail pages and the dev editor still use the fixed-canvas Memory Archive layout. The redesign calls for single-column articles with stickers over photo corners; that work is deferred.
+### Travel entries `/travels/<slug>`
+Single-column articles (`src/components/travel/TravelArticle.tsx`), modelled on the China '25 design:
+
+- Article header with the trip dates ("Oct 15, 2025 - Oct 29, 2025") and one tag per city.
+- **Sections**: h2 (1.6rem, `margin: 44px 0 16px`) or h3 (1.2rem), with an optional alt. title (the city's native name) in a `<span>` at 60% opacity and an optional handwritten subtitle ("days 1 - 4") tight underneath.
+- **Images**: full column width, transparent by default (cutouts sit on the page), optional handwritten caption aligned left, center or right. An image can take any of the six background treatments below, with 8px padding, so it frames the image and shows through transparent areas.
+- **Text**: 16px / 1.7 paragraphs.
+- **Canvases**: column-width boxes with free placement of photos, stickers and text boxes in any of the four fonts (left, center or right aligned), rotated as needed. Canvas images can take a handwritten caption (left, center or right aligned) and a background treatment too, scaled with the canvas. Content is clipped, so stickers sit over photo corners rather than hanging outside. The whole canvas scales with the column. Backgrounds are the six cutout treatments: none, solid panel (`--lightgray`), 4px `--lightgray` border, jade tint (`--underline` 10%), jade dot grid (14px) and magenta tint (`--darkgray` 7%).
+- TOC: the page title, then h2 sections, with h3s nested under their h2.
 
 ---
 

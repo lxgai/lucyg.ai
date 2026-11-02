@@ -1,0 +1,310 @@
+{
+  "slug": "japan-24",
+  "place": "Japan",
+  "title": "Japan, summer '24.",
+  "startDate": "07 / 22 / 2024",
+  "endDate": "07 / 28 / 2024",
+  "tags": [
+    "Tokyo",
+    "Hakone"
+  ],
+  "blocks": [
+    {
+      "id": "img-shinjuku-hero",
+      "type": "image",
+      "src": "/images/travels/japan-24/shinjuku-hero.png",
+      "alt": "Shibuya Crossing at night"
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "text": "A week spent mostly in Tokyo, with a quiet detour to a Hakone ryokan. Perhaps I entered with rose-colored glasses, but I felt myself pulled in all directions in the best way possible. Between crowded markets, peaceful shrines, buzzing clubs, and so much more, Tokyo is an endless palette of colors packed into an amazing urban landscape. Depicted here, my personal favorite ward: Shibuya."
+    },
+    {
+      "id": "tokyo",
+      "type": "section",
+      "level": 2,
+      "title": "Tokyo",
+      "altTitle": "東京",
+      "subtitle": "6 days"
+    },
+    {
+      "id": "text-3",
+      "type": "text",
+      "text": "☆☆☆ We did a pretty classic tourist run: teamLab Planets & teamLab Borderless for the digital-art wave, the Meiji Shrine for a taste of history, Akihabara for figurine shopping, and Shibuya (& Shinjuku) for shopping and nightlife. Tokyo is popping, vibrant, and endlessly fun - it felt like a crime to stay for just a week - but wonderful to know that there are endless things to explore when I return."
+    },
+    {
+      "id": "canvas-1",
+      "type": "canvas",
+      "height": 723,
+      "background": "none",
+      "items": [
+        {
+          "id": "sticker-blue-paper",
+          "kind": "image",
+          "src": "/images/travels/japan-24/blue_paper.png",
+          "alt": "",
+          "x": 345.4,
+          "y": 0.0,
+          "width": 374.6,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-teamlabs2",
+          "kind": "image",
+          "src": "/images/travels/japan-24/teamlabs2.jpg",
+          "alt": "teamLab digital art",
+          "x": 348.0,
+          "y": 70.3,
+          "width": 344.1,
+          "rotation": 2,
+          "zIndex": 2
+        },
+        {
+          "id": "img-teamlabs",
+          "kind": "image",
+          "src": "/images/travels/japan-24/teamlabs.jpg",
+          "alt": "teamLab digital art",
+          "x": 2.2,
+          "y": 204.3,
+          "width": 317.0,
+          "rotation": 0,
+          "zIndex": 3
+        },
+        {
+          "id": "img-akihabara",
+          "kind": "image",
+          "src": "/images/travels/japan-24/akihabara.jpg",
+          "alt": "Akihabara district",
+          "x": 414.7,
+          "y": 363.1,
+          "width": 222.4,
+          "rotation": 0,
+          "zIndex": 4
+        },
+        {
+          "id": "img-tea-tasting",
+          "kind": "image",
+          "src": "/images/travels/japan-24/tea-tasting.png",
+          "alt": "Tea tasting",
+          "x": 363.4,
+          "y": 301.7,
+          "width": 94.1,
+          "rotation": 0,
+          "zIndex": 6
+        },
+        {
+          "id": "sticker-receipt1",
+          "kind": "image",
+          "src": "/images/travels/japan-24/receipt1.png",
+          "alt": "",
+          "x": 648.3,
+          "y": 325.9,
+          "width": 52.9,
+          "rotation": -8,
+          "zIndex": 11
+        },
+        {
+          "id": "img-rooftop",
+          "kind": "image",
+          "src": "/images/travels/japan-24/rooftop.jpeg",
+          "alt": "Rooftop dinner",
+          "x": 181.9,
+          "y": 474.1,
+          "width": 154.9,
+          "rotation": -1.2,
+          "zIndex": 13,
+          "caption": "Love me a rooftop dinner"
+        },
+        {
+          "id": "img-shibuya-crossing",
+          "kind": "image",
+          "src": "/images/travels/japan-24/shibuya-crossing.jpg",
+          "alt": "Shibuya crossing",
+          "x": 0.0,
+          "y": 490.1,
+          "width": 153.8,
+          "rotation": 1.3,
+          "zIndex": 14,
+          "caption": "Shibuya crossing"
+        }
+      ]
+    },
+    {
+      "id": "meal-review",
+      "type": "section",
+      "level": 3,
+      "title": "Meal Review!"
+    },
+    {
+      "id": "text-6",
+      "type": "text",
+      "text": "1. (*꧆▽꧆*) Stumbled into this sushi joint after the Sumidagawa Fireworks festival. In the middle of an already amazing course, the chef presented us with miniature versions of the sushi he prepared! 11/10\n\n2. (ᵔ◡ᵔ) One of several convenience store snacks that got devoured. The price, taste, and ease of it all was just as everyone had said. Salmon onigiri, 10/10\n\n3. (・ω・) Had to try a maid cafe. My bear curry smiled at me as I ate his face off. Didn't expect much taste-wise, but the maids were fun and the presentation cute. 7/10\n\n4.(⌒▽⌒)☆ Cold soba. Always a treat, especially in the hot weather, 8.5/10"
+    },
+    {
+      "id": "canvas-2",
+      "type": "canvas",
+      "height": 570,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-harajuku-ish",
+          "kind": "image",
+          "src": "/images/travels/japan-24/harajuku-ish.jpg",
+          "alt": "Harajuku street",
+          "x": 0.0,
+          "y": 280.6,
+          "width": 289.0,
+          "rotation": -1,
+          "zIndex": 5
+        },
+        {
+          "id": "img-mini-sushi",
+          "kind": "image",
+          "src": "/images/travels/japan-24/mini-sushi.jpg",
+          "alt": "Sushi",
+          "x": 347.0,
+          "y": 0.0,
+          "width": 238.1,
+          "rotation": 0,
+          "zIndex": 7
+        },
+        {
+          "id": "img-onigiri",
+          "kind": "image",
+          "src": "/images/travels/japan-24/onigiri.png",
+          "alt": "Onigiri",
+          "x": 585.6,
+          "y": 49.6,
+          "width": 108.8,
+          "rotation": -6.2,
+          "zIndex": 8
+        },
+        {
+          "id": "img-soba",
+          "kind": "image",
+          "src": "/images/travels/japan-24/soba.png",
+          "alt": "Soba noodles",
+          "x": 375.2,
+          "y": 214.6,
+          "width": 209.2,
+          "rotation": 10,
+          "zIndex": 9
+        },
+        {
+          "id": "img-maid-cafe-curry",
+          "kind": "image",
+          "src": "/images/travels/japan-24/maid-cafe-curry.png",
+          "alt": "Maid cafe curry",
+          "x": 594.3,
+          "y": 174.1,
+          "width": 125.7,
+          "rotation": 7.9,
+          "zIndex": 10
+        }
+      ]
+    },
+    {
+      "id": "text-8",
+      "type": "text",
+      "text": "My foray into some mild harajuku-esque fashion, and the most painful shoes ever...Depicted here: me after a day of shopping, visiting the Shibuya tower."
+    },
+    {
+      "id": "hakone",
+      "type": "section",
+      "level": 2,
+      "title": "Hakone",
+      "altTitle": "箱根",
+      "subtitle": "1 day"
+    },
+    {
+      "id": "canvas-3",
+      "type": "canvas",
+      "height": 285,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-ryokan",
+          "kind": "image",
+          "src": "/images/travels/japan-24/ryokan.jpg",
+          "alt": "Hakone ryokan",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 398.5,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "img-kaiseki-full",
+          "kind": "image",
+          "src": "/images/travels/japan-24/kaiseki-full.jpeg",
+          "alt": "Kaiseki dinner",
+          "x": 435.9,
+          "y": 23.3,
+          "width": 284.1,
+          "rotation": 0.7,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "text-11",
+      "type": "text",
+      "text": "Our one-day trip to a Hakone ryokan. Some tatami, an onsen, and a full kaiseki dinner - an interesting experience, even if traditional Japanese food isn't my favorite. \n\n(After speaking with some younger locals, it appears there is some agreeance that parts of kaiseki are not favored, i.e. the mountain vegetables and fish parts. Much of the experience revolves around the presentation and preparation, and often reserved for special occasions. I will say I very much did enjoy the Hida beef.)"
+    },
+    {
+      "id": "canvas-4",
+      "type": "canvas",
+      "height": 399,
+      "background": "none",
+      "items": [
+        {
+          "id": "sticker-green-paper",
+          "kind": "image",
+          "src": "/images/travels/japan-24/green_paper.png",
+          "alt": "",
+          "x": 435.6,
+          "y": 0.0,
+          "width": 284.4,
+          "rotation": 270,
+          "zIndex": 1
+        },
+        {
+          "id": "img-train",
+          "kind": "image",
+          "src": "/images/travels/japan-24/train.jpeg",
+          "alt": "Train station",
+          "x": 2.2,
+          "y": 183.8,
+          "width": 333.3,
+          "rotation": 0,
+          "zIndex": 7,
+          "caption": "Station, headed to Hakone"
+        },
+        {
+          "id": "sticker-kaiseki-sticker1",
+          "kind": "image",
+          "src": "/images/travels/japan-24/kaiseki-sticker1.png",
+          "alt": "",
+          "x": 488.3,
+          "y": 169.9,
+          "width": 176.0,
+          "rotation": 0,
+          "zIndex": 32
+        },
+        {
+          "id": "sticker-kaiseki-sticker2",
+          "kind": "image",
+          "src": "/images/travels/japan-24/kaiseki-sticker2.png",
+          "alt": "",
+          "x": 449.7,
+          "y": 69.5,
+          "width": 127.1,
+          "rotation": 0,
+          "zIndex": 33
+        }
+      ]
+    }
+  ]
+}

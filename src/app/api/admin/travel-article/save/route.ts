@@ -1,19 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import path from "path";
-
-const detailDir = path.join(process.cwd(), "src", "data", "travel-details");
-const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-function resolveDetailPath(slug: string) {
-  if (!slugPattern.test(slug)) return null;
-
-  const filePath = path.resolve(detailDir, `${slug}.json`);
-  const relative = path.relative(detailDir, filePath);
-
-  if (relative.startsWith("..") || path.isAbsolute(relative)) return null;
-  return filePath;
-}
+import { resolveTravelArticlePath } from "@/lib/travelArticleFiles";
 
 export async function POST(request: NextRequest) {
   if (process.env.NODE_ENV === "production") {
@@ -24,12 +11,13 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as { slug?: unknown; json?: unknown };
     const slug = typeof body.slug === "string" ? body.slug : "";
 
-    if (!slug || !body.json || typeof body.json !== "object") {
+    if (!slug || !body.json || typeof body.json !== "object" || Array.isArray(body.json)) {
       return NextResponse.json({ error: "Missing slug or json" }, { status: 400 });
     }
 
-    const filePath = resolveDetailPath(slug);
-    if (!filePath) {
+    const filePath = resolveTravelArticlePath(slug);
+    // Only existing articles can be saved; new trips are scaffolded in code.
+    if (!filePath || !fs.existsSync(filePath)) {
       return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
     }
 

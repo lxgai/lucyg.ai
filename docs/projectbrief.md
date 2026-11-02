@@ -24,7 +24,7 @@ and their development-only visual editor until those are redesigned.
 | Framework | Next.js `15.5` (App Router) |
 | UI runtime | React `19.2` |
 | Language | TypeScript `5`, `strict: true`, `@/*` → `src/*` path alias |
-| Styling | CSS modules + CSS custom properties for public pages; Tailwind CSS `4` for the admin editors; MUI `7` only on the legacy trip detail pages |
+| Styling | CSS modules + CSS custom properties for public pages; Tailwind CSS `4` for the admin editor |
 | Fonts | `next/font/google`: DM Serif Display, Bricolage Grotesque, Nothing You Could Do, JetBrains Mono |
 | Content parsing | `fast-xml-parser` (Substack and Letterboxd RSS) + `sanitize-html` (untrusted feed HTML) |
 | Markdown | `react-markdown` + `remark-gfm` for project write-ups |
@@ -76,7 +76,7 @@ light flash.
 
 **Static data as a content model.** `src/data/` holds the source of truth: `travels.ts`
 (`TRIPS`), `projects.ts` (`PROJECTS`), `favorites.ts` (albums, tracklists, audio clips, films),
-`blog-tags.ts`, and per-trip layout files in `src/data/travel-details/*.json`. Project write-ups
+`blog-tags.ts`, and one article per trip in `src/data/travel-articles/*.json`. Project write-ups
 are Markdown in `src/content/projects/`; their headings become the page's table of contents.
 
 
@@ -101,8 +101,8 @@ pull in review text for each film.
   list and a handwritten sign-off. Its table of contents doubles as site navigation.
 - **Projects** — a list of thumbnail rows and long-form Markdown write-ups with a lede,
   captioned figures, tables and a generated table of contents.
-- **Travels** — a Travel Log of dated rows with city tags, linking to per-trip detail pages
-  (still on the legacy fixed-canvas layout, see below).
+- **Travels** — a Travel Log of dated rows with city tags, linking to single-column trip
+  articles with scrapbook-style canvases (see below).
 - **Blog** — a dated list with tags and full posts rendered from Substack, with reading time and
   a generated table of contents.
 - **Favorites** — accordions of albums (cover, a featured-track audio clip, a tracklist with
@@ -133,36 +133,29 @@ Shared pieces (`Tag`, `TagRow`, `Asterisks`, `Article`, link and title classes) 
 `src/components/site/`, so pages compose them instead of restyling.
 
 
-### The legacy fixed-canvas travel-detail system
+### Trip articles with scrapbook canvases
 
 
-The trip pages predate the redesign and are its last holdout. Each trip is authored on **fixed
-design canvases per breakpoint** — large `1440px`, medium `1120px`, small `470px`. Every element
-(image, text, tape decoration) stores a per-breakpoint layout with a deliberate **coordinate
-contract**:
+Each trip is one JSON article: a title, dates, city tags and a flat list of typed blocks — a
+full-width image, a text block, a section heading (h2 or h3, with an optional native-language
+title and subtitle) or a **canvas**. The table of contents is built from the section blocks.
 
-- horizontal position and width are **percentages of the canvas width**;
-- vertical position is **absolute pixels**;
-- plus rotation, z-index and a visibility flag.
-
-The public page renders the canvas and **scales it to fit** with a CSS transform measured by a
-`ResizeObserver` (with a `0.94` multiplier). The admin editor renders the same components at
-**scale `1`** so drag and resize math works in stable design coordinates — *edit in design
-space, display in scaled space*. Only the `large` layout is authored by hand;
-`scripts/derive-travel-layouts.mjs` derives a proportional medium layout and a single-column
-small layout.
-
-The planned redesign replaces these canvases with single-column articles, with the editor
-revamped to match.
+A canvas keeps the scrapbook feel inside a single column. It is exactly the column's width,
+and every photo, sticker and text box on it is positioned in a fixed **720px design space**
+(x, y, width, rotation, z-index). The public page converts those numbers to percentages and
+sizes text in container-query units, so the whole canvas, text included, scales with the
+column; content outside it is clipped. The admin editor renders the same components at the
+column's real 720px width, so drag, resize and rotate math works 1:1 in design coordinates —
+*edit in design space, display in scaled space*.
 
 
 ### A development-only editor, contained safely
 
 
-The travel editors live under `/admin/` and are never exposed in production: the pages call
+The travel editor lives under `/admin/` and is never exposed in production: the pages call
 `notFound()` when `NODE_ENV === "production"`, and every `/api/admin/*` route returns 404 before
 doing any file work. The save/load routes validate the trip slug against a strict regex and
-resolve paths defensively so writes can only land inside `src/data/travel-details/`.
+resolve paths defensively so writes can only replace existing files in `src/data/travel-articles/`.
 
 
 ### Custom Claude Code skills as project tooling
@@ -172,7 +165,6 @@ The repository ships its own automation as Claude Code skills under `.claude/ski
 
 - **`add-trip`** — scaffolds a new travel entry end-to-end while keeping the slug identical
   across every file.
-- **`derive-travel-layouts`** — runs the responsive derivation described above.
 - **`design-check`** — audits changes against the design system (tokens, fonts, theming,
   layout, scroll rules, removed patterns, copy voice).
 - **`manage-albums`** — adds, removes and reorders favorite albums, keeping titles consistent
@@ -226,7 +218,7 @@ forget. The travel layout types are a good example of **discriminated unions** �
 either an image or text" — so invalid combinations can't be written.
 
 
-**Coordinate systems and responsive math.** The legacy travel canvases teach a transferable
+**Coordinate systems and responsive math.** The travel canvases teach a transferable
 idea: separate your **logical coordinate space** from how it's **displayed**. The same pattern
 recurs in games, canvas/SVG work and any zoomable UI.
 

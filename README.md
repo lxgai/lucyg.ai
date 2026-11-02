@@ -20,15 +20,13 @@ The visual system is documented in [`docs/design.md`](docs/design.md):
 - DM Serif Display for headings, Bricolage Grotesque for body text, a handwritten face for dates and captions, and JetBrains Mono for labels
 - no cards, shadows or dividers; one playful element per page at most
 
-Trip detail pages still use the site's previous "Memory Archive" design ([`docs/design-memory-archive.md`](docs/design-memory-archive.md)) until they're redesigned.
-
 ## Technology
 
 - Next.js 15 App Router
 - React 19
 - TypeScript
 - CSS modules and CSS custom properties
-- Tailwind CSS for the development-only admin editors
+- Tailwind CSS for the development-only admin editor
 - Static data and Markdown for content; Substack, Spotify and Letterboxd for feeds and track data
 
 Home, project and travel images are not committed to this repository. Public pages load them from Supabase storage.
@@ -51,7 +49,7 @@ npm run lint
 
 Set `NEXT_PUBLIC_SITE_IMAGE_BASE_URL` and `SUBSTACK_FEED_URL` in `.env.local` to load images and blog posts. See [`docs/customization-manual.md`](docs/customization-manual.md) for how to edit each page's content.
 
-The project also includes development-only editors for travel layouts. These admin routes are disabled in production.
+The project also includes a development-only editor for trip pages. Its admin routes are disabled in production.
 
 ## License
 

@@ -104,13 +104,26 @@ Changing a slug changes the URL; update anything that linked to the old one.
 
 ## Travels
 
-Trips are listed in `src/data/travels.ts` (`TRIPS`). A trip with a detail page takes its country, cities and date from `src/data/travel-details/<id>.json`; a trip without one uses the optional `place`, `sub` and `date` fields.
+Trips are listed in `src/data/travels.ts` (`TRIPS`). Each trip takes its place, city tags and start date from `src/data/travel-articles/<id>.json`; a trip without an article yet uses the optional `place`, `sub` and `date` fields.
 
 - `/travels` (the Travel Log) shows each trip's date, country and city tags, newest first. The first city is a tag; the rest collapse into a `+N` tag whose tooltip lists them.
-- The country links to `/travels/<id>` only when a detail page exists.
+- The country links to `/travels/<id>` only when the trip has an article.
 - The sidebar's **Recent Travels** shows the two newest trips.
 
-Detail pages and the editor at `/admin/travel-detail-editor` still use the old fixed-canvas layout until the travel redesign. Use the `add-trip` skill to scaffold a new trip, and `derive-travel-layouts` for its medium and small layouts.
+### Editing a trip page
+
+Run `npm run dev` and open `/admin/travel-detail-editor`. Pick the trip at the top; **Save** (or Cmd+S) writes `src/data/travel-articles/<id>.json`, and **View page ↗** opens the result.
+
+- **Page** (left): title, place (the Travel Log name), start and end dates, and city tags (type a city and press Enter; × removes one).
+- **Add block** inserts after the selected block; ↑ ↓ beside a block reorder it, and Delete (button or key) removes it.
+  - **Image**: full column width with an optional caption (left, center or right aligned) and alt text. Pick the photo from the image library. A background (the same six as canvases) shows through transparent parts of the image, with 8px of padding around it.
+  - **Text**: a blank line starts a new paragraph.
+  - **Section**: a title (required, e.g. the city), priority Header 2 or Header 3, an optional alt. title (e.g. 杭州) and an optional subtitle (e.g. days 1 - 4). The anchor comes from the title on save.
+  - **Canvas**: drag the bar under it to change its height and pick one of the six backgrounds. Click or drag library images onto it, and add text boxes with any of the four fonts, a size and an alignment. A selected canvas image can have its own caption, caption alignment and background. Drag an item to move it, its corner square to resize and its circle to rotate (shift snaps to 15°); arrow keys nudge. Anything outside the canvas is clipped.
+- Undo/Redo (Cmd+Z, Shift+Cmd+Z) cover every change since the page loaded.
+- The table of contents builds itself from the title and the sections.
+
+To add a trip, upload its images to the bucket under `travels/<id>/` and ask Claude to run the `add-trip` skill. If you later add or delete images in the bucket, `npm run refresh:travel-bucket -- <id>` updates the image library and removes deleted images from the page.
 
 ## Blog
 

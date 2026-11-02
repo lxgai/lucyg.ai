@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import {
   Bricolage_Grotesque,
-  Caveat,
   DM_Serif_Display,
-  Newsreader,
   Nothing_You_Could_Do,
 } from "next/font/google";
 import localFont from "next/font/local";
@@ -41,22 +39,6 @@ const jetbrains = localFont({
   display: "swap",
 });
 
-// Newsreader and Caveat are only used by the legacy travel detail pages.
-const newsreader = Newsreader({
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const caveat = Caveat({
-  weight: ["400", "500", "600"],
-  variable: "--font-caveat",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Lucy Gai",
   description: "Lucy Gai's digital garden.",
@@ -75,7 +57,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${dmSerif.variable} ${bricolage.variable} ${nothingYouCouldDo.variable} ${jetbrains.variable} ${newsreader.variable} ${caveat.variable}`}
+      className={`${dmSerif.variable} ${bricolage.variable} ${nothingYouCouldDo.variable} ${jetbrains.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

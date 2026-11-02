@@ -12,8 +12,8 @@ Use `docs/design.md` as the visual source of truth. The previous Memory Archive 
 - React 19
 - TypeScript with `strict: true`
 - Public pages: plain React + CSS modules + CSS custom properties (no MUI)
-- MUI v7 is still installed for the legacy travel detail pages; don't use it in new public UI
-- Tailwind CSS v4 is configured and used in the admin editors
+- No MUI or other UI component library; don't add one
+- Tailwind CSS v4 is configured and used in the admin editor
 - Static data under `src/data/`, project write-ups in `src/content/projects/`, blog posts from the Substack RSS feed; no database
 
 ## Commands
@@ -32,9 +32,9 @@ Note: `npm run lint` currently maps to `next lint`; verify it still works with t
 
 - `src/app/` - App Router pages and API routes
 - `src/components/site/` - redesigned site chrome and shared UI: `SiteShell`, `Toc`, `ThemeToggle`, `Clock`, `Article`, `Tag`/`TagRow`/`Asterisks`
-- `src/components/design/`, `src/components/travel/` - legacy Memory Archive components still used by travel detail pages and the editors
+- `src/components/travel/` - `TravelArticle` and canvas helpers
 - `src/data/` - projects, travels, favorites (albums, tracklists, films), blog tags
-- `src/data/travel-details/` - JSON layouts for fixed-canvas travel detail pages
+- `src/data/travel-articles/` - travel articles, edited in the dev editor
 - `src/content/projects/` - Markdown write-ups, one per project slug
 - `src/lib/` - Substack and Letterboxd feeds, image URL resolver, date and slug helpers, article HTML prep
 - `src/styles/globals.css` - design tokens, theme, global resets
@@ -106,22 +106,24 @@ The blog reads the Substack RSS feed through `src/lib/substack.ts`.
 
 Home, project and travel images live in the Supabase bucket, not the repo. Code references logical paths such as `/images/projects/<slug>/<file>`, and `src/lib/images.ts` rewrites them to `{NEXT_PUBLIC_SITE_IMAGE_BASE_URL}/projects/<slug>/<file>`. Favorites covers and audio clips stay local under `public/`.
 
-## Travel Detail System (legacy, pending redesign)
+## Travel Articles
 
-Trip pages such as `/travels/china-25` still use the fixed-canvas Memory Archive layout from `src/data/travel-details/*.json`, rendered by `TravelDetailPage` with the old `PageShell`. The redesign replaces them with single-column articles (stickers over photo corners, city h2s with the Chinese name, day-range sublines). That work, along with a single-column revamp of the editor, is deferred. Until then:
+Trip pages are single-column articles. Each trip lives in `src/data/travel-articles/<slug>.json` (`TravelArticle` in `src/types/travelArticle.ts`), is registered in `TRAVEL_ARTICLES` in `src/data/travelEntries.ts`, and renders with `TravelArticle` inside `SiteShell`.
 
-- Fixed design canvases per breakpoint: `large` 1440px, `medium` 1120px, `small` 470px, scaled to fit with a `0.94` multiplier.
-- Drag and resize math uses unscaled design coordinates. Section widths stay in JSON but aren't editable; heights are.
-- The legacy tokens (`--paper`, `--ink`, …) and Newsreader/Caveat fonts stay loaded for these pages. Remove them once the travel pages are redesigned.
-- `scripts/generate-page-updated.mjs` (run on `predev`/`prebuild`) still feeds the old metadata strip on these pages. Delete it, and `src/data/page-updated.ts`, after the travel redesign.
+- An article is a title, place, start/end dates, city tags and a flat list of blocks: `image` (full column width, optional caption), `text` (a blank line starts a new paragraph), `section` (h2 or h3 with optional alt. title and subtitle) and `canvas`.
+- The TOC is built from the blocks: the page title at the root, h2 sections under it, h3 sections under the h2 before them.
+- A canvas is exactly the column's width with an editable height, and clips its content. Item coordinates are px in a 720px design space (`CANVAS_WIDTH`); the public page scales the whole canvas, text included, to the column width. Backgrounds are limited to the six cutout treatments in `BACKGROUNDS` (`src/components/travel/travelCanvas.ts`).
+- Keep `TravelBlock` a discriminated union rendered with an exhaustive `switch`.
 
-## Admin Travel Detail Editor
+New trips are scaffolded with the `add-trip` skill. `npm run refresh:travel-bucket -- <slug>` re-syncs a trip's image list with the bucket.
+
+## Admin Travel Editor
 
 The editor at `/admin/travel-detail-editor` is development-only.
 
 - It must call `notFound()` in production, and all `/api/admin/*` routes must return 404 in production before doing any file or request work.
-- Be careful when touching save/load path handling; don't broaden write access beyond the project data files.
-- It edits travel detail JSON under `src/data/travel-details/` and renders the same detail components as the public page at scale `1`.
+- Be careful when touching save/load path handling; don't broaden write access. The travel article routes (`/api/admin/travel-article/*`) only read and write existing files in `src/data/travel-articles/`, via `src/lib/travelArticleFiles.ts`.
+- It edits travel articles only, and renders the same block components as the public page with the column at its real 720px width, so canvas coordinates are 1:1.
 
 ## Implementation Notes
 

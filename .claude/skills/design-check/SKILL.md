@@ -23,8 +23,7 @@ If `globals.css` and `docs/design.md` disagree on a token, report a `DESIGN-SYST
 
 - **Default:** current working diff. Run `git status --porcelain` and `git diff --name-only HEAD`; review added/modified `.tsx`, `.ts` files that carry UI, `.css` / `.module.css`, and relevant docs.
 - **If the user passes a path:** review that file or directory instead.
-- Skip `src/app/admin/**` unless asked; admin editors legitimately use Tailwind and dev-only styling.
-- Skip the legacy travel detail system (`src/app/travels/<slug>/`, `src/components/travel/**`, `src/components/design/**`, `src/data/travel-details/**`) unless asked. It's pending redesign and intentionally still uses MUI and the old tokens.
+- Skip `src/app/admin/**` unless asked; the admin editor legitimately uses Tailwind and dev-only styling.
 
 Announce the scope in one line before reporting.
 
@@ -60,7 +59,7 @@ Components must use CSS variables, never raw color literals.
 
 - Muted text must be `color: var(--darkgray); opacity: .6`. Flag any separate gray for muted text.
 - Tints of a token use `color-mix(in srgb, var(--underline) 12%, transparent)` style, not a literal.
-- **BLOCKER:** legacy tokens or values in public UI: `var(--paper)`, `var(--ink…)`, `tokens.*` from `@/components/design/tokens`, `#f1e9df`, `#1f1a16`, the rose accent `rgb(163, 91, 115)`.
+- **BLOCKER:** legacy tokens or values in public UI: `var(--paper)`, `var(--ink…)`, a `tokens` object, `#f1e9df`, `#1f1a16`, the rose accent `rgb(163, 91, 115)`.
 - Don't flag photo filters or one-off overlays inside images.
 
 ### 2. Theming
@@ -75,7 +74,7 @@ Severity: **BLOCKER**.
 Severity: **SHOULD-FIX**; **BLOCKER** for a non-approved family in public UI.
 
 - `font-family` must reference `var(--font-heading)`, `var(--font-body)`, `var(--font-hand)` or `var(--font-code)`, never a raw stack.
-- Only DM Serif Display, Bricolage Grotesque, Nothing You Could Do and JetBrains Mono. Newsreader (`--font-newsreader`) and Caveat (`--font-caveat`) are loaded only for the legacy travel pages.
+- Only DM Serif Display, Bricolage Grotesque, Nothing You Could Do and JetBrains Mono. Newsreader and Caveat belong to the retired design; flag them.
 - Roles: heading font for headings, titles and sidebar items; body font for prose and UI; hand font for dates, captions, greeting and sign-off; code font for labels, the clock, track numbers and inline code.
 - Flag mono uppercase letter-spaced metadata labels; that's the old catalog style.
 
@@ -124,7 +123,7 @@ Severity: **NOTE**, unless a removed pattern comes back.
 2. Resolve scope and state it.
 3. Search with `rg` for likely drift:
    - colors: `#[0-9a-fA-F]{3,8}\b|rgba?\(|oklch\(|hsl\(`
-   - legacy tokens: `--paper|--ink|tokens\.|@/components/design/`
+   - legacy tokens: `--paper|--ink|tokens\.`
    - fonts: `font-family|fontFamily|Newsreader|Caveat`
    - theming: `prefers-color-scheme|data-theme`
    - removed patterns: `MetadataStrip|PageShell|catNo|REF\.|SECTION [A-Z]|UPDATED|@mui/`

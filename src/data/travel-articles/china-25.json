@@ -1,0 +1,756 @@
+{
+  "slug": "china-25",
+  "place": "China",
+  "title": "China, autumn '25.",
+  "startDate": "10 / 02 / 2025",
+  "endDate": "10 / 15 / 2025",
+  "tags": [
+    "Hangzhou",
+    "Wenzhou",
+    "Nanjing",
+    "Shanghai"
+  ],
+  "blocks": [
+    {
+      "id": "image-china-25-hero",
+      "type": "image",
+      "src": "/images/travels/china-25/china-25-hero.png",
+      "alt": "China, autumn 2025",
+      "background": "dots"
+    },
+    {
+      "id": "text",
+      "type": "text",
+      "text": "While the summer heat seeped into autumn, I spent my days moving around Eastern China. Hangzhou's lakesides rippled into Wenzhou's sweeping mountains. Nanjing's imperial history rolled into Shanghai's neon nightlife. There was a constant sense of movement. It's admirable, in a way. Even when at peace walking amongst more rural mountains, or the juxtaposing city-center lights, the current never really stopped — it just changed shape."
+    },
+    {
+      "id": "hangzhou",
+      "type": "section",
+      "level": 2,
+      "title": "Hangzhou",
+      "altTitle": "杭州",
+      "subtitle": "days 1 - 4"
+    },
+    {
+      "id": "canvas",
+      "type": "canvas",
+      "height": 438,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-hangzhou-leifeng-pagoda",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-pagoda.png",
+          "alt": "Leifeng Pagoda",
+          "x": -16,
+          "y": 2,
+          "width": 372,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-1flau7",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-wonton.png",
+          "alt": "",
+          "x": 539,
+          "y": 325,
+          "width": 100,
+          "rotation": -9,
+          "zIndex": 2
+        },
+        {
+          "id": "img-yimdcn",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-2.jpg",
+          "alt": "",
+          "x": 353,
+          "y": 231,
+          "width": 134,
+          "rotation": -4,
+          "zIndex": 5
+        },
+        {
+          "id": "img-f0idbw",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-leifeng-3.jpg",
+          "alt": "",
+          "x": 367,
+          "y": 18,
+          "width": 335,
+          "rotation": 0,
+          "zIndex": 4,
+          "captionAlign": "right",
+          "caption": "looking out from the pagoda"
+        }
+      ]
+    },
+    {
+      "id": "text-2",
+      "type": "text",
+      "text": "Back to Hangzhou for my mom's wontons (yay!) and slow evenings by West Lake. This time around we also visited the Leifeng Pagoda and took a small cruise along the Qiantang River, admiring the cityscape at night. So many lovely waterfront views.\n\n(Not pictured) I also did a good amount of shopping..."
+    },
+    {
+      "id": "image-zflwg9",
+      "type": "image",
+      "src": "/images/travels/china-25/hangzhou-westlake-1.jpg",
+      "alt": ""
+    },
+    {
+      "id": "image-b63h8k",
+      "type": "image",
+      "src": "/images/travels/china-25/hangzhou-westlake-2.jpg",
+      "alt": ""
+    },
+    {
+      "id": "canvas-no7bqb",
+      "type": "canvas",
+      "height": 300,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-47x6hk",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-food-3.png",
+          "alt": "",
+          "x": 508,
+          "y": 158,
+          "width": 143,
+          "rotation": 0,
+          "zIndex": 3
+        },
+        {
+          "id": "img-j88lvs",
+          "kind": "image",
+          "src": "/images/travels/china-25/hangzhou-qiantangriver.jpg",
+          "alt": "",
+          "x": 16,
+          "y": 9,
+          "width": 364,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "wenzhou",
+      "type": "section",
+      "level": 2,
+      "title": "Wenzhou",
+      "altTitle": "温州",
+      "subtitle": "days 5 - 7"
+    },
+    {
+      "id": "canvas-igbvwn",
+      "type": "canvas",
+      "height": 122,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-w7ip25",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "",
+          "x": 122,
+          "y": 17,
+          "width": 80,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-g5ggjq",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "",
+          "x": 293,
+          "y": 18,
+          "width": 80,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "img-fv0at2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-flower.png",
+          "alt": "",
+          "x": 465,
+          "y": 19,
+          "width": 80,
+          "rotation": 0,
+          "zIndex": 3
+        }
+      ]
+    },
+    {
+      "id": "canvas-4",
+      "type": "canvas",
+      "height": 473,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-yandang-mountain-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/yandang-mountain-2.jpg",
+          "alt": "Yandang Mountain",
+          "x": 362,
+          "y": 2,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-sgt3al",
+          "kind": "image",
+          "src": "/images/travels/china-25/yandang-mountain-dalongqiu.jpg",
+          "alt": "",
+          "x": 2,
+          "y": 1,
+          "width": 351,
+          "rotation": 0,
+          "zIndex": 3
+        }
+      ]
+    },
+    {
+      "id": "text-3",
+      "type": "text",
+      "text": "Dad decided it would be a nice two day trip into the mountains. I was pretty impressed with the Yandang mountain range but the Dalongqiu waterfall gave off the vibes of a leaky faucet..."
+    },
+    {
+      "id": "canvas-5",
+      "type": "canvas",
+      "height": 341,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-yandang-wenzhou",
+          "kind": "image",
+          "src": "/images/travels/china-25/yandang-wenzhou.jpg",
+          "alt": "Wenzhou",
+          "x": 376,
+          "y": 71,
+          "width": 336,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-flower-2-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-flower-2.png",
+          "alt": "",
+          "x": 361,
+          "y": 30,
+          "width": 67,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "img-5zkv5s",
+          "kind": "image",
+          "src": "/images/travels/china-25/yandang-mountain-1.jpg",
+          "alt": "",
+          "x": 3,
+          "y": 3,
+          "width": 334,
+          "rotation": 0,
+          "zIndex": 3
+        },
+        {
+          "id": "img-iuvm61",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-squiggle.png",
+          "alt": "",
+          "x": 502,
+          "y": -9,
+          "width": 216,
+          "rotation": 0,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "nanjing",
+      "type": "section",
+      "level": 2,
+      "title": "Nanjing",
+      "altTitle": "南京",
+      "subtitle": "days 8 - 10"
+    },
+    {
+      "id": "canvas-6",
+      "type": "canvas",
+      "height": 501,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-nanjing-confucius-temple",
+          "kind": "image",
+          "src": "/images/travels/china-25/nanjing-confucius-temple.jpg",
+          "alt": "Confucius Temple",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-nanjing-confucius-temple",
+          "kind": "text",
+          "text": "Confucius Temple",
+          "font": "hand",
+          "size": 14,
+          "x": 0,
+          "y": 479.3,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-nanjing-confucian-temple-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/nanjing-confucian-temple-2.jpg",
+          "alt": "Confucius Temple",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-paper",
+          "kind": "image",
+          "src": "/images/travels/china-25/paper.png",
+          "alt": "",
+          "x": 0,
+          "y": 0,
+          "width": 110,
+          "rotation": -4,
+          "zIndex": 2
+        },
+        {
+          "id": "sticker-food",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-food.png",
+          "alt": "",
+          "x": 640,
+          "y": 0,
+          "width": 80,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "text-4",
+      "type": "text",
+      "text": "Another two day trip. As the former national capital, Nanjing wore its history brightly. We walked amongst the Confucius Temple's night market crowds and joined a river cruise at night. In the morning we walked up to the Sun Yat-sen Mausoleum."
+    },
+    {
+      "id": "canvas-7",
+      "type": "canvas",
+      "height": 457,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-nanjing-sun-yatsen",
+          "kind": "image",
+          "src": "/images/travels/china-25/nanjing-sun-yatsen.jpg",
+          "alt": "Sun Yat-sen Mausoleum",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-nanjing-sun-yatsen",
+          "kind": "text",
+          "text": "Sun Yat-sen's Mausoleum",
+          "font": "hand",
+          "size": 14,
+          "x": 0,
+          "y": 272.2,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-nanjing-1",
+          "kind": "image",
+          "src": "/images/travels/china-25/nanjing-1.jpg",
+          "alt": "Nanjing",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "shanghai",
+      "type": "section",
+      "level": 2,
+      "title": "Shanghai",
+      "altTitle": "上海",
+      "subtitle": "days 11 - 14"
+    },
+    {
+      "id": "text-5",
+      "type": "text",
+      "text": "Modern city, modern life. As my first international solo venture, I wanted to soak in the contemporary luxuries Shanghai had to offer. From the Gentle Monster to Louis Vuitton flagships, there was shopping, architecture, contemporary art, and history. One of my favorite ways to end the night was with my airpods in, walking along Nanjing Road or the Bund."
+    },
+    {
+      "id": "canvas-8",
+      "type": "canvas",
+      "height": 501,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-bund",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-bund.jpg",
+          "alt": "The Bund",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-shanghai-bund",
+          "kind": "text",
+          "text": "Walking the Bund",
+          "font": "hand",
+          "size": 14,
+          "x": 0,
+          "y": 479.3,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-bund-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-bund-2.jpg",
+          "alt": "The Bund",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-ribbon-1",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-1.png",
+          "alt": "",
+          "x": 0,
+          "y": 0,
+          "width": 84,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "shopping-corner-d",
+      "type": "section",
+      "level": 3,
+      "title": "Shopping Corner :D"
+    },
+    {
+      "id": "canvas-9",
+      "type": "canvas",
+      "height": 473,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-haus-gentlemonster",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-haus-gentlemonster.jpg",
+          "alt": "Gentle Monster, Shanghai",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-shopping",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-shopping.jpg",
+          "alt": "Shopping in Shanghai",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-star-1",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-star-1.png",
+          "alt": "",
+          "x": 664,
+          "y": 0,
+          "width": 56,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "canvas-10",
+      "type": "canvas",
+      "height": 473,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-haus-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-haus-2.jpg",
+          "alt": "Gentle Monster, Shanghai",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-haus-3",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-haus-3.jpg",
+          "alt": "Gentle Monster, Shanghai",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "canvas-11",
+      "type": "canvas",
+      "height": 473,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-shopping-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-shopping-2.jpg",
+          "alt": "Shopping in Shanghai",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-louis-vuitton",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-louis-vuitton.png",
+          "alt": "Louis Vuitton, Shanghai",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "canvas-12",
+      "type": "canvas",
+      "height": 501,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-fotografiska-1",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-fotografiska-1.jpg",
+          "alt": "Fotografiska Shanghai",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-fotografiska-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-fotografiska-2.jpg",
+          "alt": "Fotografiska Shanghai",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-shanghai-fotografiska-2",
+          "kind": "text",
+          "text": "\"These Days\"",
+          "font": "hand",
+          "size": 14,
+          "x": 365,
+          "y": 479.3,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-ribbon-1-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-1.png",
+          "alt": "",
+          "x": 0,
+          "y": 0,
+          "width": 84,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "text-6",
+      "type": "text",
+      "text": "(Above) Trying on glasses at Gentle Monster and some clothes at local malls.\n\n(Left) Fotografiska Shanghai. As an enjoyer of contemporary art, I had the pleasure of viewing some exhibits here, one of them being Cho Gi-Seok's \"The Coexistence of Imperfection\", where he explores how various dichotomies work together (i.e. love & hate, nature & technology).\n\nAnd later some nightlife..."
+    },
+    {
+      "id": "canvas-13",
+      "type": "canvas",
+      "height": 501,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-shanghai-nightlife-1",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-nightlife-1.jpg",
+          "alt": "Shanghai nightlife",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-shanghai-nightlife-1",
+          "kind": "text",
+          "text": "bar hopping",
+          "font": "hand",
+          "size": 14,
+          "x": 0,
+          "y": 272.2,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-nightlife-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-nightlife-2.jpg",
+          "alt": "Shanghai nightlife",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-shanghai-nightlife-2",
+          "kind": "text",
+          "text": "INS",
+          "font": "hand",
+          "size": 14,
+          "x": 365,
+          "y": 479.3,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-food-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-food-2.png",
+          "alt": "",
+          "x": 638,
+          "y": 458.7,
+          "width": 82,
+          "rotation": 6,
+          "zIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "text-7",
+      "type": "text",
+      "text": "One experience unique to China is that they offer these very cool photoshoots for quite reasonable prices (at least if you come from the States). These photo studios offer dozens of themes to pick from, ranging from simple to extravagant.\n\nIt took me a few hours to do hair, makeup, and costume. Truly though, I'd like to shout out the photographer because I am probably the most awkward and stiff person to sign up for this (mission challenge confidence, completed). She guided me through every single pose and kept reminding me to relax my face and straighten my posture.\n\n10/10 experience and a fun way to get me out of my comfort zone."
+    },
+    {
+      "id": "canvas-14",
+      "type": "canvas",
+      "height": 501,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-chinaphotoshoot",
+          "kind": "image",
+          "src": "/images/travels/china-25/ChinaPhotoshoot.png",
+          "alt": "Photoshoot",
+          "x": 0,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-shanghai-photoshoot-bts",
+          "kind": "image",
+          "src": "/images/travels/china-25/shanghai-photoshoot-bts.jpg",
+          "alt": "Photoshoot, behind the scenes",
+          "x": 365,
+          "y": 0,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "caption-shanghai-photoshoot-bts",
+          "kind": "text",
+          "text": "behind the scenes...",
+          "font": "hand",
+          "size": 14,
+          "x": 365,
+          "y": 479.3,
+          "width": 355,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "sticker-ribbon-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-ribbon-2.png",
+          "alt": "",
+          "x": 636,
+          "y": 0,
+          "width": 84,
+          "rotation": 0,
+          "zIndex": 2
+        },
+        {
+          "id": "sticker-star-2",
+          "kind": "image",
+          "src": "/images/travels/china-25/sticker-star-2.png",
+          "alt": "",
+          "x": 0,
+          "y": 451,
+          "width": 50,
+          "rotation": 0,
+          "zIndex": 2
+        }
+      ]
+    }
+  ]
+}

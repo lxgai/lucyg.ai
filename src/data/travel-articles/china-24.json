@@ -1,0 +1,297 @@
+{
+  "slug": "china-24",
+  "place": "China",
+  "title": "China, summer '24.",
+  "startDate": "07 / 10 / 2024",
+  "endDate": "07 / 21 / 2024",
+  "tags": [
+    "Hangzhou",
+    "Chongqing",
+    "Wulong"
+  ],
+  "blocks": [
+    {
+      "id": "img-yangtze-river",
+      "type": "image",
+      "src": "/images/travels/china-24/yangtze-river.png",
+      "alt": "Yangtze River"
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "text": "Two summer weeks across three very different Chinas. Hangzhou for my mom's wontons and slow lake evenings; Chongqing for cyberpunk dreams, river lights, and noodles that left me sweating into my soup; Wulong for cliffs that swallowed everything human-sized. I traveled with my parents - first time in a while - and admired how things had changed since the last time I visited."
+    },
+    {
+      "id": "hangzhou",
+      "type": "section",
+      "level": 2,
+      "title": "Hangzhou",
+      "altTitle": "杭州",
+      "subtitle": "days 1 - 6"
+    },
+    {
+      "id": "text-3",
+      "type": "text",
+      "text": "Every time I visit, I'm amazed at how much this city has changed - in a way, Hangzhou is my first-hand experience feeling the country's dramatic urbanization over decades. But there are some things that never change - afternoon strolls around West Lake and some really awesome homemade dumplings."
+    },
+    {
+      "id": "canvas-1",
+      "type": "canvas",
+      "height": 435,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-hangzhou",
+          "kind": "image",
+          "src": "/images/travels/china-24/hangzhou.jpg",
+          "alt": "West Lake at dusk",
+          "x": 1.0,
+          "y": 222.7,
+          "width": 304.8,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-west-lake-2",
+          "kind": "image",
+          "src": "/images/travels/china-24/west-lake-2.jpg",
+          "alt": "West Lake",
+          "x": 592.7,
+          "y": 134.3,
+          "width": 127.3,
+          "rotation": 1,
+          "zIndex": 2
+        },
+        {
+          "id": "img-westlake-dumplings",
+          "kind": "image",
+          "src": "/images/travels/china-24/westlake-dumplings.png",
+          "alt": "Crab-roe dumplings served along West Lake",
+          "x": 296.2,
+          "y": 0.0,
+          "width": 366.8,
+          "rotation": 0,
+          "zIndex": 5
+        },
+        {
+          "id": "img-coconut-drink",
+          "kind": "image",
+          "src": "/images/travels/china-24/coconut-drink.png",
+          "alt": "Coconut drink",
+          "x": 0.0,
+          "y": 328.5,
+          "width": 30.8,
+          "rotation": -10.6,
+          "zIndex": 5
+        },
+        {
+          "id": "sticker-stars-purple",
+          "kind": "image",
+          "src": "/images/travels/china-24/stars-purple.png",
+          "alt": "",
+          "x": 609.5,
+          "y": 320.6,
+          "width": 72.2,
+          "rotation": 20,
+          "zIndex": 8
+        }
+      ]
+    },
+    {
+      "id": "chongqing",
+      "type": "section",
+      "level": 2,
+      "title": "Chongqing",
+      "altTitle": "重庆",
+      "subtitle": "days 7 - 10"
+    },
+    {
+      "id": "canvas-2",
+      "type": "canvas",
+      "height": 415,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-hongyadong-heart",
+          "kind": "image",
+          "src": "/images/travels/china-24/hongyadong-heart.png",
+          "alt": "Hongyadong lit up at night from across the river",
+          "x": 407.4,
+          "y": 17.5,
+          "width": 312.6,
+          "rotation": 0,
+          "zIndex": 2,
+          "caption": "Hongyadong, 8:42pm"
+        },
+        {
+          "id": "img-yangtze-river-2",
+          "kind": "image",
+          "src": "/images/travels/china-24/yangtze-river-2.jpg",
+          "alt": "Yangtze River",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 352.4,
+          "rotation": 0,
+          "zIndex": 4
+        }
+      ]
+    },
+    {
+      "id": "text-7",
+      "type": "text",
+      "text": "The moment the sun disappears along the horizon, this urban, \"8-D\" city comes to life. Despite it being ruthlessly hot, my cyberpunk dream of experiencing the vertical landscape of this city became a reality. From neon views to spicy eats to being dropped off at the wrong elevation, I could only wish I had more evenings to just walk by the river and watch."
+    },
+    {
+      "id": "canvas-3",
+      "type": "canvas",
+      "height": 827,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-chongqing-food-mall",
+          "kind": "image",
+          "src": "/images/travels/china-24/chongqing-food-mall.jpg",
+          "alt": "Chongqing food mall",
+          "x": 0.0,
+          "y": 2.9,
+          "width": 200.4,
+          "rotation": 0,
+          "zIndex": 5
+        },
+        {
+          "id": "img-liziba-station",
+          "kind": "image",
+          "src": "/images/travels/china-24/liziba-station.png",
+          "alt": "Liziba station",
+          "x": 519.5,
+          "y": 27.4,
+          "width": 162.8,
+          "rotation": -1.6,
+          "zIndex": 6,
+          "caption": "the famous Liziba station"
+        },
+        {
+          "id": "img-three-natural-bridges-arrow",
+          "kind": "image",
+          "src": "/images/travels/china-24/three-natural-bridges-arrow.png",
+          "alt": "Three Natural Bridges",
+          "x": 467.7,
+          "y": 400.6,
+          "width": 252.3,
+          "rotation": 0,
+          "zIndex": 7
+        },
+        {
+          "id": "img-jiuli-city",
+          "kind": "image",
+          "src": "/images/travels/china-24/jiuli-city.jpg",
+          "alt": "Jiuli city",
+          "x": 3.2,
+          "y": 635.1,
+          "width": 218.9,
+          "rotation": 0,
+          "zIndex": 8,
+          "caption": "Jiuli city - in a neighboring district"
+        },
+        {
+          "id": "img-family-stickered",
+          "kind": "image",
+          "src": "/images/travels/china-24/family-stickered.png",
+          "alt": "Family photo with stickers",
+          "x": 575.7,
+          "y": 324.1,
+          "width": 137.8,
+          "rotation": 0,
+          "zIndex": 9
+        },
+        {
+          "id": "img-chongqing-highways",
+          "kind": "image",
+          "src": "/images/travels/china-24/chongqing-highways.jpeg",
+          "alt": "Chongqing highways",
+          "x": 249.4,
+          "y": 83.1,
+          "width": 250.2,
+          "rotation": 0,
+          "zIndex": 10
+        },
+        {
+          "id": "img-xiaomian",
+          "kind": "image",
+          "src": "/images/travels/china-24/xiaomian.png",
+          "alt": "A bowl of Chongqing xiaomian noodles",
+          "x": 175.6,
+          "y": 0.0,
+          "width": 85.1,
+          "rotation": -10.1,
+          "zIndex": 12
+        }
+      ]
+    },
+    {
+      "id": "wulong",
+      "type": "section",
+      "level": 2,
+      "title": "Wulong",
+      "altTitle": "武隆",
+      "subtitle": "days 10-12"
+    },
+    {
+      "id": "text-10",
+      "type": "text",
+      "text": "If you ever find yourself willing to take a rough, 3 hour bus ride headed southwest from Chongqing's center, I do highly recommend you check out the Three Natural Bridges."
+    },
+    {
+      "id": "canvas-4",
+      "type": "canvas",
+      "height": 457,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-wulong-2",
+          "kind": "image",
+          "src": "/images/travels/china-24/wulong-2.jpeg",
+          "alt": "Wulong",
+          "x": 233.7,
+          "y": 0.0,
+          "width": 269.1,
+          "rotation": 3,
+          "zIndex": 10
+        },
+        {
+          "id": "sticker-sketch-arrow",
+          "kind": "image",
+          "src": "/images/travels/china-24/sketch-arrow.png",
+          "alt": "",
+          "x": 139.2,
+          "y": 50.4,
+          "width": 97.7,
+          "rotation": 0,
+          "zIndex": 30
+        },
+        {
+          "id": "sticker-bus-sticker",
+          "kind": "image",
+          "src": "/images/travels/china-24/bus-sticker.png",
+          "alt": "",
+          "x": 0.0,
+          "y": 144.2,
+          "width": 78.2,
+          "rotation": 0,
+          "zIndex": 30
+        },
+        {
+          "id": "sticker-plant-sticker",
+          "kind": "image",
+          "src": "/images/travels/china-24/plant-sticker.png",
+          "alt": "",
+          "x": 281.5,
+          "y": 292.9,
+          "width": 129.2,
+          "rotation": 0,
+          "zIndex": 31
+        }
+      ]
+    }
+  ]
+}

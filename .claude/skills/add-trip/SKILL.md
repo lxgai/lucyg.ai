@@ -1,27 +1,28 @@
 ---
 name: add-trip
-description: Scaffold a new travel entry end-to-end — list the trip's images from the Supabase bucket and wire them into the travel-detail JSON, the route page, the TRIPS index, and the asset manifest, keeping the slug consistent across all files. Use when the user wants to add a new trip/travel page, e.g. "add a trip", "scaffold travels/<slug>", "set up a new travel entry". Images must already be uploaded to the bucket under travels/<slug>/.
+description: Scaffold a new travel entry end-to-end — list the trip's images from the Supabase bucket and wire up the travel article JSON, the route page, the TRIPS index, TRAVEL_ARTICLES, and the asset manifest, keeping the slug consistent across all files. Use when the user wants to add a new trip/travel page, e.g. "add a trip", "scaffold travels/&lt;slug&gt;", "set up a new travel entry". Images must already be uploaded to the bucket under travels/&lt;slug&gt;/.
 ---
 
 # add-trip
 
-Scaffold every file a new trip touches, with the slug kept consistent across all of them, and the image paths wired from the actual Supabase bucket contents (not guessed). This removes the most error-prone manual workflow in the project: keeping one slug in sync across the data files, route, and asset manifest, and hand-listing image paths.
+Scaffold every file a new trip touches, with the slug kept consistent across all of them, and the image paths wired from the actual Supabase bucket contents (not guessed). The result is a bare article Lucy fills in `/admin/travel-detail-editor`. The editor only saves articles that already exist, so this skill is how a trip gets its first file.
 
 ## Hard rules
 
 - **Never write image binaries or touch `public/`.** Trip images live in Supabase; the repo only stores *logical* paths `/images/travels/<slug>/<file>`. `src/lib/images.ts` rewrites those to the bucket URL at render.
-- **The slug is the contract.** It must be identical across: the travel-detail JSON filename, the route folder `src/app/travels/<slug>/`, `TRIPS[].id` in `src/data/travels.ts`, and the key in `src/data/travel-assets.ts`. Validate it is kebab-case (`^[a-z0-9]+(?:-[a-z0-9]+)*$`) and not already present in `TRIPS`.
+- **The slug is the contract.** It must be identical across: the article filename `src/data/travel-articles/<slug>.json` and its `slug` field, the route folder `src/app/travels/<slug>/`, `TRIPS[].id` in `src/data/travels.ts`, the `TRAVEL_ARTICLES` key in `src/data/travelEntries.ts`, and the key in `src/data/travel-assets.ts`. Validate it is kebab-case (`^[a-z0-9]+(?:-[a-z0-9]+)*$`) and not already present in `TRIPS`.
 - **Only wire images the bucket actually returns.** Every path written must come from the listing in step 2. Do not invent filenames.
+- **Use the existing model.** The article must match `TravelArticle` in `src/types/travelArticle.ts`; read `src/data/travel-articles/china-25.json` as the worked example.
 
 ## Inputs to collect
 
 Ask for any not provided:
 - `slug` — e.g. `iceland-25` (kebab-case; images already uploaded under `travels/<slug>/`).
-- `place` — display name, e.g. `Iceland`.
-- `sub` — cities/subtitle, e.g. `Reykjavík · Vík`.
-- `date` — `MM / YYYY`.
-- `duration` — e.g. `7 days`.
-- `cover` — which image is the index cover (offer the listed `.jpg`s; default to the first).
+- `place` — the Travel Log name, e.g. `Iceland`.
+- `title` — the page title, e.g. `Iceland, winter '25`.
+- `startDate` and `endDate` — `MM / DD / YYYY`.
+- `cities` — in order, e.g. `Reykjavík, Vík`. Each becomes a city tag and an h2 section.
+- Optional: an opening image and intro sentence.
 
 ## Steps
 
@@ -37,21 +38,26 @@ This prints the logical paths (`/images/travels/<slug>/<file>`) for every image 
 - If it errors about a missing key, tell the user to add the variable to `.env.local` (see **Prerequisite** below) and stop — do not fall back to guessing filenames.
 - If it returns zero images, the upload hasn't happened yet — stop and tell the user to upload to `travels/<slug>/` first.
 
-### 3. Generate the travel-detail JSON
-Create `src/data/travel-details/<slug>.json`. **Read `src/data/travel-details/china-24.json` first** and mirror its schema: `fileNo`, `section`, `metadata` (`place`, `dateRange`, `duration`), `hero` (per-breakpoint title/intro/image layouts), and `sections[]` (each with per-breakpoint `canvas`, `blocks`, and `decorations`). Fill metadata from the inputs and distribute the listed images across hero + section blocks as placeholders. Do **not** add editable section-width controls; section widths stay as in the template (see CLAUDE.md travel-detail rules). Keep the JSON structured and formatted; do not hand-concatenate strings.
+### 3. Write the article
+Create `src/data/travel-articles/<slug>.json` (2-space indent, native names unescaped):
+
+- `slug`, `place`, `title`, `startDate`, `endDate`, and `tags` set to the cities.
+- `blocks`: the opening `image` block (with a real alt text) and intro `text` block if given, then one `section` block per city: `{ "id": "<slugged city>", "type": "section", "level": 2, "title": "<city>" }`. Ids are unique across the article.
+
+Don't place the rest of the photos; they appear in the editor's image library from `TRAVEL_ASSETS`.
 
 ### 4. Register the trip
-- Add a `TRIPS` entry in `src/data/travels.ts` with **only** `id` and `cover` (the chosen `cover` logical path). Do **not** add `place`/`sub`/`date`/`duration` — those are the detail JSON's job and are derived for the index/home page via `resolveTravelEntry` in `src/data/travelEntries.ts`. Duplicating them here would let them drift.
-- Register the trip's detail in `TRAVEL_DETAILS` in `src/data/travelEntries.ts` (`"<slug>": <slug>Json as TravelDetailData`) so the index, home page, and cover editor pick it up.
+- Add `{ id: "<slug>" }` to `TRIPS` in `src/data/travels.ts`. Don't add `place`/`sub`/`date`/`duration`; the article is the source of truth for those.
+- Import the JSON in `src/data/travelEntries.ts` and add `"<slug>": <name> as TravelArticle` to `TRAVEL_ARTICLES`.
 - Add a `TRAVEL_ASSETS["<slug>"]` array in `src/data/travel-assets.ts` containing **all** listed paths, sorted, matching the existing formatting.
 
 ### 5. Create the route page
-Create `src/app/travels/<slug>/page.tsx`. **Read `src/app/travels/china-24/page.tsx` first** and mirror it exactly — a server component that imports the travel-detail JSON and renders `<TravelDetailPage data={... as TravelDetailData} />`. Then register the route in `scripts/generate-page-updated.mjs` by adding a `ROUTES` entry: `{ route: "/travels/<slug>", sources: ["src/app/travels/<slug>/page.tsx", "src/components/travel/TravelDetailPage.tsx", "src/data/travel-details/<slug>.json"] }`.
+Create `src/app/travels/<slug>/page.tsx` as a copy of `src/app/travels/china-25/page.tsx`, pointed at the new JSON with a matching component name.
 
 ### 6. Verify
-- Confirm every image path written into the travel-detail JSON and the asset manifest appears in the step-2 listing (no typos, no missing uploads).
-- Confirm the slug is identical across the travel-detail JSON filename, the route folder, `TRIPS[].id`, the `TRAVEL_ASSETS` key, and the `generate-page-updated.mjs` route entry.
-- Confirm `cover` is one of the listed paths.
+- Every image path in the article and the asset manifest appears in the step-2 listing.
+- The slug is identical across every file listed under **Hard rules**.
+
 Report any mismatch instead of silently fixing a wrong slug.
 
 ### 7. Gate
@@ -60,7 +66,7 @@ Run the project's verification gate from CLAUDE.md:
 npx tsc --noEmit
 npm run lint
 ```
-Then summarize what was created and tell the user the layout is a scaffold — positions should be refined in `/admin/travel-detail-editor`.
+Then summarize what was created and tell the user to build out the page in `/admin/travel-detail-editor`.
 
 ## Prerequisite (one-time)
 

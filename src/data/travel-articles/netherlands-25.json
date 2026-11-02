@@ -1,0 +1,255 @@
+{
+  "slug": "netherlands-25",
+  "place": "Netherlands",
+  "title": "Netherlands, spring '25.",
+  "startDate": "05 / 25 / 2025",
+  "endDate": "05 / 31 / 2025",
+  "tags": [
+    "Amsterdam",
+    "Utrecht",
+    "Rotterdam"
+  ],
+  "blocks": [
+    {
+      "id": "img-amsterdam-hero",
+      "type": "image",
+      "src": "/images/travels/netherlands-25/amsterdam-hero.png",
+      "alt": "Canal cruise through Amsterdam"
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "text": "In my first venture into Europe, I spent a week by the Amsterdam canals, admiring the quaint architecture and seeking out signs of Miffy. We ran through a whole ring of museums — the Anne Frank House, Rijksmuseum, Stedelijk, and the Moco — with evenings carried by escape rooms, karaoke, and bitterballen."
+    },
+    {
+      "id": "amsterdam",
+      "type": "section",
+      "level": 2,
+      "title": "Amsterdam",
+      "subtitle": "(most of the trip)"
+    },
+    {
+      "id": "canvas-1",
+      "type": "canvas",
+      "height": 293,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-amsterdam1",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/amsterdam1.jpg",
+          "alt": "Amsterdam canal houses",
+          "x": 0.0,
+          "y": 15.5,
+          "width": 208.4,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-canal-cruise",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/canal-cruise.jpg",
+          "alt": "Canal cruise",
+          "x": 237.9,
+          "y": 14.9,
+          "width": 208.4,
+          "rotation": 0,
+          "zIndex": 7
+        },
+        {
+          "id": "img-miffy-store",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/miffy-store.jpg",
+          "alt": "Miffy store",
+          "x": 495.3,
+          "y": 15.5,
+          "width": 208.4,
+          "rotation": 0,
+          "zIndex": 8
+        },
+        {
+          "id": "sticker-mushroom",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/mushroom.png",
+          "alt": "",
+          "x": 445.6,
+          "y": 0.0,
+          "width": 91.4,
+          "rotation": 0,
+          "zIndex": 10
+        }
+      ]
+    },
+    {
+      "id": "text-4",
+      "type": "text",
+      "text": "The first time I stepped out of the subway station, I think I understood John Green when he wrote TFIO. The twinkling lights, the cobbled streets, the walkability of it all, were lovely. (Plus, do you see how picturesque those clouds are?) \n\nAfter locating Miffy, she walked around with me to various museums, a few bars, and tastings of different cheeses, bitterballen, and more. She thought the Anne Frank house was the coolest."
+    },
+    {
+      "id": "canvas-2",
+      "type": "canvas",
+      "height": 454,
+      "background": "none",
+      "items": [
+        {
+          "id": "sticker-amsterdam-text-background",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/amsterdam-text-background.png",
+          "alt": "",
+          "x": 374.0,
+          "y": 0.0,
+          "width": 346.0,
+          "rotation": 0,
+          "zIndex": 1
+        },
+        {
+          "id": "img-bitterballen",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/bitterballen.png",
+          "alt": "Bitterballen",
+          "x": 339.6,
+          "y": 76.0,
+          "width": 84.9,
+          "rotation": -6,
+          "zIndex": 5,
+          "caption": "ballin'"
+        },
+        {
+          "id": "img-suprise-bar",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/suprise-bar.png",
+          "alt": "Surprise bar",
+          "x": 205.6,
+          "y": 45.5,
+          "width": 128.4,
+          "rotation": 4,
+          "zIndex": 6
+        },
+        {
+          "id": "img-vincent-van-gogh",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/vincent-van-gogh.jpg",
+          "alt": "Van Gogh",
+          "x": 0.0,
+          "y": 264.8,
+          "width": 180.2,
+          "rotation": 0,
+          "zIndex": 8
+        },
+        {
+          "id": "img-room-s",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/room-s.jpg",
+          "alt": "Room",
+          "x": 2.1,
+          "y": 60.0,
+          "width": 180.2,
+          "rotation": 0,
+          "zIndex": 9
+        },
+        {
+          "id": "img-chocolate-clogs",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/chocolate-clogs.png",
+          "alt": "Chocolate clogs",
+          "x": 201.6,
+          "y": 312.0,
+          "width": 55.5,
+          "rotation": 0,
+          "zIndex": 11,
+          "caption": "yummy clogs"
+        },
+        {
+          "id": "img-miffy-chair",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/miffy-chair.jpg",
+          "alt": "Miffy chair",
+          "x": 304.1,
+          "y": 208.5,
+          "width": 149.8,
+          "rotation": 0,
+          "zIndex": 12,
+          "caption": "Miffy relaxing after the Anne Frank House"
+        },
+        {
+          "id": "img-stroopwafel",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/stroopwafel.png",
+          "alt": "Stroopwafel",
+          "x": 207.5,
+          "y": 187.6,
+          "width": 75.3,
+          "rotation": 0,
+          "zIndex": 13,
+          "caption": "stroopwafel"
+        }
+      ]
+    },
+    {
+      "id": "utrecht-rotterdam",
+      "type": "section",
+      "level": 2,
+      "title": "Utrecht & Rotterdam",
+      "subtitle": "daytrips"
+    },
+    {
+      "id": "text-7",
+      "type": "text",
+      "text": "Rotterdam was mostly for meeting a family friend, but we did get to see a side of the Netherlands that featured more modern architecture in this major port city. \n\nIn Utrecht we completed the infamous \"Dome\" escape room at Mama Bazooka's. If you're an escape room fanatic, the Netherlands will certainly not disappoint. (Did not charge my phone enough, so excuse the lack of pictures.)"
+    },
+    {
+      "id": "canvas-3",
+      "type": "canvas",
+      "height": 459,
+      "background": "none",
+      "items": [
+        {
+          "id": "img-utrecht",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/utrecht.jpg",
+          "alt": "Utrecht",
+          "x": 349.5,
+          "y": 257.4,
+          "width": 172.5,
+          "rotation": 1.9,
+          "zIndex": 6,
+          "caption": "Mama Bazooka lobby"
+        },
+        {
+          "id": "img-rotterdam",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/rotterdam.jpeg",
+          "alt": "Rotterdam",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 296.7,
+          "rotation": -1.6,
+          "zIndex": 7,
+          "caption": "A side of the Nieuwe Maas"
+        },
+        {
+          "id": "sticker-blueaccent",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/blueaccent.png",
+          "alt": "",
+          "x": 318.1,
+          "y": 154.5,
+          "width": 81.5,
+          "rotation": -50,
+          "zIndex": 30
+        },
+        {
+          "id": "sticker-bluestar",
+          "kind": "image",
+          "src": "/images/travels/netherlands-25/bluestar.png",
+          "alt": "",
+          "x": 320.6,
+          "y": 32.8,
+          "width": 79.0,
+          "rotation": 0,
+          "zIndex": 31
+        }
+      ]
+    }
+  ]
+}

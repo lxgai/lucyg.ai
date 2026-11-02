@@ -1,19 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import path from "path";
-
-const detailDir = path.join(process.cwd(), "src", "data", "travel-details");
-const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-function resolveDetailPath(slug: string) {
-  if (!slugPattern.test(slug)) return null;
-
-  const filePath = path.resolve(detailDir, `${slug}.json`);
-  const relative = path.relative(detailDir, filePath);
-
-  if (relative.startsWith("..") || path.isAbsolute(relative)) return null;
-  return filePath;
-}
+import { resolveTravelArticlePath } from "@/lib/travelArticleFiles";
 
 export async function GET(request: NextRequest) {
   if (process.env.NODE_ENV === "production") {
@@ -25,14 +12,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing slug parameter" }, { status: 400 });
   }
 
-  const filePath = resolveDetailPath(slug);
+  const filePath = resolveTravelArticlePath(slug);
   if (!filePath) {
     return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
   }
 
   try {
-    const content = fs.readFileSync(filePath, "utf-8");
-    return NextResponse.json(JSON.parse(content));
+    return NextResponse.json(JSON.parse(fs.readFileSync(filePath, "utf-8")));
   } catch {
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   }
